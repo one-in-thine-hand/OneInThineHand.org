@@ -17,9 +17,9 @@ import {
   FormatTagType,
   getFormatTagTypeFromNode,
   Verse,
-  getFormatTagType
-} from '../../../shared';
-import { NodeName } from '../../../shared/dist/types/models/Verse';
+  getFormatTagType,
+} from '../../../shared/src/shared';
+import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
 
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
@@ -331,7 +331,7 @@ function buildFormatTag(
   childNode: Node,
   formatTags: Map<FormatTagType, FormatTag>,
   classList: FormatTagType[],
-  count: { count: number }
+  count: { count: number },
 ): void {
   if (childNode.nodeName === '#text') {
     if (childNode.textContent) {
@@ -355,10 +355,10 @@ function buildFormatTag(
                   ? formatTag.uncompressedOffsets.push(count.count)
                   : [count.count];
               }
-            }
+            },
           );
           count.count = count.count + 1;
-        }
+        },
       );
     }
   } else {
@@ -366,7 +366,7 @@ function buildFormatTag(
     Array.from(childNode.childNodes).map(
       (childNode2): void => {
         buildFormatTag(childNode2, formatTags, newClassList, count);
-      }
+      },
     );
   }
 }
@@ -376,7 +376,7 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
   Array.from(verseElement.childNodes).map(
     (childNodes): void => {
       buildFormatTag(childNodes, formatTags, [], count);
-    }
+    },
   );
   return Array.from(formatTags.values());
 }
@@ -412,17 +412,17 @@ export async function parseVerses(document: Document): Promise<Verse[]> {
   const verseElements = (await queryVerseElements(document)).filter(
     (verseElement): boolean => {
       return !verseElement.classList.contains('page-break');
-    }
+    },
   );
   const versePromises = verseElements.map(
     async (verseElement): Promise<Verse | undefined> => {
       return await parseVerse(verseElement);
-    }
+    },
   );
   const verses = (await Promise.all(versePromises)).filter(
     (verse): boolean => {
       return verse !== undefined;
-    }
+    },
   ) as Verse[];
   return verses;
 }

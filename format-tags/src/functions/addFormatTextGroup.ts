@@ -5,18 +5,24 @@ import {
   FormatGroupRuby,
   FormatGroupRubyA,
   FormatGroupA,
-  FormatGroupPageBreak
-} from '../../../shared';
+  FormatGroupPageBreak,
+} from '../../../shared/src/shared';
 import formatGroupSelectors from './formatGroupSelectors';
 import { queryChildNodes } from './queryChildNodes';
 
-function nodesToTextGroup(nodes: Node[], formatGroups: FormatGroup[], count: number): number {
+function nodesToTextGroup(
+  nodes: Node[],
+  formatGroups: FormatGroup[],
+  count: number,
+): number {
   const formatGroup = new FormatGroupText();
   let textContent = '';
   (nodes as Element[]).map(
     (element): void => {
-      textContent = `${textContent}${element.textContent ? element.textContent : ''}`;
-    }
+      textContent = `${textContent}${
+        element.textContent ? element.textContent : ''
+      }`;
+    },
   );
 
   const endCount = textContent ? count + textContent.length : count;
@@ -27,7 +33,11 @@ function nodesToTextGroup(nodes: Node[], formatGroups: FormatGroup[], count: num
   return endCount;
 }
 
-function nodeToFormatGroup(node: Node, formatGroups: FormatGroup[], count: number): number {
+function nodeToFormatGroup(
+  node: Node,
+  formatGroups: FormatGroup[],
+  count: number,
+): number {
   let formatGroup: FormatGroup;
   switch (node.nodeName) {
     case 'BR': {
@@ -52,7 +62,10 @@ function nodeToFormatGroup(node: Node, formatGroups: FormatGroup[], count: numbe
       break;
     }
     default: {
-      if ((node as Element).classList && (node as Element).classList.contains('page-break')) {
+      if (
+        (node as Element).classList &&
+        (node as Element).classList.contains('page-break')
+      ) {
         formatGroups.push(new FormatGroupPageBreak());
         return count;
       } else {
@@ -74,9 +87,11 @@ function nodeToFormatGroup(node: Node, formatGroups: FormatGroup[], count: numbe
 // Runs through the child nodes of a verse and groups them into their FormatGroups
 export async function parseFormatGroups(
   verseElement: Element,
-  formatGroups: FormatGroup[]
+  formatGroups: FormatGroup[],
 ): Promise<void> {
-  const breakPoints = Array.from(verseElement.querySelectorAll(formatGroupSelectors));
+  const breakPoints = Array.from(
+    verseElement.querySelectorAll(formatGroupSelectors),
+  );
   let formatTextGroup: Node[] | undefined;
   let count = 0;
 
@@ -98,7 +113,7 @@ export async function parseFormatGroups(
         }
         formatTextGroup.push(childNode);
       }
-    }
+    },
   );
 
   if (formatTextGroup !== undefined) {
@@ -109,7 +124,10 @@ export async function parseFormatGroups(
 }
 
 // Used when a whole verse can be represented by one FormatTextGroup
-export function verseToFormatTextGroup(verseElement: Element, formatGroups: FormatGroup[]): void {
+export function verseToFormatTextGroup(
+  verseElement: Element,
+  formatGroups: FormatGroup[],
+): void {
   // let count = 0;
   // Array.from(document.querySelector('#p14').childNodes).map((childNode)=>{
   //

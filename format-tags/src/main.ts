@@ -1,10 +1,10 @@
 // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
 // import "core-js/fn/array.find"
 // ...
-import { Verse } from '../../shared';
+import { Verse } from '../../shared/src/shared';
 import { parseVerses } from './functions/parseVerses';
 import { isChapter } from './functions/queryVerseElements';
-export default class FormatTags {
+export class FormatTags {
   /**
    * main
    */
@@ -18,10 +18,16 @@ export default class FormatTags {
   }
 }
 
-export async function parseTextContent(element: Element | Node): Promise<string> {
+export async function parseTextContent(
+  element: Element | Node,
+): Promise<string> {
   return element.textContent ? element.textContent : '';
 }
 
-export async function parseClassList(element: Element): Promise<string[] | undefined> {
-  return element.classList ? (Array.from(element.classList) as string[]) : undefined;
+export async function parseClassList(
+  element: Element,
+): Promise<string[] | undefined> {
+  return element.classList
+    ? (Array.from(element.classList) as string[])
+    : undefined;
 }

@@ -1,6 +1,8 @@
-import { verseSelectors } from '../../../shared';
+import { verseSelectors } from '../../../shared/src/shared';
 
-export async function queryVerseElements(document: Document): Promise<Element[]> {
+export async function queryVerseElements(
+  document: Document,
+): Promise<Element[]> {
   return Array.from(document.querySelectorAll(verseSelectors.toString()));
 }
 
