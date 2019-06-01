@@ -1,0 +1,31 @@
+export const enum FormatType {
+  Base = 0,
+  RichText = 1,
+  Highlight = 2,
+  Underline = 3,
+  Refs = 4,
+  Poetry = 5,
+  Link = 6,
+  Temp = -1
+  // UnderlineYellow,
+  // UnderlineBlue,
+  // UnderlineGreen,
+  // UnderlineRed,
+  // UnderlinePurple,
+  // UnderlineOrange,
+  // UnderlinePink,
+  // UnderlineGray,
+  // UnderlineBrown,
+  // UnderlineDarkBlue,
+
+  // HighlightDarkBlue,
+  // HighlightBrown,
+  // HighlightGray,
+  // HighlightPink,
+  // HighlightYellow,
+  // HighlightOrange,
+  // HighlightBlue,
+  // HighlightPurple,
+  // HighlightGreen,
+  // HighlightRed
+}
