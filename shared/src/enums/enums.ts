@@ -10,6 +10,11 @@ export const enum Color {
   brown,
   darkBlue
 }
+
+export const enum Environment {
+  browser,
+  node
+}
 // export const ColorEnum = Color;
 export const enum FormatGroupType {
   A = 0,
@@ -22,42 +27,45 @@ export const enum FormatGroupType {
   BR = 7,
   PAGE_BREAK = 8
 }
-export const enum FormatType {
-  Base = 0,
-  RichText = 1,
-  Highlight = 2,
-  Underline = 3,
-  Refs = 4,
-  Poetry = 5,
-  Link = 6,
-  Temp = -1
-  // UnderlineYellow,
-  // UnderlineBlue,
-  // UnderlineGreen,
-  // UnderlineRed,
-  // UnderlinePurple,
-  // UnderlineOrange,
-  // UnderlinePink,
-  // UnderlineGray,
-  // UnderlineBrown,
-  // UnderlineDarkBlue,
+// export const enum FormatType {
+//   Base = 0,
+//   RichText = 1,
+//   Highlight = 2,
+//   Underline = 3,
+//   Refs = 4,
+//   Poetry = 5,
+//   Link = 6,
+//   Temp = -1
+//   // UnderlineYellow,
+//   // UnderlineBlue,
+//   // UnderlineGreen,
+//   // UnderlineRed,
+//   // UnderlinePurple,
+//   // UnderlineOrange,
+//   // UnderlinePink,
+//   // UnderlineGray,
+//   // UnderlineBrown,
+//   // UnderlineDarkBlue,
 
-  // HighlightDarkBlue,
-  // HighlightBrown,
-  // HighlightGray,
-  // HighlightPink,
-  // HighlightYellow,
-  // HighlightOrange,
-  // HighlightBlue,
-  // HighlightPurple,
-  // HighlightGreen,
-  // HighlightRed
+//   // HighlightDarkBlue,
+//   // HighlightBrown,
+//   // HighlightGray,
+//   // HighlightPink,
+//   // HighlightYellow,
+//   // HighlightOrange,
+//   // HighlightBlue,
+//   // HighlightPurple,
+//   // HighlightGreen,
+//   // HighlightRed
+// }
+
+const enum DisplayAs {
+  CLASS,
+  RICHTEXT,
+  NEVER
 }
-export const enum Poetry {
-  Poetry = 0,
-  Prose = 1
-}
-export const enum RichTextType {
+export const enum Poetry {}
+export const enum FormatTagType {
   verseNumber = 0,
   italic,
   bold,
@@ -80,7 +88,31 @@ export const enum RichTextType {
   question,
   line,
   paraMark,
-  selah
+  selah,
+  Poetry,
+  Prose,
+  UnderlineYellow,
+  UnderlineBlue,
+  UnderlineGreen,
+  UnderlineRed,
+  UnderlinePurple,
+  UnderlineOrange,
+  UnderlinePink,
+  UnderlineGray,
+  UnderlineBrown,
+  UnderlineDarkBlue,
+  HighlightDarkBlue,
+  HighlightBrown,
+  HighlightGray,
+  HighlightPink,
+  HighlightYellow,
+  HighlightOrange,
+  HighlightBlue,
+  HighlightPurple,
+  HighlightGreen,
+  HighlightRed,
+  RefSingle,
+  RefMulti
 }
 
 export const enum Optional {
@@ -89,99 +121,292 @@ export const enum Optional {
   SOMETIMES
 }
 export class RichText {
-  public richTextType: RichTextType | undefined;
+  public formatTagType: FormatTagType | undefined;
   public optional: Optional | undefined;
+  public className: string | undefined;
+  public displayAs: DisplayAs = DisplayAs.NEVER;
 }
-
-export const verseNumber: RichText = {
-  richTextType: RichTextType.verseNumber,
-  optional: Optional.ALWAYS
-};
-export const italic: RichText = {
-  richTextType: RichTextType.italic,
-  optional: Optional.ALWAYS
-};
-export const bold: RichText = {
-  richTextType: RichTextType.bold,
-  optional: Optional.ALWAYS
-};
-export const clarityWord: RichText = {
-  richTextType: RichTextType.clarityWord,
-  optional: Optional.SOMETIMES
-};
-export const translit: RichText = {
-  richTextType: RichTextType.translit,
-  optional: Optional.NEVER
-};
-export const language: RichText = {
-  richTextType: RichTextType.language,
-  optional: Optional.NEVER
-};
-export const deityName: RichText = {
-  richTextType: RichTextType.deityName,
-  optional: Optional.NEVER
-};
-export const smallCaps: RichText = {
-  richTextType: RichTextType.smallCaps,
-  optional: Optional.SOMETIMES
-};
-export const uppercase: RichText = {
-  richTextType: RichTextType.uppercase,
-  optional: Optional.SOMETIMES
-};
-export const entry: RichText = {
-  richTextType: RichTextType.entry,
-  optional: Optional.NEVER
-};
-export const closing: RichText = {
-  richTextType: RichTextType.closing,
-  optional: Optional.ALWAYS
-};
-export const signature: RichText = {
-  richTextType: RichTextType.signature,
-  optional: Optional.ALWAYS
-};
-export const shortTitle: RichText = {
-  richTextType: RichTextType.shortTitle,
-  optional: Optional.NEVER
-};
-export const breakRich: RichText = {
-  richTextType: RichTextType.break,
-  optional: Optional.ALWAYS
-};
-export const salutation: RichText = {
-  richTextType: RichTextType.salutation,
-  optional: Optional.NEVER
-};
-export const office: RichText = {
-  richTextType: RichTextType.office,
-  optional: Optional.NEVER
-};
-export const date: RichText = {
-  richTextType: RichTextType.date,
-  optional: Optional.NEVER
-};
-export const addressee: RichText = {
-  richTextType: RichTextType.addressee,
-  optional: Optional.ALWAYS
-};
-export const answer: RichText = {
-  richTextType: RichTextType.answer,
-  optional: Optional.ALWAYS
-};
-export const question: RichText = {
-  richTextType: RichTextType.question,
-  optional: Optional.NEVER
-};
-export const line: RichText = {
-  richTextType: RichTextType.line,
-  optional: Optional.SOMETIMES
-};
-export const paraMark: RichText = {
-  richTextType: RichTextType.paraMark,
-  optional: Optional.NEVER
-};
-export const selah: RichText = {
-  richTextType: RichTextType.selah,
-  optional: Optional.SOMETIMES
-};
+export const gg: RichText[] = [
+  {
+    className: 'verse-number',
+    formatTagType: FormatTagType.verseNumber,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.RICHTEXT
+  },
+  {
+    className: 'italic',
+    formatTagType: FormatTagType.italic,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.RICHTEXT
+  },
+  {
+    className: 'bold',
+    formatTagType: FormatTagType.bold,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.RICHTEXT
+  },
+  {
+    className: 'clarityWord',
+    formatTagType: FormatTagType.clarityWord,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'translit',
+    formatTagType: FormatTagType.translit,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'language',
+    formatTagType: FormatTagType.language,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'deityName',
+    formatTagType: FormatTagType.deityName,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'smallCaps',
+    formatTagType: FormatTagType.smallCaps,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'uppercase',
+    formatTagType: FormatTagType.uppercase,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'entry',
+    formatTagType: FormatTagType.entry,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'closing',
+    formatTagType: FormatTagType.closing,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'signature',
+    formatTagType: FormatTagType.signature,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'shortTitle',
+    formatTagType: FormatTagType.shortTitle,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'breakRich',
+    formatTagType: FormatTagType.break,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'salutation',
+    formatTagType: FormatTagType.salutation,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'office',
+    formatTagType: FormatTagType.office,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'date',
+    formatTagType: FormatTagType.date,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'addressee',
+    formatTagType: FormatTagType.addressee,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'answer',
+    formatTagType: FormatTagType.answer,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'question',
+    formatTagType: FormatTagType.question,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'line',
+    formatTagType: FormatTagType.line,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'poetry',
+    formatTagType: FormatTagType.Poetry,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'prose',
+    formatTagType: FormatTagType.Prose,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'paraMark',
+    formatTagType: FormatTagType.paraMark,
+    optional: Optional.NEVER,
+    displayAs: DisplayAs.NEVER
+  },
+  {
+    className: 'selah',
+    formatTagType: FormatTagType.selah,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Yellow',
+    formatTagType: FormatTagType.UnderlineYellow,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Blue',
+    formatTagType: FormatTagType.UnderlineBlue,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Green',
+    formatTagType: FormatTagType.UnderlineGreen,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Red',
+    formatTagType: FormatTagType.UnderlineRed,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Purple',
+    formatTagType: FormatTagType.UnderlinePurple,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Orange',
+    formatTagType: FormatTagType.UnderlineOrange,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Pink',
+    formatTagType: FormatTagType.UnderlinePink,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Gray',
+    formatTagType: FormatTagType.UnderlineGray,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-Brown',
+    formatTagType: FormatTagType.UnderlineBrown,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'underline-DarkBlue',
+    formatTagType: FormatTagType.UnderlineDarkBlue,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-DarkBlue',
+    formatTagType: FormatTagType.HighlightDarkBlue,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Brown',
+    formatTagType: FormatTagType.HighlightBrown,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Gray',
+    formatTagType: FormatTagType.HighlightGray,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Pink',
+    formatTagType: FormatTagType.HighlightPink,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Yellow',
+    formatTagType: FormatTagType.HighlightYellow,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Orange',
+    formatTagType: FormatTagType.HighlightOrange,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Blue',
+    formatTagType: FormatTagType.HighlightBlue,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Purple',
+    formatTagType: FormatTagType.HighlightPurple,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Green',
+    formatTagType: FormatTagType.HighlightGreen,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'highlight-Red',
+    formatTagType: FormatTagType.HighlightRed,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'ref-single',
+    formatTagType: FormatTagType.RefSingle,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  },
+  {
+    className: 'ref-multi',
+    formatTagType: FormatTagType.RefMulti,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS
+  }
+];

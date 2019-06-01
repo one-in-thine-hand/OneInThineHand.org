@@ -3,12 +3,7 @@
 // ...
 
 export { Verse } from './models/Verse';
-export {
-  FormatTag,
-  FormatTagHighlight,
-  FormatTagRichText,
-  FormatTagUnderline
-} from './models/format_tags/FormatTag';
+export { FormatTag } from './models/format_tags/FormatTag';
 
 export {
   FormatGroup,
@@ -22,38 +17,7 @@ export {
   FormatGroupText
 } from './models/format_groups/FormatGroup';
 
-export {
-  FormatGroupType,
-  FormatType,
-  Color,
-  Optional,
-  Poetry,
-  RichText,
-  RichTextType,
-  verseNumber,
-  italic,
-  bold,
-  clarityWord,
-  translit,
-  language,
-  deityName,
-  smallCaps,
-  uppercase,
-  entry,
-  closing,
-  signature,
-  shortTitle,
-  breakRich,
-  salutation,
-  office,
-  date,
-  addressee,
-  answer,
-  question,
-  line,
-  paraMark,
-  selah
-} from './enums/enums';
+export { FormatGroupType, FormatTagType, Environment } from './enums/enums';
 
 export {
   Note,

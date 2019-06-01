@@ -12,6 +12,7 @@ import { isEqual, first, last, uniq } from 'lodash';
 import { RichText } from '../enums/RichText';
 import { FormatRichText } from '../models/format_tags/FRichText';
 import { Environment } from '../Environment';
+import { FormatTag, FormatTagType } from '../../../shared/dist/types/shared';
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
 
 function verifyChildNodesNotEmpty(childNodes: Node[]): boolean {
@@ -22,7 +23,7 @@ function verifyChildNodesNotEmpty(childNodes: Node[]): boolean {
           return true;
         }
         return false;
-      },
+      }
     )
     .includes(false);
 }
@@ -39,11 +40,7 @@ function isTextNode(node: Node): boolean {
   }
   return false;
 }
-function generateFormatBaseTags(
-  node: Node,
-  formatTags: F[],
-  classList: string[],
-): void {
+function generateFormatBaseTags(node: Node, formatTags: F[], classList: string[]): void {
   // console.log(`${node.nodeName} ${await isTextNode(node)}`);
 
   if (isTextNode(node)) {
@@ -55,22 +52,20 @@ function generateFormatBaseTags(
           f.text = character;
           f.classList = classList;
           formatTags.push(f);
-        },
+        }
       );
     }
   } else {
     let newClassList: string[] = [];
     newClassList = newClassList.concat(classList);
     if ((node as Element).classList !== undefined) {
-      newClassList = newClassList.concat(
-        Array.from((node as Element).classList),
-      );
+      newClassList = newClassList.concat(Array.from((node as Element).classList));
     }
 
     Array.from(node.childNodes).map(
       (childNode): void => {
         generateFormatBaseTags(childNode, formatTags, newClassList);
-      },
+      }
     );
   }
 }
@@ -119,7 +114,7 @@ function compressFormatTempTags(formatTempTags: FormatTagTemp[]): F[] {
       }
 
       count = count + 1;
-    },
+    }
   );
   if (newFormatTempTag) {
     newFormatTempTags.push(newFormatTempTag);
@@ -138,7 +133,7 @@ function getFirstAndLast<T>(list: T[]): [T, T] | undefined {
 function convertFormatTempTagToFormatTag(
   formatTempTag: FormatTagTemp,
   cssClass: string,
-  environment: Environment,
+  environment: Environment
 ): F | undefined {
   let formatTag: F | undefined;
 
@@ -191,7 +186,7 @@ function convertFormatTempTagToFormatTag(
 
 function convertFormatTempTagsToFormatTags(
   formatTempTags: FormatTagTemp[],
-  environment: Environment,
+  environment: Environment
 ): F[] {
   const formatTags: F[] = [];
 
@@ -205,15 +200,11 @@ function convertFormatTempTagsToFormatTags(
         // formatTag.optional = false;
         uniq(formatTempTag.classList).map(
           (item): void => {
-            const f = convertFormatTempTagToFormatTag(
-              formatTempTag,
-              item,
-              environment,
-            );
+            const f = convertFormatTempTagToFormatTag(formatTempTag, item, environment);
             if (f) {
               formatTags.push(f);
             }
-          },
+          }
         );
       }
       // else {
@@ -226,16 +217,13 @@ function convertFormatTempTagsToFormatTags(
       //     },
       //   );
       // }
-    },
+    }
   );
 
   return formatTags;
 }
 
-async function parseFormatTags(
-  verseElement: Element,
-  environment: Environment,
-): Promise<F[]> {
+async function parseFormatTags(verseElement: Element, environment: Environment): Promise<F[]> {
   const childNodes = await queryChildNodes(verseElement);
   if (verifyChildNodesNotEmpty(childNodes)) {
     const formatTempTags: F[] = [];
@@ -248,7 +236,7 @@ async function parseFormatTags(
             : [];
 
         generateFormatBaseTags(childNode, formatTempTags, classList);
-      },
+      }
     );
     const newFormatTempTags = compressFormatTempTags(formatTempTags);
 
@@ -309,10 +297,7 @@ function getVerseNodeName(verse: LDSSourceVerse, verseElement: Element): void {
   }
 }
 
-async function parseVerse(
-  verseElement: Element,
-  environment: Environment,
-): Promise<Verse> {
+async function parseVerse(verseElement: Element, environment: Environment): Promise<Verse> {
   let verse = new Verse();
 
   if (environment === Environment.browser) {
@@ -333,11 +318,37 @@ async function parseVerse(
 
   return verse;
 }
+function buildFormatTag(
+  childNode: Node,
+  formatTags: Map<FormatTagType, FormatTag>,
+  classList: FormatTagType[],
+  count: { count: number }
+): void {
+  if (childNode.nodeName === '#text') {
+    if (childNode.textContent) {
+      childNode.textContent.split('').map(
+        (char): void => {
+          count.count = count.count + 1;
+        }
+      );
+    }
+  } else {
+    const newClassList = classList;
+    Array.from(childNode.childNodes).map(
+      (childNode2): void => {
+        buildFormatTag(childNode2, formatTags, newClassList, count);
+      }
+    );
+  }
+}
+function buildFormatTags(verseElement: Element): FormatTag[] {
+  const formatTags: Map<FormatTagType, FormatTag> = new Map();
+  const count = { count: 0 };
+  Array.from(verseElement.childNodes).map((childNodes): void => {});
+  return Array.from(formatTags.values());
+}
 
-export async function parseVerses(
-  document: Document,
-  environment: Environment,
-): Promise<Verse[]> {
+export async function parseVerses(document: Document, environment: Environment): Promise<Verse[]> {
   await normalizeCharacterCounts(document);
   if (!(await verifyVerseFlatness(document))) {
     throw 'Document isn\'t flat';
@@ -345,17 +356,17 @@ export async function parseVerses(
   const verseElements = (await queryVerseElements(document)).filter(
     (verseElement): boolean => {
       return !verseElement.classList.contains('page-break');
-    },
+    }
   );
   const versePromises = verseElements.map(
     async (verseElement): Promise<Verse | undefined> => {
       return await parseVerse(verseElement, environment);
-    },
+    }
   );
   const verses = (await Promise.all(versePromises)).filter(
     (verse): boolean => {
       return verse !== undefined;
-    },
+    }
   ) as Verse[];
   return verses;
 }
