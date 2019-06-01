@@ -1,7 +1,7 @@
 // import { Verse, LDSSourceVerse, NodeName } from '../models/Verse';
 import { queryVerseElements } from './queryVerseElements';
 import { normalizeCharacterCounts } from './normalizeCharacterCounts';
-import { verifyVerseFlatness } from './verifyVerseFlatness';
+// import { verifyVerseFlatness } from './verifyVerseFlatness';
 // import { queryFormatGroups } from './queryFormatGroups';
 // import { removeEmptySpaces } from './removeEmptySpaces';
 // import { parseClassList, parseTextContent } from '../run';
@@ -406,10 +406,10 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
 
 export async function parseVerses(document: Document): Promise<Verse[]> {
   await normalizeCharacterCounts(document);
-  if (!(await verifyVerseFlatness(document))) {
-    const title = document.querySelector('title');
-    throw `${title ? title.innerHTML : ''} Document isn't flat`;
-  }
+  // if (!(await verifyVerseFlatness(document))) {
+  //   const title = document.querySelector('title');
+  //   throw `${title ? title.innerHTML : ''} Document isn't flat`;
+  // }
   const verseElements = (await queryVerseElements(document)).filter(
     (verseElement): boolean => {
       return !verseElement.classList.contains('page-break');

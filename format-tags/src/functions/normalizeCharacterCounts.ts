@@ -8,6 +8,37 @@
   decided to treat these extra characters seperatly.
 */
 
+function textNodeToElement(element: Element, document: Document): void {
+  Array.from(element.childNodes)
+    .filter(
+      (childNode): boolean => {
+        return childNode.nodeName === '#text';
+      },
+    )
+    .map(
+      (childNode): void => {
+        // const newNode = `<span>${childNode.textContent}</span>`;
+        // console.log(childNode);
+        // childNode.replaceWith(newNode);
+        const s = document.createElement('span');
+        s.innerHTML = childNode.textContent as string;
+        element.replaceChild(s, childNode);
+      },
+    );
+}
+
+export function moveClassListToChildren(element: Element): void {
+  const classList = element.className;
+  if (classList.length > 0) {
+    Array.from(element.childNodes).map(
+      (childNode): void => {
+        (childNode as Element).className =
+          (childNode as Element).className + classList;
+      },
+    );
+  }
+}
+
 export async function normalizeCharacterCounts(
   document: Document,
 ): Promise<void> {
@@ -24,32 +55,8 @@ export async function normalizeCharacterCounts(
       }
       studyNoteRef.classList.remove('study-note-ref');
       studyNoteRef.classList.remove('scripture-ref');
-      // console.log(studyNoteRef.childNodes.length);
-      // const parentElement = studyNoteRef.parentElement;
-      // console.log(
-      // `${parentElement ? parentElement.outerHTML : ''} ${
-      //   parentElement ? (parentElement.textContent as string).length : ''
-      // }`,
-      // );
-      // console.log(parentElement ? parentElement.outerHTML : '');
-      // console.log(parentElement ? parentElement.textContent : '');
 
-      Array.from(studyNoteRef.childNodes)
-        .filter(
-          (childNode): boolean => {
-            return childNode.nodeName === '#text';
-          },
-        )
-        .map(
-          (childNode): void => {
-            // const newNode = `<span>${childNode.textContent}</span>`;
-            // console.log(childNode);
-            // childNode.replaceWith(newNode);
-            const s = document.createElement('span');
-            s.innerHTML = childNode.textContent as string;
-            studyNoteRef.replaceChild(s, childNode);
-          },
-        );
+      textNodeToElement(studyNoteRef, document);
       studyNoteRef.insertAdjacentHTML('beforebegin', studyNoteRef.innerHTML);
 
       // Array.from(studyNoteRef.childNodes)
@@ -71,27 +78,43 @@ export async function normalizeCharacterCounts(
       // Array.from(studyNoteRef.childNodes).map((node): void => {});
     },
   );
-  Array.from(document.querySelectorAll('.clarity-word,.dominant')).map(
-    (clarityWord): void => {
-      const a = clarityWord.querySelector('a') as HTMLAnchorElement;
+  // Array.from(
+  //   document.querySelectorAll(
+  //     '.uppercase,.clarity-word,.dominant,.small-caps,.deity-name,.uppercasedeity-name',
+  //   ),
+  // ).map(
+  //   (clarityWord): void => {
+  //     const a = clarityWord.querySelector('a') as HTMLAnchorElement;
 
-      if (a) {
-        const className = a.className;
-        const href = a.href;
-        const marker = a.getAttribute('marker');
+  //     if (a) {
+  //       const className = a.className;
+  //       const href = a.href;
+  //       const marker = a.getAttribute('marker');
 
-        clarityWord.className = `${clarityWord.className} ${className}`;
-        clarityWord.setAttribute('n-href', href);
+  //       clarityWord.className = `${clarityWord.className} ${className}`;
+  //       clarityWord.setAttribute('n-href', href);
 
-        if (marker) {
-          clarityWord.setAttribute('marker', marker);
-        }
-        clarityWord.innerHTML = clarityWord.textContent
-          ? clarityWord.textContent
-          : '';
-      }
-    },
-  );
+  //       if (marker) {
+  //         clarityWord.setAttribute('marker', marker);
+  //       }
+  //       clarityWord.innerHTML = clarityWord.textContent
+  //         ? clarityWord.textContent
+  //         : '';
+  //     }
+  //   },
+  // );
+  // Array.from(
+  //   document.querySelectorAll(
+  //     '.uppercase,.clarity-word,.dominant,.small-caps,.deity-name,.uppercasedeity-name',
+  //   ),
+  // ).map(
+  //   (upperCase): void => {
+  //     textNodeToElement(upperCase, document);
+  //     moveClassListToChildren(upperCase);
+  //     upperCase.insertAdjacentHTML('beforebegin', upperCase.innerHTML);
+  //     upperCase.remove();
+  //   },
+  // );
 }
 
 export function preserveSuperScript(
