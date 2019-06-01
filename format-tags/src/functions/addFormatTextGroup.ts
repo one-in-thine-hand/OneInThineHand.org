@@ -1,43 +1,33 @@
-import { FormatGroup } from '../models/format_groups/FormatGroup';
 import {
   FormatGroupText,
+  FormatGroup,
   FormatGroupBR,
-  FormatGroupPageBreak,
-} from '../models/format_groups/FormatGroupText';
-import { queryChildNodes } from './queryChildNodes';
+  FormatGroupRuby,
+  FormatGroupRubyA,
+  FormatGroupA,
+  FormatGroupPageBreak
+} from '../../../shared';
 import formatGroupSelectors from './formatGroupSelectors';
-import { FormatGroupRuby } from '../models/format_groups/FormatGroupRuby';
-import { FormatGroupRubyA } from '../models/format_groups/FormatGroupRubyA';
-import { FormatGroupA } from '../models/format_groups/FormatGroupA';
+import { queryChildNodes } from './queryChildNodes';
 
-function nodesToTextGroup(
-  nodes: Node[],
-  formatGroups: FormatGroup[],
-  count: number,
-): number {
+function nodesToTextGroup(nodes: Node[], formatGroups: FormatGroup[], count: number): number {
   const formatGroup = new FormatGroupText();
   let textContent = '';
   (nodes as Element[]).map(
     (element): void => {
-      textContent = `${textContent}${
-        element.textContent ? element.textContent : ''
-      }`;
-    },
+      textContent = `${textContent}${element.textContent ? element.textContent : ''}`;
+    }
   );
 
   const endCount = textContent ? count + textContent.length : count;
 
-  formatGroup.compressedOffsets = [[count, endCount]];
+  formatGroup.offsets = `${count},${endCount}`;
   formatGroup.classList = undefined;
   formatGroups.push(formatGroup);
   return endCount;
 }
 
-function nodeToFormatGroup(
-  node: Node,
-  formatGroups: FormatGroup[],
-  count: number,
-): number {
+function nodeToFormatGroup(node: Node, formatGroups: FormatGroup[], count: number): number {
   let formatGroup: FormatGroup;
   switch (node.nodeName) {
     case 'BR': {
@@ -62,10 +52,7 @@ function nodeToFormatGroup(
       break;
     }
     default: {
-      if (
-        (node as Element).classList &&
-        (node as Element).classList.contains('page-break')
-      ) {
+      if ((node as Element).classList && (node as Element).classList.contains('page-break')) {
         formatGroups.push(new FormatGroupPageBreak());
         return count;
       } else {
@@ -78,7 +65,7 @@ function nodeToFormatGroup(
 
   let textContent = node.textContent ? node.textContent : '';
   let endCount = count + textContent.length;
-  formatGroup.compressedOffsets = [[count, endCount]];
+  formatGroup.offsets = `${count},${endCount}`;
 
   formatGroups.push(formatGroup);
   return endCount;
@@ -87,11 +74,9 @@ function nodeToFormatGroup(
 // Runs through the child nodes of a verse and groups them into their FormatGroups
 export async function parseFormatGroups(
   verseElement: Element,
-  formatGroups: FormatGroup[],
+  formatGroups: FormatGroup[]
 ): Promise<void> {
-  const breakPoints = Array.from(
-    verseElement.querySelectorAll(formatGroupSelectors),
-  );
+  const breakPoints = Array.from(verseElement.querySelectorAll(formatGroupSelectors));
   let formatTextGroup: Node[] | undefined;
   let count = 0;
 
@@ -113,7 +98,7 @@ export async function parseFormatGroups(
         }
         formatTextGroup.push(childNode);
       }
-    },
+    }
   );
 
   if (formatTextGroup !== undefined) {
@@ -124,10 +109,7 @@ export async function parseFormatGroups(
 }
 
 // Used when a whole verse can be represented by one FormatTextGroup
-export function verseToFormatTextGroup(
-  verseElement: Element,
-  formatGroups: FormatGroup[],
-): void {
+export function verseToFormatTextGroup(verseElement: Element, formatGroups: FormatGroup[]): void {
   // let count = 0;
   // Array.from(document.querySelector('#p14').childNodes).map((childNode)=>{
   //
@@ -137,7 +119,7 @@ export function verseToFormatTextGroup(
   let textContent = '';
   textContent = verseElement.textContent ? verseElement.textContent : '';
 
-  formatGroup.compressedOffsets = [[0, textContent ? textContent.length : 0]];
+  formatGroup.offsets = `0,${textContent ? textContent.length : 0}`;
   formatGroup.classList = undefined;
   formatGroups.push(formatGroup);
 }

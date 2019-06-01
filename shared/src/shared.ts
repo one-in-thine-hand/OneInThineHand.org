@@ -17,7 +17,14 @@ export {
   FormatGroupText
 } from './models/format_groups/FormatGroup';
 
-export { FormatGroupType, FormatTagType, Environment } from './enums/enums';
+export {
+  FormatGroupType,
+  FormatTagType,
+  Environment,
+  DisplayAs,
+  Optional,
+  FormatTagTypeOptions
+} from './enums/enums';
 
 export {
   Note,
@@ -27,3 +34,13 @@ export {
   NoteType,
   SecondaryNote
 } from './models/notes/Note';
+
+export {
+  verseSelectors,
+  formatTagTypeOptions
+} from './constants/verse-selectors';
+
+export {
+  getFormatTagType,
+  getFormatTagTypeFromNode
+} from './functions/getFormatTagType';

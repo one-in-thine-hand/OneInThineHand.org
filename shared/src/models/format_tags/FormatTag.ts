@@ -1,7 +1,7 @@
-import { Optional, FormatTagType } from '../../enums/enums';
+import { Optional, FormatTagType, DisplayAs } from '../../enums/enums';
 // public compressedOffsets: [number, number];
 // public offsets: string| undefined;
-export abstract class FormatTag {
+export class FormatTag {
   public offsets: string | undefined;
   public uncompressedOffsets: number[] | undefined;
   public optional: Optional | undefined;
@@ -10,6 +10,7 @@ export abstract class FormatTag {
   public visible: boolean | undefined;
   public classList: string[] | undefined;
   public refs: string[] | undefined;
+  public displayAs: DisplayAs | undefined;
 }
 
 // export class FormatTagHighlight extends FormatTag {
