@@ -407,7 +407,8 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
 export async function parseVerses(document: Document): Promise<Verse[]> {
   await normalizeCharacterCounts(document);
   if (!(await verifyVerseFlatness(document))) {
-    throw 'Document isn\'t flat';
+    const title = document.querySelector('title');
+    throw `${title ? title.innerHTML : ''} Document isn't flat`;
   }
   const verseElements = (await queryVerseElements(document)).filter(
     (verseElement): boolean => {

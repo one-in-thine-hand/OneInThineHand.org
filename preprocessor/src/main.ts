@@ -2,7 +2,8 @@
 const FastGlob = require('fast-glob');
 import { normalize } from 'path';
 import { FormatTags } from '../../format-tags/src/main';
-import { readFile } from 'fs-extra';
+import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
+import { dirname, basename } from 'path';
 import { JSDOM } from 'jsdom';
 export async function getScriptureFiles(): Promise<string[]> {
   try {
@@ -28,7 +29,21 @@ async function main(): Promise<void> {
         const document = new JSDOM(scriptureFile).window.document;
         const verses = await formaTags.main(document);
 
-        console.log(verses);
+        // console.log(dirname(normalize(scriptureFileName)));
+        const directory = normalize(
+          dirname(
+            scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
+          ),
+        );
+        if (!(await pathExists(directory))) {
+          await mkdirp(directory);
+        }
+        await writeFile(
+          `${directory}/${basename(scriptureFileName).replace('html', 'json')}`,
+          JSON.stringify(verses),
+        );
+
+        // console.log(verses);
 
         // console.log(scriptureFile);
       } catch (error) {

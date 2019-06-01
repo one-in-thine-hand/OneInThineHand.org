@@ -14,12 +14,61 @@ export async function normalizeCharacterCounts(
   Array.from(document.querySelectorAll('.study-note-ref')).map(
     (studyNoteRef): void => {
       const marker = studyNoteRef.querySelector('sup');
+      // console.log(studyNoteRef.querySelectorAll('sup').length);
+
       if (marker) {
         // preserveSuperScript(studyNoteRef, marker);
+        // console.log(marker.innerHTML);
+
         marker.remove();
       }
       studyNoteRef.classList.remove('study-note-ref');
       studyNoteRef.classList.remove('scripture-ref');
+      // console.log(studyNoteRef.childNodes.length);
+      // const parentElement = studyNoteRef.parentElement;
+      // console.log(
+      // `${parentElement ? parentElement.outerHTML : ''} ${
+      //   parentElement ? (parentElement.textContent as string).length : ''
+      // }`,
+      // );
+      // console.log(parentElement ? parentElement.outerHTML : '');
+      // console.log(parentElement ? parentElement.textContent : '');
+
+      Array.from(studyNoteRef.childNodes)
+        .filter(
+          (childNode): boolean => {
+            return childNode.nodeName === '#text';
+          },
+        )
+        .map(
+          (childNode): void => {
+            // const newNode = `<span>${childNode.textContent}</span>`;
+            // console.log(childNode);
+            // childNode.replaceWith(newNode);
+            const s = document.createElement('span');
+            s.innerHTML = childNode.textContent as string;
+            studyNoteRef.replaceChild(s, childNode);
+          },
+        );
+      studyNoteRef.insertAdjacentHTML('beforebegin', studyNoteRef.innerHTML);
+
+      // Array.from(studyNoteRef.childNodes)
+      //   .filter(
+      //     (childNode): boolean => {
+      //       return childNode.nodeName === '#text';
+      //     },
+      //   )
+      //   .map(
+      //     (childNode): void => {
+      //       // const newNode = `<span>${childNode.textContent}</span>`;
+      //       console.log(childNode);
+      //       // childNode.replaceWith(newNode);
+      //     },
+      //   );
+      studyNoteRef.remove();
+      // console.log(parentElement ? parentElement.textContent : '');
+
+      // Array.from(studyNoteRef.childNodes).map((node): void => {});
     },
   );
   Array.from(document.querySelectorAll('.clarity-word,.dominant')).map(
