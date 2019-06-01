@@ -1,5 +1,66 @@
+export const enum Color {
+  yellow,
+  blue,
+  green,
+  red,
+  purple,
+  orange,
+  pink,
+  gray,
+  brown,
+  darkBlue
+}
+// export const ColorEnum = Color;
+export const enum FormatGroupType {
+  A = 0,
+  Text = 1,
+  Ruby = 2,
+  ARuby = 3,
+  RB = 4,
+  RT = 5,
+  SPAN = 6,
+  BR = 7,
+  PAGE_BREAK = 8
+}
+export const enum FormatType {
+  Base = 0,
+  RichText = 1,
+  Highlight = 2,
+  Underline = 3,
+  Refs = 4,
+  Poetry = 5,
+  Link = 6,
+  Temp = -1
+  // UnderlineYellow,
+  // UnderlineBlue,
+  // UnderlineGreen,
+  // UnderlineRed,
+  // UnderlinePurple,
+  // UnderlineOrange,
+  // UnderlinePink,
+  // UnderlineGray,
+  // UnderlineBrown,
+  // UnderlineDarkBlue,
+
+  // HighlightDarkBlue,
+  // HighlightBrown,
+  // HighlightGray,
+  // HighlightPink,
+  // HighlightYellow,
+  // HighlightOrange,
+  // HighlightBlue,
+  // HighlightPurple,
+  // HighlightGreen,
+  // HighlightRed
+}
+export const enum Poetry {
+  Poetry = 0,
+  Prose = 1
+}
 export const enum RichTextType {
   verseNumber = 0,
+  italic,
+  bold,
   clarityWord,
   translit,
   language,
@@ -34,6 +95,14 @@ export class RichText {
 
 export const verseNumber: RichText = {
   richTextType: RichTextType.verseNumber,
+  optional: Optional.ALWAYS
+};
+export const italic: RichText = {
+  richTextType: RichTextType.italic,
+  optional: Optional.ALWAYS
+};
+export const bold: RichText = {
+  richTextType: RichTextType.bold,
   optional: Optional.ALWAYS
 };
 export const clarityWord: RichText = {

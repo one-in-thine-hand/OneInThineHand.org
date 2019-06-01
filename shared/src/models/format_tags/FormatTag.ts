@@ -1,12 +1,9 @@
-import { FormatType } from '../../enums/FormatType';
-import { Color } from '../../enums/Color';
-import { Optional } from '../../enums/RichText';
-
+import { Optional, FormatType, Color } from '../../enums/enums';
 // public compressedOffsets: [number, number];
 // public offsets: string| undefined;
 export abstract class FormatTag {
   public offsets: string | undefined;
-  public uncompressedOffsets: [number, number][] | undefined;
+  public uncompressedOffsets: number[] | undefined;
   public optional: Optional | undefined;
   public formatType: FormatType | undefined;
   public text: string | undefined;
