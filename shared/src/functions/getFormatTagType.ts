@@ -1,5 +1,6 @@
 import { formatTagTypeOptions } from '../constants/verse-selectors';
 import { FormatTagType, FormatTagTypeOptions } from '../enums/enums';
+import { range } from 'lodash';
 export function getFormatTagType(
   formatType: FormatTagType,
 ): FormatTagTypeOptions | undefined {
@@ -82,4 +83,24 @@ export async function getID(
 }
 export async function getLanguage(document: Document): Promise<string> {
   return getElementAttribute(document, 'html', 'lang', new RegExp(/.+/g));
+}
+
+export function parseOffsets(offets: string | undefined): number[] | undefined {
+  if (!offets || offets === '') {
+    return undefined;
+  }
+  let offsetSplit: number[] = [];
+  offets.split(',').map(
+    (r): void => {
+      if (r.indexOf('-') !== -1) {
+        const split2 = r.split('-');
+        const f = parseInt(split2[0]);
+        const l = parseInt(split2[1]);
+        offsetSplit = offsetSplit.concat(range(f, l + 1));
+      } else {
+        offsetSplit.push(parseInt(r));
+      }
+    },
+  );
+  return offsetSplit.sort();
 }

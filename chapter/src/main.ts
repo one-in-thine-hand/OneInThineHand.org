@@ -111,6 +111,8 @@ export class ChapterProcessor {
       return await parseChapter(document);
       // return chapter
     } catch (error) {
+      console.log(error);
+      
       return undefined;
     }
   }

@@ -18,6 +18,19 @@ import { WebviewDirective } from './directives/webview.directive';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
+import { VerseComponent } from './components/verse/verse.component';
+import { FormatTagComponent } from './components/format-tag/format-tag.component';
+import { FormatGroupComponent } from './components/format-group/format-group.component';
+import { BodyBlockComponent } from './components/body-block/body-block.component';
+import { NoteComponent } from './components/note/note.component';
+import { SecondaryNoteComponent } from './components/secondary-note/secondary-note.component';
+import { NotePhraseComponent } from './components/note-phrase/note-phrase.component';
+import { NoteRefComponent } from './components/note-ref/note-ref.component';
+import { ParagraphComponent } from './components/paragraph/paragraph.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { ContentComponent } from './components/content/content.component';
+import { ChapterComponent } from './components/chapter/chapter.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -28,7 +41,20 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    WebviewDirective
+    WebviewDirective,
+    VerseComponent,
+    FormatTagComponent,
+    FormatGroupComponent,
+    BodyBlockComponent,
+    NoteComponent,
+    SecondaryNoteComponent,
+    NotePhraseComponent,
+    NoteRefComponent,
+    ParagraphComponent,
+    HeaderComponent,
+    NavigationComponent,
+    ContentComponent,
+    ChapterComponent
   ],
   imports: [
     BrowserModule,

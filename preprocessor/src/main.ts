@@ -39,7 +39,7 @@ async function main(): Promise<void> {
 
         const lang = await getLanguage(document);
         const id = await getID(document, lang);
-        console.log(chapter);
+        // console.log(chapter);
 
         // getID()
         // console.log(dirname(normalize(scriptureFileName)));
