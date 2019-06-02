@@ -8,12 +8,12 @@ export const enum Color {
   pink,
   gray,
   brown,
-  darkBlue
+  darkBlue,
 }
 
 export const enum Environment {
   browser,
-  node
+  node,
 }
 // export const ColorEnum = Color;
 export const enum FormatGroupType {
@@ -25,7 +25,7 @@ export const enum FormatGroupType {
   RT = 5,
   SPAN = 6,
   BR = 7,
-  PAGE_BREAK = 8
+  PAGE_BREAK = 8,
 }
 // export const enum FormatType {
 //   Base = 0,
@@ -62,7 +62,7 @@ export const enum FormatGroupType {
 export const enum DisplayAs {
   CLASS,
   RICHTEXT,
-  NEVER
+  NEVER,
 }
 export const enum Poetry {}
 
@@ -92,6 +92,12 @@ export const enum FormatTagType {
   selah,
   Poetry,
   Prose,
+
+  clarityword,
+  dominant,
+  smallcaps,
+  deityname,
+  uppercasedeityname,
   UnderlineYellow,
   UnderlineBlue,
   UnderlineGreen,
@@ -113,13 +119,13 @@ export const enum FormatTagType {
   HighlightGreen,
   HighlightRed,
   RefSingle,
-  RefMulti
+  RefMulti,
 }
 
 export const enum Optional {
   ALWAYS,
   NEVER,
-  SOMETIMES
+  SOMETIMES,
 }
 export class FormatTagTypeOptions {
   public formatTagType: FormatTagType | undefined;

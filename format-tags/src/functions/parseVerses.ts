@@ -18,6 +18,7 @@ import {
   getFormatTagTypeFromNode,
   Verse,
   getFormatTagType,
+  getRanges,
 } from '../../../shared/src/shared';
 import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
@@ -334,7 +335,7 @@ function buildFormatTag(
   count: { count: number },
 ): void {
   if (childNode.nodeName === '#text') {
-    if (childNode.textContent) {
+    if (childNode.textContent && childNode.textContent.length > 0) {
       childNode.textContent.split('').map(
         (): void => {
           classList.map(
@@ -348,6 +349,21 @@ function buildFormatTag(
                   formatTag.optional = formatTagTypeOption.optional;
                   formatTag.displayAs = formatTagTypeOption.displayAs;
                   formatTag.uncompressedOffsets = [count.count];
+                  formatTag.classList
+                    ? formatTag.classList.push(
+                        formatTagTypeOption.className
+                          ? formatTagTypeOption.className
+                          : '',
+                      )
+                    : (formatTag.classList = [
+                        formatTagTypeOption.className
+                          ? formatTagTypeOption.className
+                          : '',
+                      ]);
+
+                  // formatTag.offsets = getRanges(
+                  //   formatTag.uncompressedOffsets,
+                  // ).toString();
                   formatTags.set(c, formatTag);
                 }
               } else {
@@ -378,7 +394,15 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
       buildFormatTag(childNodes, formatTags, [], count);
     },
   );
-  return Array.from(formatTags.values());
+  return Array.from(formatTags.values()).map(
+    (formatTag): FormatTag => {
+      formatTag.offsets = getRanges(formatTag.uncompressedOffsets as [
+
+      ]).toString();
+      formatTag.offsets = undefined;
+      return formatTag;
+    },
+  );
 }
 
 async function parseVerse(verseElement: Element): Promise<Verse | undefined> {

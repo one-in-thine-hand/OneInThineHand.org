@@ -14,7 +14,7 @@ export {
   FormatGroupRT,
   FormatGroupRuby,
   FormatGroupRubyA,
-  FormatGroupText
+  FormatGroupText,
 } from './models/format_groups/FormatGroup';
 
 export {
@@ -23,7 +23,7 @@ export {
   Environment,
   DisplayAs,
   Optional,
-  FormatTagTypeOptions
+  FormatTagTypeOptions,
 } from './enums/enums';
 
 export {
@@ -32,15 +32,16 @@ export {
   NotePhrase,
   NoteRef,
   NoteType,
-  SecondaryNote
+  SecondaryNote,
 } from './models/notes/Note';
 
 export {
   verseSelectors,
-  formatTagTypeOptions
+  formatTagTypeOptions,
 } from './constants/verse-selectors';
 
 export {
   getFormatTagType,
-  getFormatTagTypeFromNode
+  getFormatTagTypeFromNode,
+  getRanges,
 } from './functions/getFormatTagType';
