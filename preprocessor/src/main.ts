@@ -5,6 +5,7 @@ import { FormatTags } from '../../format-tags/src/main';
 import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
 import { dirname, basename } from 'path';
 import { JSDOM } from 'jsdom';
+import { ChapterProcessor } from '../../chapter/src/main';
 import {
   getID,
   getLanguage,
@@ -25,6 +26,7 @@ export async function getScriptureFiles(): Promise<string[]> {
 async function main(): Promise<void> {
   const formaTags = new FormatTags();
   const scriptureFileNames = await getScriptureFiles();
+  const chapterProcessor = new ChapterProcessor();
 
   scriptureFileNames.map(
     async (scriptureFileName): Promise<void> => {
@@ -33,8 +35,12 @@ async function main(): Promise<void> {
         const document = new JSDOM(scriptureFile).window.document;
         const verses = await formaTags.main(document);
 
+        const chapter = await chapterProcessor.main(document);
+
         const lang = await getLanguage(document);
         const id = await getID(document, lang);
+        console.log(chapter);
+
         // getID()
         // console.log(dirname(normalize(scriptureFileName)));
         const directory = normalize(
@@ -46,8 +52,12 @@ async function main(): Promise<void> {
           await mkdirp(directory);
         }
         await writeFile(
-          `${directory}/${basename(id)}-notes.json`,
+          `${directory}/${basename(id)}-verses.json`,
           JSON.stringify(verses),
+        );
+        await writeFile(
+          `${directory}/${basename(id)}-chapter.json`,
+          JSON.stringify(chapter),
         );
 
         // console.log(verses);
