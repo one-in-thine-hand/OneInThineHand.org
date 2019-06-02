@@ -1,5 +1,5 @@
 <div id="bodyBlock">
-  <app-body-block></app-body-block>
+  <app-body-block *ngIf="verses" [verses]="this.verses"></app-body-block>
 </div>
 <div id="notes">
   <app-note></app-note>

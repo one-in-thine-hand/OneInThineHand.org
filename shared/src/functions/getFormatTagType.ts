@@ -102,5 +102,20 @@ export function parseOffsets(offets: string | undefined): number[] | undefined {
       }
     },
   );
-  return offsetSplit.sort();
+  return offsetSplit.sort((r, s) => {
+    return r > s;
+  });
+}
+
+export function expandOffsets(
+  items: {
+    uncompressedOffsets: number[] | undefined;
+    offsets: string | undefined;
+  }[],
+): void {
+  items.map(
+    (f): void => {
+      f.uncompressedOffsets = parseOffsets(f.offsets);
+    },
+  );
 }

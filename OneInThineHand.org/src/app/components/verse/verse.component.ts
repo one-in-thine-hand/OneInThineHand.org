@@ -1,5 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Verse, parseOffsets } from '../../../../../shared/src/shared';
+import {
+  Verse,
+  parseOffsets,
+  expandOffsets,
+  FormatGroup,
+} from '../../../../../shared/src/shared';
 
 @Component({
   selector: 'app-verse',
@@ -12,15 +17,16 @@ export class VerseComponent implements OnInit {
 
   public ngOnInit() {}
 
-  public getFormatGroups(): void {
+  public getFormatGroups(): FormatGroup[] {
+    console.log(this.verse);
+
     if (this.verse.formatGroups && this.verse.formatTags && this.verse.text) {
-      this.verse.formatTags.map((f): void => {});
-      this.verse.formatGroups.map(
-        (f): void => {
-          f.uncompressedOffsets = parseOffsets(f.offsets);
-        },
-      );
-      // this.verse.formatTags.map((f): void => {});
+      expandOffsets(this.verse.formatGroups);
+      expandOffsets(this.verse.formatTags);
+
+      console.log(this.verse);
+      return this.verse.formatGroups; // this.verse.formatTags.map((f): void => {});
     }
+    return [];
   }
 }

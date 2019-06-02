@@ -1,3 +1,4 @@
-<p>
-  verse works!
-</p>
+<app-format-group
+  *ngFor="let formatGroup of this.getFormatGroups()"
+  [verse]="verse"
+></app-format-group>

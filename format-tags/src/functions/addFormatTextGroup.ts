@@ -27,7 +27,7 @@ function nodesToTextGroup(
 
   const endCount = textContent ? count + textContent.length : count;
 
-  formatGroup.offsets = `${count},${endCount}`;
+  formatGroup.offsets = `${count}-${endCount}`;
   formatGroup.classList = undefined;
   formatGroups.push(formatGroup);
   return endCount;
@@ -78,7 +78,7 @@ function nodeToFormatGroup(
 
   let textContent = node.textContent ? node.textContent : '';
   let endCount = count + textContent.length;
-  formatGroup.offsets = `${count},${endCount}`;
+  formatGroup.offsets = `${count}-${endCount}`;
 
   formatGroups.push(formatGroup);
   return endCount;
@@ -137,7 +137,7 @@ export function verseToFormatTextGroup(
   let textContent = '';
   textContent = verseElement.textContent ? verseElement.textContent : '';
 
-  formatGroup.offsets = `0,${textContent ? textContent.length : 0}`;
+  formatGroup.offsets = `0-${textContent ? textContent.length : 0}`;
   formatGroup.classList = undefined;
   formatGroups.push(formatGroup);
 }

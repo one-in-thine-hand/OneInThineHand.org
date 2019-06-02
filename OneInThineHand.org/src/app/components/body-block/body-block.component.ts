@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Verse } from '../../../../../shared/src/shared';
 
 @Component({
@@ -8,6 +8,7 @@ import { Verse } from '../../../../../shared/src/shared';
 })
 export class BodyBlockComponent implements OnInit {
   @Input() public verses: Verse[];
+
   constructor() {}
 
   ngOnInit() {}
