@@ -80,3 +80,6 @@ export async function getID(
     new RegExp(new RegExp(/(?!\\)[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+$/g)),
   ).replace(/\//g, '-')}-${language}`;
 }
+export async function getLanguage(document: Document): Promise<string> {
+  return getElementAttribute(document, 'html', 'lang', new RegExp(/.+/g));
+}

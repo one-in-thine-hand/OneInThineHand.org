@@ -396,10 +396,14 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
   );
   return Array.from(formatTags.values()).map(
     (formatTag): FormatTag => {
-      formatTag.offsets = getRanges(formatTag.uncompressedOffsets as [
-
-      ]).toString();
-      formatTag.offsets = undefined;
+      formatTag.offsets = getRanges(formatTag.uncompressedOffsets as [])
+        .map(
+          (offset): string => {
+            return offset[0] === offset[1] ? `${offset[0]}` : `${0}-${1}`;
+          },
+        )
+        .toString();
+      formatTag.uncompressedOffsets = undefined;
       return formatTag;
     },
   );

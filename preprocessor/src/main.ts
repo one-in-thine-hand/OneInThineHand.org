@@ -5,6 +5,10 @@ import { FormatTags } from '../../format-tags/src/main';
 import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
 import { dirname, basename } from 'path';
 import { JSDOM } from 'jsdom';
+import {
+  getID,
+  getLanguage,
+} from '../../shared/src/functions/getFormatTagType';
 export async function getScriptureFiles(): Promise<string[]> {
   try {
     return FastGlob(
@@ -29,6 +33,9 @@ async function main(): Promise<void> {
         const document = new JSDOM(scriptureFile).window.document;
         const verses = await formaTags.main(document);
 
+        const lang = await getLanguage(document);
+        const id = await getID(document, lang);
+        // getID()
         // console.log(dirname(normalize(scriptureFileName)));
         const directory = normalize(
           dirname(
@@ -39,7 +46,7 @@ async function main(): Promise<void> {
           await mkdirp(directory);
         }
         await writeFile(
-          `${directory}/${basename(scriptureFileName).replace('html', 'json')}`,
+          `${directory}/${basename(id)}-notes.json`,
           JSON.stringify(verses),
         );
 
