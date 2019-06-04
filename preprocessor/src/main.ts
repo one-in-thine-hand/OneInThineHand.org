@@ -11,6 +11,7 @@ import {
   getID,
   getLanguage,
 } from '../../shared/src/functions/getFormatTagType';
+import { Note } from '../../shared/src/shared';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -79,6 +80,37 @@ async function processScriptureFiles(
 
   await Promise.all(promises);
 }
+const notesMap: Map<string, Note[]> = new Map();
+
+function mergeNotes(newNotesMap: Map<string, Note[]> | undefined): void {
+  if (newNotesMap) {
+    newNotesMap.forEach(
+      (value, key): void => {
+        const notes = notesMap.get(key);
+        if (!notes) {
+          notesMap.set(key, value);
+        } else {
+          notes.map(
+            (note): void => {
+              // console.log(note.secondaryNotes);
+              const newNote = value.find(
+                (n): boolean => {
+                  return n._id === note._id;
+                },
+              );
+              if (newNote) {
+                note.secondaryNotes = note.secondaryNotes
+                  ? note.secondaryNotes.concat(note.secondaryNotes)
+                  : newNote.secondaryNotes;
+              }
+              // console.log(note.secondaryNotes);
+            },
+          );
+        }
+      },
+    );
+  }
+}
 
 async function main(): Promise<void> {
   if (false) {
@@ -96,19 +128,39 @@ async function main(): Promise<void> {
   const noteProcessor = new NoteProcessor();
   const noteFileNames = await getNoteFiles();
 
-  noteFileNames.map(
+  const promises = noteFileNames.map(
     async (noteFileName): Promise<void> => {
       const noteFile = await readFile(noteFileName);
       const noteDocument = new JSDOM(noteFile, { contentType: 'text/html' })
         .window.document;
-      const notesMap = await noteProcessor.run(noteDocument);
+      const newNotesMap = await noteProcessor.run(noteDocument);
 
-      if (notesMap) {
-        notesMap.forEach(
-          (value, key): void => {
-            console.log(`${key} ${value.length}`);
-          },
+      mergeNotes(newNotesMap);
+      // if (newNotesMap) {
+      //   newNotesMap.forEach(
+      //     (value, key): void => {
+      //       console.log(`${key} ${value.length}`);
+      //     },
+      //   );
+      // }
+    },
+  );
+  await Promise.all(promises);
+  console.log('finished');
+  notesMap.forEach(
+    async (value, key): Promise<void> => {
+      const directory = normalize(dirname(`../scripture_files/scriptures/}`));
+      if (!pathExists(directory)) {
+        await mkdirp(directory);
+      }
+
+      try {
+        await writeFile(
+          `${directory}/${key.replace('chapter', 'notes')}.json`,
+          JSON.stringify(value),
         );
+      } catch (error) {
+        console.log(error);
       }
     },
   );
