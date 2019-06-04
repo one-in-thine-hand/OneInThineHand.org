@@ -54,7 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HeaderComponent,
     NavigationComponent,
     ContentComponent,
-    ChapterComponent
+    ChapterComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,12 +64,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (HttpLoaderFactory),
-        deps: [HttpClient]
-      }
-    })
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [ElectronService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
