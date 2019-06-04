@@ -81,21 +81,35 @@ async function processScriptureFiles(
 }
 
 async function main(): Promise<void> {
-  const formaTags = new FormatTags();
-  const scriptureFileNames = await getScriptureFiles();
-  const chapterProcessor = new ChapterProcessor();
+  if (false) {
+    const formaTags = new FormatTags();
+    const scriptureFileNames = await getScriptureFiles();
+    const chapterProcessor = new ChapterProcessor();
+
+    await processScriptureFiles(
+      scriptureFileNames,
+      formaTags,
+      chapterProcessor,
+    );
+  }
 
   const noteProcessor = new NoteProcessor();
-
-  await processScriptureFiles(scriptureFileNames, formaTags, chapterProcessor);
-
   const noteFileNames = await getNoteFiles();
 
   noteFileNames.map(
     async (noteFileName): Promise<void> => {
       const noteFile = await readFile(noteFileName);
-      const noteDocument = new JSDOM(noteFile).window.document;
-      await noteProcessor.run(noteDocument);
+      const noteDocument = new JSDOM(noteFile, { contentType: 'text/html' })
+        .window.document;
+      const notesMap = await noteProcessor.run(noteDocument);
+
+      if (notesMap) {
+        notesMap.forEach(
+          (value, key): void => {
+            console.log(`${key} ${value.length}`);
+          },
+        );
+      }
     },
   );
 }

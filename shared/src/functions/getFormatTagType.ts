@@ -121,3 +121,8 @@ export function expandOffsets(
     },
   );
 }
+
+export function getElementsAttribute(element: Element, attr: string): string {
+  const value = element.getAttribute(attr);
+  return value ? value : '';
+}

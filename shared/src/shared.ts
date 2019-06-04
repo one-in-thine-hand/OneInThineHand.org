@@ -45,5 +45,6 @@ export {
   getFormatTagTypeFromNode,
   parseOffsets,
   getRanges,
+  getElementsAttribute,
   expandOffsets,
 } from './functions/getFormatTagType';
