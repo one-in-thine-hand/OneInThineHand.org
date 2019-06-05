@@ -140,7 +140,7 @@ export class NoteRef {
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
   public _rev: string | undefined;
-  public classList: string[] | undefined;
+  // public classList: string[] | undefined;
   public noteCategory: NoteCategory | undefined;
 
   public text: string | undefined;
@@ -153,7 +153,7 @@ export class NotePhrase {
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
   public _rev: string | undefined;
-  public classList: string[] | undefined;
+  // public classList: string[] | undefined;
   public text: string | undefined;
   public visible: boolean | undefined;
 }

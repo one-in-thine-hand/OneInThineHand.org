@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const FastGlob = require('fast-glob');
 import { normalize } from 'path';
+import { uniq } from 'lodash';
 import { FormatTags } from '../../format-tags/src/main';
 import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
 import { dirname, basename } from 'path';
@@ -98,10 +99,12 @@ function mergeNotes(newNotesMap: Map<string, Note[]> | undefined): void {
                   return n._id === note._id;
                 },
               );
-              if (newNote) {
+              if (newNote && newNote.secondaryNotes) {
                 note.secondaryNotes = note.secondaryNotes
-                  ? note.secondaryNotes.concat(note.secondaryNotes)
+                  ? note.secondaryNotes.concat(newNote.secondaryNotes)
                   : newNote.secondaryNotes;
+
+                note.secondaryNotes = uniq(note.secondaryNotes);
               }
               // console.log(note.secondaryNotes);
             },
@@ -130,9 +133,8 @@ async function main(): Promise<void> {
 
   const promises = noteFileNames.map(
     async (noteFileName): Promise<void> => {
-      const noteFile = await readFile(noteFileName);
-      const noteDocument = new JSDOM(noteFile, { contentType: 'text/html' })
-        .window.document;
+      const noteFile = await readFile(noteFileName, { encoding: 'utf-8' });
+      const noteDocument = new JSDOM(noteFile).window.document;
       const newNotesMap = await noteProcessor.run(noteDocument);
 
       mergeNotes(newNotesMap);

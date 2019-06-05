@@ -10,6 +10,7 @@ import {
   getNoteReferenceLabel,
   getNoteType,
 } from '../../shared/src/models/notes/Note';
+import * as he from 'he';
 
 // function parseInnerHTML(element: Element, selector: string): string {
 //   const childElement = element.querySelector(selector);
@@ -18,13 +19,13 @@ import {
 
 function parseNotePhrase(element: Element): NotePhrase | undefined {
   const notePhraseElement = element.querySelector('.note-phrase');
-  if (notePhraseElement === null || !notePhraseElement.textContent) {
+  if (notePhraseElement === null || !notePhraseElement.innerHTML) {
     return undefined;
   }
   const notePhrase = new NotePhrase();
 
-  notePhrase.classList = Array.from(notePhraseElement.classList.values());
-  notePhrase.text = notePhraseElement.textContent;
+  // notePhrase.classList = Array.from(notePhraseElement.classList.values());
+  notePhrase.text = he.decode(notePhraseElement.innerHTML);
   return notePhrase;
 }
 
@@ -38,9 +39,9 @@ function parseNoteRefs(element: Element): NoteRef[] {
   return Array.from(noteRefElements).map(
     (noteRefElement): NoteRef => {
       const noteRef = new NoteRef();
-      noteRef.classList = Array.from(noteRefElement.classList.values());
+      // noteRef.classList = Array.from(noteRefElement.classList.values());
       noteRef.noteCategory = getNoteReferenceLabel(noteRefElement);
-      noteRef.text = noteRefElement.innerHTML;
+      noteRef.text = he.decode(noteRefElement.innerHTML);
       return noteRef;
     },
   );
@@ -59,7 +60,7 @@ function parseSecondaryNotes(noteElement: Element): SecondaryNote[] {
         secondaryNote.id = secondaryNoteElement.id;
 
         if (!secondaryNote.id.includes('eng-note')) {
-          secondaryNote.id = `${secondaryNote.id}-eng-note`;
+          secondaryNote.id = `${secondaryNote.id}`;
         }
 
         secondaryNote.noteMarker = getElementsAttribute(
@@ -175,6 +176,10 @@ export class NoteProcessor {
               (noteElement: Element): Note => {
                 const note = new Note();
                 note._id = noteElement.id;
+
+                if (!note._id.includes('eng-note')) {
+                  note._id = `${note._id}-eng-note`;
+                }
                 const verseMarker = parseVerseNumber(
                   noteElement,
                   chapterElement.id,
