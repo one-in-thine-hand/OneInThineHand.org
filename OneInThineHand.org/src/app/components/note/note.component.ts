@@ -6,6 +6,7 @@ import {
   getVisible,
   NoteRef,
 } from '../../../../../shared/src/shared';
+import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
 
 @Component({
   selector: 'app-note',
@@ -22,7 +23,7 @@ export class NoteComponent implements OnInit {
   public getNotePhrase(notePhrase: NotePhrase | undefined): string {
     return notePhrase && notePhrase.text
       ? notePhrase.text
-      : 'Note Phrase Misding';
+      : 'Note Phrase Missing';
   }
 
   public getSecondaryNotes(): SecondaryNote[] {
@@ -46,5 +47,16 @@ export class NoteComponent implements OnInit {
 
   public getNoteRefs(secondaryNote: SecondaryNote): NoteRef[] {
     return getVisible(secondaryNote.noteRefs);
+  }
+  /**
+   * convertNoteCategory
+   */
+  public convertNoteCategory(noteRef: NoteRef): string {
+    const nc = ReferenceLabels.find(
+      (rl): boolean => {
+        return rl.noteCategory === noteRef.noteCategory;
+      },
+    );
+    return nc ? nc.referenceLabelShortName : 'extERR';
   }
 }

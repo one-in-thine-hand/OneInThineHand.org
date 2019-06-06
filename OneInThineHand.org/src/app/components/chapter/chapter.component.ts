@@ -3,13 +3,18 @@ import axios from 'axios';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { Verse, Note } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
+import { VisibilityService } from '../../services/visibility.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
-  public constructor(public chapterService: ChapterService) {}
+  public constructor(
+    public chapterService: ChapterService,
+
+    public visibilityService: VisibilityService,
+  ) {}
 
   public chapter: Chapter | undefined;
   public verses: Verse[] | undefined;
@@ -28,7 +33,7 @@ export class ChapterComponent implements OnInit {
       this.chapterService.chapter = this.chapter;
       this.chapterService.verses = this.verses;
       this.chapterService.notes = this.notes;
-
+      this.visibilityService.resetNoteVisibility(this.notes);
       console.log(this.chapter);
       console.log(this.verses);
     } catch (error) {

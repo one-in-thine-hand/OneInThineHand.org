@@ -6,7 +6,10 @@
     >
       <li class="note-phrase">{{ getNotePhrase(secondaryNote.notePhrase) }}</li>
       <ul class="note-refs" *ngIf="secondaryNote.noteRefs">
-        <li *ngFor="let noteRef of getNoteRefs(secondaryNote)"></li>
+        <li *ngFor="let noteRef of getNoteRefs(secondaryNote)">
+          <span>{{ convertNoteCategory(noteRef) }}</span>
+          <span [innerHTML]="noteRef.text"></span>
+        </li>
       </ul>
     </ul>
   </ng-container>

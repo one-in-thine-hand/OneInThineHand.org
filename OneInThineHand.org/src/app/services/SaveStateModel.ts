@@ -7,6 +7,7 @@ export class RefLabelSetting {
 }
 
 export class SaveStateModel {
+  public version = 5;
   public navigationPaneToggle: boolean = true;
   public notesPaneToggle: boolean = true;
   public paragraphsVisible = false;

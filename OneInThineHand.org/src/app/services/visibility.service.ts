@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
 import { Note, NoteType } from '../../../../shared/src/shared';
-import { refLabelSettingsTemplate } from './SaveStateModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VisibilityService {
+  public secondaryNotesHighlight: Map<string, boolean> = new Map();
+
   public constructor(private saveStateService: SaveStateService) {}
 
+  public resetHighlight(): void {
+    this.secondaryNotesHighlight.forEach(
+      (x, k): void => {
+        this.secondaryNotesHighlight.set(k, false);
+      },
+    );
+  }
   public resetNoteVisibility(notes: Note[]): void {
+    this.resetHighlight();
     notes.map(
       (note): void => {
         if (note.secondaryNotes) {
@@ -34,6 +43,8 @@ export class VisibilityService {
                   break;
                 }
               }
+              if (sN.id) this.secondaryNotesHighlight.set(sN.id, sN.visible);
+
               if (sN.visible) {
                 sN.noteRefs.map(
                   (noteRef): void => {
