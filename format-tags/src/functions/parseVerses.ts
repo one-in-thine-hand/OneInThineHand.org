@@ -22,6 +22,10 @@ import {
 } from '../../../shared/src/shared';
 import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
+import {
+  getID,
+  getLanguage,
+} from '../../../shared/src/functions/getFormatTagType';
 
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
 
@@ -411,18 +415,31 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
 
 async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   const verse = new Verse();
-  const dataAid = verseElement.getAttribute('data-aid');
+  // const dataAid = verseElement.getAttribute('data-aid');
+  const lang = await getLanguage(verseElement.ownerDocument as Document);
+
+  verse.verseID = verseElement.id;
+  let id = await getID(verseElement.ownerDocument as Document, lang);
+  id = id.replace(
+    lang,
+    `${
+      verse.verseID.startsWith('p')
+        ? verse.verseID.replace('p', '')
+        : verse.verseID
+    }-${lang}-verse`,
+  );
+  // console.log(id);
+
   const formatGroups = await queryFormatGroups(verseElement);
 
   verse.formatGroups = formatGroups ? formatGroups : [];
 
-  if (dataAid) {
-    verse._id = dataAid;
+  if (id) {
+    verse._id = id;
   } else {
     return undefined;
   }
 
-  verse.verseID = verseElement.id;
   verse.formatTags = buildFormatTags(verseElement);
   verse.classList = verseElement.className;
   verse.text = verseElement.textContent ? verseElement.textContent : '';

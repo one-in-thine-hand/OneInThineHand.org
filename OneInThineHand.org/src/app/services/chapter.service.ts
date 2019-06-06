@@ -10,4 +10,12 @@ export class ChapterService {
   public verses: Verse[] | undefined;
   public notes: Note[] | undefined;
   constructor() {}
+
+  public mergeVersesNotes(verses: Verse[], notes: Note[]): void {
+    verses.map(
+      (verse): void => {
+        console.log(verse._id);
+      },
+    );
+  }
 }
