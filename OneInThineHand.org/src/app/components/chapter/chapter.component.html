@@ -2,5 +2,7 @@
   <app-body-block *ngIf="verses" [verses]="this.verses"></app-body-block>
 </div>
 <div id="notes">
-  <app-note></app-note>
+  <ng-container *ngIf="notes">
+    <app-note *ngFor="let note of notes" [note]="note"></app-note>
+  </ng-container>
 </div>

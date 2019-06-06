@@ -1,3 +1,13 @@
-<p>
-  note works!
-</p>
+<ul *ngIf="note">
+  <ng-container *ngIf="note.secondaryNotes">
+    <ul
+      class="secondary-note"
+      *ngFor="let secondaryNote of getSecondaryNotes()"
+    >
+      <li class="note-phrase">{{ getNotePhrase(secondaryNote.notePhrase) }}</li>
+      <ul class="note-refs" *ngIf="secondaryNote.noteRefs">
+        <li *ngFor="let noteRef of getNoteRefs(secondaryNote)"></li>
+      </ul>
+    </ul>
+  </ng-container>
+</ul>

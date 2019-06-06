@@ -116,7 +116,7 @@ function mergeNotes(newNotesMap: Map<string, Note[]> | undefined): void {
 }
 
 async function main(): Promise<void> {
-  if (false) {
+  if (true) {
     const formaTags = new FormatTags();
     const scriptureFileNames = await getScriptureFiles();
     const chapterProcessor = new ChapterProcessor();

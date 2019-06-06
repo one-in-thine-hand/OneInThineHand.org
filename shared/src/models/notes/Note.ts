@@ -1,3 +1,5 @@
+import { Visibility } from '../../interfaces/visibliity';
+
 // import * as he from 'he';
 
 // import * as he from 'he';
@@ -30,7 +32,8 @@ export class NoteTypeConvert {
   public className: string;
 }
 
-export class ReferenceLabel {
+export class ReferenceLabel implements Visibility {
+  public visible: boolean | undefined;
   public noteCategory: NoteCategory;
   public className: string;
   public referenceLabelName: string;
@@ -48,95 +51,110 @@ export const ReferenceLabels: ReferenceLabel[] = [
     className: 'reference-label-alt',
     noteCategory: NoteCategory.ALT,
     referenceLabelName: 'Alternative Reading',
+    visible: true,
     referenceLabelShortName: 'ALT',
   },
   {
     className: 'reference-label-bd',
     noteCategory: NoteCategory.BD,
     referenceLabelName: 'Bible Dictionary',
+    visible: true,
     referenceLabelShortName: 'BD',
   },
   {
     className: 'reference-label-cr',
     noteCategory: NoteCategory.CR,
     referenceLabelName: 'Cross Reference',
+    visible: true,
     referenceLabelShortName: 'CR',
   },
   {
     className: 'reference-label-err',
     noteCategory: NoteCategory.ERR,
     referenceLabelName: 'ERROR',
+    visible: true,
     referenceLabelShortName: 'ERR',
   },
   {
     className: 'reference-label-geo',
     noteCategory: NoteCategory.GEO,
     referenceLabelName: 'Geography',
+    visible: true,
     referenceLabelShortName: 'GEO',
   },
   {
     className: 'reference-label-gs',
     noteCategory: NoteCategory.GS,
     referenceLabelName: 'Guide to the Scriptures',
+    visible: true,
     referenceLabelShortName: 'GS',
   },
   {
     className: 'reference-label-hmy',
     noteCategory: NoteCategory.HMY,
     referenceLabelName: 'Harmony',
+    visible: true,
     referenceLabelShortName: 'HMY',
   },
   {
     className: 'reference-label-heb',
     noteCategory: NoteCategory.HEB,
     referenceLabelName: 'Hebrew',
+    visible: true,
     referenceLabelShortName: 'HEB',
   },
   {
     className: 'reference-label-hst',
     noteCategory: NoteCategory.HST,
     referenceLabelName: 'History',
+    visible: true,
     referenceLabelShortName: 'HST',
   },
   {
     className: 'reference-label-ie',
     noteCategory: NoteCategory.IE,
     referenceLabelName: 'IE',
+    visible: true,
     referenceLabelShortName: 'IE',
   },
   {
     className: 'reference-label-or',
     noteCategory: NoteCategory.OR,
     referenceLabelName: 'OR',
+    visible: true,
     referenceLabelShortName: 'OR',
   },
   {
     className: 'reference-label-phr',
     noteCategory: NoteCategory.PHR,
     referenceLabelName: 'Phrase',
+    visible: true,
     referenceLabelShortName: 'PHR',
   },
   {
     className: 'reference-label-quo',
     noteCategory: NoteCategory.QUO,
     referenceLabelName: 'Quotation',
+    visible: true,
     referenceLabelShortName: 'QUO',
   },
   {
     className: 'reference-label-tg',
     noteCategory: NoteCategory.TG,
     referenceLabelName: 'Topical Guide',
+    visible: true,
     referenceLabelShortName: 'TG',
   },
   {
     className: 'reference-label-trn',
     noteCategory: NoteCategory.TRN,
     referenceLabelName: 'Translation',
+    visible: true,
     referenceLabelShortName: 'TRN',
   },
 ];
 
-export class NoteRef {
+export class NoteRef implements Visibility {
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
   public _rev: string | undefined;
@@ -148,7 +166,7 @@ export class NoteRef {
   public visible: boolean | undefined;
 }
 
-export class NotePhrase {
+export class NotePhrase implements Visibility {
   // tslint:disable-next-line:variable-name
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
@@ -158,7 +176,7 @@ export class NotePhrase {
   public visible: boolean | undefined;
 }
 
-export class SecondaryNote {
+export class SecondaryNote implements Visibility {
   public classList: string[] | undefined;
   public id: string | undefined;
   public noteMarker: string | undefined | null;
@@ -169,6 +187,7 @@ export class SecondaryNote {
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
   public noteType: NoteType | undefined;
+  public visible: boolean | undefined;
 }
 
 export class Note {

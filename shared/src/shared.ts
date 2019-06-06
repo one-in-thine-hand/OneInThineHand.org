@@ -48,3 +48,5 @@ export {
   getElementsAttribute,
   expandOffsets,
 } from './functions/getFormatTagType';
+
+export { Visibility, getVisible } from './interfaces/visibliity';
