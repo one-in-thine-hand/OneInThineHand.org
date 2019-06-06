@@ -1,0 +1,47 @@
+$phoneMediaQuery: screen and
+  (
+    min-width: 320px
+  )
+  or
+  (
+    orientation: landscape
+  );
+$largeMediaQuery: screen and
+  (
+    min-width: 1000px
+  )
+  or
+  (
+    orientation: landscape
+  );
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+$smallScreen: only screen and
+  (
+    min-width: 320px or
+      (
+        orientation: portrait
+      )
+  );
+
+/* Medium devices (landscape tablets, 768px and up) */
+$mediumScreen: only screen and
+  (
+    min-width: 768px
+  )
+  or
+  (
+    orientation: landscape
+  );
+
+/* Large devices (laptops/desktops, 992px and up) */
+$largeScreen: only screen and
+  (
+    min-width: 992px
+  );
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+$extraLargeScreen: only screen and
+  (
+    min-width: 1200px
+  );

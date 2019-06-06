@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { Verse, Note } from '../../../../../shared/src/shared';
+import { ChapterService } from '../../services/chapter.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
-  public constructor() {}
+  public constructor(public chapterService: ChapterService) {}
 
   public chapter: Chapter | undefined;
   public verses: Verse[] | undefined;
@@ -23,6 +24,10 @@ export class ChapterComponent implements OnInit {
         .data as Verse[];
       this.notes = (await axios.get('assets/scriptures/heb-1-eng-notes.json'))
         .data as Note[];
+
+      this.chapterService.chapter = this.chapter;
+      this.chapterService.verses = this.verses;
+      this.chapterService.notes = this.notes;
 
       console.log(this.chapter);
       console.log(this.verses);

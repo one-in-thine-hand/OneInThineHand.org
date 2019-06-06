@@ -1,0 +1,76 @@
+@import 'app/styles/mediaQueries.scss';
+
+$chapterGridMargins: 32px;
+
+@mixin rootGrid($mediaQuery, $gridTemplateCol) {
+  @media #{$mediaQuery} {
+    .oith-content-parent {
+      display: grid;
+      overflow: hidden;
+      grid-template-columns: #{$gridTemplateCol};
+    }
+  }
+}
+@mixin oithContentGrid($mediaQuery, $gridTemplateRow, $gridTemplateColumn) {
+  @media #{$mediaQuery} {
+    grid-template-columns: $gridTemplateColumn;
+    grid-template-rows: $gridTemplateRow;
+  }
+}
+
+.oith-root {
+  app-header {
+    background-color: green;
+  }
+  app-navigation > * {
+    background-color: black;
+    height: 100%;
+  }
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  grid-template-rows: 48px auto;
+
+  @include rootGrid($phoneMediaQuery, 100vw);
+  // @include rootGrid($mediumScreen, 100vw);
+  @include rootGrid($largeScreen, 200px auto);
+  @include rootGrid($extraLargeScreen, 250px auto);
+  &.display-navigation {
+  }
+  .chapter-block {
+    height: 100vh;
+  }
+
+  .oith-content {
+    display: grid;
+
+    @include oithContentGrid($smallScreen, 50% 50%, 100vw);
+
+    @include oithContentGrid($largeScreen, 100%, auto 300px);
+    // @include oithContentGrid($mediumScreen, 100%, auto);
+    @include oithContentGrid($mediumScreen, 100%, auto 250px);
+    @include oithContentGrid($extraLargeScreen, 100%, auto 350px);
+    &.display-notes {
+    }
+    @media #{$smallScreen} {
+      // grid-template-rows: 50% 50%;
+      height: 100vh;
+    }
+    height: 100%;
+  }
+} /* Extra small devices (phones, 600px and down) */
+
+.settings {
+  text-align: center;
+  ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    padding: 0;
+    grid-auto-rows: 48px;
+    list-style-type: none;
+    .category-visible {
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -15,6 +15,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ElectronService } from './providers/electron.service';
 
 import { WebviewDirective } from './directives/webview.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -31,10 +32,18 @@ import { HeaderComponent } from './components/header/header.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ContentComponent } from './components/content/content.component';
 import { ChapterComponent } from './components/chapter/chapter.component';
+import { SaveStateService } from './services/save-state.service';
+import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+export function load(saveStateService: SaveStateService): () => Promise<void> {
+  return async (): Promise<void> => {
+    await saveStateService.load();
+  };
 }
 
 @NgModule({
@@ -55,8 +64,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     NavigationComponent,
     ContentComponent,
     ChapterComponent,
+    HeaderDropdownComponent,
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -69,7 +80,17 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
   ],
-  providers: [ElectronService],
+  providers: [
+    ElectronService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: load,
+      deps: [SaveStateService],
+      multi: true,
+    },
+    SaveStateService,
+  ],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
