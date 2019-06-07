@@ -9,7 +9,12 @@ import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag'
 })
 export class FormatTagComponent implements OnInit {
   @Input() public formatTag: FMerged;
-  constructor() {}
+  public constructor() {}
 
-  ngOnInit() {}
+  public ngOnInit(): void {}
+
+  public getText(): string {
+    const text = this.formatTag.text;
+    return text;
+  }
 }

@@ -1,1 +1,4 @@
-<f *ngFor="let f of getFormatTags()">{{ f.text }}</f>
+<app-format-tag
+  *ngFor="let f of getFormatTags()"
+  [formatTag]="f"
+></app-format-tag>
