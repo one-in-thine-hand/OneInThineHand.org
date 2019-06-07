@@ -19,6 +19,7 @@ import {
   Verse,
   getFormatTagType,
   getRanges,
+  bookNames,
 } from '../../../shared/src/shared';
 import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
@@ -433,7 +434,14 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   const formatGroups = await queryFormatGroups(verseElement);
 
   verse.formatGroups = formatGroups ? formatGroups : [];
-
+  const book = bookNames.find(
+    (bookName): boolean => {
+      return id.startsWith(bookName.chapterStartsWith);
+    },
+  );
+  if (book) {
+    id = id.replace(book.chapterStartsWith, book.startsWith);
+  }
   if (id) {
     verse._id = id;
   } else {

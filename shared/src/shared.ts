@@ -50,3 +50,5 @@ export {
 } from './functions/getFormatTagType';
 
 export { Visibility, getVisible } from './interfaces/visibliity';
+
+export { BookName, bookNames } from './models/BookName';

@@ -13,6 +13,12 @@ export class FormatTag {
   public displayAs: DisplayAs | undefined;
 }
 
+export class FMerged {
+  public formatTags: FormatTag[] = [];
+  public text: string = '';
+  public offsets: number[] = [];
+}
+
 // export class FormatTagHighlight extends FormatTag {
 //   public formatType = FormatType.Highlight;
 //   public color: Color | undefined;

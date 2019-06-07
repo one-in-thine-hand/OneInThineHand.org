@@ -37,9 +37,9 @@ export class ChapterComponent implements OnInit {
       this.chapterService.verses = this.verses;
       this.chapterService.notes = this.notes;
       this.visibilityService.resetNoteVisibility(this.notes);
-      console.log(this.chapter);
-      console.log(this.verses);
-      console.log(this.notes);
+      // console.log(this.chapter);
+      // console.log(this.verses);
+      // console.log(this.notes);
     } catch (error) {
       console.log(error);
     }

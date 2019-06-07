@@ -4,12 +4,8 @@ import {
   FormatGroup,
   FormatTag,
 } from '../../../../../shared/src/shared';
-
-export class FMerged {
-  public uncompressedOffets: number[] = [];
-  public formatTags: FormatTag[] = [];
-}
-
+import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
+import { isEqual } from 'lodash';
 @Component({
   selector: 'app-format-group',
   templateUrl: './format-group.component.html',
@@ -27,22 +23,59 @@ export class FormatGroupComponent implements OnInit {
    * getFormatTags
    */
   public getFormatTags(): FormatTag[] {
+    // console.log(this.formatTags);
+    const m: FMerged[] = [];
+    let f2: FMerged | undefined;
     const f = this.formatGroup.uncompressedOffsets
       ? this.formatGroup.uncompressedOffsets.map(
           (offset): FMerged => {
-            const formatTag = new FMerged();
-            formatTag.formatTags = this.formatTags.filter(
-              (f): boolean => {
-                return (
-                  f.uncompressedOffsets !== undefined &&
-                  f.uncompressedOffsets.includes(offset)
-                );
-              },
-            );
-            return formatTag;
+            const fMerged = new FMerged();
+            fMerged.offsets = [offset];
+            fMerged.formatTags = this.formatTags.filter((f): boolean => {
+              return (
+                f.uncompressedOffsets !== undefined &&
+                f.uncompressedOffsets.includes(offset)
+              );
+            });
+            if (this.verse.note && this.verse.note.secondaryNotes) {
+              this.verse.note.secondaryNotes.map((secondaryNote): void => {
+                if (secondaryNote.formatTag) {
+                  if (secondaryNote.formatTag.offsets === 'all') {
+                    fMerged.formatTags.push(secondaryNote.formatTag);
+                  } else if (
+                    secondaryNote.formatTag.uncompressedOffsets &&
+                    secondaryNote.formatTag.uncompressedOffsets.includes(offset)
+                  ) {
+                    fMerged.formatTags.push(secondaryNote.formatTag);
+                  }
+                }
+              });
+            }
+
+            if (f2 && isEqual(f2.formatTags, fMerged.formatTags)) {
+              // console.log(isEqual(f2, fMerged));
+              // console.log(offset);
+              f2.offsets.push(offset);
+              // console.log(f2);
+            } else {
+              if (f2) {
+                m.push(f2);
+              }
+              f2 = fMerged;
+            }
+            // f2 = fMerged;F
+            return fMerged;
           },
         )
       : [];
+
+    if (f2 !== undefined) {
+      m.push(f2);
+    }
+    m.map((u): void => {});
+    console.log(m);
+
+    // console.log(f);
 
     return [];
   }
