@@ -1,6 +1,8 @@
-<app-format-group
-  *ngFor="let formatGroup of this.getFormatGroups()"
-  [verse]="verse"
-  [formatGroup]="formatGroup"
-  [formatTags]="verse.formatTags"
-></app-format-group>
+<verse>
+  <app-format-group
+    *ngFor="let formatGroup of this.getFormatGroups()"
+    [verse]="verse"
+    [formatGroup]="formatGroup"
+    [formatTags]="verse.formatTags"
+  ></app-format-group>
+</verse>
