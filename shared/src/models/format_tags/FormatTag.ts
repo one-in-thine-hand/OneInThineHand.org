@@ -14,8 +14,9 @@ export class FormatTag {
 }
 
 export class RefTag {
-  public ref: string;
-  public uncompressedOffsets: number[];
+  public refs: string[];
+  public uncompressedOffsets: number[] | undefined;
+  public offsets: string | undefined;
 }
 
 export class FMerged {

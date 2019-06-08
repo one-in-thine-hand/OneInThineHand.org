@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  Note,
-  getRanges,
-  expandOffsets,
-  parseOffsets,
-  FormatTag,
-} from '../../../../shared/src/shared';
+import { Note, parseOffsets, FormatTag } from '../../../../shared/src/shared';
+import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 
 @Injectable({
   providedIn: 'root',
@@ -14,34 +9,64 @@ export class OffsetService {
   public constructor() {}
 
   public expandNotes(notes: Note[]): void {
-    notes.map((note): void => {
-      if (note.secondaryNotes) {
-        note.secondaryNotes.map((sN): void => {
-          sN.uncompressedOffsets = parseOffsets(sN.offsets);
+    notes.map(
+      (note): void => {
+        if (note.secondaryNotes) {
+          note.secondaryNotes.map(
+            (secondaryNote): void => {
+              secondaryNote.uncompressedOffsets = parseOffsets(
+                secondaryNote.offsets,
+              );
 
-          if ((sN.uncompressedOffsets || sN.offsets === 'all') && sN.noteRefs) {
-            const formatTag = new FormatTag();
+              if (
+                (secondaryNote.uncompressedOffsets ||
+                  secondaryNote.offsets === 'all') &&
+                secondaryNote.noteRefs
+              ) {
+                const formatTag = new FormatTag();
+                const refTag = new RefTag();
+                refTag.uncompressedOffsets = secondaryNote.uncompressedOffsets;
 
-            formatTag.uncompressedOffsets = sN.uncompressedOffsets;
+                formatTag.uncompressedOffsets =
+                  secondaryNote.uncompressedOffsets;
 
-            if (sN.offsets === 'all') {
-              formatTag.refs = sN.noteRefs
-                .map((ref): string => {
-                  return ref._id ? ref._id : '';
-                })
-                .filter((ref): boolean => {
-                  return ref.trim() !== '';
-                });
-            } else {
-              formatTag.refs = ['all'];
-            }
+                if (secondaryNote.offsets === 'all') {
+                  refTag.refs = secondaryNote.noteRefs
+                    .map(
+                      (ref): string => {
+                        return ref._id ? ref._id : '';
+                      },
+                    )
+                    .filter(
+                      (ref): boolean => {
+                        return ref.trim() !== '';
+                      },
+                    );
+                  formatTag.refs = secondaryNote.noteRefs
+                    .map(
+                      (ref): string => {
+                        return ref._id ? ref._id : '';
+                      },
+                    )
+                    .filter(
+                      (ref): boolean => {
+                        return ref.trim() !== '';
+                      },
+                    );
+                } else {
+                  refTag.offsets = 'all';
+                  formatTag.refs = ['all'];
+                }
 
-            sN.formatTag = formatTag;
-          }
+                secondaryNote.refTag = refTag;
+                secondaryNote.formatTag = formatTag;
+              }
 
-          console.log(sN.offsets);
-        });
-      }
-    });
+              console.log(secondaryNote.offsets);
+            },
+          );
+        }
+      },
+    );
   }
 }

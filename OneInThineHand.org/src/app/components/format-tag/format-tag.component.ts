@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormatTag } from '../../../../../shared/src/shared';
 import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
+import {
+  Optional,
+  formatTagTypeOptions,
+  DisplayAs,
+} from '../../../../../shared/src/shared';
 
 @Component({
   selector: 'app-format-tag',
@@ -8,13 +12,63 @@ import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag'
   styleUrls: ['./format-tag.component.scss'],
 })
 export class FormatTagComponent implements OnInit {
-  @Input() public formatTag: FMerged;
+  @Input() public fMerged: FMerged;
   public constructor() {}
 
   public ngOnInit(): void {}
 
   public getText(): string {
-    const text = this.formatTag.text;
+    const text = this.fMerged.text;
+    if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
+      this.fMerged.formatTags
+        .filter(
+          (f): boolean => {
+            return (
+              f.displayAs === DisplayAs.RICHTEXT &&
+              f.optional !== Optional.NEVER
+            );
+          },
+        )
+        .map(
+          (f): void => {
+            console.log(f);
+          },
+        );
+      return text;
+    }
     return text;
+  }
+
+  public getClassList(): string {
+    const classList: string[] = [];
+    if (this.fMerged.refTags) {
+      console.log(this.fMerged.refTags);
+    }
+    if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
+      this.fMerged.formatTags
+        .filter(
+          (f): boolean => {
+            return (
+              f.displayAs === DisplayAs.CLASS && f.optional !== Optional.NEVER
+            );
+          },
+        )
+        .map(
+          (f): void => {
+            const fTO = formatTagTypeOptions.find(
+              (formatTagOption): boolean => {
+                return formatTagOption.formatTagType === f.formatType;
+              },
+            );
+            console.log(fTO ? fTO.className : 'Nothing');
+            if (fTO && fTO.className) {
+              classList.push(fTO.className);
+            }
+          },
+        );
+
+      console.log();
+    }
+    return classList.toString().replace(/,/s, ' ');
   }
 }

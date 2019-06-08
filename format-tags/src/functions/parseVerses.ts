@@ -401,10 +401,25 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
   );
   return Array.from(formatTags.values()).map(
     (formatTag): FormatTag => {
+      // console.log(getRanges(formatTag.uncompressedOffsets as []));
+      // console.log(
+      //   getRanges(formatTag.uncompressedOffsets as [])
+      //     .map(
+      //       (offset): string => {
+      //         return offset[0] === offset[1]
+      //           ? `${offset[0]}`
+      //           : `${offset[0]}-${offset[1]}`;
+      //       },
+      //     )
+      //     .toString(),
+      // );
+
       formatTag.offsets = getRanges(formatTag.uncompressedOffsets as [])
         .map(
           (offset): string => {
-            return offset[0] === offset[1] ? `${offset[0]}` : `${0}-${1}`;
+            return offset[0] === offset[1]
+              ? `${offset[0]}`
+              : `${offset[0]}-${offset[1]}`;
           },
         )
         .toString();

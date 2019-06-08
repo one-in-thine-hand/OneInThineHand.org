@@ -1,5 +1,5 @@
 import { Visibility } from '../../interfaces/visibliity';
-import { FormatTag } from '../format_tags/FormatTag';
+import { FormatTag, RefTag } from '../format_tags/FormatTag';
 
 // import * as he from 'he';
 
@@ -190,6 +190,7 @@ export class SecondaryNote implements Visibility {
   public noteType: NoteType | undefined;
   public visible: boolean | undefined;
   public formatTag: FormatTag | undefined;
+  public refTag: RefTag | undefined;
 }
 
 export class Note {
