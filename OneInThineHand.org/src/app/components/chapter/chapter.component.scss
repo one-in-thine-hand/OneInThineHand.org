@@ -31,7 +31,7 @@ $chapterGridMargins: 32px;
   );
   @include oithChapterParent(
     $largeScreen,
-    '16px $chapterGridMargins auto $chapterGridMargins 16px',
+    16px $chapterGridMargins auto $chapterGridMargins 16px,
     80%
   );
   .chapter-nav-btn {

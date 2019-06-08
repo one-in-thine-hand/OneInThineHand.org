@@ -5,10 +5,10 @@ $largeMediaQuery: 'screen and (( min-width: 1000px ) or ( orientation: landscape
 $smallScreen: 'screen and (min-width: 320px), (orientation: landscape)';
 
 /* Medium devices (landscape tablets 768px and up) */
-$mediumScreen: 'only screen and (( min-width: 768px ) or ( orientation: landscape ))';
+$mediumScreen: 'only screen and ( min-width: 768px ), (orientation: landscape )';
 
 /* Large devices (laptops/desktops 992px and up) */
-$largeScreen: 'only screen and (( min-width: 992px ))';
+$largeScreen: 'only screen and ( min-width: 992px )';
 
 /* Extra large devices (large laptops and desktops 1200px and up) */
 $extraLargeScreen: ' only screen and ( min-width: 1200px )';
