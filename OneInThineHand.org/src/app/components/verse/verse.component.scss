@@ -1,6 +1,18 @@
 verse {
-  &[id*='title1'] {
+  display: block;
+
+  &[id*='title_number1'] {
+    font-weight: 400 !important;
+    font-size: 16px;
+  }
+
+  &[id*='title1'],
+  &[id*='title_number1'],
+  &[id*='study_summary1'] {
     text-align: center;
   }
-  display: block;
+
+  &[id*='study_summary1'] {
+    margin-bottom: 6pt;
+  }
 }
