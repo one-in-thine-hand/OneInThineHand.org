@@ -1,5 +1,26 @@
 f {
+  font-size: 16px;
   &.clarity-word {
     font-style: italic;
+  }
+  &.subordinate {
+    display: block;
+    color: red;
+  }
+  &.dominant {
+    display: block;
+    color: blue;
+    line-height: 1;
+    font-family: serif !important;
+    text-align: center !important;
+    padding-right: 20px !important;
+    font-size: 48px !important;
+    font-weight: 700 !important;
+  }
+}
+
+:host-context([id*='title1']) {
+  f {
+    font-size: 24px;
   }
 }

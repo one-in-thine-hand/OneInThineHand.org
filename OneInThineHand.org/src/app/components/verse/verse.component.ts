@@ -1,12 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
   Verse,
-  parseOffsets,
   expandOffsets,
   FormatGroup,
-  NoteRef,
+  FormatGroupType,
 } from '../../../../../shared/src/shared';
-import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
 
 @Component({
   selector: 'app-verse',
@@ -17,7 +15,7 @@ export class VerseComponent implements OnInit {
   @Input() public verse: Verse;
   public constructor() {}
 
-  public ngOnInit() {}
+  public ngOnInit(): void {}
 
   public getFormatGroups(): FormatGroup[] {
     // console.log(this.verse);
@@ -27,7 +25,14 @@ export class VerseComponent implements OnInit {
       expandOffsets(this.verse.formatTags);
 
       // console.log(this.verse);
-      return this.verse.formatGroups; // this.verse.formatTags.map((f): void => {});
+      return this.verse.formatGroups.filter(
+        (formatGroup): boolean => {
+          return (
+            formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+            formatGroup.formatGroupType !== FormatGroupType.BR
+          );
+        },
+      ); // this.verse.formatTags.map((f): void => {});
     }
     return [];
   }
