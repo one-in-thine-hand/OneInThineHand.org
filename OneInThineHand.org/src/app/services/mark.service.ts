@@ -26,7 +26,7 @@ export class MarkService {
           outputText = outputText.replace(replace, '');
         },
       );
-      console.log(outputText);
+      // console.log(outputText);
 
       return outputText;
     } else {

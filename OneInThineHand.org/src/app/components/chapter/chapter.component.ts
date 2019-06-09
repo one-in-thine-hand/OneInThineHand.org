@@ -44,4 +44,29 @@ export class ChapterComponent implements OnInit {
       console.log(error);
     }
   }
+
+  public onScroll(): void {
+    console.log('hhg');
+    const verseElements = Array.from(document.querySelectorAll('verse'));
+    for (let x = 0; x < verseElements.length; x++) {
+      const verseElement = verseElements[x];
+      if (verseElement.getBoundingClientRect().bottom - 48 > 0) {
+        const noteElement = document.querySelector(
+          `#${verseElement.id.replace('verse', 'note')}`,
+        );
+        console.log(noteElement);
+
+        if (noteElement) {
+          noteElement.scrollIntoView();
+        }
+        console.log(
+          `${verseElement.id} ${verseElement.getBoundingClientRect().bottom}`,
+        );
+        break;
+      }
+    }
+    Array.from(document.querySelectorAll('verse')).map(
+      (verseElement): void => {},
+    );
+  }
 }

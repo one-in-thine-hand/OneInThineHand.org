@@ -47,7 +47,7 @@ export class FormatTagComponent implements OnInit {
   public getClassList(): string {
     const classList: string[] = [];
     if (this.fMerged.refTags) {
-      console.log(this.fMerged.refTags);
+      // console.log(this.fMerged.refTags);
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
@@ -65,7 +65,7 @@ export class FormatTagComponent implements OnInit {
                 return formatTagOption.formatTagType === f.formatType;
               },
             );
-            console.log(fTO ? fTO.className : 'Nothing');
+            // console.log(fTO ? fTO.className : 'Nothing');
             if (fTO && fTO.className) {
               classList.push(fTO.className);
             }
