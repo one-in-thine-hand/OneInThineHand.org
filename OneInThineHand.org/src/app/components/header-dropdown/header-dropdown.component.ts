@@ -4,6 +4,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { TextSelectService } from '../../services/text-select.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
+import { VisibilityService } from '../../services/visibility.service';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -17,6 +18,7 @@ export class HeaderDropdownComponent implements OnInit {
     public chapterService: ChapterService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
+    public visibilityService: VisibilityService,
     private location: Location,
   ) {}
 
@@ -27,6 +29,10 @@ export class HeaderDropdownComponent implements OnInit {
     // this.refService.resetChapterVisbility();
   }
   public async showOrphanRefs(): Promise<void> {
+    console.log('hgg');
+
+    if (this.chapterService.notes)
+      this.visibilityService.showMissingOffsets(this.chapterService.notes);
     // const fRefs = await this.refService.getWRefList();
     // if (fRefs) {
     //   this.showOrphanNotes = true;

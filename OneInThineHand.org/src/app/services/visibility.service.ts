@@ -63,4 +63,29 @@ export class VisibilityService {
       },
     );
   }
+
+  public showMissingOffsets(notes: Note[]): void {
+    notes.map(
+      (note): void => {
+        if (note.secondaryNotes) {
+          note.secondaryNotes.map(
+            (sN): void => {
+              console.log(sN.offsets);
+
+              if (sN.offsets === undefined || sN.offsets.trim() === '') {
+                sN.visible = true;
+                if (sN.noteRefs) {
+                  sN.noteRefs.map(
+                    (noteRef): void => {
+                      noteRef.visible = true;
+                    },
+                  );
+                }
+              }
+            },
+          );
+        }
+      },
+    );
+  }
 }
