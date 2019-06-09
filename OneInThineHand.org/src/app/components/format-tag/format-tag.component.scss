@@ -35,3 +35,10 @@ f {
     font-weight: 700 !important;
   }
 }
+
+:host-context(.paragraph-mode) {
+  .verse-number {
+    vertical-align: super;
+    font-size: 8pt;
+  }
+}

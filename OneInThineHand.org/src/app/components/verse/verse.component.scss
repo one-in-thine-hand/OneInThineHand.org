@@ -10,9 +10,24 @@ verse {
   &[id*='title_number1'],
   &[id*='study_summary1'] {
     text-align: center;
+    display: block;
   }
 
   &[id*='study_summary1'] {
     margin-bottom: 6pt;
+  }
+}
+:host-context(.paragraph-mode) verse {
+  display: inline;
+  margin-right: 5px;
+  &[id*='title1'],
+  &[id*='title_number1'],
+  &[id*='study_summary1'] {
+    text-align: center;
+    display: block;
+  }
+
+  .verse-number {
+    vertical-align: super;
   }
 }

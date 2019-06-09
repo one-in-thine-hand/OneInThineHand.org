@@ -1,4 +1,8 @@
-<div class="chapter-grid" (scroll)="onScroll()">
+<div
+  class="chapter-grid"
+  (scroll)="onScroll()"
+  [ngClass]="{ 'paragraph-mode': this.saveStateService.data.paragraphsVisible }"
+>
   <div style=" user-select: none;"></div>
   <div class="left-chapter-nav-btn chapter-nav-btn" style=" user-select: none;">
     <i
@@ -14,7 +18,11 @@
     </i>
   </div>
   <div id="bodyBlock">
-    <app-body-block *ngIf="verses" [verses]="this.verses"></app-body-block>
+    <app-body-block
+      *ngIf="verses && chapter"
+      [chapter]="chapter"
+      [verses]="this.verses"
+    ></app-body-block>
     <div class="white-space"></div>
   </div>
   <div

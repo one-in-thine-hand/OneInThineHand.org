@@ -5,6 +5,7 @@ import { Verse, Note } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { OffsetService } from '../../services/offset.service';
+import { SaveStateService } from '../../services/save-state.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -15,6 +16,7 @@ export class ChapterComponent implements OnInit {
     public chapterService: ChapterService,
     public offsetService: OffsetService,
     public visibilityService: VisibilityService,
+    public saveStateService: SaveStateService,
   ) {}
 
   public chapter: Chapter | undefined;

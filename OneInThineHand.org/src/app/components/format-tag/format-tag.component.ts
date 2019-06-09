@@ -4,6 +4,7 @@ import {
   Optional,
   formatTagTypeOptions,
   DisplayAs,
+  FormatTagType,
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 
@@ -54,7 +55,9 @@ export class FormatTagComponent implements OnInit {
         .filter(
           (f): boolean => {
             return (
-              f.displayAs === DisplayAs.CLASS && f.optional !== Optional.NEVER
+              (f.displayAs === DisplayAs.CLASS &&
+                f.optional !== Optional.NEVER) ||
+              f.formatType === FormatTagType.verseNumber
             );
           },
         )
