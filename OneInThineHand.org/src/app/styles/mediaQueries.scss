@@ -1,4 +1,4 @@
-$phoneMediaQuery: 'screen and ((min-width: 320px) or (orientation: landscape))';
+$phoneMediaQuery: 'screen and (min-width: 320px) , (orientation: landscape)';
 $largeMediaQuery: 'screen and (( min-width: 1000px ) or ( orientation: landscape ))';
 
 /* Small devices (portrait tablets and large phones 600px and up) */

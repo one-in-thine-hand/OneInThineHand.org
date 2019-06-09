@@ -1,4 +1,5 @@
-<ul *ngIf="note">
+<ul *ngIf="note" [id]="note._id">
+  <li class="note-short-title">{{ note.noteShortTitle }}</li>
   <ng-container *ngIf="note.secondaryNotes">
     <ul
       class="secondary-note"

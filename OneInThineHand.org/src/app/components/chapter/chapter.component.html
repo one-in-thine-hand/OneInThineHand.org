@@ -15,6 +15,7 @@
   </div>
   <div id="bodyBlock">
     <app-body-block *ngIf="verses" [verses]="this.verses"></app-body-block>
+    <div class="white-space"></div>
   </div>
   <div
     class="right-chapter-nav-btn chapter-nav-btn"
@@ -36,6 +37,11 @@
 </div>
 <div id="notes">
   <ng-container *ngIf="notes">
-    <app-note *ngFor="let note of notes" [note]="note"></app-note>
+    <app-note
+      class="app-note"
+      *ngFor="let note of notes"
+      [note]="note"
+    ></app-note>
+    <div class="white-space"></div>
   </ng-container>
 </div>
