@@ -53,22 +53,52 @@ export class ChapterComponent implements OnInit {
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
       if (verseElement.getBoundingClientRect().bottom - 48 > 0) {
-        const noteElement = document.querySelector(
+        let noteElement = document.querySelector(
           `#${verseElement.id.replace('verse', 'note')}`,
         );
         console.log(noteElement);
 
         if (noteElement) {
           noteElement.scrollIntoView();
+        } else {
+          if (x === 0) {
+            noteElement = document.querySelector('.notes-top');
+          } else if (x === verseElements.length - 1) {
+            noteElement = document.querySelector('.notes-bottom');
+          }
+
+          if (noteElement) {
+            noteElement.scrollIntoView();
+          }
         }
-        console.log(
-          `${verseElement.id} ${verseElement.getBoundingClientRect().bottom}`,
-        );
+        // console.log(
+        //   `${verseElement.id} ${verseElement.getBoundingClientRect().bottom}`,
+        // );
         break;
       }
     }
-    Array.from(document.querySelectorAll('verse')).map(
-      (verseElement): void => {},
-    );
+    // Array.from(document.querySelectorAll('verse')).map(
+    //   (verseElement): void => {},
+    // );
+  }
+
+  public getWhiteSpaceHeight(): string {
+    // const verseElements = Array.from(document.querySelectorAll('verse'));
+
+    // if (verseElements.length > 0) {
+    //   const total = verseElements
+    //     .map(
+    //       (verseElement): number => {
+    //         return (verseElement as HTMLElement).clientHeight;
+    //       },
+    //     )
+    //     .reduce(
+    //       (v, v2): number => {
+    //         return v + v2;
+    //       },
+    //     );
+    //   console.log(total);
+    // }
+    return `${window.innerHeight - 34}px`;
   }
 }

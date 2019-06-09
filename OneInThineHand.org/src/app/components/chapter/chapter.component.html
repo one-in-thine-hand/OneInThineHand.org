@@ -23,7 +23,10 @@
       [chapter]="chapter"
       [verses]="this.verses"
     ></app-body-block>
-    <div class="white-space"></div>
+    <div
+      class="white-space"
+      [ngStyle]="{ height: getWhiteSpaceHeight() }"
+    ></div>
   </div>
   <div
     class="right-chapter-nav-btn chapter-nav-btn"
@@ -44,12 +47,17 @@
   <div style=" user-select: none;"></div>
 </div>
 <div id="notes">
+  <div class="notes-top"></div>
   <ng-container *ngIf="notes">
     <app-note
       class="app-note"
       *ngFor="let note of notes"
       [note]="note"
     ></app-note>
-    <div class="white-space"></div>
+    <div
+      class="white-space"
+      [ngStyle]="{ height: getWhiteSpaceHeight() }"
+    ></div>
   </ng-container>
+  <div class="notes-bottom"></div>
 </div>
