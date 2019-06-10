@@ -51,20 +51,28 @@ async function processScriptureFiles(
         // console.log(chapter);
         // getID()
         // console.log(dirname(normalize(scriptureFileName)));
-        const directory = normalize(
-          dirname(
-            scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
-          ),
-        );
+        // const directory = normalize(
+        //   dirname(
+        //     scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
+        //   ),
+        // );
+        // if (!(await pathExists(directory))) {
+        //   await mkdirp(directory);
+        // }
+        const directory = normalize(`../scripture_files/scriptures/`);
+        console.log(await pathExists(directory));
+
         if (!(await pathExists(directory))) {
           await mkdirp(directory);
         }
+        // console.log(`${directory}/${basename(id)}-verses.json`);
+
         await writeFile(
-          `${directory}/${basename(id)}-verses.json`,
+          normalize(`${directory}/${basename(id)}-verses.json`),
           JSON.stringify(verses),
         );
         await writeFile(
-          `${directory}/${basename(id)}-chapter.json`,
+          normalize(`${directory}/${basename(id)}-chapter.json`),
           JSON.stringify(chapter),
         );
         count = count + 1;
@@ -151,7 +159,7 @@ async function main(): Promise<void> {
   console.log('finished');
   notesMap.forEach(
     async (value, key): Promise<void> => {
-      const directory = normalize(dirname(`../scripture_files/scriptures/}`));
+      const directory = normalize(dirname(`../scripture_files/scriptures/`));
       if (!pathExists(directory)) {
         await mkdirp(directory);
       }
