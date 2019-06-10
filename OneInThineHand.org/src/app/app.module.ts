@@ -39,6 +39,7 @@ import { ContentComponent } from './components/content/content.component';
 import { ChapterComponent } from './components/chapter/chapter.component';
 import { SaveStateService } from './services/save-state.service';
 import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -70,6 +71,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     ContentComponent,
     ChapterComponent,
     HeaderDropdownComponent,
+    LandingPageComponent,
   ],
   imports: [
     NgbModule,

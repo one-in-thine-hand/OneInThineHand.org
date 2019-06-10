@@ -1,0 +1,15 @@
+.navigation-parent {
+  display: grid;
+  list-style: none;
+  background-color: whitesmoke;
+  height: 100%;
+  #addressBar {
+    background-color: inherit;
+
+    border: none;
+    border-bottom: #c7ba86;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    height: 48px;
+  }
+}
