@@ -6,6 +6,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { Location } from '@angular/common';
 import { HeaderService } from '../../services/header.service';
+import { ElectronService } from '../../providers/electron.service';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
     public modalService: NgbModal,
     public headerService: HeaderService,
     private location: Location,
+    public electronService: ElectronService,
   ) {}
 
   public ngOnInit(): void {}
@@ -58,6 +60,9 @@ export class HeaderComponent implements OnInit {
     }).result;
   }
   public refLabelClick(ref: { visible: boolean } | string): void {
+    const asdf = this.electronService.isElectron();
+    console.log(asdf);
+
     if ((ref as { visible: boolean }).visible !== undefined) {
       (ref as { visible: boolean }).visible = !(ref as { visible: boolean })
         .visible;

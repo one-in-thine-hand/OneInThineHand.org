@@ -8,14 +8,13 @@ import * as fs from 'fs';
 
 @Injectable()
 export class ElectronService {
+  public ipcRenderer: typeof ipcRenderer;
+  public webFrame: typeof webFrame;
+  public remote: typeof remote;
+  public childProcess: typeof childProcess;
+  public fs: typeof fs;
 
-  ipcRenderer: typeof ipcRenderer;
-  webFrame: typeof webFrame;
-  remote: typeof remote;
-  childProcess: typeof childProcess;
-  fs: typeof fs;
-
-  constructor() {
+  public constructor() {
     // Conditional imports
     if (this.isElectron()) {
       this.ipcRenderer = window.require('electron').ipcRenderer;
@@ -27,8 +26,15 @@ export class ElectronService {
     }
   }
 
-  isElectron = () => {
-    return window && window.process && window.process.type;
-  }
+  public isElectron = (): boolean | undefined => {
+    console.log(window);
+    console.log(window.process);
+    console.log(window.process ? window.process.type : '');
 
+    return (
+      window !== undefined &&
+      window.process !== undefined &&
+      window.process.type !== undefined
+    );
+  };
 }

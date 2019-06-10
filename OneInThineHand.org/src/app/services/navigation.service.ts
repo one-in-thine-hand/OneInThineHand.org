@@ -160,8 +160,7 @@ export class NavigationService {
 
   public async parseAddressBarUrl(addressBarInput: string): Promise<void> {
     console.log(addressBarInput);
-
-    if (true) {
+    try {
       const addressBarInputSplit = addressBarInput.split(' ');
 
       // const outUrl = addressBarInput
@@ -179,8 +178,10 @@ export class NavigationService {
         const bookName = last(bookNames);
 
         this.router.navigateByUrl(`${bookName}/${chapterName}`);
+      } else {
+        throw '';
       }
-    } else {
+    } catch (error) {
       throw 'No valid bookname found';
     }
   }

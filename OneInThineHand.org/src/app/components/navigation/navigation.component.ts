@@ -22,9 +22,7 @@ export class NavigationComponent implements OnInit {
     ) {
       try {
         const addressBarInput = (event.target as HTMLInputElement).value.trim();
-        if (await this.navigationService.parseAddressBarUrl(addressBarInput)) {
-          console.log(addressBarInput);
-        }
+        await this.navigationService.parseAddressBarUrl(addressBarInput);
       } catch (error) {
         console.log(error);
       }
