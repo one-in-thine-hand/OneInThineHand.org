@@ -5,6 +5,7 @@ import { TextSelectService } from '../../services/text-select.service';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { Location } from '@angular/common';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
     public chapterServicd: ChapterService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
+    public headerService: HeaderService,
     private location: Location,
   ) {}
 

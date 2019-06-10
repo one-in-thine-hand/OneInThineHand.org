@@ -6,6 +6,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { OffsetService } from '../../services/offset.service';
 import { SaveStateService } from '../../services/save-state.service';
+import { HeaderService } from '../../services/header.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -17,6 +18,7 @@ export class ChapterComponent implements OnInit {
     public offsetService: OffsetService,
     public visibilityService: VisibilityService,
     public saveStateService: SaveStateService,
+    public headerService: HeaderService,
   ) {}
 
   public chapter: Chapter | undefined;
@@ -38,6 +40,8 @@ export class ChapterComponent implements OnInit {
       this.chapterService.chapter = this.chapter;
       this.chapterService.verses = this.verses;
       this.chapterService.notes = this.notes;
+      this.headerService.headerTitle = this.chapter.title;
+      this.headerService.headerShortTitle = this.chapter.shortTitle;
       this.visibilityService.resetNoteVisibility(this.notes);
       // console.log(this.chapter);
       // console.log(this.verses);
