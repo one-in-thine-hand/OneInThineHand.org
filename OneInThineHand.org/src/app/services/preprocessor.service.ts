@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { NoteProcessor } from '../../../../notes/src/main';
+import { NoteProcessor, ChapterNotes } from '../../../../notes/src/main';
 import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService } from './database.service';
 import { FormatTags } from '../../../../format-tags/src/main';
+import { Note } from '../../../../shared/src/shared';
 
 @Injectable({
   providedIn: 'root',
@@ -49,90 +50,6 @@ export class PreprocessorService {
             } catch (error) {
               console.log(error);
             }
-
-            // const reader = new FileReader();
-            // reader.onload = async (): Promise<void> => {
-            //   try {
-            //     // const zip = new JSZip();
-            //     const files = await JSZip.loadAsync(zipFile);
-
-            //     // this.processChapterFiles(files);
-
-            //     const promises = Object.keys(files.files)
-            //       .filter((key): boolean => {
-            //         return files.files[key].dir === false;
-            //       })
-            //       .map(
-            //         async (key): Promise<void> => {
-            //           try {
-            //             console.log(files.files[key]);
-            //             const file = JSON.parse(
-            //               await files.file(files.files[key].name).async('text'),
-            //             ) as { _id: string; _rev: string | undefined };
-            //             console.log(file);
-
-            //             await this.databaseService.updateDatabaseItem(file);
-            //           } catch (error) {
-            //             console.log(error);
-            //           }
-            //         },
-            //       );
-
-            //     // files.forEach(
-            //     //   async (fileName): Promise<void> => {
-            //     //     try {
-            //     //       // console.log(fileName);
-
-            //     //       // console.log(fileName);
-
-            //     //       const file = JSON.parse(
-            //     //         await files.file(fileName).async('text'),
-            //     //       ) as { _id: string; _rev: string | undefined };
-            //     //       console.log(file);
-
-            //     //       await this.databaseService.updateDatabaseItem(file);
-
-            //     //       // // console.log(file);
-            //     //       // const dom = new DOMParser();
-            //     //       // const newDocument = dom.parseFromString(
-            //     //       //   file,
-            //     //       //   'application/xml',
-            //     //       // );
-            //     //       // const chapterVerses = await this.formatTagProcessor.main(
-            //     //       //   newDocument,
-            //     //       // );
-            //     //       // if (chapterVerses) {
-            //     //       //   console.log(chapterVerses);
-            //     //       //   this.databaseService.updateDatabaseItem(chapterVerses);
-            //     //       // }
-            //     //       // const chapter = await this.chapterProcessor.main(
-            //     //       //   newDocument,
-            //     //       // );
-            //     //       // // await this.
-            //     //       // if (chapter === undefined || chapter._id === '--chapter') {
-            //     //       //   throw 'File not a chapter';
-            //     //       // } else if (chapter) {
-            //     //       //   this.databaseService.updateDatabaseItem(chapter);
-            //     //       // }
-            //     //       // console.log(chapter);
-            //     //     } catch (error) {
-            //     //       console.log(error);
-            //     //     }
-            //     //   },
-            //     // );
-            //     // console.log(typeof s);
-
-            //     // await Promise.all(promises);
-            //     console.log(promises.length);
-            //     // console.log('Finished');
-            //     await Promise.all(promises);
-            //   } catch (error) {
-            //     console.log(error);
-            //   }
-            // };
-
-            // reader.readAsArrayBuffer(zipFile);
-            // return reader;
           }
         },
       );
@@ -147,43 +64,97 @@ export class PreprocessorService {
   public async loadNoteFiles(event: Event): Promise<void> {
     const zipFiles = (event.target as HTMLInputElement).files;
 
+    const notesMap = new Map<string, ChapterNotes>();
     //
     if (zipFiles) {
-      Array.from(zipFiles).map((zipFile): void => {
-        if (zipFile.type === 'application/x-zip-compressed') {
-          const reader = new FileReader();
-
-          reader.onload = async (): Promise<void> => {
+      const promises = Array.from(zipFiles).map(
+        async (zipFile): Promise<void> => {
+          if (zipFile.type === 'application/x-zip-compressed') {
             try {
-              const files = await JSZip.loadAsync(zipFile);
+              const data = await new Response(zipFile).arrayBuffer();
+              const files = await JSZip.loadAsync(data);
+              const promises = Object.keys(files.files)
+                .filter((key): boolean => {
+                  return files.files[key].dir === false;
+                })
+                .map(
+                  async (key): Promise<void> => {
+                    try {
+                      // console.log(files.files[key]);
+                      const file = await files
+                        .file(files.files[key].name)
+                        .async('text');
+                      // console.log(file);
 
-              files.forEach(
-                async (fileName): Promise<void> => {
-                  try {
-                    const file = await files.file(fileName).async('text');
-                    // console.log(file);
+                      // const file = await files.file(fileName).async('text');
+                      // console.log(file);
 
-                    const dom = new DOMParser();
-                    const newDocument = dom.parseFromString(
-                      file,
-                      'application/xml',
-                    );
-                    const notes = await this.noteProcessor.run(newDocument);
-                    console.log(notes);
-                  } catch (error) {
-                    console.log(error);
-                  }
-                },
-              );
+                      const dom = new DOMParser();
+                      const newDocument = dom.parseFromString(
+                        file,
+                        'application/xml',
+                      );
+                      const notes = await this.noteProcessor.run(newDocument);
+                      if (notes) {
+                        notes.forEach((value, key): void => {
+                          if (notesMap.has(key) && value.notes) {
+                            const noteChapter = notesMap.get(key);
+                            if (noteChapter && noteChapter.notes) {
+                              value.notes.forEach((note): void => {
+                                if (noteChapter.notes) {
+                                  this.mergeSecondaryNotes(
+                                    noteChapter.notes,
+                                    note,
+                                  );
+                                }
+                              });
+                            }
+                          } else {
+                            console.log('adsfasdf');
+                            notesMap.set(key, value);
+                          }
+                        });
+                      }
+                      console.log(notes);
+
+                      // await this.databaseService.updateDatabaseItem(notes);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  },
+                );
+              await Promise.all(promises);
             } catch (error) {
               console.log(error);
             }
-          };
-
-          reader.readAsArrayBuffer(zipFile);
-        }
-      });
+          }
+        },
+      );
+      await Promise.all(promises);
+      Array.from(notesMap.values()).map(
+        async (noteChapter): Promise<void> => {
+          await this.databaseService.updateDatabaseItem(noteChapter);
+        },
+      );
+      console.log('Finished');
     }
-    console.log(zipFiles);
+  }
+  public mergeSecondaryNotes(notes: Note[], note: Note): void {
+    const saveNote = notes.find((n): boolean => {
+      return n._id === note._id;
+    });
+    console.log(note.secondaryNotes);
+
+    if (saveNote) {
+      if (saveNote.secondaryNotes && note.secondaryNotes) {
+        saveNote.secondaryNotes = saveNote.secondaryNotes.concat(
+          note.secondaryNotes,
+        );
+      } else if (saveNote.secondaryNotes === undefined && note.secondaryNotes) {
+        saveNote.secondaryNotes = note.secondaryNotes;
+      }
+    } else {
+      notes.push(note);
+    }
   }
 }

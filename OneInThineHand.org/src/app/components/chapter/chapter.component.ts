@@ -11,12 +11,14 @@ import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute } from '@angular/router';
 import { ParamService } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
+import { ChapterNotes } from '../../../../../notes/src/main';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
+  public chapterNotes: ChapterNotes;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -48,7 +50,10 @@ export class ChapterComponent implements OnInit {
           this.chapterVerses = (await this.databaseService.getDatabaseItem(
             `${chapterParams.book}-${chapterParams.chapter}-eng-verses`,
           )) as ChapterVerses;
-          console.log(this.chapterVerses);
+          this.chapterNotes = (await this.databaseService.getDatabaseItem(
+            `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
+          )) as ChapterNotes;
+          console.log(this.chapterNotes);
 
           // this.notes = (await this.databaseService.getDatabaseItem(
           //   `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
