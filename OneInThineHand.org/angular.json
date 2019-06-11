@@ -24,12 +24,8 @@
               "src/favicon.256x256.png",
               "src/favicon.512x512.png"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [
-              "src/pouchdb-7.0.0.min.js"
-            ]
+            "styles": ["src/styles.scss"],
+            "scripts": ["src/pouchdb.min.js"]
           },
           "configurations": {
             "dev": {
@@ -96,9 +92,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "scripts": [],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -112,13 +106,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -130,12 +119,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
