@@ -7,6 +7,9 @@ import { VisibilityService } from '../../services/visibility.service';
 import { Location } from '@angular/common';
 import { HeaderService } from '../../services/header.service';
 import { ElectronService } from '../../providers/electron.service';
+import * as JSZip from 'jszip';
+import { NoteProcessor } from '../../../../../notes/src/main';
+import { PreprocessorService } from '../../services/preprocessor.service';
 
 @Component({
   selector: 'app-header',
@@ -22,8 +25,11 @@ export class HeaderComponent implements OnInit {
     public modalService: NgbModal,
     public headerService: HeaderService,
     private location: Location,
+    public preprocessorService: PreprocessorService,
     public electronService: ElectronService,
   ) {}
+
+  private noteProcessor = new NoteProcessor();
 
   public ngOnInit(): void {}
   public async navigationPaneToggle(): Promise<void> {
@@ -38,7 +44,6 @@ export class HeaderComponent implements OnInit {
     await this.saveStateService.save();
   }
   public async paragraphsVisible(): Promise<void> {
-    // this.textSelectionService.getSelection();
     this.saveStateService.data.paragraphsVisible = !this.saveStateService.data
       .paragraphsVisible;
 
@@ -85,4 +90,56 @@ export class HeaderComponent implements OnInit {
   }
 
   public async showOrphanRefs(): Promise<void> {}
+  public async loadChapterFile(event: Event): Promise<void> {
+    await this.preprocessorService.loadChapterFiles(event);
+    return;
+    // console.log(event);
+    // 'application/x-zip-compressed';
+
+    // const zipFiles = (event.target as HTMLInputElement).files;
+    // console.log('asodijfoiasjdf');
+    // //
+    // if (zipFiles) {
+    //   Array.from(zipFiles).map((zipFile): void => {
+    //     if (zipFile.type === 'application/x-zip-compressed') {
+    //       const reader = new FileReader();
+
+    //       reader.onload = async (): Promise<void> => {
+    //         try {
+    //           const zip = new JSZip();
+    //           const files = await zip.loadAsync(zipFile);
+
+    //           files.forEach(
+    //             async (fileName): Promise<void> => {
+    //               try {
+    //                 const file = await files.file(fileName).async('text');
+    //                 // console.log(file);
+
+    //                 const dom = new DOMParser();
+    //                 const newDocument = dom.parseFromString(
+    //                   file,
+    //                   'application/xml',
+    //                 );
+    //                 const notes = await this.noteProcessor.run(newDocument);
+    //                 console.log(notes);
+    //               } catch (error) {
+    //                 console.log(error);
+    //               }
+    //             },
+    //           );
+    //         } catch (error) {
+    //           console.log(error);
+    //         }
+    //       };
+
+    //       reader.readAsArrayBuffer(zipFile);
+    //     }
+    //   });
+    // }
+    // console.log(zipFiles);
+  }
+
+  public async loadNoteFile(event: Event): Promise<void> {
+    await this.preprocessorService.loadNoteFiles(event);
+  }
 }

@@ -152,6 +152,28 @@
       </li>
     </ul>
   </div>
+  <div class="modal-body">
+    <div>
+      Upload Chapter Files
+      <input
+        multiple
+        type="file"
+        name="chapter-file"
+        id="chapterFileOpener"
+        (change)="this.loadChapterFile($event)"
+      />
+    </div>
+    <div>
+      Upload Note Files
+      <input
+        type="file"
+        multiple
+        name="chapter-file"
+        id="chapterFileOpener"
+        (change)="this.loadNoteFile($event)"
+      />
+    </div>
+  </div>
   <div class="modal-footer">
     <button
       type="button"

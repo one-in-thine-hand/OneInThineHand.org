@@ -104,6 +104,7 @@
     "pouchdb": "^7.0.0",
     "prettier": "^1.17.1",
     "sass": "^1.21.0",
+    "stream": "0.0.2",
     "stylelint": "^10.0.1",
     "stylelint-config-recommended-scss": "^3.3.0",
     "stylelint-scss": "^3.8.0"

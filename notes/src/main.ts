@@ -169,7 +169,7 @@ export class NoteProcessor {
           const notes = Array.from(chapterElement.childNodes)
             .filter(
               (node): boolean => {
-                return node.nodeName === 'NOTE';
+                return node.nodeName.toLowerCase() === 'note';
               },
             )
             .map(
