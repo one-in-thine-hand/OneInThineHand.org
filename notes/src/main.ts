@@ -51,7 +51,7 @@ function parseSecondaryNotes(noteElement: Element): SecondaryNote[] {
   return Array.from(noteElement.childNodes)
     .filter(
       (childNode): boolean => {
-        return childNode.nodeName === 'DIV';
+        return childNode.nodeName.toLowerCase() === 'div';
       },
     )
     .map(
@@ -151,20 +151,30 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
   }:${verseMarker} Notes`;
 }
 
+export class ChapterNotes {
+  public _id: string;
+  public _rev: string | undefined;
+  public notes: Note[] | undefined;
+}
 export class NoteProcessor {
   public notesMap: Map<string, Note[]> = new Map();
+  public chapterNotesMap: Map<string, ChapterNotes> = new Map();
 
   /**
    * main
    */
   public async run(
     document: Document,
-  ): Promise<Map<string, Note[]> | undefined> {
+  ): Promise<Map<string, ChapterNotes> | undefined> {
     if (await isNoteFile(document)) {
       Array.from(document.querySelectorAll('div.chapter')).map(
         (chapterElement): void => {
           const id = chapterElement.id;
           // const notes: Note[] = [];
+          console.log(id);
+
+          const chapterNotes = new ChapterNotes();
+          chapterNotes._id = id.replace('chapter', 'notes');
 
           const notes = Array.from(chapterElement.childNodes)
             .filter(
@@ -189,16 +199,21 @@ export class NoteProcessor {
 
                 note.secondaryNotes = parseSecondaryNotes(noteElement);
 
+                console.log(note.secondaryNotes);
                 return note;
               },
             );
           // console.log(`${id} ${notes.length} ${this.notesMap.size}`);
 
+          chapterNotes.notes = notes;
+          // console.log(chapterNotes.notes[0].secondaryNotes);
+
+          this.chapterNotesMap.set(chapterNotes._id, chapterNotes);
           this.notesMap.set(id, notes);
         },
       );
       // console.log(this.notesMap.size);
-      return this.notesMap;
+      return this.chapterNotesMap;
     } else {
       return undefined;
     }
