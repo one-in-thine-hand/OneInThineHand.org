@@ -20,59 +20,126 @@ export class PreprocessorService {
 
     //
     if (zipFiles) {
-      Array.from(zipFiles).map((zipFile): void => {
-        if (zipFile.type === 'application/x-zip-compressed') {
-          const reader = new FileReader();
-          reader.onload = async (): Promise<void> => {
+      const promises = Array.from(zipFiles).map(
+        async (zipFile): Promise<void> => {
+          if (zipFile.type === 'application/x-zip-compressed') {
             try {
-              // const zip = new JSZip();
-              const files = await JSZip.loadAsync(zipFile);
+              const data = await new Response(zipFile).arrayBuffer();
+              const files = await JSZip.loadAsync(data);
+              const promises = Object.keys(files.files)
+                .filter((key): boolean => {
+                  return files.files[key].dir === false;
+                })
+                .map(
+                  async (key): Promise<void> => {
+                    try {
+                      // console.log(files.files[key]);
+                      const file = JSON.parse(
+                        await files.file(files.files[key].name).async('text'),
+                      ) as { _id: string; _rev: string | undefined };
+                      // console.log(file);
 
-              // this.processChapterFiles(files);
-              files.forEach(
-                async (fileName): Promise<void> => {
-                  try {
-                    // console.log(fileName);
-
-                    const file = await files.file(fileName).async('text');
-                    // console.log(file);
-                    const dom = new DOMParser();
-                    const newDocument = dom.parseFromString(
-                      file,
-                      'application/xml',
-                    );
-                    const chapterVerses = await this.formatTagProcessor.main(
-                      newDocument,
-                    );
-                    if (chapterVerses) {
-                      console.log(chapterVerses);
-                      this.databaseService.updateDatabaseItem(chapterVerses);
+                      await this.databaseService.updateDatabaseItem(file);
+                    } catch (error) {
+                      console.log(error);
                     }
-                    const chapter = await this.chapterProcessor.main(
-                      newDocument,
-                    );
-                    // await this.
-                    if (chapter === undefined || chapter._id === '--chapter') {
-                      throw 'File not a chapter';
-                    } else if (chapter) {
-                      this.databaseService.updateDatabaseItem(chapter);
-                    }
-                    console.log(chapter);
-                  } catch (error) {
-                    console.log(error);
-                  }
-                },
-              );
+                  },
+                );
+              await Promise.all(promises);
             } catch (error) {
               console.log(error);
             }
-          };
 
-          reader.readAsArrayBuffer(zipFile);
-        }
-      });
+            // const reader = new FileReader();
+            // reader.onload = async (): Promise<void> => {
+            //   try {
+            //     // const zip = new JSZip();
+            //     const files = await JSZip.loadAsync(zipFile);
+
+            //     // this.processChapterFiles(files);
+
+            //     const promises = Object.keys(files.files)
+            //       .filter((key): boolean => {
+            //         return files.files[key].dir === false;
+            //       })
+            //       .map(
+            //         async (key): Promise<void> => {
+            //           try {
+            //             console.log(files.files[key]);
+            //             const file = JSON.parse(
+            //               await files.file(files.files[key].name).async('text'),
+            //             ) as { _id: string; _rev: string | undefined };
+            //             console.log(file);
+
+            //             await this.databaseService.updateDatabaseItem(file);
+            //           } catch (error) {
+            //             console.log(error);
+            //           }
+            //         },
+            //       );
+
+            //     // files.forEach(
+            //     //   async (fileName): Promise<void> => {
+            //     //     try {
+            //     //       // console.log(fileName);
+
+            //     //       // console.log(fileName);
+
+            //     //       const file = JSON.parse(
+            //     //         await files.file(fileName).async('text'),
+            //     //       ) as { _id: string; _rev: string | undefined };
+            //     //       console.log(file);
+
+            //     //       await this.databaseService.updateDatabaseItem(file);
+
+            //     //       // // console.log(file);
+            //     //       // const dom = new DOMParser();
+            //     //       // const newDocument = dom.parseFromString(
+            //     //       //   file,
+            //     //       //   'application/xml',
+            //     //       // );
+            //     //       // const chapterVerses = await this.formatTagProcessor.main(
+            //     //       //   newDocument,
+            //     //       // );
+            //     //       // if (chapterVerses) {
+            //     //       //   console.log(chapterVerses);
+            //     //       //   this.databaseService.updateDatabaseItem(chapterVerses);
+            //     //       // }
+            //     //       // const chapter = await this.chapterProcessor.main(
+            //     //       //   newDocument,
+            //     //       // );
+            //     //       // // await this.
+            //     //       // if (chapter === undefined || chapter._id === '--chapter') {
+            //     //       //   throw 'File not a chapter';
+            //     //       // } else if (chapter) {
+            //     //       //   this.databaseService.updateDatabaseItem(chapter);
+            //     //       // }
+            //     //       // console.log(chapter);
+            //     //     } catch (error) {
+            //     //       console.log(error);
+            //     //     }
+            //     //   },
+            //     // );
+            //     // console.log(typeof s);
+
+            //     // await Promise.all(promises);
+            //     console.log(promises.length);
+            //     // console.log('Finished');
+            //     await Promise.all(promises);
+            //   } catch (error) {
+            //     console.log(error);
+            //   }
+            // };
+
+            // reader.readAsArrayBuffer(zipFile);
+            // return reader;
+          }
+        },
+      );
+      console.log(promises.length);
+      await Promise.all(promises);
+      console.log('Finished');
     }
-    console.log(zipFiles);
   }
 
   private processChapterFiles(files: JSZip) {}

@@ -92,6 +92,8 @@ export class HeaderComponent implements OnInit {
   public async showOrphanRefs(): Promise<void> {}
   public async loadChapterFile(event: Event): Promise<void> {
     await this.preprocessorService.loadChapterFiles(event);
+    console.log('Finished');
+
     return;
     // console.log(event);
     // 'application/x-zip-compressed';
