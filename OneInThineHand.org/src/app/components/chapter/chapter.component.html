@@ -19,9 +19,9 @@
   </div>
   <div id="bodyBlock">
     <app-body-block
-      *ngIf="verses && chapter"
+      *ngIf="this.chapterVerses && this.chapterVerses.verses && chapter"
       [chapter]="chapter"
-      [verses]="this.verses"
+      [verses]="this.chapterVerses.verses"
     ></app-body-block>
     <div
       class="white-space"

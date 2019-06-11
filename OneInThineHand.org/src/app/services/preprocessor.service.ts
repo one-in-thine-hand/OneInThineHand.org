@@ -3,12 +3,14 @@ import { NoteProcessor } from '../../../../notes/src/main';
 import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService } from './database.service';
+import { FormatTags } from '../../../../format-tags/src/main';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PreprocessorService {
   private noteProcessor = new NoteProcessor();
+  private formatTagProcessor = new FormatTags();
   private chapterProcessor = new ChapterProcessor();
   public constructor(private databaseService: DatabaseService) {}
 
@@ -26,6 +28,7 @@ export class PreprocessorService {
               // const zip = new JSZip();
               const files = await JSZip.loadAsync(zipFile);
 
+              // this.processChapterFiles(files);
               files.forEach(
                 async (fileName): Promise<void> => {
                   try {
@@ -33,21 +36,28 @@ export class PreprocessorService {
 
                     const file = await files.file(fileName).async('text');
                     // console.log(file);
-
                     const dom = new DOMParser();
                     const newDocument = dom.parseFromString(
                       file,
                       'application/xml',
                     );
+                    const chapterVerses = await this.formatTagProcessor.main(
+                      newDocument,
+                    );
+                    if (chapterVerses) {
+                      console.log(chapterVerses);
+                      this.databaseService.updateDatabaseItem(chapterVerses);
+                    }
                     const chapter = await this.chapterProcessor.main(
                       newDocument,
                     );
+                    // await this.
                     if (chapter === undefined || chapter._id === '--chapter') {
                       throw 'File not a chapter';
                     } else if (chapter) {
                       this.databaseService.updateDatabaseItem(chapter);
                     }
-                    // console.log(chapter);
+                    console.log(chapter);
                   } catch (error) {
                     console.log(error);
                   }
@@ -64,6 +74,8 @@ export class PreprocessorService {
     }
     console.log(zipFiles);
   }
+
+  private processChapterFiles(files: JSZip) {}
 
   public async loadNoteFiles(event: Event): Promise<void> {
     const zipFiles = (event.target as HTMLInputElement).files;
