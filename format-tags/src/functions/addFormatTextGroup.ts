@@ -69,7 +69,7 @@ function nodeToFormatGroup(
         formatGroups.push(new FormatGroupPageBreak());
         return count;
       } else {
-        console.log(node);
+        // console.log(node);
 
         throw 'Unknown FormatGroup detected';
       }

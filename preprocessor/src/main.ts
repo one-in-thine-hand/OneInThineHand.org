@@ -4,7 +4,7 @@ import { normalize } from 'path';
 import { uniq } from 'lodash';
 import { FormatTags } from '../../format-tags/src/main';
 import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
-import { dirname, basename } from 'path';
+import { basename } from 'path';
 import { JSDOM } from 'jsdom';
 import { ChapterProcessor } from '../../chapter/src/main';
 import { NoteProcessor } from '../../notes/src/main';
@@ -59,8 +59,10 @@ async function processScriptureFiles(
         // if (!(await pathExists(directory))) {
         //   await mkdirp(directory);
         // }
-        const directory = normalize(`../scripture_files/scriptures/`);
-        console.log(await pathExists(directory));
+        const directory = normalize(
+          `../scripture_files/scriptures/scriptures/`,
+        );
+        // console.log(await pathExists(directory));
 
         if (!(await pathExists(directory))) {
           await mkdirp(directory);
@@ -159,8 +161,8 @@ async function main(): Promise<void> {
   console.log('finished');
   notesMap.forEach(
     async (value, key): Promise<void> => {
-      const directory = normalize(dirname(`../scripture_files/scriptures/`));
-      if (!pathExists(directory)) {
+      const directory = normalize(`../scripture_files/scriptures/notes/`);
+      if (!(await pathExists(directory))) {
         await mkdirp(directory);
       }
 

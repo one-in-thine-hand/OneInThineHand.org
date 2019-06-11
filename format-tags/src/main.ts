@@ -20,7 +20,7 @@ export class FormatTags {
    * main
    */
   public async main(document: Document): Promise<ChapterVerses | undefined> {
-    console.log(document);
+    // console.log(document);
 
     if (await isChapter(document)) {
       const verses = await parseVerses(document);
@@ -28,7 +28,7 @@ export class FormatTags {
       chapterVerses.verses = verses;
       const language = await getLanguage(document);
       chapterVerses._id = `${await getID(document, language)}-verses`;
-      console.log(chapterVerses);
+      // console.log(chapterVerses);
       return chapterVerses;
       // return await parseVerses(document);
     } else {
