@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as MarkdownIt from 'markdown-it';
+import MarkdownIt from 'markdown-it';
 import { uniq } from 'lodash';
 import { FormatTag, FormatTagType } from '../../../../shared/src/shared';
 @Injectable({
@@ -21,11 +21,9 @@ export class MarkService {
       let outputText = this.markdownIt.render(
         `${markDownText.preText}<f>${text}</f>${markDownText.postText}`,
       );
-      ['<f>', '</f>', '<p>', '</p>'].map(
-        (replace): void => {
-          outputText = outputText.replace(replace, '');
-        },
-      );
+      ['<f>', '</f>', '<p>', '</p>'].map((replace): void => {
+        outputText = outputText.replace(replace, '');
+      });
       // console.log(outputText);
 
       return outputText;
@@ -41,23 +39,21 @@ export class MarkService {
       preText: '',
       postText: '',
     };
-    uniq(text).map(
-      (rich): void => {
-        let addedText = '';
-        switch (rich.formatType) {
-          case FormatTagType.verseNumber: {
-            addedText = '**';
-            break;
-          }
-          case FormatTagType.italic: {
-            addedText = '_';
-            break;
-          }
+    uniq(text).map((rich): void => {
+      let addedText = '';
+      switch (rich.formatType) {
+        case FormatTagType.verseNumber: {
+          addedText = '**';
+          break;
         }
-        commonMark.preText = `${addedText}${commonMark.preText}`;
-        commonMark.postText = `${commonMark.postText}${addedText}`;
-      },
-    );
+        case FormatTagType.italic: {
+          addedText = '_';
+          break;
+        }
+      }
+      commonMark.preText = `${addedText}${commonMark.preText}`;
+      commonMark.postText = `${commonMark.postText}${addedText}`;
+    });
 
     return commonMark;
   }

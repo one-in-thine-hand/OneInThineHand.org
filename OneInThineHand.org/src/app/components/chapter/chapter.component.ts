@@ -7,6 +7,9 @@ import { VisibilityService } from '../../services/visibility.service';
 import { OffsetService } from '../../services/offset.service';
 import { SaveStateService } from '../../services/save-state.service';
 import { HeaderService } from '../../services/header.service';
+import { DatabaseService } from '../../services/database.service';
+import { ActivatedRoute } from '@angular/router';
+import { ParamService } from '../../services/param.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -19,36 +22,57 @@ export class ChapterComponent implements OnInit {
     public visibilityService: VisibilityService,
     public saveStateService: SaveStateService,
     public headerService: HeaderService,
+    public databaseService: DatabaseService,
+    public activatedRouter: ActivatedRoute,
+    public paramService: ParamService,
   ) {}
 
   public chapter: Chapter | undefined;
   public verses: Verse[] | undefined;
   public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
-    try {
-      this.chapter = (await axios.get(
-        'assets/scriptures/heb-1-eng-chapter.json',
-      )).data as Chapter;
+    this.activatedRouter.params.subscribe(
+      async (params): Promise<void> => {
+        console.log(params);
+        const chapterParams = this.paramService.parseChapterParams(params);
 
-      this.verses = (await axios.get('assets/scriptures/heb-1-eng-verses.json'))
-        .data as Verse[];
-      this.notes = (await axios.get('assets/scriptures/heb-1-eng-notes.json'))
-        .data as Note[];
-      this.offsetService.expandNotes(this.notes);
-      this.chapterService.mergeVersesNotes(this.verses, this.notes);
+        try {
+          // try {
+          // } catch (error) {
+          //   console.log('error');
+          // }
+          this.chapter = (await this.databaseService.getDatabaseItem(
+            `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
+          )) as Chapter;
+          console.log(this.chapter);
 
-      this.chapterService.chapter = this.chapter;
-      this.chapterService.verses = this.verses;
-      this.chapterService.notes = this.notes;
-      this.headerService.headerTitle = this.chapter.title;
-      this.headerService.headerShortTitle = this.chapter.shortTitle;
-      this.visibilityService.resetNoteVisibility(this.notes);
-      // console.log(this.chapter);
-      // console.log(this.verses);
-      // console.log(this.notes);
-    } catch (error) {
-      console.log(error);
-    }
+          // this.chapter = (await axios.get(
+          //   'assets/scriptures/heb-1-eng-chapter.json',
+          // )).data as Chapter;
+
+          this.verses = (await axios.get(
+            'assets/scriptures/heb-1-eng-verses.json',
+          )).data as Verse[];
+          this.notes = (await axios.get(
+            'assets/scriptures/heb-1-eng-notes.json',
+          )).data as Note[];
+          this.offsetService.expandNotes(this.notes);
+          this.chapterService.mergeVersesNotes(this.verses, this.notes);
+
+          this.chapterService.chapter = this.chapter;
+          this.chapterService.verses = this.verses;
+          this.chapterService.notes = this.notes;
+          this.headerService.headerTitle = this.chapter.title;
+          this.headerService.headerShortTitle = this.chapter.shortTitle;
+          this.visibilityService.resetNoteVisibility(this.notes);
+          // console.log(this.chapter);
+          // console.log(this.verses);
+          // console.log(this.notes);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    );
   }
 
   public onScroll(): void {

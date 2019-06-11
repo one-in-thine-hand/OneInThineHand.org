@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NoteProcessor } from '../../../../notes/src/main';
 import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import * as JSZip from 'jszip';
 export class PreprocessorService {
   private noteProcessor = new NoteProcessor();
   private chapterProcessor = new ChapterProcessor();
-  public constructor() {}
+  public constructor(private databaseService: DatabaseService) {}
 
   public async loadChapterFiles(event: Event): Promise<void> {
     const zipFiles = (event.target as HTMLInputElement).files;
@@ -22,13 +23,13 @@ export class PreprocessorService {
           const reader = new FileReader();
           reader.onload = async (): Promise<void> => {
             try {
-              const zip = new JSZip();
-              const files = await zip.loadAsync(zipFile);
+              // const zip = new JSZip();
+              const files = await JSZip.loadAsync(zipFile);
 
               files.forEach(
                 async (fileName): Promise<void> => {
                   try {
-                    console.log(fileName);
+                    // console.log(fileName);
 
                     const file = await files.file(fileName).async('text');
                     // console.log(file);
@@ -41,13 +42,12 @@ export class PreprocessorService {
                     const chapter = await this.chapterProcessor.main(
                       newDocument,
                     );
-                    if (
-                      chapter === undefined ||
-                      (chapter.title === '' || chapter.shortTitle === '')
-                    ) {
+                    if (chapter === undefined || chapter._id === '--chapter') {
                       throw 'File not a chapter';
+                    } else if (chapter) {
+                      this.databaseService.updateDatabaseItem(chapter);
                     }
-                    console.log(chapter);
+                    // console.log(chapter);
                   } catch (error) {
                     console.log(error);
                   }
@@ -76,8 +76,7 @@ export class PreprocessorService {
 
           reader.onload = async (): Promise<void> => {
             try {
-              const zip = new JSZip();
-              const files = await zip.loadAsync(zipFile);
+              const files = await JSZip.loadAsync(zipFile);
 
               files.forEach(
                 async (fileName): Promise<void> => {
