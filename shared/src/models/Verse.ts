@@ -23,4 +23,6 @@ export class Verse {
   public formatTags: FormatTag[] | undefined;
   public nodeName: NodeName | undefined;
   public note: Note | undefined;
+  public context: boolean | undefined;
+  public highlight: boolean | undefined;
 }
