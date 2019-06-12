@@ -19,7 +19,9 @@ export class DatabaseService {
     } catch (error) {
       console.log(error);
     }
-    this.db.put(item);
+    console.log(item);
+
+    await this.db.put(item);
 
     // console.log(this.db);
   }
@@ -29,4 +31,24 @@ export class DatabaseService {
   ): Promise<{ _id: string; _rev: string }> {
     return await this.db.get(_id);
   }
+
+  public async bulkDocs(items: DatabaseItem[]): Promise<void> {
+    const docs = await this.db.allDocs();
+
+    docs.rows.map((doc): void => {
+      const item = items.find((item): boolean => {
+        return item._id === doc.id;
+      });
+      if (item) {
+        item._rev = doc.value.rev;
+      }
+    });
+
+    await this.db.bulkDocs(items);
+  }
+}
+
+export interface DatabaseItem {
+  _id: string;
+  _rev: string | undefined;
 }

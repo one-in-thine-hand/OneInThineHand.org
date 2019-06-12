@@ -102,6 +102,7 @@
     "markdown-it": "^8.4.2",
     "marked": "^0.6.2",
     "normalizecss": "^3.0.0",
+    "p-queue": "^6.0.2",
     "pouchdb-browser": "^7.0.0",
     "prettier": "^1.17.1",
     "sass": "^1.21.0",

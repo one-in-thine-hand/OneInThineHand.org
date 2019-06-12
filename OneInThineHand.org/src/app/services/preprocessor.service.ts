@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { NoteProcessor, ChapterNotes } from '../../../../notes/src/main';
 import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
-import { DatabaseService } from './database.service';
+import { DatabaseService, DatabaseItem } from './database.service';
 import { FormatTags } from '../../../../format-tags/src/main';
 import { Note } from '../../../../shared/src/shared';
+import PQueue from 'p-queue';
 
 @Injectable({
   providedIn: 'root',
@@ -15,46 +16,121 @@ export class PreprocessorService {
   private chapterProcessor = new ChapterProcessor();
   public constructor(private databaseService: DatabaseService) {}
 
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
+    }
+    return newArray;
+  }
+
   public async loadChapterFiles(event: Event): Promise<void> {
     const zipFiles = (event.target as HTMLInputElement).files;
     console.log(zipFiles);
 
     //
     if (zipFiles) {
+      const queue = new PQueue({ concurrency: 1 });
       const promises = Array.from(zipFiles).map(
         async (zipFile): Promise<void> => {
           if (zipFile.type === 'application/x-zip-compressed') {
             try {
               const data = await new Response(zipFile).arrayBuffer();
               const files = await JSZip.loadAsync(data);
-              const promises = Object.keys(files.files)
-                .filter((key): boolean => {
+              const onlyFiles = this.sliceArray(
+                Object.keys(files.files).filter((key): boolean => {
                   return files.files[key].dir === false;
-                })
-                .map(
-                  async (key): Promise<void> => {
-                    try {
-                      // console.log(files.files[key]);
-                      const file = JSON.parse(
-                        await files.file(files.files[key].name).async('text'),
-                      ) as { _id: string; _rev: string | undefined };
-                      // console.log(file);
+                }),
+                100,
+              );
 
-                      await this.databaseService.updateDatabaseItem(file);
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  },
-                );
+              const promises = onlyFiles.map(
+                async (onlyFile): Promise<void> => {
+                  await queue.add(
+                    async (): Promise<void> => {
+                      const items: DatabaseItem[] = [];
+                      const promises = onlyFile.map(
+                        async (key): Promise<void> => {
+                          try {
+                            // console.log(files.files[key]);
+                            const file = JSON.parse(
+                              await files
+                                .file(files.files[key].name)
+                                .async('text'),
+                            ) as { _id: string; _rev: string | undefined };
+                            // console.log(file);
+                            // console.log(file);
+                            items.push(file);
+                            // await this.databaseSerQvice.updateDatabaseItem(file);
+                          } catch (error) {
+                            console.log(error);
+                          }
+                        },
+                      );
+                      await Promise.all(promises);
+                      console.log(items);
+                      await this.databaseService.bulkDocs(items);
+                    },
+                  );
+                },
+              );
               await Promise.all(promises);
+
+              // const promises = Object.keys(files.files)
+              //   .filter((key): boolean => {
+              //     return files.files[key].dir === false;
+              //   })
+              //   .map(
+              //     async (key): Promise<void> => {
+              //       try {
+              //         // console.log(files.files[key]);
+              //         const file = JSON.parse(
+              //           await files.file(files.files[key].name).async('text'),
+              //         ) as { _id: string; _rev: string | undefined };
+              //         // console.log(file);
+              //         console.log(file);
+              //         items.push(file);
+              //         // await this.databaseService.updateDatabaseItem(file);
+              //       } catch (error) {
+              //         console.log(error);
+              //       }
+              //     },
+              //   );
+              // await Promise.all(promises);
             } catch (error) {
               console.log(error);
             }
           }
         },
       );
-      console.log(promises.length);
+      // queue.
+      // console.log(promises.length);
       await Promise.all(promises);
+      // console.log(items);
+
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
+      console.log('Finished');
       console.log('Finished');
     }
   }
