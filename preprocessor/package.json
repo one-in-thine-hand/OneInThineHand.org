@@ -26,6 +26,7 @@
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
+    "start": " tsc && node --abort-on-uncaught-exception --max-old-space-size=16000 build/preprocessor/src/main.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },

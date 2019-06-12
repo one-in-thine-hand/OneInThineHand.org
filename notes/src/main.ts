@@ -89,42 +89,42 @@ async function isNoteFile(document: Document): Promise<boolean> {
   return document.querySelector('div.chapter') !== null;
 }
 
-function parseVerseNumber(noteElement: Element, chapterID: string): string {
-  const verseMarkerElement = noteElement.querySelector('[verse-marker]');
-  let verseMarker: string | null = null;
-  if (verseMarkerElement) {
-    verseMarker = verseMarkerElement.getAttribute('verse-marker');
-  }
-  if (verseMarker !== null) {
-    // console.log(verseMarker);
+// function parseVerseNumber(noteElement: Element, chapterID: string): string {
+//   const verseMarkerElement = noteElement.querySelector('[verse-marker]');
+//   let verseMarker: string | null = null;
+//   if (verseMarkerElement) {
+//     verseMarker = verseMarkerElement.getAttribute('verse-marker');
+//   }
+//   if (verseMarker !== null) {
+//     // console.log(verseMarker);
 
-    return verseMarker;
-  } else {
-    const name = bookNames.find(
-      (bookName): boolean => {
-        return chapterID.startsWith(bookName.startsWith);
-      },
-    );
-    return name
-      ? chapterID
-          .replace(name.startsWith, '')
-          .replace('-eng-chapter', '')
-          .replace('-tc-chapter', '')
-          .replace('-new-chapter', '')
-      : '';
-  }
+//     return verseMarker;
+//   } else {
+//     const name = bookNames.find(
+//       (bookName): boolean => {
+//         return chapterID.startsWith(bookName.startsWith);
+//       },
+//     );
+//     return name
+//       ? chapterID
+//           .replace(name.startsWith, '')
+//           .replace('-eng-chapter', '')
+//           .replace('-tc-chapter', '')
+//           .replace('-new-chapter', '')
+//       : '';
+//   }
 
-  return noteElement.id
-    .replace(
-      chapterID
-        .replace('-eng-chapter', '')
-        .replace('-tc-chapter', '')
-        .replace('-new-chapter', ''),
-      '',
-    )
-    .replace('-eng-note', '')
-    .replace('-', '');
-}
+//   return noteElement.id
+//     .replace(
+//       chapterID
+//         .replace('-eng-chapter', '')
+//         .replace('-tc-chapter', '')
+//         .replace('-new-chapter', ''),
+//       '',
+//     )
+//     .replace('-eng-note', '')
+//     .replace('-', '');
+// }
 
 function parseShortTitle(verseMarker: string): string {
   return `Verse ${verseMarker} Notes`;
@@ -171,7 +171,7 @@ export class NoteProcessor {
         (chapterElement): void => {
           const id = chapterElement.id;
           // const notes: Note[] = [];
-          console.log(id);
+          // console.log(id);
 
           const chapterNotes = new ChapterNotes();
           chapterNotes._id = id.replace('chapter', 'notes');
@@ -190,16 +190,23 @@ export class NoteProcessor {
                 if (!note._id.includes('eng-note')) {
                   note._id = `${note._id}-eng-note`;
                 }
-                const verseMarker = parseVerseNumber(
-                  noteElement,
-                  chapterElement.id,
-                );
+                const verseMarker = note._id.split('-')[2];
+                // console.log(verseMarker);
+
+                // const verseMarker = parseVerseNumber(
+                //   noteElement,
+                //   chapterElement.id,
+                // );
+                // console.log(note._id.split('-')[1]);
+
                 note.noteShortTitle = parseShortTitle(verseMarker);
                 note.noteTitle = parseNoteTitle(verseMarker, chapterElement.id);
+                // console.log(note.noteShortTitle);
+                // console.log(note.noteTitle);
 
                 note.secondaryNotes = parseSecondaryNotes(noteElement);
 
-                console.log(note.secondaryNotes);
+                // console.log(note.secondaryNotes);
                 return note;
               },
             );
