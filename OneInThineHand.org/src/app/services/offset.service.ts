@@ -52,7 +52,7 @@ export class OffsetService {
               secondaryNote.formatTag = formatTag;
             }
 
-            console.log(secondaryNote.offsets);
+            // console.log(secondaryNote.offsets);
           });
         }
       });

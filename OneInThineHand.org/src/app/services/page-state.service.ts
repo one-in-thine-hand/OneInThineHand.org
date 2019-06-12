@@ -25,7 +25,7 @@ export class PageStateService {
 
   public async pageStateExists(chapterID: string): Promise<boolean> {
     try {
-      console.log(chapterID.replace('chapter', 'page-state'));
+      // console.log(chapterID.replace('chapter', 'page-state'));
 
       // const pageState = await this.databaseService.getDatabaseItem(
       //   chapterID.replace('chapter', 'page-state'),
@@ -34,7 +34,7 @@ export class PageStateService {
       const pageState = this.pageStateMap.get(
         chapterID.replace('chapter', 'page-state'),
       );
-      console.log(chapterID.replace('chapter', 'page-state'));
+      // console.log(chapterID.replace('chapter', 'page-state'));
 
       this.currentPageState = pageState as PageState;
       if (
@@ -84,13 +84,13 @@ export class PageStateService {
     if (this.timer) {
       clearInterval(this.timer);
     }
-    this.timer = setInterval(async (): Promise<void> => {
-      if (this.currentPageState) {
-        this.setScrollTop();
-        // console.log(this.currentPageState);
-        // await this.databaseService.updateDatabaseItem(this.currentPageState);
-      }
-    }, 2000);
+    // this.timer = setInterval(async (): Promise<void> => {
+    //   if (this.currentPageState) {
+    //     this.setScrollTop();
+    //     // console.log(this.currentPageState);
+    //     // await this.databaseService.updateDatabaseItem(this.currentPageState);
+    //   }
+    // }, 2000);
   }
 
   public setScrollTop(): void {

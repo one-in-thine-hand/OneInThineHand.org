@@ -25,15 +25,26 @@ export class VerseComponent implements OnInit {
       expandOffsets(this.verse.formatTags);
 
       // console.log(this.verse);
-      return this.verse.formatGroups.filter(
-        (formatGroup): boolean => {
-          return (
-            formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
-            formatGroup.formatGroupType !== FormatGroupType.BR
-          );
-        },
-      ); // this.verse.formatTags.map((f): void => {});
+      return this.verse.formatGroups.filter((formatGroup): boolean => {
+        return (
+          formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+          formatGroup.formatGroupType !== FormatGroupType.BR
+        );
+      }); // this.verse.formatTags.map((f): void => {});
     }
     return [];
+  }
+
+  public getClassList(): string {
+    const classList: string[] = [];
+
+    if (this.verse.context) {
+      classList.push('oith-context');
+    }
+    if (this.verse.highlight) {
+      classList.push('oith-highlight');
+    }
+
+    return classList.toString().replace(/,/g, ' ');
   }
 }

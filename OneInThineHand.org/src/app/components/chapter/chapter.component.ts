@@ -7,11 +7,12 @@ import { SaveStateService } from '../../services/save-state.service';
 import { HeaderService } from '../../services/header.service';
 import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute } from '@angular/router';
-import { ParamService } from '../../services/param.service';
+import { ParamService, ChapterParams } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
 import onChange from 'on-change';
 import { PageStateService } from '../../services/page-state.service';
+import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -51,74 +52,132 @@ export class ChapterComponent implements OnInit {
 
         console.log(params);
         const chapterParams = this.paramService.parseChapterParams(params);
-
+        console.log(chapterParams);
         if (
-          this.popStateActivated &&
-          (await this.pageStateService.pageStateExists(
-            `${chapterParams.book}-${chapterParams.chapter}-eng-page-state`,
-          ))
+          this.chapter &&
+          this.chapterVerses &&
+          this.chapterVerses.verses &&
+          this.chapter._id ===
+            `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`
         ) {
-          if (this.pageStateService.currentPageState) {
-            this.chapter = this.pageStateService.currentPageState.chapter;
-            this.chapterVerses = this.pageStateService.currentPageState.chapterVerses;
-            console.log('asdfoij');
-
-            this.chapterNotes = this.pageStateService.currentPageState.chapterNotes;
-            await this.setChapterVariables(
-              this.chapterNotes,
-              this.chapterVerses,
-              this.chapter,
-              false,
-            );
-            const chapterGrid = document.querySelector('.chapter-grid');
-            const notesGrid = document.querySelector('#notes');
-            console.log(this.pageStateService.currentPageState);
-
-            if (chapterGrid) {
-              chapterGrid.scrollTop = this.pageStateService.currentPageState.chapterGridScrollTop;
-            }
-            if (notesGrid) {
-              notesGrid.scrollTop = this.pageStateService.currentPageState.notesScrollTop;
-            }
-            this.popStateActivated = false;
-          }
+          this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
-          try {
-            // try {
-            // } catch (error) {
-            //   console.log('error');
-            // }
+          if (
+            this.popStateActivated &&
+            (await this.pageStateService.pageStateExists(
+              `${chapterParams.book}-${chapterParams.chapter}-eng-page-state`,
+            ))
+          ) {
+            if (this.pageStateService.currentPageState) {
+              this.chapter = this.pageStateService.currentPageState.chapter;
+              this.chapterVerses = this.pageStateService.currentPageState.chapterVerses;
 
-            this.chapter = (await this.databaseService.getDatabaseItem(
-              `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
-            )) as Chapter;
-            this.chapterVerses = (await this.databaseService.getDatabaseItem(
-              `${chapterParams.book}-${chapterParams.chapter}-eng-verses`,
-            )) as ChapterVerses;
-            this.chapterNotes = (await this.databaseService.getDatabaseItem(
-              `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
-            )) as ChapterNotes;
-            console.log(this.chapterNotes.notes);
-            console.log(this.chapterVerses);
+              this.chapterNotes = this.pageStateService.currentPageState.chapterNotes;
+              await this.setChapterVariables(
+                this.chapterNotes,
+                this.chapterVerses,
+                this.chapter,
+                false,
+              );
+              const chapterGrid = document.querySelector('.chapter-grid');
+              const notesGrid = document.querySelector('#notes');
 
-            // this.notes = (await axios.get(
-            //   'assets/scriptures/heb-1-eng-notes.json',
-            // )).data as Note[];
-            await this.setChapterVariables(
-              this.chapterNotes,
-              this.chapterVerses,
-              this.chapter,
-            );
-            // console.log(this.chapter);
-            // console.log(this.verses);
-            // console.log(this.notes);
-          } catch (error) {
-            console.log(error);
+              if (chapterGrid) {
+                chapterGrid.scrollTop = this.pageStateService.currentPageState.chapterGridScrollTop;
+              }
+              if (notesGrid) {
+                notesGrid.scrollTop = this.pageStateService.currentPageState.notesScrollTop;
+              }
+              this.popStateActivated = false;
+            }
+          } else {
+            try {
+              this.chapter = (await this.databaseService.getDatabaseItem(
+                `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
+              )) as Chapter;
+              this.chapterVerses = (await this.databaseService.getDatabaseItem(
+                `${chapterParams.book.replace('_', '-')}-${
+                  chapterParams.chapter
+                }-eng-verses`,
+              )) as ChapterVerses;
+              this.chapterNotes = (await this.databaseService.getDatabaseItem(
+                `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
+              )) as ChapterNotes;
+              if (this.chapterVerses.verses) {
+                this.setHighlighting(chapterParams, this.chapterVerses.verses);
+              }
+
+              await this.setChapterVariables(
+                this.chapterNotes,
+                this.chapterVerses,
+                this.chapter,
+              );
+            } catch (error) {
+              console.log(error);
+            }
           }
         }
         this.popStateActivated = false;
       },
     );
+  }
+
+  private setHighlighting(chapterParams: ChapterParams, verses: Verse[]): void {
+    const highlightOffSets = parseOffsets(chapterParams.highlight);
+    const contextOffsets = parseOffsets(chapterParams.context);
+
+    // console.log(this.getHighlightVerses(chapterParams, contextOffsets, verses));
+    // console.log(contextOffsets);
+    verses.forEach((verse): void => {
+      verse.highlight = false;
+      verse.context = false;
+    });
+
+    this.getHighlightVerses(chapterParams, highlightOffSets, verses).map(
+      (v): void => {
+        v.highlight = true;
+      },
+    );
+    this.getHighlightVerses(chapterParams, contextOffsets, verses).map(
+      (v): void => {
+        v.context = true;
+      },
+    );
+    // verses.map((verse): void => {
+    //   console.log(verse._id);
+
+    //   console.log(
+    //     `${chapterParams.book.replace('_', '-')}-${
+    //       chapterParams.chapter
+    //     }-eng-verse` === verse._id,
+    //   );
+    // });
+  }
+
+  public getHighlightVerses(
+    chapterParams: ChapterParams,
+    context: number[] | undefined,
+    verses: Verse[],
+  ): Verse[] {
+    if (context) {
+      const filteredVerses = context.map((c): Verse | undefined => {
+        return verses.find((verse): boolean => {
+          return (
+            verse._id ===
+            `${chapterParams.book.replace('_', '-')}-${
+              chapterParams.chapter
+            }-${c}-eng-verse`
+          );
+        });
+      });
+      console.log(filteredVerses);
+
+      return filteredVerses.filter((v): boolean => {
+        return v !== undefined;
+      }) as Verse[];
+    } else {
+      return [];
+    }
   }
 
   private async setChapterVariables(
@@ -176,34 +235,13 @@ export class ChapterComponent implements OnInit {
             noteElement.scrollIntoView();
           }
         }
-        // console.log(
-        //   `${verseElement.id} ${verseElement.getBoundingClientRect().bottom}`,
-        // );
+
         break;
       }
     }
-    // Array.from(document.querySelectorAll('verse')).map(
-    //   (verseElement): void => {},
-    // );
   }
 
   public getWhiteSpaceHeight(): string {
-    // const verseElements = Array.from(document.querySelectorAll('verse'));
-
-    // if (verseElements.length > 0) {
-    //   const total = verseElements
-    //     .map(
-    //       (verseElement): number => {
-    //         return (verseElement as HTMLElement).clientHeight;
-    //       },
-    //     )
-    //     .reduce(
-    //       (v, v2): number => {
-    //         return v + v2;
-    //       },
-    //     );
-    //   console.log(total);
-    // }
     return `${window.innerHeight - 34}px`;
   }
 }
