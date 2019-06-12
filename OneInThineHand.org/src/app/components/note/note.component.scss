@@ -1,8 +1,12 @@
 ul {
   list-style: none;
 }
+.note-phrase {
+  user-select: none;
+}
 
 :host-context(.app-note) > ul {
+  background-color: gainsboro;
   margin: 0;
   padding: 0;
   ul {

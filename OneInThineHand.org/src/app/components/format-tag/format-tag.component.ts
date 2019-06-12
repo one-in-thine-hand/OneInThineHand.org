@@ -5,6 +5,7 @@ import {
   formatTagTypeOptions,
   DisplayAs,
   FormatTagType,
+  Verse,
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
@@ -16,6 +17,7 @@ import { last } from 'lodash';
 })
 export class FormatTagComponent implements OnInit {
   @Input() public fMerged: FMerged;
+  @Input() public verse: Verse;
   public constructor(public markService: MarkService) {}
 
   public ngOnInit(): void {}

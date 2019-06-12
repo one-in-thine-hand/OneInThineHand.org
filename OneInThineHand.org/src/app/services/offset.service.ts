@@ -9,6 +9,8 @@ export class OffsetService {
   public constructor() {}
 
   public expandNotes(notes: Note[] | undefined): void {
+    console.log(notes);
+
     if (notes) {
       notes.map((note): void => {
         if (note.secondaryNotes) {

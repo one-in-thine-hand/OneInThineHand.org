@@ -5,7 +5,9 @@
       class="secondary-note"
       *ngFor="let secondaryNote of getSecondaryNotes()"
     >
-      <li class="note-phrase">{{ getNotePhrase(secondaryNote.notePhrase) }}</li>
+      <li (click)="this.notePhraseClick(secondaryNote)" class="note-phrase">
+        {{ getNotePhrase(secondaryNote.notePhrase) }}
+      </li>
       <ul class="note-refs" *ngIf="secondaryNote.noteRefs">
         <li *ngFor="let noteRef of getNoteRefs(secondaryNote)">
           <span>{{ convertNoteCategory(noteRef) }}</span>

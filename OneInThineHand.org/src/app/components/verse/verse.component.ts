@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import {
   Verse,
   expandOffsets,
@@ -16,6 +16,11 @@ export class VerseComponent implements OnInit {
   public constructor() {}
 
   public ngOnInit(): void {}
+
+  // @HostListener('mouseup', ['$event'])
+  // public onPopState(event: PopStateEvent): void {
+  //   // console.log(event);
+  // }
 
   public getFormatGroups(): FormatGroup[] {
     // console.log(this.verse);
