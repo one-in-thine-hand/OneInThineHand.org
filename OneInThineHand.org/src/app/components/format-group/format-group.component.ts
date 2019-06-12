@@ -50,16 +50,14 @@ export class FormatGroupComponent implements OnInit {
     if (lastMerged !== undefined) {
       mergedFormatTags.push(lastMerged);
     }
-    mergedFormatTags.map(
-      (u): void => {
-        if (u.offsets && this.verse.text) {
-          const f = first(u.offsets);
-          const l = last(u.offsets);
+    mergedFormatTags.map((u): void => {
+      if (u.offsets && this.verse.text) {
+        const f = first(u.offsets);
+        const l = last(u.offsets);
 
-          u.text = this.verse.text.slice(f, (l as number) + 1);
-        }
-      },
-    );
+        u.text = this.verse.text.slice(f, (l as number) + 1);
+      }
+    });
     // console.log(mergedFormatTags);
 
     // console.log(f);
@@ -91,47 +89,50 @@ export class FormatGroupComponent implements OnInit {
   private getMergedTags(fMerged: FMerged, offset: number): void {
     fMerged.offsets = [offset];
 
-    fMerged.formatTags = this.formatTags.filter(
-      (f): boolean => {
-        return (
-          f.uncompressedOffsets !== undefined &&
-          f.uncompressedOffsets.includes(offset)
-        );
-      },
-    );
+    fMerged.formatTags = this.formatTags.filter((f): boolean => {
+      return (
+        f.uncompressedOffsets !== undefined &&
+        f.uncompressedOffsets.includes(offset)
+      );
+    });
   }
 
   private getRefTags(fMerged: FMerged, offset: number): void {
     if (this.verse.note && this.verse.note.secondaryNotes) {
-      this.verse.note.secondaryNotes.map(
-        (secondaryNote): void => {
-          if (secondaryNote.refTag) {
-            if (
-              secondaryNote.offsets === 'all' ||
-              (secondaryNote.uncompressedOffsets &&
-                secondaryNote.uncompressedOffsets.includes(offset))
-            ) {
-              fMerged.refTags
-                ? fMerged.refTags.push(secondaryNote.refTag)
-                : (fMerged.refTags = [secondaryNote.refTag]);
-            }
+      this.verse.note.secondaryNotes.map((secondaryNote): void => {
+        if (secondaryNote.refTag) {
+          if (
+            secondaryNote.offsets === 'all' ||
+            (secondaryNote.uncompressedOffsets &&
+              secondaryNote.uncompressedOffsets.includes(offset))
+          ) {
+            fMerged.refTags
+              ? fMerged.refTags.push(secondaryNote.refTag)
+              : (fMerged.refTags = [secondaryNote.refTag]);
           }
-        },
-      );
-      this.verse.note.secondaryNotes.map(
-        (secondaryNote): void => {
-          if (secondaryNote.formatTag) {
-            if (secondaryNote.formatTag.offsets === 'all') {
-              fMerged.formatTags.push(secondaryNote.formatTag);
-            } else if (
-              secondaryNote.formatTag.uncompressedOffsets &&
-              secondaryNote.formatTag.uncompressedOffsets.includes(offset)
-            ) {
-              fMerged.formatTags.push(secondaryNote.formatTag);
-            }
+        }
+      });
+      this.verse.note.secondaryNotes.map((secondaryNote): void => {
+        if (secondaryNote.formatTag) {
+          if (secondaryNote.formatTag.offsets === 'all') {
+            fMerged.formatTags.push(secondaryNote.formatTag);
+          } else if (
+            secondaryNote.formatTag.uncompressedOffsets &&
+            secondaryNote.formatTag.uncompressedOffsets.includes(offset)
+          ) {
+            fMerged.formatTags.push(secondaryNote.formatTag);
           }
-        },
-      );
+        }
+      });
     }
+  }
+
+  public getOffSets(f: FMerged): string {
+    // console.log(f);
+
+    if (f.offsets) {
+      return `${f.offsets[0]}-${last(f.offsets)}`;
+    }
+    return '0,0';
   }
 }

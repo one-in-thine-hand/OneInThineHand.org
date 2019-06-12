@@ -1,4 +1,8 @@
-<verse [id]="verse._id" class="{{ this.getClassList() }}">
+<verse
+  [id]="verse._id"
+  class="{{ this.getClassList() }}"
+  [attr.offsets]="this.getOffSets()"
+>
   <app-format-group
     *ngFor="let formatGroup of this.getFormatGroups()"
     [verse]="verse"

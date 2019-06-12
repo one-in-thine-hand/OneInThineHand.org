@@ -47,4 +47,8 @@ export class VerseComponent implements OnInit {
 
     return classList.toString().replace(/,/g, ' ');
   }
+
+  public getOffSets(): string {
+    return `0-${this.verse.text ? this.verse.text.length - 1 : 0}`;
+  }
 }

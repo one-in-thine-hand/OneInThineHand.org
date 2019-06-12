@@ -7,6 +7,7 @@ import {
   FormatTagType,
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
+import { last } from 'lodash';
 
 @Component({
   selector: 'app-format-tag',
@@ -70,5 +71,14 @@ export class FormatTagComponent implements OnInit {
       console.log();
     }
     return classList.toString().replace(/,/s, ' ');
+  }
+
+  public getOffSets(): string {
+    // console.log(f);
+
+    if (this.fMerged.offsets) {
+      return `${this.fMerged.offsets[0]}-${last(this.fMerged.offsets)}`;
+    }
+    return '0,0';
   }
 }

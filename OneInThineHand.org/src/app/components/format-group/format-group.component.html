@@ -1,4 +1,5 @@
 <app-format-tag
   *ngFor="let f of getFormatTags()"
+  [attr.offsets]="this.getOffSets(f)"
   [fMerged]="f"
 ></app-format-tag>
