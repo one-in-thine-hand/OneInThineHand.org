@@ -10,27 +10,31 @@ import { PageState } from './PageState';
   providedIn: 'root',
 })
 export class PageStateService {
+  public pageStateMap: Map<string, PageState> = new Map();
   public currentPageState: PageState | undefined;
   public timer: NodeJS.Timer | undefined;
   public constructor(
     private databaseService: DatabaseService,
     private router: Router,
   ) {
-    router.events.subscribe((value): void => {
-      this.currentPageState = undefined;
-      this.timer = undefined;
-    });
+    // router.events.subscribe((value): void => {
+    //   this.currentPageState = undefined;
+    //   this.timer = undefined;
+    // });
   }
 
   public async pageStateExists(chapterID: string): Promise<boolean> {
     try {
       console.log(chapterID.replace('chapter', 'page-state'));
 
-      const pageState = await this.databaseService.getDatabaseItem(
+      // const pageState = await this.databaseService.getDatabaseItem(
+      //   chapterID.replace('chapter', 'page-state'),
+      // );
+
+      const pageState = this.pageStateMap.get(
         chapterID.replace('chapter', 'page-state'),
       );
-
-      console.log(pageState);
+      console.log(chapterID.replace('chapter', 'page-state'));
 
       this.currentPageState = pageState as PageState;
       if (
@@ -39,6 +43,7 @@ export class PageStateService {
         this.currentPageState.chapterNotes &&
         this.currentPageState.chapterVerses
       ) {
+        this.startHistory();
         return true;
       } else {
         this.currentPageState = undefined;
@@ -58,23 +63,34 @@ export class PageStateService {
     chapterNotes: ChapterNotes,
   ): Promise<void> {
     // console.log('oiasdjfoiajsdf');
-    this.timer = undefined;
-    if (!this.currentPageState) {
-      this.currentPageState = new PageState();
-      this.currentPageState._id = chapter._id.replace('chapter', 'page-state');
+    // this.timer = undefined;
+    if (this.timer) {
+      clearInterval(this.timer);
     }
+    // if (!this.currentPageState) {
+    // }
+    this.currentPageState = new PageState();
+    this.currentPageState._id = chapter._id.replace('chapter', 'page-state');
     this.currentPageState.chapterNotes = chapterNotes;
     this.currentPageState.chapter = chapter;
     this.currentPageState.chapterVerses = chapterVerses;
     this.setScrollTop();
-    await this.databaseService.updateDatabaseItem(this.currentPageState);
-    // this.timer = setInterval(async (): Promise<void> => {
-    //   if (this.currentPageState) {
-    //     this.setScrollTop();
-    //     // console.log(this.currentPageState);
-    //     await this.databaseService.updateDatabaseItem(this.currentPageState);
-    //   }
-    // }, 2000);
+    // await this.databaseService.updateDatabaseItem(this.currentPageState);
+    this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
+    this.startHistory();
+  }
+
+  private startHistory(): void {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setInterval(async (): Promise<void> => {
+      if (this.currentPageState) {
+        this.setScrollTop();
+        // console.log(this.currentPageState);
+        // await this.databaseService.updateDatabaseItem(this.currentPageState);
+      }
+    }, 2000);
   }
 
   public setScrollTop(): void {

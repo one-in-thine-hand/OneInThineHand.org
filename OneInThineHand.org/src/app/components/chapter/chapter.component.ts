@@ -68,9 +68,11 @@ export class ChapterComponent implements OnInit {
               this.chapterNotes,
               this.chapterVerses,
               this.chapter,
+              false,
             );
             const chapterGrid = document.querySelector('.chapter-grid');
             const notesGrid = document.querySelector('#notes');
+            console.log(this.pageStateService.currentPageState);
 
             if (chapterGrid) {
               chapterGrid.scrollTop = this.pageStateService.currentPageState.chapterGridScrollTop;
@@ -123,6 +125,7 @@ export class ChapterComponent implements OnInit {
     chapterNotes: ChapterNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
+    newPage: boolean = true,
   ): Promise<void> {
     this.offsetService.expandNotes(chapterNotes.notes);
     if (chapterVerses && chapterVerses.verses) {
@@ -136,7 +139,9 @@ export class ChapterComponent implements OnInit {
       ? chapterVerses.verses
       : undefined;
     this.chapterService.notes = this.chapterNotes.notes;
-    await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
+    if (newPage) {
+      await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
+    }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(chapterNotes.notes);
