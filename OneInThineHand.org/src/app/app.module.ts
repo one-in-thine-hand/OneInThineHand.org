@@ -41,9 +41,10 @@ import { SaveStateService } from './services/save-state.service';
 import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { PreprocessorService } from './services/preprocessor.service';
+import { PageStateService } from './services/page-state.service';
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
@@ -98,6 +99,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     },
     SaveStateService,
     PreprocessorService,
+    PageStateService,
   ],
 
   bootstrap: [AppComponent],

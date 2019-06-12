@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParamService } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
+import { PageStateService } from '../../services/page-state.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -25,15 +26,27 @@ export class ChapterComponent implements OnInit {
     public databaseService: DatabaseService,
     public activatedRouter: ActivatedRoute,
     public paramService: ParamService,
+    public pageStateService: PageStateService,
   ) {}
 
+  public popStateActivated = false;
   public chapter: Chapter | undefined;
   public chapterNotes: ChapterNotes;
   public chapterVerses: ChapterVerses | undefined;
+
+  @HostListener('window:popstate', ['$event'])
+  public onPopState(event: PopStateEvent): void {
+    this.popStateActivated = event.state !== null;
+
+    console.log(this.popStateActivated);
+    console.log(event);
+  }
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
+        console.log(this.popStateActivated);
+
         console.log(params);
         const chapterParams = this.paramService.parseChapterParams(params);
 
@@ -69,6 +82,11 @@ export class ChapterComponent implements OnInit {
             ? this.chapterVerses.verses
             : undefined;
           this.chapterService.notes = this.chapterNotes.notes;
+          this.pageStateService.newPage(
+            this.chapter,
+            this.chapterVerses,
+            this.chapterNotes,
+          );
           this.headerService.headerTitle = this.chapter.title;
           this.headerService.headerShortTitle = this.chapter.shortTitle;
           this.visibilityService.resetNoteVisibility(this.chapterNotes.notes);
@@ -78,6 +96,7 @@ export class ChapterComponent implements OnInit {
         } catch (error) {
           console.log(error);
         }
+        this.popStateActivated = false;
       },
     );
   }
