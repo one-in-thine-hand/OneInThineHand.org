@@ -7,12 +7,11 @@ import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
 import { basename } from 'path';
 import { JSDOM } from 'jsdom';
 import { ChapterProcessor } from '../../chapter/src/main';
-import { NoteProcessor } from '../../notes/src/main';
+import { NoteProcessor, ChapterNotes } from '../../notes/src/main';
 import {
   getID,
   getLanguage,
 } from '../../shared/src/functions/getFormatTagType';
-import { Note } from '../../shared/src/shared';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -91,30 +90,32 @@ async function processScriptureFiles(
 
   await Promise.all(promises);
 }
-const notesMap: Map<string, Note[]> = new Map();
+const notesMap: Map<string, ChapterNotes> = new Map();
 
-function mergeNotes(newNotesMap: Map<string, Note[]> | undefined): void {
+function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
   if (newNotesMap) {
     newNotesMap.forEach(
       (value, key): void => {
         const notes = notesMap.get(key);
         if (!notes) {
           notesMap.set(key, value);
-        } else {
-          notes.map(
+        } else if (notes.notes) {
+          notes.notes.map(
             (note): void => {
               // console.log(note.secondaryNotes);
-              const newNote = value.find(
-                (n): boolean => {
-                  return n._id === note._id;
-                },
-              );
-              if (newNote && newNote.secondaryNotes) {
-                note.secondaryNotes = note.secondaryNotes
-                  ? note.secondaryNotes.concat(newNote.secondaryNotes)
-                  : newNote.secondaryNotes;
+              if (value.notes) {
+                const newNote = value.notes.find(
+                  (n): boolean => {
+                    return n._id === note._id;
+                  },
+                );
+                if (newNote && newNote.secondaryNotes) {
+                  note.secondaryNotes = note.secondaryNotes
+                    ? note.secondaryNotes.concat(newNote.secondaryNotes)
+                    : newNote.secondaryNotes;
 
-                note.secondaryNotes = uniq(note.secondaryNotes);
+                  note.secondaryNotes = uniq(note.secondaryNotes);
+                }
               }
               // console.log(note.secondaryNotes);
             },
