@@ -48,10 +48,10 @@
 </div>
 <div id="notes">
   <div class="notes-top"></div>
-  <ng-container *ngIf="notes">
+  <ng-container *ngIf="chapterNotes && chapterNotes.notes">
     <app-note
       class="app-note"
-      *ngFor="let note of notes"
+      *ngFor="let note of chapterNotes.notes"
       [note]="note"
     ></app-note>
     <div

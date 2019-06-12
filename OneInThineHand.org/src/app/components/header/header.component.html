@@ -153,8 +153,8 @@
     </ul>
   </div>
   <div class="modal-body">
-    <div>
-      Upload Chapter Files
+    <div *ngIf="!this.uploading">
+      Load Files
       <input
         multiple
         type="file"
@@ -163,7 +163,8 @@
         (change)="this.loadChapterFile($event)"
       />
     </div>
-    <div>
+    <div *ngIf="this.uploading">Loading Files</div>
+    <!-- <div>
       Upload Note Files
       <input
         type="file"
@@ -172,7 +173,7 @@
         id="chapterFileOpener"
         (change)="this.loadNoteFile($event)"
       />
-    </div>
+    </div> -->
   </div>
   <div class="modal-footer">
     <button

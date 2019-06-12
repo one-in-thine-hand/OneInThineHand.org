@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
 import { Chapter } from '../../../../../chapter/src/Chapter';
-import { Note } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { OffsetService } from '../../services/offset.service';
@@ -18,7 +16,6 @@ import { ChapterNotes } from '../../../../../notes/src/main';
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
-  public chapterNotes: ChapterNotes;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -31,8 +28,9 @@ export class ChapterComponent implements OnInit {
   ) {}
 
   public chapter: Chapter | undefined;
+  public chapterNotes: ChapterNotes;
   public chapterVerses: ChapterVerses | undefined;
-  public notes: Note[] | undefined;
+  // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
@@ -53,28 +51,16 @@ export class ChapterComponent implements OnInit {
           this.chapterNotes = (await this.databaseService.getDatabaseItem(
             `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
           )) as ChapterNotes;
-          console.log(this.chapterNotes);
+          console.log(this.chapterNotes.notes);
 
-          // this.notes = (await this.databaseService.getDatabaseItem(
-          //   `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
-          // )) as Chapter;
-          console.log(this.chapter);
-
-          // this.chapter = (await axios.get(
-          //   'assets/scriptures/heb-1-eng-chapter.json',
-          // )).data as Chapter;
-
-          // this.verses = (await axios.get(
-          //   'assets/scriptures/heb-1-eng-verses.json',
-          // )).data as Verse[];
-          this.notes = (await axios.get(
-            'assets/scriptures/heb-1-eng-notes.json',
-          )).data as Note[];
-          this.offsetService.expandNotes(this.notes);
+          // this.notes = (await axios.get(
+          //   'assets/scriptures/heb-1-eng-notes.json',
+          // )).data as Note[];
+          this.offsetService.expandNotes(this.chapterNotes.notes);
           if (this.chapterVerses && this.chapterVerses.verses) {
             this.chapterService.mergeVersesNotes(
               this.chapterVerses.verses,
-              this.notes,
+              this.chapterNotes.notes,
             );
           }
 
@@ -82,10 +68,10 @@ export class ChapterComponent implements OnInit {
           this.chapterService.verses = this.chapterVerses
             ? this.chapterVerses.verses
             : undefined;
-          this.chapterService.notes = this.notes;
+          this.chapterService.notes = this.chapterNotes.notes;
           this.headerService.headerTitle = this.chapter.title;
           this.headerService.headerShortTitle = this.chapter.shortTitle;
-          this.visibilityService.resetNoteVisibility(this.notes);
+          this.visibilityService.resetNoteVisibility(this.chapterNotes.notes);
           // console.log(this.chapter);
           // console.log(this.verses);
           // console.log(this.notes);

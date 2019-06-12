@@ -17,6 +17,7 @@ import { PreprocessorService } from '../../services/preprocessor.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  public uploading: boolean = false;
   public constructor(
     public saveStateService: SaveStateService,
     public visibilityService: VisibilityService,
@@ -91,7 +92,9 @@ export class HeaderComponent implements OnInit {
 
   public async showOrphanRefs(): Promise<void> {}
   public async loadChapterFile(event: Event): Promise<void> {
+    this.uploading = true;
     await this.preprocessorService.loadChapterFiles(event);
+    this.uploading = false;
     console.log('Finished');
 
     return;
