@@ -103,15 +103,15 @@ export class ChapterComponent implements OnInit {
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
               )) as ChapterNotes;
-              if (this.chapterVerses.verses) {
-                this.setHighlighting(chapterParams, this.chapterVerses.verses);
-              }
 
               await this.setChapterVariables(
                 this.chapterNotes,
                 this.chapterVerses,
                 this.chapter,
               );
+              if (this.chapterVerses.verses) {
+                this.setHighlighting(chapterParams, this.chapterVerses.verses);
+              }
             } catch (error) {
               console.log(error);
             }
@@ -133,16 +133,37 @@ export class ChapterComponent implements OnInit {
       verse.context = false;
     });
 
-    this.getHighlightVerses(chapterParams, highlightOffSets, verses).map(
-      (v): void => {
-        v.highlight = true;
-      },
-    );
-    this.getHighlightVerses(chapterParams, contextOffsets, verses).map(
-      (v): void => {
-        v.context = true;
-      },
-    );
+    if (highlightOffSets) {
+      this.getHighlightVerses(chapterParams, highlightOffSets, verses).map(
+        (v): void => {
+          v.highlight = true;
+        },
+      );
+      this.getHighlightVerses(chapterParams, contextOffsets, verses).map(
+        (v): void => {
+          v.context = true;
+        },
+      );
+      const verseElement = document.querySelector(
+        `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
+          highlightOffSets[0]
+        }-eng-verse`,
+      );
+      if (verseElement) {
+        console.log(verseElement);
+
+        verseElement.scrollIntoView();
+      }
+    } else {
+      const chapterGrid = document.querySelector('.chapter-grid');
+      const notesGrid = document.querySelector('#notes');
+      if (chapterGrid) {
+        chapterGrid.scrollTop = 0;
+      }
+      if (notesGrid) {
+        notesGrid.scrollTop = 0;
+      }
+    }
     // verses.map((verse): void => {
     //   console.log(verse._id);
 
@@ -213,7 +234,7 @@ export class ChapterComponent implements OnInit {
 
   public onScroll(): void {
     console.log('hhg');
-    this.pageStateService.setScrollTop();
+    this.pageStateService.updateHistory();
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];

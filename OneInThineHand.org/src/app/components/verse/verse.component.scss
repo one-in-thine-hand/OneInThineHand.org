@@ -1,4 +1,12 @@
 verse {
+  &.highlight {
+    padding: 0 0 6pt 5px;
+    border-left: 3px solid #f68d2e;
+  }
+  &.context {
+    padding: 0 0 6pt 5px;
+    border-left: 3px solid #2ca1a5;
+  }
   display: block;
 
   &[id*='title_number1'] {
@@ -29,5 +37,16 @@ verse {
 
   .verse-number {
     vertical-align: super;
+  }
+
+  &.highlight {
+    padding: 0;
+    border-left: none !important;
+    background-color: rgba(184, 184, 106, 0.815);
+  }
+  &.context {
+    padding: 0;
+    border-left: none !important;
+    background-color: #cfe8eb;
   }
 }

@@ -83,7 +83,7 @@ export class PageStateService {
   public updateHistory(): void {
     if (this.currentPageState) {
       console.log(this.currentPageState._id);
-
+      this.setScrollTop();
       // this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
     }
   }

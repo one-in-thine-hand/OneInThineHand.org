@@ -39,10 +39,10 @@ export class VerseComponent implements OnInit {
     const classList: string[] = [];
 
     if (this.verse.context) {
-      classList.push('oith-context');
+      classList.push('context');
     }
     if (this.verse.highlight) {
-      classList.push('oith-highlight');
+      classList.push('highlight');
     }
 
     return classList.toString().replace(/,/g, ' ');
