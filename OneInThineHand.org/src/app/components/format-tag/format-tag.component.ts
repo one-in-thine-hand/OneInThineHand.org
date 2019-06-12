@@ -36,6 +36,7 @@ export class FormatTagComponent implements OnInit {
       //   },
       // );
       // console.log('oiasjdfoiajsdfoiasjdfoi');
+      // console.log('richtest');
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
@@ -43,12 +44,16 @@ export class FormatTagComponent implements OnInit {
       );
       return text;
     }
+
     return text;
   }
 
   public getClassList(): string {
     const classList: string[] = [];
-    if (this.fMerged.refTags) {
+    if (this.fMerged.refTags && this.fMerged.refTags.length !== 0) {
+      this.fMerged.refTags.length > 1
+        ? classList.push('oith-ref-double')
+        : classList.push('oith-ref-single');
       // console.log(this.fMerged.refTags);
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {

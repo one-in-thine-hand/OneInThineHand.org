@@ -1,6 +1,1 @@
-<f
-  [class]="getClassList()"
-  [innerHTML]="getText()"
-  [attr.verse-id]="this.verse._id"
-  [attr.offsets]="this.getOffSets()"
-></f>
+<f [class]="getClassList()" [innerHTML]="getText().replace('\n', '')" [attr.verse-id]="this.verse._id" [attr.offsets]="this.getOffSets()"></f>

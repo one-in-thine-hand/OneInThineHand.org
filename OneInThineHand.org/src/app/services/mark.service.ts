@@ -19,12 +19,15 @@ export class MarkService {
       const markDownText = this.getCommonMark(formatTags);
 
       let outputText = this.markdownIt.render(
-        `${markDownText.preText}<f>${text}</f>${markDownText.postText}`,
+        `${markDownText.preText.trim()}<f>${text}</f>${markDownText.postText.trim()}`,
       );
       ['<f>', '</f>', '<p>', '</p>'].map((replace): void => {
         outputText = outputText.replace(replace, '');
       });
       // console.log(outputText);
+      console.log(outputText);
+
+      console.log(text);
 
       return outputText;
     } else {

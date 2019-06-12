@@ -14,6 +14,11 @@ f {
     padding-right: 20px !important;
     font-size: 48px !important;
   }
+  &.oith-ref-double {
+  }
+  &.oith-ref-single {
+    border-bottom: 1px solid grey;
+  }
 }
 
 :host-context([id*='title1']) {

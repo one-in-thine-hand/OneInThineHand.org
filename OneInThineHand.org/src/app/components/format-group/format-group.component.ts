@@ -25,6 +25,8 @@ export class FormatGroupComponent implements OnInit {
   public getFormatTags(): FMerged[] {
     // if()
     // console.log(this.formatTags);
+    console.log('formatTags');
+
     const mergedFormatTags: FMerged[] = [];
     let lastMerged: FMerged | undefined;
     this.formatGroup.uncompressedOffsets
@@ -109,6 +111,7 @@ export class FormatGroupComponent implements OnInit {
             fMerged.refTags
               ? fMerged.refTags.push(secondaryNote.refTag)
               : (fMerged.refTags = [secondaryNote.refTag]);
+            console.log(fMerged.refTags);
           }
         }
       });
