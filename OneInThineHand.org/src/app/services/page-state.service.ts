@@ -80,6 +80,14 @@ export class PageStateService {
     this.startHistory();
   }
 
+  public updateHistory(): void {
+    if (this.currentPageState) {
+      console.log(this.currentPageState._id);
+
+      // this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
+    }
+  }
+
   private startHistory(): void {
     if (this.timer) {
       clearInterval(this.timer);

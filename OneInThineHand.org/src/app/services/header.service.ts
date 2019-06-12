@@ -8,14 +8,13 @@ export class HeaderService {
   public headerTitle: string = '';
   public headerShortTitle: string = '';
   public constructor(private router: Router) {
-    router.events.subscribe((value): void => {
-      // console.log('asdfoijaosdfij');
-
-      if (value instanceof NavigationStart) {
-        this.headerShortTitle = '';
-        this.headerTitle = '';
-      }
-    });
+    // router.events.subscribe((value): void => {
+    //   // console.log('asdfoijaosdfij');
+    //   if (value instanceof NavigationStart) {
+    //     this.headerShortTitle = '';
+    //     this.headerTitle = '';
+    //   }
+    // });
   }
 
   public getTitle(): string {

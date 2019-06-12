@@ -213,6 +213,7 @@ export class ChapterComponent implements OnInit {
 
   public onScroll(): void {
     console.log('hhg');
+    this.pageStateService.setScrollTop();
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
