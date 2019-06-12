@@ -7,13 +7,22 @@
 
   grid-template-rows: 48px;
   @media only screen and (min-width: 320px or (orientation: portrait)) {
-    grid-template-columns: 48px auto 300px;
+    grid-template-columns: 48px auto 48px;
+    .header-title {
+      display: none;
+    }
   }
   @media only screen and (min-width: 992px) {
     grid-template-columns: 250px auto 300px;
+    .header-short-title {
+      display: none;
+    }
   }
   @media only screen and (min-width: 1200px) {
     grid-template-columns: 250px auto 350px;
+    .header-short-title {
+      display: none;
+    }
   }
   > * {
     display: grid;
@@ -54,5 +63,10 @@
     svg {
       width: 24px;
     }
+  }
+  #chapterName {
+    font-size: 20px;
+    white-space: nowrap;
+    text-align: center;
   }
 }

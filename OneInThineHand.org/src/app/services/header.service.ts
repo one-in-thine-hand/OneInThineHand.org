@@ -18,6 +18,15 @@ export class HeaderService {
   }
 
   public getTitle(): string {
+    // const chapterNameElement = document.querySelector('#chapterName');
+    // console.log(chapterNameElement);
+
+    // if (chapterNameElement && chapterNameElement.clientWidth < 500) {
+    //   return this.headerShortTitle;
+    // }
     return this.headerTitle;
+  }
+  public getShortTitle(): string {
+    return this.headerShortTitle;
   }
 }

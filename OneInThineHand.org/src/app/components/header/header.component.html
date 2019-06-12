@@ -39,7 +39,12 @@
       </svg>
     </li>
     <li id="chapterName" class="chapter-name">
-      {{ this.headerService.getTitle() }}
+      <span class="header-title">
+        {{ this.headerService.getTitle() }}
+      </span>
+      <span class="header-short-title">
+        {{ this.headerService.getShortTitle() }}
+      </span>
     </li>
     <li id="btnForward" (click)="this.forwardClick()">
       <svg
