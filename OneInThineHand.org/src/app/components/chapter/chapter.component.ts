@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParamService } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
+import onChange from 'on-change';
 import { PageStateService } from '../../services/page-state.service';
 @Component({
   selector: 'app-chapter',
@@ -17,6 +18,11 @@ import { PageStateService } from '../../services/page-state.service';
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit {
+  public popStateActivated = false;
+  public chapter: Chapter | undefined;
+  public chapterNotes: ChapterNotes;
+  public chapterVerses: ChapterVerses | undefined;
+
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -29,14 +35,10 @@ export class ChapterComponent implements OnInit {
     public pageStateService: PageStateService,
   ) {}
 
-  public popStateActivated = false;
-  public chapter: Chapter | undefined;
-  public chapterNotes: ChapterNotes;
-  public chapterVerses: ChapterVerses | undefined;
-
   @HostListener('window:popstate', ['$event'])
   public onPopState(event: PopStateEvent): void {
     this.popStateActivated = event.state !== null;
+    this.pageStateService.timer = undefined;
 
     console.log(this.popStateActivated);
     console.log(event);
@@ -50,54 +52,98 @@ export class ChapterComponent implements OnInit {
         console.log(params);
         const chapterParams = this.paramService.parseChapterParams(params);
 
-        try {
-          // try {
-          // } catch (error) {
-          //   console.log('error');
-          // }
-          this.chapter = (await this.databaseService.getDatabaseItem(
-            `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
-          )) as Chapter;
-          this.chapterVerses = (await this.databaseService.getDatabaseItem(
-            `${chapterParams.book}-${chapterParams.chapter}-eng-verses`,
-          )) as ChapterVerses;
-          this.chapterNotes = (await this.databaseService.getDatabaseItem(
-            `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
-          )) as ChapterNotes;
-          console.log(this.chapterNotes.notes);
+        if (
+          this.popStateActivated &&
+          (await this.pageStateService.pageStateExists(
+            `${chapterParams.book}-${chapterParams.chapter}-eng-page-state`,
+          ))
+        ) {
+          if (this.pageStateService.currentPageState) {
+            this.chapter = this.pageStateService.currentPageState.chapter;
+            this.chapterVerses = this.pageStateService.currentPageState.chapterVerses;
+            console.log('asdfoij');
 
-          // this.notes = (await axios.get(
-          //   'assets/scriptures/heb-1-eng-notes.json',
-          // )).data as Note[];
-          this.offsetService.expandNotes(this.chapterNotes.notes);
-          if (this.chapterVerses && this.chapterVerses.verses) {
-            this.chapterService.mergeVersesNotes(
-              this.chapterVerses.verses,
-              this.chapterNotes.notes,
+            this.chapterNotes = this.pageStateService.currentPageState.chapterNotes;
+            await this.setChapterVariables(
+              this.chapterNotes,
+              this.chapterVerses,
+              this.chapter,
             );
-          }
+            const chapterGrid = document.querySelector('.chapter-grid');
+            const notesGrid = document.querySelector('#notes');
 
-          this.chapterService.chapter = this.chapter;
-          this.chapterService.verses = this.chapterVerses
-            ? this.chapterVerses.verses
-            : undefined;
-          this.chapterService.notes = this.chapterNotes.notes;
-          this.pageStateService.newPage(
-            this.chapter,
-            this.chapterVerses,
-            this.chapterNotes,
-          );
-          this.headerService.headerTitle = this.chapter.title;
-          this.headerService.headerShortTitle = this.chapter.shortTitle;
-          this.visibilityService.resetNoteVisibility(this.chapterNotes.notes);
-          // console.log(this.chapter);
-          // console.log(this.verses);
-          // console.log(this.notes);
-        } catch (error) {
-          console.log(error);
+            if (chapterGrid) {
+              chapterGrid.scrollTop = this.pageStateService.currentPageState.chapterGridScrollTop;
+            }
+            if (notesGrid) {
+              notesGrid.scrollTop = this.pageStateService.currentPageState.notesScrollTop;
+            }
+            this.popStateActivated = false;
+          }
+        } else {
+          try {
+            // try {
+            // } catch (error) {
+            //   console.log('error');
+            // }
+
+            this.chapter = (await this.databaseService.getDatabaseItem(
+              `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
+            )) as Chapter;
+            this.chapterVerses = (await this.databaseService.getDatabaseItem(
+              `${chapterParams.book}-${chapterParams.chapter}-eng-verses`,
+            )) as ChapterVerses;
+            this.chapterNotes = (await this.databaseService.getDatabaseItem(
+              `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
+            )) as ChapterNotes;
+            console.log(this.chapterNotes.notes);
+            console.log(this.chapterVerses);
+
+            // this.notes = (await axios.get(
+            //   'assets/scriptures/heb-1-eng-notes.json',
+            // )).data as Note[];
+            await this.setChapterVariables(
+              this.chapterNotes,
+              this.chapterVerses,
+              this.chapter,
+            );
+            // console.log(this.chapter);
+            // console.log(this.verses);
+            // console.log(this.notes);
+          } catch (error) {
+            console.log(error);
+          }
         }
         this.popStateActivated = false;
       },
+    );
+  }
+
+  private async setChapterVariables(
+    chapterNotes: ChapterNotes,
+    chapterVerses: ChapterVerses,
+    chapter: Chapter,
+  ): Promise<void> {
+    this.offsetService.expandNotes(chapterNotes.notes);
+    if (chapterVerses && chapterVerses.verses) {
+      this.chapterService.mergeVersesNotes(
+        chapterVerses.verses,
+        chapterNotes.notes,
+      );
+    }
+    this.chapterService.chapter = chapter;
+    this.chapterService.verses = chapterVerses
+      ? chapterVerses.verses
+      : undefined;
+    this.chapterService.notes = this.chapterNotes.notes;
+    await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
+    this.headerService.headerTitle = chapter.title;
+    this.headerService.headerShortTitle = chapter.shortTitle;
+    this.visibilityService.resetNoteVisibility(chapterNotes.notes);
+    console.log(
+      this.chapterVerses !== undefined &&
+        this.chapterVerses.verses !== undefined &&
+        chapter !== undefined,
     );
   }
 

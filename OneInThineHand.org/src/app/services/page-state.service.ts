@@ -11,22 +11,54 @@ import { PageState } from './PageState';
 })
 export class PageStateService {
   public currentPageState: PageState | undefined;
+  public timer: NodeJS.Timer | undefined;
   public constructor(
     private databaseService: DatabaseService,
     private router: Router,
   ) {
     router.events.subscribe((value): void => {
-      console.log(value);
-      console.log('oaisdfjioasdjfoiasdjfoiasdjfoij');
+      this.currentPageState = undefined;
+      this.timer = undefined;
     });
   }
 
-  public newPage(
+  public async pageStateExists(chapterID: string): Promise<boolean> {
+    try {
+      console.log(chapterID.replace('chapter', 'page-state'));
+
+      const pageState = await this.databaseService.getDatabaseItem(
+        chapterID.replace('chapter', 'page-state'),
+      );
+
+      console.log(pageState);
+
+      this.currentPageState = pageState as PageState;
+      if (
+        this.currentPageState &&
+        this.currentPageState.chapter &&
+        this.currentPageState.chapterNotes &&
+        this.currentPageState.chapterVerses
+      ) {
+        return true;
+      } else {
+        this.currentPageState = undefined;
+        return false;
+      }
+      return pageState !== undefined;
+    } catch (error) {
+      console.log(error);
+      this.currentPageState = undefined;
+      return false;
+    }
+  }
+
+  public async newPage(
     chapter: Chapter,
     chapterVerses: ChapterVerses,
     chapterNotes: ChapterNotes,
-  ): void {
+  ): Promise<void> {
     // console.log('oiasdjfoiajsdf');
+    this.timer = undefined;
     if (!this.currentPageState) {
       this.currentPageState = new PageState();
       this.currentPageState._id = chapter._id.replace('chapter', 'page-state');
@@ -34,6 +66,15 @@ export class PageStateService {
     this.currentPageState.chapterNotes = chapterNotes;
     this.currentPageState.chapter = chapter;
     this.currentPageState.chapterVerses = chapterVerses;
+    this.setScrollTop();
+    await this.databaseService.updateDatabaseItem(this.currentPageState);
+    // this.timer = setInterval(async (): Promise<void> => {
+    //   if (this.currentPageState) {
+    //     this.setScrollTop();
+    //     // console.log(this.currentPageState);
+    //     await this.databaseService.updateDatabaseItem(this.currentPageState);
+    //   }
+    // }, 2000);
   }
 
   public setScrollTop(): void {

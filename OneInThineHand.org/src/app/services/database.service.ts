@@ -15,11 +15,11 @@ export class DatabaseService {
     try {
       const dbItem = await this.db.get(item._id);
       item._rev = dbItem._rev;
-      console.log(dbItem);
+      // console.log(dbItem);
     } catch (error) {
       console.log(error);
     }
-    console.log(item);
+    // console.log(item);
 
     await this.db.put(item);
 

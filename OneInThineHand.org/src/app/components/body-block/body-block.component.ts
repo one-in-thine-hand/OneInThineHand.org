@@ -13,9 +13,11 @@ export class BodyBlockComponent implements OnInit {
 
   @Input() public chapter: Chapter;
 
-  constructor() {}
+  public constructor() {}
 
-  ngOnInit() {}
+  public ngOnInit() {
+    console.log(this.verses);
+  }
 
   public getParagraphs(): Paragraph[] {
     return this.chapter.paragraphs ? this.chapter.paragraphs : [];
