@@ -52,4 +52,10 @@ export class HeaderDropdownComponent implements OnInit {
       );
     }
   }
+  /**
+   * edit
+   */
+  public edit() {
+    this.saveState.data.editMode = !this.saveState.data.editMode;
+  }
 }

@@ -22,6 +22,7 @@ export class SaveStateModel {
   public refLabelSettings: RefLabelSetting[] = [];
   public underLineRefs: boolean = true;
   public ReferenceLabelSetting = ReferenceLabels;
+  public editMode = false;
 }
 
 export const refLabelSettingsTemplate = [
