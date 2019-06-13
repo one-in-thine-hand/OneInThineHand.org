@@ -25,11 +25,13 @@ export class FormatTagComponent implements OnInit {
   public getText(): string {
     const text = this.fMerged.text;
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
-      const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
-        return (
-          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
-        );
-      });
+      const richFormatTags = this.fMerged.formatTags.filter(
+        (f): boolean => {
+          return (
+            f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+          );
+        },
+      );
       // .map(
       //   (f): void => {
       //     console.log(f);
@@ -58,22 +60,28 @@ export class FormatTagComponent implements OnInit {
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
-        .filter((f): boolean => {
-          return (
-            (f.displayAs === DisplayAs.CLASS &&
-              f.optional !== Optional.NEVER) ||
-            f.formatType === FormatTagType.verseNumber
-          );
-        })
-        .map((f): void => {
-          const fTO = formatTagTypeOptions.find((formatTagOption): boolean => {
-            return formatTagOption.formatTagType === f.formatType;
-          });
-          // console.log(fTO ? fTO.className : 'Nothing');
-          if (fTO && fTO.className) {
-            classList.push(fTO.className);
-          }
-        });
+        .filter(
+          (f): boolean => {
+            return (
+              (f.displayAs === DisplayAs.CLASS &&
+                f.optional !== Optional.NEVER) ||
+              f.formatType === FormatTagType.verseNumber
+            );
+          },
+        )
+        .map(
+          (f): void => {
+            const fTO = formatTagTypeOptions.find(
+              (formatTagOption): boolean => {
+                return formatTagOption.formatTagType === f.formatType;
+              },
+            );
+            // console.log(fTO ? fTO.className : 'Nothing');
+            if (fTO && fTO.className) {
+              classList.push(fTO.className);
+            }
+          },
+        );
 
       console.log();
     }

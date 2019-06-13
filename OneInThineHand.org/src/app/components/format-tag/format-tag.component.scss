@@ -15,6 +15,10 @@ f {
     font-size: 48px !important;
   }
   &.oith-ref-double {
+    border-bottom: 1px solid grey;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-color: grey;
   }
   &.oith-ref-single {
     border-bottom: 1px solid grey;

@@ -57,9 +57,11 @@ export class NoteComponent implements OnInit {
    * convertNoteCategory
    */
   public convertNoteCategory(noteRef: NoteRef): string {
-    const nc = ReferenceLabels.find((rl): boolean => {
-      return rl.noteCategory === noteRef.noteCategory;
-    });
+    const nc = ReferenceLabels.find(
+      (rl): boolean => {
+        return rl.noteCategory === noteRef.noteCategory;
+      },
+    );
     return nc ? nc.referenceLabelShortName : 'extERR';
   }
 
@@ -133,7 +135,7 @@ export class NoteComponent implements OnInit {
             }
             secondaryNote.offsets = `${`${parseInt(offsets1[0], 10) +
               range.startOffset}-${parseInt(offsets2[0], 10) +
-              range.endOffset +
+              range.endOffset -
               1}`},${secondaryNote.offsets}`;
             this.offsetService.expandNotes(this.chapterService.notes);
           }
