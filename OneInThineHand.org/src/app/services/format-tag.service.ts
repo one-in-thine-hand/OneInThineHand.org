@@ -12,7 +12,7 @@ import {
   FMerged,
   RefTag,
 } from '../../../../shared/src/models/format_tags/FormatTag';
-import { isEqual } from 'lodash';
+import { isEqual, first, last } from 'lodash';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,7 @@ export class FormatTagService {
             verse.formatGroups,
             verse.formatTags,
             verse.note,
+            verse,
           );
         },
       );
@@ -63,6 +64,7 @@ export class FormatTagService {
     formatGroups: FormatGroup[] | undefined,
     fTags: FormatTag[] | undefined,
     note: Note | undefined,
+    verse: Verse,
   ): void {
     if (formatGroups && fTags && note) {
       formatGroups
@@ -77,7 +79,7 @@ export class FormatTagService {
         )
         .map(
           (grp): void => {
-            this.buildFormatGroup(grp, fTags, note);
+            this.buildFormatGroup(grp, fTags, note, verse);
           },
         );
     }
@@ -86,6 +88,7 @@ export class FormatTagService {
     grp: FormatGroup,
     fTags: FormatTag[] | undefined,
     note: Note | undefined,
+    verse: Verse,
   ): void {
     grp.uncompressedOffsets = parseOffsets(grp.offsets);
     if (grp.uncompressedOffsets) {
@@ -101,9 +104,12 @@ export class FormatTagService {
             lastMerged = fMerged;
           } else {
             if (this.fmergeEqual(lastMerged, fMerged)) {
+              console.log('jjj');
+
               lastMerged.offsets.push(o);
             } else {
               fMergeds.push(lastMerged);
+              lastMerged = undefined;
               lastMerged = fMerged;
             }
           }
@@ -112,9 +118,28 @@ export class FormatTagService {
       if (lastMerged) {
         fMergeds.push(lastMerged);
       }
+      grp.fMerges = fMergeds;
+      this.addText(grp.fMerges, verse);
+    }
+  }
+  private addText(fMerges: FMerged[], verse: Verse): void {
+    if (verse.text) {
+      fMerges.map(
+        (fM): void => {
+          const f = first(fM.offsets);
+          const l = last(fM.offsets);
+          console.log(`${f} ${l}`);
+
+          console.log(verse.text.slice(f, l));
+        },
+      );
     }
   }
   public fmergeEqual(lastMerged: FMerged, fMerged: FMerged): boolean {
+    return (
+      lastMerged.formatTags === fMerged.formatTags &&
+      lastMerged.refTags === fMerged.refTags
+    );
     return (
       isEqual(lastMerged.formatTags, fMerged.formatTags) &&
       isEqual(lastMerged.offsets, fMerged.offsets)
@@ -134,6 +159,7 @@ export class FormatTagService {
           );
         },
       );
+
       return oFtags.length > 0 ? oFtags : undefined;
     }
     return undefined;

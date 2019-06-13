@@ -1,12 +1,13 @@
 import { FormatGroupType } from '../../enums/enums';
 
-import { FormatTag } from '../format_tags/FormatTag';
+import { FormatTag, FMerged } from '../format_tags/FormatTag';
 
 export abstract class FormatGroup {
   public formatGroupType: FormatGroupType | undefined;
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
   public classList: string[] | undefined;
+  fMerges: FMerged[] | undefined;
 }
 
 export class FormatGroupA extends FormatGroup {

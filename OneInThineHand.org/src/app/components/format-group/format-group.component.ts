@@ -29,6 +29,7 @@ export class FormatGroupComponent implements OnInit {
     // console.log(this.formatTags);
     // console.log('formatTags');
 
+    return this.formatGroup.fMerges ? this.formatGroup.fMerges : [];
     const mergedFormatTags: FMerged[] = [];
     let lastMerged: FMerged | undefined;
     this.formatGroup.uncompressedOffsets
