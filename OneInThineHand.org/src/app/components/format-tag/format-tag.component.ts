@@ -18,6 +18,10 @@ import { last } from 'lodash';
 export class FormatTagComponent implements OnInit {
   @Input() public fMerged: FMerged;
   @Input() public verse: Verse;
+  public text: string = '';
+  public classList: string[] = [];
+  public offsets = '';
+
   public constructor(public markService: MarkService) {}
 
   public ngOnInit(): void {}
@@ -38,16 +42,20 @@ export class FormatTagComponent implements OnInit {
       //   },
       // );
       // console.log('oiasjdfoiajsdfoiasjdfoi');
-      // console.log('richtest');
+      console.log('richtest');
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
         richFormatTags,
       );
-      return text;
+
+      // return text;
+    }
+    if (this.text !== text) {
+      this.text = text;
     }
 
-    return text;
+    return this.text;
   }
 
   public getClassList(): string {
@@ -56,6 +64,21 @@ export class FormatTagComponent implements OnInit {
       this.fMerged.refTags.length > 1
         ? classList.push('oith-ref-double')
         : classList.push('oith-ref-single');
+
+      if (
+        this.fMerged.refTags.filter(
+          (f): boolean => {
+            return f.highlight;
+          },
+        ).length > 0
+      ) {
+        classList.push('ref-selected');
+      }
+      // this.fMerged.refTags.map(
+      //   (f): void => {
+      //     // if(f)
+      //   },
+      // );
       // console.log(this.fMerged.refTags);
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
@@ -85,7 +108,13 @@ export class FormatTagComponent implements OnInit {
 
       console.log();
     }
-    return classList.toString().replace(/,/s, ' ');
+    if (
+      this.classList.toString().replace(/,/s, ' ') !==
+      classList.toString().replace(/,/s, ' ')
+    ) {
+      this.classList = classList;
+    }
+    return this.classList.toString().replace(/,/s, ' ');
   }
 
   public getOffSets(): string {
@@ -95,5 +124,18 @@ export class FormatTagComponent implements OnInit {
       return `${this.fMerged.offsets[0]}-${last(this.fMerged.offsets)}`;
     }
     return '0,0';
+  }
+
+  public formatTagClick(event: Event): void {
+    const selection = window.getSelection();
+    console.log('hhgg');
+    console.log(event);
+
+    if (this.fMerged.refTags) {
+      this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
+    }
+    if (selection) {
+      selection.addRange(selection.getRangeAt(0));
+    }
   }
 }

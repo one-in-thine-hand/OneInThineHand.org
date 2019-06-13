@@ -21,13 +21,15 @@ export class MarkService {
       let outputText = this.markdownIt.render(
         `${markDownText.preText.trim()}<f>${text}</f>${markDownText.postText.trim()}`,
       );
-      ['<f>', '</f>', '<p>', '</p>'].map((replace): void => {
-        outputText = outputText.replace(replace, '');
-      });
+      ['<f>', '</f>', '<p>', '</p>'].map(
+        (replace): void => {
+          outputText = outputText.replace(replace, '');
+        },
+      );
       // console.log(outputText);
-      console.log(outputText);
+      // console.log(outputText);
 
-      console.log(text);
+      // console.log(text);
 
       return outputText;
     } else {
@@ -42,21 +44,23 @@ export class MarkService {
       preText: '',
       postText: '',
     };
-    uniq(text).map((rich): void => {
-      let addedText = '';
-      switch (rich.formatType) {
-        case FormatTagType.verseNumber: {
-          addedText = '**';
-          break;
+    uniq(text).map(
+      (rich): void => {
+        let addedText = '';
+        switch (rich.formatType) {
+          case FormatTagType.verseNumber: {
+            addedText = '**';
+            break;
+          }
+          case FormatTagType.italic: {
+            addedText = '_';
+            break;
+          }
         }
-        case FormatTagType.italic: {
-          addedText = '_';
-          break;
-        }
-      }
-      commonMark.preText = `${addedText}${commonMark.preText}`;
-      commonMark.postText = `${commonMark.postText}${addedText}`;
-    });
+        commonMark.preText = `${addedText}${commonMark.preText}`;
+        commonMark.postText = `${commonMark.postText}${addedText}`;
+      },
+    );
 
     return commonMark;
   }

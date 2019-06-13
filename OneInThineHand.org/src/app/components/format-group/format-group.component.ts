@@ -15,6 +15,8 @@ export class FormatGroupComponent implements OnInit {
   @Input() public verse: Verse;
   @Input() public formatGroup: FormatGroup;
   @Input() public formatTags: FormatTag[];
+
+  public fMerged: FMerged[] = [];
   public constructor() {}
 
   public ngOnInit(): void {}
@@ -25,7 +27,7 @@ export class FormatGroupComponent implements OnInit {
   public getFormatTags(): FMerged[] {
     // if()
     // console.log(this.formatTags);
-    console.log('formatTags');
+    // console.log('formatTags');
 
     const mergedFormatTags: FMerged[] = [];
     let lastMerged: FMerged | undefined;
@@ -66,7 +68,11 @@ export class FormatGroupComponent implements OnInit {
 
     // console.log(f);
 
-    return mergedFormatTags;
+    if (this.fMerged !== mergedFormatTags) {
+      this.fMerged = mergedFormatTags;
+      console.log('true');
+    }
+    return this.fMerged;
   }
 
   private checkIfDuplicateMerge(
@@ -116,7 +122,7 @@ export class FormatGroupComponent implements OnInit {
               fMerged.refTags
                 ? fMerged.refTags.push(secondaryNote.refTag)
                 : (fMerged.refTags = [secondaryNote.refTag]);
-              console.log(fMerged.refTags);
+              // console.log(fMerged.refTags);
             }
           }
         },

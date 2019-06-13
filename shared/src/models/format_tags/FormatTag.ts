@@ -17,6 +17,7 @@ export class RefTag {
   public refs: string[];
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
+  public highlight = false;
 }
 
 export class FMerged {

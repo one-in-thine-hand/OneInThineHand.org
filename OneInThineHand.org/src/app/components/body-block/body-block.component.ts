@@ -16,7 +16,7 @@ export class BodyBlockComponent implements OnInit {
   public constructor() {}
 
   public ngOnInit() {
-    console.log(this.verses);
+    // console.log(this.verses);
   }
 
   public getParagraphs(): Paragraph[] {
