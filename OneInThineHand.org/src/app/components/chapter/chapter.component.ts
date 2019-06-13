@@ -128,10 +128,12 @@ export class ChapterComponent implements OnInit {
 
     // console.log(this.getHighlightVerses(chapterParams, contextOffsets, verses));
     // console.log(contextOffsets);
-    verses.forEach((verse): void => {
-      verse.highlight = false;
-      verse.context = false;
-    });
+    verses.forEach(
+      (verse): void => {
+        verse.highlight = false;
+        verse.context = false;
+      },
+    );
 
     if (highlightOffSets) {
       this.getHighlightVerses(chapterParams, highlightOffSets, verses).map(
@@ -181,21 +183,27 @@ export class ChapterComponent implements OnInit {
     verses: Verse[],
   ): Verse[] {
     if (context) {
-      const filteredVerses = context.map((c): Verse | undefined => {
-        return verses.find((verse): boolean => {
-          return (
-            verse._id ===
-            `${chapterParams.book.replace('_', '-')}-${
-              chapterParams.chapter
-            }-${c}-eng-verse`
+      const filteredVerses = context.map(
+        (c): Verse | undefined => {
+          return verses.find(
+            (verse): boolean => {
+              return (
+                verse._id ===
+                `${chapterParams.book.replace('_', '-')}-${
+                  chapterParams.chapter
+                }-${c}-eng-verse`
+              );
+            },
           );
-        });
-      });
+        },
+      );
       console.log(filteredVerses);
 
-      return filteredVerses.filter((v): boolean => {
-        return v !== undefined;
-      }) as Verse[];
+      return filteredVerses.filter(
+        (v): boolean => {
+          return v !== undefined;
+        },
+      ) as Verse[];
     } else {
       return [];
     }
@@ -215,6 +223,7 @@ export class ChapterComponent implements OnInit {
       );
     }
     this.chapterService.chapter = chapter;
+    this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses
       ? chapterVerses.verses
       : undefined;

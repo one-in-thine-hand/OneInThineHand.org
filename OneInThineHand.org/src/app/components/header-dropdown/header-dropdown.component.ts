@@ -5,6 +5,7 @@ import { TextSelectService } from '../../services/text-select.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -19,6 +20,7 @@ export class HeaderDropdownComponent implements OnInit {
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
     public visibilityService: VisibilityService,
+    public databaseService: DatabaseService,
     private location: Location,
   ) {}
 
@@ -41,5 +43,13 @@ export class HeaderDropdownComponent implements OnInit {
     //   console.log(Array.from(this.refService.noteVis.values()));
     // }
     // +console.log(fRefs);
+  }
+
+  public async save(): Promise<void> {
+    if (this.chapterService.chapterNotes) {
+      await this.databaseService.updateDatabaseItem(
+        this.chapterService.chapterNotes,
+      );
+    }
   }
 }
