@@ -13,6 +13,7 @@ import { ChapterNotes } from '../../../../../notes/src/main';
 import onChange from 'on-change';
 import { PageStateService } from '../../services/page-state.service';
 import { parseOffsets, Verse } from '../../../../../shared/src/shared';
+import { FormatTagService } from '../../services/format-tag.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -34,6 +35,7 @@ export class ChapterComponent implements OnInit {
     public activatedRouter: ActivatedRoute,
     public paramService: ParamService,
     public pageStateService: PageStateService,
+    public formatTagService: FormatTagService,
   ) {}
 
   @HostListener('window:popstate', ['$event'])
@@ -222,6 +224,7 @@ export class ChapterComponent implements OnInit {
         chapterNotes.notes,
       );
     }
+    this.formatTagService.resetFormatTags(this.chapterVerses);
     this.chapterService.chapter = chapter;
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses

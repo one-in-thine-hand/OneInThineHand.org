@@ -21,7 +21,7 @@ export class RefTag {
 }
 
 export class FMerged {
-  public formatTags: FormatTag[] = [];
+  public formatTags: FormatTag[] | undefined;
   public text: string = '';
   public offsets: number[] = [];
   public refTags: RefTag[] | undefined;

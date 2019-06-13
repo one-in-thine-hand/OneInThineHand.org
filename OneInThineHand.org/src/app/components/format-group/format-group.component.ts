@@ -70,7 +70,7 @@ export class FormatGroupComponent implements OnInit {
 
     if (this.fMerged !== mergedFormatTags) {
       this.fMerged = mergedFormatTags;
-      console.log('true');
+      // console.log('true');
     }
     return this.fMerged;
   }

@@ -42,7 +42,7 @@ export class FormatTagComponent implements OnInit {
       //   },
       // );
       // console.log('oiasjdfoiajsdfoiasjdfoi');
-      console.log('richtest');
+      // console.log('richtest');
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
