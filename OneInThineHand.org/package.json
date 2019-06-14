@@ -1,6 +1,6 @@
 {
   "name": "one-in-thine-hand",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "One In Thine Hand",
   "homepage": "https://github.com/one-in-thine-hand/OneInThineHand.org",
   "author": {
@@ -23,6 +23,7 @@
     "ng": "ng",
     "start": "npm run postinstall:electron && npm-run-all -p ng:serve electron:serve",
     "build": "npm run postinstall:electron && npm run electron:serve-tsc && ng build",
+    "build:web": "yarn run postinstall:web  && yarn ng build --prod  --aot --build-optimizer",
     "build:dev": "npm run build -- -c dev",
     "build:prod": "npm run build -- -c production",
     "ng:serve": "ng serve",

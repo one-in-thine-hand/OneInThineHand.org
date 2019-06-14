@@ -1,3 +1,9 @@
+## <small>5.0.3 (2019-06-14)</small>
+
+* Adding upload script ([97cdfd9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/97cdfd9))
+
+
+
 ## <small>6.0.2 (2019-06-14)</small>
 
 * Added Chapter name to header ([c280d98](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c280d98))
@@ -65,6 +71,7 @@
 * update to verse model ([5e563a7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5e563a7))
 * Updated preprocessor ([9a12ec5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9a12ec5))
 * Updating project files ([0602ea3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0602ea3))
+* v6.0.2 ([7140ca3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7140ca3))
 * verses displaying again ([3b5e119](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3b5e119))
 * Whitespace improvements ([84db319](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/84db319))
 * Work on new note id format ([df64e12](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/df64e12))
