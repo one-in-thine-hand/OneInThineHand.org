@@ -66,7 +66,7 @@ export class FormatTagService {
     note: Note | undefined,
     verse: Verse,
   ): void {
-    if (formatGroups && fTags && note) {
+    if (formatGroups && fTags) {
       formatGroups
         .filter(
           (grp): boolean => {
@@ -92,6 +92,7 @@ export class FormatTagService {
   ): void {
     grp.uncompressedOffsets = parseOffsets(grp.offsets);
     if (grp.uncompressedOffsets) {
+      grp.uncompressedOffsets.pop();
       const fMergeds: FMerged[] = [];
       let lastMerged: FMerged | undefined;
       grp.uncompressedOffsets.map(
@@ -129,20 +130,20 @@ export class FormatTagService {
           const f = first(fM.offsets);
           const l = last(fM.offsets);
           console.log(`${f} ${l}`);
-
-          console.log(verse.text.slice(f, l));
+          fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
+          // console.log(verse.text ? verse.text.slice(f, l) : '');
         },
       );
     }
   }
   public fmergeEqual(lastMerged: FMerged, fMerged: FMerged): boolean {
-    return (
-      lastMerged.formatTags === fMerged.formatTags &&
-      lastMerged.refTags === fMerged.refTags
-    );
+    // return (
+    //   lastMerged.formatTags === fMerged.formatTags &&
+    //   lastMerged.refTags === fMerged.refTags
+    // );
     return (
       isEqual(lastMerged.formatTags, fMerged.formatTags) &&
-      isEqual(lastMerged.offsets, fMerged.offsets)
+      isEqual(lastMerged.refTags, fMerged.refTags)
     );
   }
   public getFormatTags(

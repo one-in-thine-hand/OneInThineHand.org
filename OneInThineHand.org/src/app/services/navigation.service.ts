@@ -189,12 +189,16 @@ export class NavigationService {
   private getHighlightAndContext(addressBarInput: string): void {}
 
   private getBookName(addressBarInput: string): string[] | undefined {
-    return this.bookNames.find((bN): boolean => {
-      return (
-        bN.find((b): boolean => {
-          return addressBarInput.toLowerCase().includes(b.toLowerCase());
-        }) !== undefined
-      );
-    });
+    return this.bookNames.find(
+      (bN): boolean => {
+        return (
+          bN.find(
+            (b): boolean => {
+              return addressBarInput.toLowerCase().includes(b.toLowerCase());
+            },
+          ) !== undefined
+        );
+      },
+    );
   }
 }
