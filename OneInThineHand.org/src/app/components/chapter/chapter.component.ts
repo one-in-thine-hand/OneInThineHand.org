@@ -14,6 +14,7 @@ import { PageStateService } from '../../services/page-state.service';
 import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 import { HistoryService } from '../../services/history.service';
+import { asyncScrollIntoView } from '../../scroll-into-view';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -169,7 +170,10 @@ export class ChapterComponent implements OnInit {
     );
   }
 
-  private setHighlighting(chapterParams: ChapterParams, verses: Verse[]): void {
+  private async setHighlighting(
+    chapterParams: ChapterParams,
+    verses: Verse[],
+  ): Promise<void> {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
 
@@ -199,20 +203,33 @@ export class ChapterComponent implements OnInit {
         }-eng-verse`,
       );
 
-      const verseElement = document.querySelector(
-        `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
-          highlightOffSets[0]
-        }-eng-verse`,
+      console.log(
+        `#verse-${chapterParams.book.replace('_', '-')}-${
+          chapterParams.chapter
+        }-${highlightOffSets[0]}-eng-verse`,
       );
-      console.log(verseElement);
 
-      if (verseElement) {
-        console.log(verseElement);
+      await asyncScrollIntoView(
+        `#verse-${chapterParams.book.replace('_', '-')}-${
+          chapterParams.chapter
+        }-${highlightOffSets[0]}-eng-verse`,
+        { timeout: 100 },
+      );
 
-        setTimeout((): void => {
-          verseElement.scrollIntoView();
-        }, 200);
-      }
+      // const verseElement = document.querySelector(
+      //   `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
+      //     highlightOffSets[0]
+      //   }-eng-verse`,
+      // );
+      // console.log(verseElement);
+
+      // if (verseElement) {
+      //   console.log(verseElement);
+
+      //   setTimeout((): void => {
+      //     verseElement.scrollIntoView();
+      //   }, 200);
+      // }
     } else {
       const verseElement = document.querySelector('verse');
       const noteElement = document.querySelector('note');
@@ -320,9 +337,11 @@ export class ChapterComponent implements OnInit {
       const verseElement = verseElements[x];
       if (verseElement.getBoundingClientRect().bottom - 48 > 0) {
         let noteElement = document.querySelector(
-          `#${verseElement.id.replace('verse', 'note')}`,
+          `#${verseElement.id.replace(/verse/g, 'note')}`,
         );
-        console.log(noteElement);
+        console.log(verseElement.id);
+
+        console.log(`#${verseElement.id.replace(/verse/g, 'note')}`);
 
         if (noteElement) {
           noteElement.scrollIntoView();
