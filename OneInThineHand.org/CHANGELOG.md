@@ -1,6 +1,16 @@
+## <small>5.0.4 (2019-06-14)</small>
+
+* Added basic history ([7f50c4e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7f50c4e))
+* adding save state to history ([831ac79](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/831ac79))
+* note ref highlight ([6866a65](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6866a65))
+* Updated history code ([c8ea018](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c8ea018))
+
+
+
 ## <small>5.0.3 (2019-06-14)</small>
 
 * Adding upload script ([97cdfd9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/97cdfd9))
+* v5.0.3 ([285643b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/285643b))
 
 
 
