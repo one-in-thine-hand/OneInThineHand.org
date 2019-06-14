@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { Note, Verse } from '../../../../shared/src/shared';
+import { Note, Verse, SecondaryNote } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 
@@ -30,6 +30,24 @@ export class ChapterService {
 
           verse.note = note;
           // console.log(note);
+        },
+      );
+    }
+  }
+  public resetNoteVis(): void {
+    if (this.chapterNotes && this.chapterNotes.notes) {
+      this.chapterNotes.notes.map(
+        (note): void => {
+          if (note.secondaryNotes) {
+            note.secondaryNotes.map(
+              (secondaryNote): void => {
+                if (secondaryNote.refTag) {
+                  secondaryNote.refTag.highlight = false;
+                }
+                // secondaryNote.highlight = false;s
+              },
+            );
+          }
         },
       );
     }

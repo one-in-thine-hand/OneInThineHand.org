@@ -30,12 +30,14 @@ export class VerseComponent implements OnInit {
       expandOffsets(this.verse.formatTags);
 
       // console.log(this.verse);
-      return this.verse.formatGroups.filter((formatGroup): boolean => {
-        return (
-          formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
-          formatGroup.formatGroupType !== FormatGroupType.BR
-        );
-      }); // this.verse.formatTags.map((f): void => {});
+      return this.verse.formatGroups.filter(
+        (formatGroup): boolean => {
+          return (
+            formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+            formatGroup.formatGroupType !== FormatGroupType.BR
+          );
+        },
+      ); // this.verse.formatTags.map((f): void => {});
     }
     return [];
   }

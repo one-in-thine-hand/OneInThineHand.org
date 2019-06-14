@@ -8,7 +8,11 @@
       <li (click)="this.notePhraseClick(secondaryNote)" class="note-phrase">
         {{ getNotePhrase(secondaryNote.notePhrase) }}
       </li>
-      <ul class="note-refs" *ngIf="secondaryNote.noteRefs">
+      <ul
+        class="note-refs"
+        *ngIf="secondaryNote.noteRefs"
+        [ngClass]="{ highlight: secondaryNote.highlight }"
+      >
         <li *ngFor="let noteRef of getNoteRefs(secondaryNote)">
           <span>{{ convertNoteCategory(noteRef) }}</span>
           <span [innerHTML]="noteRef.text"></span>

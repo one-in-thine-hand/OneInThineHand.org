@@ -10,10 +10,10 @@ import { ActivatedRoute } from '@angular/router';
 import { ParamService, ChapterParams } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
-import onChange from 'on-change';
 import { PageStateService } from '../../services/page-state.service';
 import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
+import { HistoryService } from '../../services/history.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -36,7 +36,51 @@ export class ChapterComponent implements OnInit {
     public paramService: ParamService,
     public pageStateService: PageStateService,
     public formatTagService: FormatTagService,
+    public historyService: HistoryService,
   ) {}
+
+  @HostListener('window:keyup', ['$event'])
+  public async onKeyUp(event: KeyboardEvent): Promise<void> {
+    if (event instanceof KeyboardEvent) {
+      if (event.ctrlKey) {
+        // console.log(event);
+
+        switch (event.key) {
+          case 'z': {
+            if (this.chapterVerses && this.chapterNotes) {
+              this.historyService.undoHistory(
+                this.chapterNotes,
+                this.saveStateService.data,
+                this.chapterVerses,
+              );
+              // await
+            }
+            // await this.formatTagService.resetFormatTags(this.chapterVerses);
+            break;
+          }
+          case 'y': {
+            console.log('y');
+            if (this.chapterVerses && this.chapterNotes) {
+              this.historyService.redoHistory(
+                this.chapterNotes,
+                this.chapterVerses,
+                this.saveStateService.data,
+              );
+            }
+
+            break;
+          }
+          case 'S': {
+            // console.log('hggg');
+            if (event.shiftKey) {
+              await this.databaseService.updateDatabaseItem(this.chapterNotes);
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
 
   @HostListener('window:popstate', ['$event'])
   public onPopState(event: PopStateEvent): void {
@@ -119,6 +163,7 @@ export class ChapterComponent implements OnInit {
             }
           }
         }
+        this.historyService.init();
         this.popStateActivated = false;
       },
     );
@@ -148,25 +193,44 @@ export class ChapterComponent implements OnInit {
           v.context = true;
         },
       );
+      console.log(
+        `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
+          highlightOffSets[0]
+        }-eng-verse`,
+      );
+
       const verseElement = document.querySelector(
         `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
           highlightOffSets[0]
         }-eng-verse`,
       );
+      console.log(verseElement);
+
       if (verseElement) {
         console.log(verseElement);
 
-        verseElement.scrollIntoView();
+        setTimeout((): void => {
+          verseElement.scrollIntoView();
+        }, 200);
       }
     } else {
-      const chapterGrid = document.querySelector('.chapter-grid');
-      const notesGrid = document.querySelector('#notes');
-      if (chapterGrid) {
-        chapterGrid.scrollTop = 0;
+      const verseElement = document.querySelector('verse');
+      const noteElement = document.querySelector('note');
+      if (verseElement) {
+        verseElement.scrollIntoView();
       }
-      if (notesGrid) {
-        notesGrid.scrollTop = 0;
+
+      if (noteElement) {
+        noteElement.scrollIntoView();
       }
+      // const chapterGrid = document.querySelector('.chapter-grid');
+      // const notesGrid = document.querySelector('#notes');
+      // if (chapterGrid) {
+      //   chapterGrid.scrollTop = 0;
+      // }
+      // if (notesGrid) {
+      //   notesGrid.scrollTop = 0;
+      // }
     }
     // verses.map((verse): void => {
     //   console.log(verse._id);
@@ -224,7 +288,10 @@ export class ChapterComponent implements OnInit {
         chapterNotes.notes,
       );
     }
-    this.formatTagService.resetFormatTags(this.chapterVerses);
+    await this.formatTagService.resetFormatTags(
+      this.chapterVerses,
+      this.chapterNotes,
+    );
     this.chapterService.chapter = chapter;
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses

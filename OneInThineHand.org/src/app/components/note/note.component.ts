@@ -92,7 +92,7 @@ export class NoteComponent implements OnInit {
     return undefined;
   }
 
-  public notePhraseClick(secondaryNote: SecondaryNote): void {
+  public async notePhraseClick(secondaryNote: SecondaryNote): Promise<void> {
     const selection = window.getSelection();
 
     if (selection) {
@@ -140,8 +140,9 @@ export class NoteComponent implements OnInit {
               range.endOffset -
               1}`},${secondaryNote.offsets}`;
             this.offsetService.expandNotes(this.chapterService.notes);
-            this.formatTagService.resetFormatTags(
+            await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
+              this.chapterService.chapterNotes,
             );
           }
         }
