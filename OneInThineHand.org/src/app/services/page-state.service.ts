@@ -92,13 +92,13 @@ export class PageStateService {
     if (this.timer) {
       clearInterval(this.timer);
     }
-    // this.timer = setInterval(async (): Promise<void> => {
-    //   if (this.currentPageState) {
-    //     this.setScrollTop();
-    //     // console.log(this.currentPageState);
-    //     // await this.databaseService.updateDatabaseItem(this.currentPageState);
-    //   }
-    // }, 2000);
+    this.timer = setInterval(async (): Promise<void> => {
+      if (this.currentPageState) {
+        this.setScrollTop();
+        // console.log(this.currentPageState);
+        // await this.databaseService.updateDatabaseItem(this.currentPageState);
+      }
+    }, 2000);
   }
 
   public setScrollTop(): void {

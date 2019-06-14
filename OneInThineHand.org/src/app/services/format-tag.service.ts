@@ -27,7 +27,9 @@ export class FormatTagService {
     item.uncompressedOffsets = parseOffsets(item.offsets);
   }
 
-  public resetFormatTags(chapterVerses: ChapterVerses | undefined): void {
+  public async resetFormatTags(
+    chapterVerses: ChapterVerses | undefined,
+  ): Promise<void> {
     if (chapterVerses && chapterVerses.verses) {
       chapterVerses.verses.map(
         (verse): void => {
@@ -105,7 +107,7 @@ export class FormatTagService {
             lastMerged = fMerged;
           } else {
             if (this.fmergeEqual(lastMerged, fMerged)) {
-              console.log('jjj');
+              // console.log('jjj');
 
               lastMerged.offsets.push(o);
             } else {
@@ -129,9 +131,10 @@ export class FormatTagService {
         (fM): void => {
           const f = first(fM.offsets);
           const l = last(fM.offsets);
-          console.log(`${f} ${l}`);
-          if (f && l) {
+          if (f !== undefined && l !== undefined) {
             fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
+          } else {
+            console.log(`${f} ${l}`);
           }
           // console.log(verse.text ? verse.text.slice(f, l) : '');
         },

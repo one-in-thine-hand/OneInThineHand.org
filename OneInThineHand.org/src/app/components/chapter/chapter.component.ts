@@ -148,25 +148,44 @@ export class ChapterComponent implements OnInit {
           v.context = true;
         },
       );
+      console.log(
+        `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
+          highlightOffSets[0]
+        }-eng-verse`,
+      );
+
       const verseElement = document.querySelector(
         `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
           highlightOffSets[0]
         }-eng-verse`,
       );
+      console.log(verseElement);
+
       if (verseElement) {
         console.log(verseElement);
 
-        verseElement.scrollIntoView();
+        setTimeout((): void => {
+          verseElement.scrollIntoView();
+        }, 200);
       }
     } else {
-      const chapterGrid = document.querySelector('.chapter-grid');
-      const notesGrid = document.querySelector('#notes');
-      if (chapterGrid) {
-        chapterGrid.scrollTop = 0;
+      const verseElement = document.querySelector('verse');
+      const noteElement = document.querySelector('note');
+      if (verseElement) {
+        verseElement.scrollIntoView();
       }
-      if (notesGrid) {
-        notesGrid.scrollTop = 0;
+
+      if (noteElement) {
+        noteElement.scrollIntoView();
       }
+      // const chapterGrid = document.querySelector('.chapter-grid');
+      // const notesGrid = document.querySelector('#notes');
+      // if (chapterGrid) {
+      //   chapterGrid.scrollTop = 0;
+      // }
+      // if (notesGrid) {
+      //   notesGrid.scrollTop = 0;
+      // }
     }
     // verses.map((verse): void => {
     //   console.log(verse._id);
@@ -224,7 +243,7 @@ export class ChapterComponent implements OnInit {
         chapterNotes.notes,
       );
     }
-    this.formatTagService.resetFormatTags(this.chapterVerses);
+    await this.formatTagService.resetFormatTags(this.chapterVerses);
     this.chapterService.chapter = chapter;
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses

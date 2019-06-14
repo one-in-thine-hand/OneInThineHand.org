@@ -1,5 +1,5 @@
 <f
-  (mouseup)="formatTagClick($event)"
+  (click)="formatTagClick($event)"
   [class]="getClassList()"
   [innerHTML]="getText().replace('\n', '')"
   [attr.verse-id]="this.verse._id"
