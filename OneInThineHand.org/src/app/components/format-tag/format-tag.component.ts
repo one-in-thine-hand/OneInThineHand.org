@@ -13,6 +13,8 @@ import {
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
 import { VisibilityService } from '../../services/visibility.service';
+import { ChapterService } from '../../services/chapter.service';
+import { findByAttribute } from '../../services/history.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -25,10 +27,13 @@ export class FormatTagComponent implements OnInit {
   public text: string = '';
   public classList: string[] = [];
   public offsets = '';
+  public refList: string[] | undefined;
 
   public constructor(
     public markService: MarkService,
     public visibilityService: VisibilityService,
+
+    public chapterService: ChapterService,
   ) {}
 
   public ngOnInit(): void {}
@@ -90,11 +95,15 @@ export class FormatTagComponent implements OnInit {
       if (
         visibleRefTags.filter(
           (f): boolean => {
-            return f.highlight;
+            return f.highlight === true;
           },
         ).length > 0
       ) {
+        console.log('jhhh0');
+
         classList.push('ref-selected');
+      } else {
+        this.refList = undefined;
       }
       // this.fMerged.refTags.map(
       //   (f): void => {
@@ -136,7 +145,7 @@ export class FormatTagComponent implements OnInit {
     ) {
       this.classList = classList;
     }
-    return this.classList.toString().replace(/,/s, ' ');
+    return this.classList.toString().replace(/,/g, ' ');
   }
 
   public getOffSets(): string {
@@ -149,15 +158,37 @@ export class FormatTagComponent implements OnInit {
   }
 
   public formatTagClick(event: Event): void {
-    const selection = window.getSelection();
-    console.log('hhgg');
-    console.log(event);
+    // const selection = window.getSelection();
+    // console.log('hhgg');
+    // console.log(event);
+    // this.visibilityService.resetHighlight();
+    this.chapterService.resetNoteVis();
 
     if (this.fMerged.refTags) {
-      this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
+      if (this.refList === undefined) {
+        this.refList = this.fMerged.refTags.map(
+          (refT): string => {
+            return refT.secondaryNoteID;
+          },
+        );
+      }
+      const id = this.refList.pop();
+      const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
+      console.log(r);
+
+      if (r) {
+        r.highlight = true;
+        const e = document.querySelector(`#${r}`);
+        if (e) {
+          e.scrollIntoView();
+        }
+      } else {
+        this.refList = undefined;
+      }
+      // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
     }
-    if (selection) {
-      selection.addRange(selection.getRangeAt(0));
-    }
+    // if (selection) {
+    //   selection.addRange(selection.getRangeAt(0));
+    // }
   }
 }
