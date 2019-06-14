@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
 import { Note, Verse } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
+import { ChapterVerses } from '../../../../format-tags/src/main';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class ChapterService {
   public verses: Verse[] | undefined;
   public notes: Note[] | undefined;
   public chapterNotes: ChapterNotes | undefined;
+  public chapterVerses: ChapterVerses | undefined;
   public constructor() {}
 
   public mergeVersesNotes(verses: Verse[], notes: Note[] | undefined): void {

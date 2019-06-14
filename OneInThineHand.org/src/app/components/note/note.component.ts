@@ -9,6 +9,7 @@ import {
 import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
+import { FormatTagService } from '../../services/format-tag.service';
 
 @Component({
   selector: 'app-note',
@@ -21,6 +22,7 @@ export class NoteComponent implements OnInit {
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
+    public formatTagService: FormatTagService,
   ) {}
 
   public ngOnInit() {}
@@ -138,6 +140,9 @@ export class NoteComponent implements OnInit {
               range.endOffset -
               1}`},${secondaryNote.offsets}`;
             this.offsetService.expandNotes(this.chapterService.notes);
+            this.formatTagService.resetFormatTags(
+              this.chapterService.chapterVerses,
+            );
           }
         }
         // console.log(elements);

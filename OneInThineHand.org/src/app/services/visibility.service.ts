@@ -7,7 +7,7 @@ import { Note, NoteType } from '../../../../shared/src/shared';
 })
 export class VisibilityService {
   public secondaryNotesHighlight: Map<string, boolean> = new Map();
-
+  public secondaryNotesVisibility: Map<string, boolean> = new Map();
   public constructor(private saveStateService: SaveStateService) {}
 
   public resetHighlight(): void {
@@ -44,7 +44,10 @@ export class VisibilityService {
                     break;
                   }
                 }
-                if (sN.id) this.secondaryNotesHighlight.set(sN.id, sN.visible);
+                if (sN.id) {
+                  this.secondaryNotesHighlight.set(sN.id, sN.visible);
+                  this.secondaryNotesVisibility.set(sN.id, sN.visible);
+                }
 
                 if (sN.visible) {
                   sN.noteRefs.map(

@@ -18,6 +18,7 @@ export class RefTag {
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
   public highlight = false;
+  public secondaryNoteID: string ;
 }
 
 export class FMerged {

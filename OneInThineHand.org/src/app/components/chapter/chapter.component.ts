@@ -231,6 +231,7 @@ export class ChapterComponent implements OnInit {
       ? chapterVerses.verses
       : undefined;
     this.chapterService.notes = this.chapterNotes.notes;
+    this.chapterService.chapterVerses = this.chapterVerses;
     if (newPage) {
       await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
     }

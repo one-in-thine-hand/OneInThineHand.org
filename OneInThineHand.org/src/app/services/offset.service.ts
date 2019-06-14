@@ -33,6 +33,9 @@ export class OffsetService {
 
                   formatTag.uncompressedOffsets =
                     secondaryNote.uncompressedOffsets;
+                  if (secondaryNote.id) {
+                    refTag.secondaryNoteID = secondaryNote.id;
+                  }
 
                   if (secondaryNote.offsets === 'all') {
                     refTag.refs = secondaryNote.noteRefs

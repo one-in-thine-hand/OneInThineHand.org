@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
+import {
+  FMerged,
+  RefTag,
+} from '../../../../../shared/src/models/format_tags/FormatTag';
 import {
   Optional,
   formatTagTypeOptions,
@@ -9,6 +12,7 @@ import {
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
+import { VisibilityService } from '../../services/visibility.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -22,7 +26,10 @@ export class FormatTagComponent implements OnInit {
   public classList: string[] = [];
   public offsets = '';
 
-  public constructor(public markService: MarkService) {}
+  public constructor(
+    public markService: MarkService,
+    public visibilityService: VisibilityService,
+  ) {}
 
   public ngOnInit(): void {}
 
@@ -57,16 +64,31 @@ export class FormatTagComponent implements OnInit {
 
     return this.text;
   }
+  private getVisibleRefTags(): RefTag[] | undefined {
+    if (this.fMerged.refTags) {
+      return this.fMerged.refTags.filter(
+        (refTag): boolean => {
+          return (
+            this.visibilityService.secondaryNotesVisibility.get(
+              refTag.secondaryNoteID,
+            ) === true
+          );
+        },
+      );
+    }
+  }
 
   public getClassList(): string {
+    this.getVisibleRefTags();
     const classList: string[] = [];
-    if (this.fMerged.refTags && this.fMerged.refTags.length !== 0) {
-      this.fMerged.refTags.length > 1
+    const visibleRefTags = this.getVisibleRefTags();
+    if (visibleRefTags && visibleRefTags.length !== 0) {
+      visibleRefTags.length > 1
         ? classList.push('oith-ref-double')
         : classList.push('oith-ref-single');
 
       if (
-        this.fMerged.refTags.filter(
+        visibleRefTags.filter(
           (f): boolean => {
             return f.highlight;
           },

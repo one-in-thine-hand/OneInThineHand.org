@@ -10,6 +10,7 @@ import { ElectronService } from '../../providers/electron.service';
 import * as JSZip from 'jszip';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
+import { FormatTagService } from '../../services/format-tag.service';
 
 @Component({
   selector: 'app-header',
@@ -21,13 +22,14 @@ export class HeaderComponent implements OnInit {
   public constructor(
     public saveStateService: SaveStateService,
     public visibilityService: VisibilityService,
-    public chapterServicd: ChapterService,
+    public chapterService: ChapterService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
     public headerService: HeaderService,
     private location: Location,
     public preprocessorService: PreprocessorService,
     public electronService: ElectronService,
+    public formatTagService: FormatTagService,
   ) {}
 
   private noteProcessor = new NoteProcessor();
@@ -78,8 +80,9 @@ export class HeaderComponent implements OnInit {
         ref as string
       ];
     }
-    if (this.chapterServicd.notes) {
-      this.visibilityService.resetNoteVisibility(this.chapterServicd.notes);
+    if (this.chapterService.notes) {
+      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     this.saveStateService.save();
   }

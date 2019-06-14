@@ -19,9 +19,18 @@ f {
     text-decoration: underline;
     text-decoration-skip-ink: none;
     text-decoration-color: grey;
+    &.ref-selected {
+      text-decoration: none;
+      // text-decoration-skip-ink: none;
+      // text-decoration-color: grey;
+      border-bottom: 3px solid #dc143c;
+    }
   }
   &.oith-ref-single {
     border-bottom: 1px solid grey;
+    &.ref-selected {
+      border-bottom: 3px solid #f68d2e;
+    }
   }
 }
 
@@ -53,5 +62,5 @@ f {
 }
 
 :host-context(.edit-mode) f {
-  pointer-events: none;
+  // pointer-events: none;
 }
