@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "6.0.2",
-  "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "name": "one-in-thine-hand",
+  "version": "5.0.2",
+  "description": "One In Thine Hand",
+  "homepage": "https://github.com/one-in-thine-hand/OneInThineHand.org",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Jared Parkinson",
+    "email": "jared@parkinson.im"
   },
   "keywords": [
     "angular",

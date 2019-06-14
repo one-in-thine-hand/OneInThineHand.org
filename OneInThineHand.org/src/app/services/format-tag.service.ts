@@ -130,7 +130,9 @@ export class FormatTagService {
           const f = first(fM.offsets);
           const l = last(fM.offsets);
           console.log(`${f} ${l}`);
-          fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
+          if (f && l) {
+            fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
+          }
           // console.log(verse.text ? verse.text.slice(f, l) : '');
         },
       );
