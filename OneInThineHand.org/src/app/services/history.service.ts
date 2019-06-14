@@ -4,6 +4,7 @@ import { PageStateService } from './page-state.service';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { cloneDeep } from 'lodash';
+import { SaveStateModel } from './SaveStateModel';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,16 +21,19 @@ export class HistoryService {
 
   public addHistory(
     chapterVerses: ChapterVerses,
+    saveStateData: SaveStateModel,
     chapterNotes: ChapterNotes,
   ): void {
     this.backHistory.push({
       chapterNotes: cloneDeep(chapterNotes),
       chapterVerses: cloneDeep(chapterVerses),
+      saveStateData: saveStateData,
     });
   }
 
   public undoHistory(
     chapterNotes: ChapterNotes,
+    saveStateData: SaveStateModel,
     chapterVerses: ChapterVerses,
   ): void {
     if (this.backHistory.length > 0) {
@@ -38,6 +42,7 @@ export class HistoryService {
       if (s) {
         this.forwardHistory.push({
           chapterNotes: cloneDeep(chapterNotes),
+          saveStateData: saveStateData,
           chapterVerses: cloneDeep(chapterVerses),
         });
         if (chapterNotes.notes) {
@@ -81,6 +86,7 @@ export class HistoryService {
   public redoHistory(
     chapterNotes: ChapterNotes,
     chapterVerses: ChapterVerses,
+    saveStateData: SaveStateModel,
   ): void {
     if (this.backHistory.length > 0) {
       const s = this.forwardHistory.shift();
@@ -88,6 +94,7 @@ export class HistoryService {
       if (s) {
         this.backHistory.push({
           chapterNotes: cloneDeep(chapterNotes),
+          saveStateData: saveStateData,
           chapterVerses: cloneDeep(chapterVerses),
         });
         if (chapterNotes.notes) {
@@ -133,6 +140,7 @@ export class HistoryService {
 export class HistoryItem {
   public chapterVerses: ChapterVerses;
   public chapterNotes: ChapterNotes;
+  public saveStateData: SaveStateModel;
 }
 
 export function findByAttribute<T, T2>(

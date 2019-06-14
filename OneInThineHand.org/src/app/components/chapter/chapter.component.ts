@@ -43,13 +43,14 @@ export class ChapterComponent implements OnInit {
   public async onKeyUp(event: KeyboardEvent): Promise<void> {
     if (event instanceof KeyboardEvent) {
       if (event.ctrlKey) {
-        console.log(event);
+        // console.log(event);
 
         switch (event.key) {
           case 'z': {
             if (this.chapterVerses && this.chapterNotes) {
               this.historyService.undoHistory(
                 this.chapterNotes,
+                this.saveStateService.data,
                 this.chapterVerses,
               );
               // await
@@ -63,13 +64,14 @@ export class ChapterComponent implements OnInit {
               this.historyService.redoHistory(
                 this.chapterNotes,
                 this.chapterVerses,
+                this.saveStateService.data,
               );
             }
 
             break;
           }
           case 'S': {
-            console.log('hggg');
+            // console.log('hggg');
             if (event.shiftKey) {
               await this.databaseService.updateDatabaseItem(this.chapterNotes);
             }

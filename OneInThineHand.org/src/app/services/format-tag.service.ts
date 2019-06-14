@@ -16,11 +16,15 @@ import { isEqual, first, last } from 'lodash';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 import { HistoryService } from './history.service';
 import { ChapterNotes } from '../../../../notes/src/main';
+import { SaveStateService } from './save-state.service';
 @Injectable({
   providedIn: 'root',
 })
 export class FormatTagService {
-  public constructor(private historyService: HistoryService) {}
+  public constructor(
+    private historyService: HistoryService,
+    private saveStateService: SaveStateService,
+  ) {}
 
   private buildOffset(item: {
     offsets: string | undefined;
@@ -34,7 +38,11 @@ export class FormatTagService {
     chapterNotes: ChapterNotes | undefined,
   ): Promise<void> {
     if (chapterVerses && chapterNotes) {
-      this.historyService.addHistory(chapterVerses, chapterNotes);
+      this.historyService.addHistory(
+        chapterVerses,
+        this.saveStateService.data,
+        chapterNotes,
+      );
     }
     if (chapterVerses && chapterVerses.verses) {
       chapterVerses.verses.map(
