@@ -14,11 +14,13 @@ import {
 } from '../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, first, last } from 'lodash';
 import { ChapterVerses } from '../../../../format-tags/src/main';
+import { HistoryService } from './history.service';
+import { ChapterNotes } from '../../../../notes/src/main';
 @Injectable({
   providedIn: 'root',
 })
 export class FormatTagService {
-  public constructor() {}
+  public constructor(private historyService: HistoryService) {}
 
   private buildOffset(item: {
     offsets: string | undefined;
@@ -29,7 +31,11 @@ export class FormatTagService {
 
   public async resetFormatTags(
     chapterVerses: ChapterVerses | undefined,
+    chapterNotes: ChapterNotes | undefined,
   ): Promise<void> {
+    if (chapterVerses && chapterNotes) {
+      this.historyService.addHistory(chapterVerses, chapterNotes);
+    }
     if (chapterVerses && chapterVerses.verses) {
       chapterVerses.verses.map(
         (verse): void => {

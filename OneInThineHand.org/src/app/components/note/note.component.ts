@@ -142,6 +142,7 @@ export class NoteComponent implements OnInit {
             this.offsetService.expandNotes(this.chapterService.notes);
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
+              this.chapterService.chapterNotes,
             );
           }
         }
