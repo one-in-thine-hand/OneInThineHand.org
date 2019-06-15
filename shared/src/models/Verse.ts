@@ -1,5 +1,6 @@
 import { FormatGroup } from './format_groups/FormatGroup';
 import { FormatTag } from './format_tags/FormatTag';
+import { Note } from './notes/Note';
 // import { NoteLDSSource } from '../../../oith.notes/src/models/Note'
 export const enum NodeName {
   p,
@@ -9,10 +10,11 @@ export const enum NodeName {
   h4,
   h5,
   h6,
-  span
+  span,
 }
 
 export class Verse {
+  public noteID: string;
   public _id: string | undefined;
   public _rev: string | undefined;
   public verseID: string | undefined;
@@ -21,10 +23,7 @@ export class Verse {
   public text: string | undefined;
   public formatTags: FormatTag[] | undefined;
   public nodeName: NodeName | undefined;
+  public note: Note | undefined;
+  public context: boolean | undefined;
+  public highlight: boolean | undefined;
 }
-
-// export class LDSSourceVerse extends Verse {
-//   public verseElement: Element
-//   public nodeName: NodeName = NodeName.p
-//   public note: NoteLDSSource
-// }

@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import './app/styles/mediaQueries.scss';
+@import './app/styles/bootstrap.min.css';
+
 html,
 body {
   margin: 0;
@@ -7,6 +10,37 @@ body {
   height: 100%;
 }
 
+@mixin rootGrid($mediaQuery, $gridTemplateCol) {
+  // .oith-content-parent {
+  @media #{$mediaQuery} {
+    display: grid;
+    overflow: hidden;
+    grid-template-columns: #{$gridTemplateCol};
+    // }
+  }
+}
+
+@mixin oithContentGrid($mediaQuery, $gridTemplateRow, $gridTemplateColumn) {
+  @media #{$mediaQuery} {
+    grid-template-columns: $gridTemplateColumn;
+    grid-template-rows: $gridTemplateRow;
+  }
+}
+
+.oith-content-parent {
+  // @media screen and (min-width: 992px) {
+  //   background-color: red;
+  //   display: grid;
+  //   overflow: hidden;
+  //   grid-template-rows: 100vh;
+  //   grid-template-columns: 200px auto;
+  // }
+
+  @include rootGrid($phoneMediaQuery, 0 100vw);
+  @include rootGrid($mediumScreen, 0 100vw);
+  @include rootGrid($largeScreen, 200px auto);
+  @include rootGrid($extraLargeScreen, 250px auto);
+}
 div.main {
   display: grid;
   grid-template-rows: 48px auto;
@@ -17,23 +51,59 @@ div.main {
   > div {
     display: grid;
     grid-template-rows: 100%;
-    grid-template-columns: 300px auto;
+    // grid-template-columns: 300px auto;
     router-outlet {
       display: none;
     }
-
+    app-note {
+      overflow-y: scroll;
+    }
     app-chapter {
       display: grid;
-      grid-template-rows: 100%;
-      grid-template-columns: auto 300px;
-
-      .chapter {
-        height: 100%;
+      .chapter-grid {
+        overflow-y: scroll;
       }
       #notes {
-        background-color: red;
-        height: 100%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        background: gainsboro;
+        overflow-y: scroll;
       }
+      @include oithContentGrid($smallScreen, 50% 50%, 100vw);
+
+      @include oithContentGrid($largeScreen, 100%, auto 300px);
+      // @include oithContentGrid($mediumScreen, 100%, auto);
+      @include oithContentGrid($mediumScreen, 100%, auto 250px);
+      @include oithContentGrid($extraLargeScreen, 100%, auto 350px);
+      &.display-notes {
+      }
+      @media #{$smallScreen} {
+        // grid-template-rows: 50% 50%;
+        // height: 100vh;
+      }
+      height: 100%;
+      // grid-template-rows: 100%;
+      // grid-template-columns: auto 300px;
+
+      // .chapter {
+      //   height: 100%;
+      // }
+      // #notes {
+      //   background-color: red;
+      //   height: 100%;
+      // }
     }
   }
+}
+* {
+  font-family: serif !important;
+  // font-size: 16px;
+}
+
+.white-space {
+  height: 95vh;
+}
+
+.add-notes-backdrop {
+  background: none;
 }

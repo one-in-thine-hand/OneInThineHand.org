@@ -1,0 +1,52 @@
+@import '../../styles/mediaQueries.scss';
+$chapterGridMargins: 32px;
+
+@mixin oithChapterParent(
+  $mediaQuery,
+  $gridTemplateColumn,
+  $oithChapterContainerWidth
+) {
+  @media #{$mediaQuery} {
+    grid-template-columns: $gridTemplateColumn;
+    #bodyBlock {
+      // margin: auto;
+      justify-self: center;
+
+      width: $oithChapterContainerWidth;
+    }
+  }
+}
+
+.chapter-grid {
+  display: grid;
+
+  // @media screen and (min-width: 320px), (orientation: landscape) {
+  //   grid-template-columns: 16px $chapterGridMargins auto $chapterGridMargins 16px;
+  //   width: auto;
+  // }
+  @include oithChapterParent(
+    $smallScreen,
+    16px $chapterGridMargins auto $chapterGridMargins 16px,
+    auto
+  );
+  @include oithChapterParent(
+    $largeScreen,
+    16px $chapterGridMargins auto $chapterGridMargins 16px,
+    80%
+  );
+  .chapter-nav-btn {
+    width: 32px;
+    i {
+      fill: gainsboro;
+      position: fixed;
+
+      // @media #{$smallScreen} {
+      //   top: 30%;
+      // }
+      // @media #{$mediumScreen} {
+      // }
+      top: 50%;
+      // width: 32px;
+    }
+  }
+}

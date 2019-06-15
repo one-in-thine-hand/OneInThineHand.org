@@ -8,15 +8,15 @@ export async function verifyVerseFlatness(
       (verseSelector): boolean => {
         // console.log(verseSelector);
 
-        console.log(document.querySelectorAll(`${verseSelector} > * > *`));
-        if (document.querySelectorAll(`${verseSelector} > * > *`).length > 0) {
-          console.log(verseSelector);
+        // console.log(document.querySelectorAll(`${verseSelector} > * > *`));
+        // if (document.querySelectorAll(`${verseSelector} > * > *`).length > 0) {
+        //   console.log(verseSelector);
 
-          const asdf = Array.from(
-            document.querySelectorAll(`${verseSelector} > * > *`),
-          );
-          console.log(asdf);
-        }
+        //   const asdf = Array.from(
+        //     document.querySelectorAll(`${verseSelector} > * > *`),
+        //   );
+        //   console.log(asdf);
+        // }
 
         // console.log();
 

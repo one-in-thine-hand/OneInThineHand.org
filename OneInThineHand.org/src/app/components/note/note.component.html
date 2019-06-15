@@ -1,3 +1,85 @@
-<p>
-  note works!
-</p>
+<ul *ngIf="note" id="note-{{ note._id }}">
+  <li class="note-short-title">
+    {{ note.noteShortTitle }}
+    <button class="add-note-btn" (click)="addNote(content)"></button>
+  </li>
+  <ng-container *ngIf="note.secondaryNotes">
+    <ul
+      class="secondary-note"
+      *ngFor="let secondaryNote of getSecondaryNotes()"
+      id="eng-{{ secondaryNote.id }}"
+    >
+      <li (click)="this.notePhraseClick(secondaryNote)" class="note-phrase">
+        {{ getNotePhrase(secondaryNote.notePhrase) }}
+      </li>
+      <ul
+        class="note-refs"
+        *ngIf="secondaryNote.noteRefs"
+        [ngClass]="{ highlight: secondaryNote.highlight }"
+      >
+        <li *ngFor="let noteRef of getNoteRefs(secondaryNote)">
+          <span>{{ convertNoteCategory(noteRef) }}</span>
+          <span [innerHTML]="noteRef.text"></span>
+        </li>
+      </ul>
+    </ul>
+  </ng-container>
+</ul>
+
+<ng-template #content let-modal
+  ><div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="noteTitle">Note Title</label>
+        <div class="input-group">
+          <input id="noteTitleTemp" class="form-control" />
+        </div>
+        <label for="noteReference">Note Reference</label>
+        <div class="input-group">
+          <textarea id="noteReferenceTemp" class="form-control"></textarea>
+        </div>
+        <label for="noteReferenceLabel">Note Reference Label</label>
+        <div class="input-group">
+          <input id="noteReferenceLabelTemp" class="form-control" />
+        </div>
+        <label for="offsets">Note Offsets</label>
+        <div class="input-group">
+          <div ngbDropdown class="d-inline-block">
+            <button
+              class="btn btn-outline-primary"
+              id="dropdownBasic1"
+              ngbDropdownToggle
+            >
+              Toggle dropdown
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem>TRN</button>
+              <button ngbDropdownItem>GEO</button>
+              <button ngbDropdownItem>GS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="saveNote(modal)"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>

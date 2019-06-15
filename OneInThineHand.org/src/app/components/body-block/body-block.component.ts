@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Verse } from '../../../../../shared/src/shared';
+import { Chapter } from '../../../../../chapter/src/Chapter';
+import { Paragraph } from '../../../../../chapter/src/Paragraph';
 
 @Component({
   selector: 'app-body-block',
@@ -9,7 +11,15 @@ import { Verse } from '../../../../../shared/src/shared';
 export class BodyBlockComponent implements OnInit {
   @Input() public verses: Verse[];
 
-  constructor() {}
+  @Input() public chapter: Chapter;
 
-  ngOnInit() {}
+  public constructor() {}
+
+  public ngOnInit() {
+    // console.log(this.verses);
+  }
+
+  public getParagraphs(): Paragraph[] {
+    return this.chapter.paragraphs ? this.chapter.paragraphs : [];
+  }
 }

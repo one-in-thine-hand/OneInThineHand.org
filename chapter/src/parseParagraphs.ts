@@ -23,7 +23,7 @@ export async function parseParagraphs(
     document.querySelectorAll(paragraphSelectors.toString()),
   ).map(
     async (paragraphElement): Promise<Paragraph> => {
-      console.log(paragraphElement);
+      // console.log(paragraphElement);
 
       const paragraph = new Paragraph();
       const verseIDs = Array.from(

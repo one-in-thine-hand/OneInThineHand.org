@@ -1,0 +1,52 @@
+verse {
+  &.highlight {
+    padding: 0 0 6pt 5px;
+    border-left: 3px solid #f68d2e;
+  }
+  &.context {
+    padding: 0 0 6pt 5px;
+    border-left: 3px solid #2ca1a5;
+  }
+  display: block;
+
+  &[id*='title_number1'] {
+    font-weight: 400 !important;
+    font-size: 16px;
+  }
+
+  &[id*='title1'],
+  &[id*='title_number1'],
+  &[id*='study_summary1'] {
+    text-align: center;
+    display: block;
+  }
+
+  &[id*='study_summary1'] {
+    margin-bottom: 6pt;
+  }
+}
+:host-context(.paragraph-mode) verse {
+  display: inline;
+  margin-right: 5px;
+  &[id*='title1'],
+  &[id*='title_number1'],
+  &[id*='study_summary1'] {
+    text-align: center;
+    display: block;
+  }
+
+  .verse-number {
+    vertical-align: super;
+  }
+
+  &.highlight {
+    padding: 0;
+    border-left: none !important;
+    background-color: rgba(184, 184, 106, 0.815);
+  }
+  &.context {
+    padding: 0;
+    border-left: none !important;
+    background-color: #cfe8eb;
+  }
+}

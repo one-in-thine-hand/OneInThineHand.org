@@ -70,6 +70,7 @@ export const enum FormatTagType {
   verseNumber = 0,
   italic,
   bold,
+  subordinate,
   clarityWord,
   translit,
   language,

@@ -39,18 +39,18 @@ function nodeToFormatGroup(
   count: number,
 ): number {
   let formatGroup: FormatGroup;
-  switch (node.nodeName) {
-    case 'BR': {
+  switch (node.nodeName.toLowerCase()) {
+    case 'br': {
       formatGroup = new FormatGroupBR();
       formatGroups.push(formatGroup);
       return count;
     }
-    case 'RUBY': {
+    case 'ruby': {
       formatGroup = new FormatGroupRuby();
       throw 'Ruby has not been implemented yet';
       break;
     }
-    case 'A': {
+    case 'a': {
       if ((node as Element).querySelectorAll('ruby').length > 0) {
         formatGroup = new FormatGroupRubyA();
         throw 'Ruby has not been implemented yet';
@@ -69,6 +69,8 @@ function nodeToFormatGroup(
         formatGroups.push(new FormatGroupPageBreak());
         return count;
       } else {
+        // console.log(node);
+
         throw 'Unknown FormatGroup detected';
       }
 

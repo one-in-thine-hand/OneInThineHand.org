@@ -1,1 +1,9 @@
-<app-verse *ngFor="let verse of this.verses" [verse]="verse"></app-verse>
+<!-- <app-verse *ngFor="let verse of this.verses" [verse]="verse"></app-verse> -->
+
+<ng-container *ngIf="chapter.paragraphs">
+  <app-paragraph
+    [verses]="this.verses"
+    [paragraph]="paragraph"
+    *ngFor="let paragraph of getParagraphs()"
+  ></app-paragraph>
+</ng-container>

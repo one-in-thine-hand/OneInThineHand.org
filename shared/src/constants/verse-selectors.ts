@@ -215,6 +215,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
   {
+    className: 'subordinate',
+    formatTagType: FormatTagType.subordinate,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
+  },
+
+  {
     className: 'underline-Brown',
     formatTagType: FormatTagType.UnderlineBrown,
     optional: Optional.SOMETIMES,
@@ -308,7 +315,7 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
   {
     className: 'dominant',
     formatTagType: FormatTagType.dominant,
-    optional: Optional.SOMETIMES,
+    optional: Optional.ALWAYS,
     displayAs: DisplayAs.CLASS,
   },
   {

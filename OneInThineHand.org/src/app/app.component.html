@@ -1,7 +1,10 @@
-<div class="main">
+<div
+  class="main"
+  [ngClass]="{ 'edit-mode': this.saveStateService.data.editMode }"
+>
   <app-header></app-header>
-  <div>
-    <div class="navigation-placeholder"></div>
+  <div class="oith-content-parent">
+    <app-navigation></app-navigation>
     <router-outlet></router-outlet>
   </div>
 </div>

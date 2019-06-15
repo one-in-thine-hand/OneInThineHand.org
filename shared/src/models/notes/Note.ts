@@ -1,10 +1,13 @@
+import { Visibility } from '../../interfaces/visibliity';
+import { FormatTag, RefTag } from '../format_tags/FormatTag';
+
 // import * as he from 'he';
 
 // import * as he from 'he';
 export enum NoteType {
   Eng = 2,
   New = 1,
-  TC = 3
+  TC = 3,
 }
 
 export const enum NoteCategory {
@@ -22,132 +25,159 @@ export const enum NoteCategory {
   PHR,
   QUO,
   TG,
-  TRN
+  TRN,
 }
 
-export class ReferenceLabel {
-  public noteCategory: NoteCategory | undefined;
-  public className: string | undefined;
-  public referenceLabelName: string | undefined;
-  public referenceLabelShortName: string | undefined;
+export class NoteTypeConvert {
+  public noteType: NoteType;
+  public className: string;
 }
+
+export class ReferenceLabel implements Visibility {
+  public visible: boolean | undefined;
+  public noteCategory: NoteCategory;
+  public className: string;
+  public referenceLabelName: string;
+  public referenceLabelShortName: string;
+}
+
+export const NoteTypeConverts: NoteTypeConvert[] = [
+  { noteType: NoteType.Eng, className: 'eng-note' },
+  { noteType: NoteType.New, className: 'new-note' },
+  { noteType: NoteType.TC, className: 'tc-note' },
+];
 
 export const ReferenceLabels: ReferenceLabel[] = [
   {
     className: 'reference-label-alt',
     noteCategory: NoteCategory.ALT,
     referenceLabelName: 'Alternative Reading',
-    referenceLabelShortName: 'ALT'
+    visible: true,
+    referenceLabelShortName: 'ALT',
   },
   {
     className: 'reference-label-bd',
     noteCategory: NoteCategory.BD,
     referenceLabelName: 'Bible Dictionary',
-    referenceLabelShortName: 'BD'
+    visible: true,
+    referenceLabelShortName: 'BD',
   },
   {
-    className: 'reference-label-cr',
+    className: 'reference-label-cross-ref',
     noteCategory: NoteCategory.CR,
     referenceLabelName: 'Cross Reference',
-    referenceLabelShortName: 'CR'
+    visible: true,
+    referenceLabelShortName: 'CR',
   },
   {
-    className: 'reference-label-err',
+    className: 'reference-label-error',
     noteCategory: NoteCategory.ERR,
     referenceLabelName: 'ERROR',
-    referenceLabelShortName: 'ERR'
+    visible: true,
+    referenceLabelShortName: 'ERR',
   },
   {
-    className: 'reference-label-geo',
+    className: 'reference-label-geography',
     noteCategory: NoteCategory.GEO,
     referenceLabelName: 'Geography',
-    referenceLabelShortName: 'GEO'
+    visible: true,
+    referenceLabelShortName: 'GEO',
   },
   {
     className: 'reference-label-gs',
     noteCategory: NoteCategory.GS,
     referenceLabelName: 'Guide to the Scriptures',
-    referenceLabelShortName: 'GS'
+    visible: true,
+    referenceLabelShortName: 'GS',
   },
   {
-    className: 'reference-label-hmy',
+    className: 'reference-label-harmony',
     noteCategory: NoteCategory.HMY,
     referenceLabelName: 'Harmony',
-    referenceLabelShortName: 'HMY'
+    visible: true,
+    referenceLabelShortName: 'HMY',
   },
   {
-    className: 'reference-label-heb',
+    className: 'reference-label-hebrew',
     noteCategory: NoteCategory.HEB,
     referenceLabelName: 'Hebrew',
-    referenceLabelShortName: 'HEB'
+    visible: true,
+    referenceLabelShortName: 'HEB',
   },
   {
-    className: 'reference-label-hst',
+    className: 'reference-label-history',
     noteCategory: NoteCategory.HST,
     referenceLabelName: 'History',
-    referenceLabelShortName: 'HST'
+    visible: true,
+    referenceLabelShortName: 'HST',
   },
   {
     className: 'reference-label-ie',
     noteCategory: NoteCategory.IE,
     referenceLabelName: 'IE',
-    referenceLabelShortName: 'IE'
+    visible: true,
+    referenceLabelShortName: 'IE',
   },
   {
     className: 'reference-label-or',
     noteCategory: NoteCategory.OR,
     referenceLabelName: 'OR',
-    referenceLabelShortName: 'OR'
+    visible: true,
+    referenceLabelShortName: 'OR',
   },
   {
-    className: 'reference-label-phr',
+    className: 'reference-label-phrasing',
     noteCategory: NoteCategory.PHR,
     referenceLabelName: 'Phrase',
-    referenceLabelShortName: 'PHR'
+    visible: true,
+    referenceLabelShortName: 'PHR',
   },
   {
-    className: 'reference-label-quo',
+    className: 'reference-label-quotation',
     noteCategory: NoteCategory.QUO,
     referenceLabelName: 'Quotation',
-    referenceLabelShortName: 'QUO'
+    visible: true,
+    referenceLabelShortName: 'QUO',
   },
   {
     className: 'reference-label-tg',
     noteCategory: NoteCategory.TG,
     referenceLabelName: 'Topical Guide',
-    referenceLabelShortName: 'TG'
+    visible: true,
+    referenceLabelShortName: 'TG',
   },
   {
-    className: 'reference-label-trn',
+    className: 'reference-label-translation',
     noteCategory: NoteCategory.TRN,
     referenceLabelName: 'Translation',
-    referenceLabelShortName: 'TRN'
-  }
+    visible: true,
+    referenceLabelShortName: 'TRN',
+  },
 ];
 
-export class NoteRef {
+export class NoteRef implements Visibility {
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
   public _rev: string | undefined;
-  public classList: string[] | undefined;
-  public noteCategory: ReferenceLabel | undefined;
+  // public classList: string[] | undefined;
+  public noteCategory: NoteCategory | undefined;
 
   public text: string | undefined;
-  public type: NoteType | undefined;
+  // public type: NoteType | undefined;
   public visible: boolean | undefined;
 }
 
-export class NotePhrase {
+export class NotePhrase implements Visibility {
   // tslint:disable-next-line:variable-name
   public _id: string | undefined;
   // tslint:disable-next-line:variable-name
   public _rev: string | undefined;
-  public classList: string[] | undefined;
+  // public classList: string[] | undefined;
   public text: string | undefined;
   public visible: boolean | undefined;
 }
 
-export class SecondaryNote {
+export class SecondaryNote implements Visibility {
   public classList: string[] | undefined;
   public id: string | undefined;
   public noteMarker: string | undefined | null;
@@ -157,6 +187,10 @@ export class SecondaryNote {
   public highlight: boolean | undefined;
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
+  public noteType: NoteType | undefined;
+  public visible: boolean | undefined;
+  public formatTag: FormatTag | undefined;
+  public refTag: RefTag | undefined;
 }
 
 export class Note {
@@ -166,5 +200,35 @@ export class Note {
   public noteShortTitle: string | undefined;
   public noteTitle: string | undefined;
   public secondaryNotes: SecondaryNote[] | undefined;
-  public chapterDataAid: string | undefined;
+  // public chapterDataAid: string | undefined;
+}
+
+export function getNoteReferenceLabel(noteRefElement: Element): NoteCategory {
+  const refElement = noteRefElement.querySelector('[class*="reference-label"]');
+  if (refElement) {
+    const referenceLabel = ReferenceLabels.find(
+      (refLabel): boolean => {
+        return refLabel.className === refElement.className;
+      },
+    );
+
+    refElement.remove();
+
+    return referenceLabel
+      ? (referenceLabel.noteCategory as NoteCategory)
+      : NoteCategory.ERR;
+  } else {
+    return NoteCategory.ERR;
+  }
+}
+export function getNoteType(
+  secondaryNoteElement: Element,
+): NoteType | undefined {
+  const noteType = NoteTypeConverts.find(
+    (noteTypeConvert): boolean => {
+      return noteTypeConvert.className === secondaryNoteElement.className;
+    },
+  );
+
+  return noteType ? noteType.noteType : undefined;
 }

@@ -13,6 +13,21 @@ export class FormatTag {
   public displayAs: DisplayAs | undefined;
 }
 
+export class RefTag {
+  public refs: string[];
+  public uncompressedOffsets: number[] | undefined;
+  public offsets: string | undefined;
+  public highlight = false;
+  public secondaryNoteID: string ;
+}
+
+export class FMerged {
+  public formatTags: FormatTag[] | undefined;
+  public text: string = '';
+  public offsets: number[] = [];
+  public refTags: RefTag[] | undefined;
+}
+
 // export class FormatTagHighlight extends FormatTag {
 //   public formatType = FormatType.Highlight;
 //   public color: Color | undefined;

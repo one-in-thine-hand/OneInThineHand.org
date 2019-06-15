@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
+import { SaveStateService } from './services/save-state.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,10 @@ import { AppConfig } from '../environments/environment';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(
+  public constructor(
     public electronService: ElectronService,
     private translate: TranslateService,
+    public saveStateService: SaveStateService,
   ) {
     translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);

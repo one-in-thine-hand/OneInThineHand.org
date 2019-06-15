@@ -19,9 +19,14 @@ import {
   Verse,
   getFormatTagType,
   getRanges,
+  bookNames,
 } from '../../../shared/src/shared';
 import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
+import {
+  getID,
+  getLanguage,
+} from '../../../shared/src/functions/getFormatTagType';
 
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
 
@@ -396,10 +401,25 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
   );
   return Array.from(formatTags.values()).map(
     (formatTag): FormatTag => {
+      // console.log(getRanges(formatTag.uncompressedOffsets as []));
+      // console.log(
+      //   getRanges(formatTag.uncompressedOffsets as [])
+      //     .map(
+      //       (offset): string => {
+      //         return offset[0] === offset[1]
+      //           ? `${offset[0]}`
+      //           : `${offset[0]}-${offset[1]}`;
+      //       },
+      //     )
+      //     .toString(),
+      // );
+
       formatTag.offsets = getRanges(formatTag.uncompressedOffsets as [])
         .map(
           (offset): string => {
-            return offset[0] === offset[1] ? `${offset[0]}` : `${0}-${1}`;
+            return offset[0] === offset[1]
+              ? `${offset[0]}`
+              : `${offset[0]}-${offset[1]}`;
           },
         )
         .toString();
@@ -411,18 +431,43 @@ function buildFormatTags(verseElement: Element): FormatTag[] {
 
 async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   const verse = new Verse();
-  const dataAid = verseElement.getAttribute('data-aid');
+  // const dataAid = verseElement.getAttribute('data-aid');
+  const lang = await getLanguage(verseElement.ownerDocument as Document);
+
+  verse.verseID = verseElement.id;
+  let id = await getID(verseElement.ownerDocument as Document, lang);
+  id = id.replace(
+    lang,
+    `${lang}-${
+      verse.verseID.startsWith('p')
+        ? verse.verseID.replace('p', '')
+        : verse.verseID
+    }-verse`,
+  );
+  verse.noteID = `${lang}-${
+    verse.verseID.startsWith('p')
+      ? verse.verseID.replace('p', '')
+      : verse.verseID
+  }-notes`;
+  // console.log(id);
+
   const formatGroups = await queryFormatGroups(verseElement);
 
   verse.formatGroups = formatGroups ? formatGroups : [];
-
-  if (dataAid) {
-    verse._id = dataAid;
+  const book = bookNames.find(
+    (bookName): boolean => {
+      return id.startsWith(bookName.chapterStartsWith);
+    },
+  );
+  if (book) {
+    id = id.replace(book.chapterStartsWith, book.startsWith);
+  }
+  if (id) {
+    verse._id = id;
   } else {
     return undefined;
   }
 
-  verse.verseID = verseElement.id;
   verse.formatTags = buildFormatTags(verseElement);
   verse.classList = verseElement.className;
   verse.text = verseElement.textContent ? verseElement.textContent : '';

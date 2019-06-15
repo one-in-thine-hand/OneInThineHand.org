@@ -1,0 +1,23 @@
+li,
+li span {
+  width: 48px;
+  display: grid;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 31px;
+  color: black;
+  font-weight: bold;
+  user-select: none;
+  &#chapterName.chapter-name {
+    font-family: serif !important;
+    width: auto;
+  }
+  svg {
+    width: 24px;
+  }
+  .dropdown-toggle::after {
+    display: none;
+  }
+}

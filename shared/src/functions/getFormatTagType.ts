@@ -102,9 +102,11 @@ export function parseOffsets(offets: string | undefined): number[] | undefined {
       }
     },
   );
-  return offsetSplit.sort((r, s) => {
-    return r > s;
-  });
+  return offsetSplit.sort(
+    (r, s): number => {
+      return r - s;
+    },
+  );
 }
 
 export function expandOffsets(
@@ -118,4 +120,9 @@ export function expandOffsets(
       f.uncompressedOffsets = parseOffsets(f.offsets);
     },
   );
+}
+
+export function getElementsAttribute(element: Element, attr: string): string {
+  const value = element.getAttribute(attr);
+  return value ? value : '';
 }

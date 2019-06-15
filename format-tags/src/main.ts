@@ -4,17 +4,37 @@
 import { Verse } from '../../shared/src/shared';
 import { parseVerses } from './functions/parseVerses';
 import { isChapter } from './functions/queryVerseElements';
+import {
+  getID,
+  getLanguage,
+} from '../../shared/src/functions/getFormatTagType';
+
+export class ChapterVerses {
+  public _id: string;
+  public _rev: string | undefined;
+  public verses: Verse[] | undefined;
+}
+
 export class FormatTags {
   /**
    * main
    */
-  public async main(document: Document): Promise<Verse[]> {
+  public async main(document: Document): Promise<ChapterVerses | undefined> {
+    // console.log(document);
+
     if (await isChapter(document)) {
-      return await parseVerses(document);
+      const verses = await parseVerses(document);
+      const chapterVerses = new ChapterVerses();
+      chapterVerses.verses = verses;
+      const language = await getLanguage(document);
+      chapterVerses._id = `${await getID(document, language)}-verses`;
+      // console.log(chapterVerses);
+      return chapterVerses;
+      // return await parseVerses(document);
     } else {
-      return [];
+      return undefined;
     }
-    return [];
+    return undefined;
   }
 }
 

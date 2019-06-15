@@ -1,0 +1,66 @@
+f {
+  font-size: 16px;
+  &.clarity-word {
+    font-style: italic;
+  }
+  &.subordinate {
+    display: block;
+  }
+  &.dominant {
+    display: block;
+    line-height: 1;
+    font-family: serif !important;
+    text-align: center !important;
+    padding-right: 20px !important;
+    font-size: 48px !important;
+  }
+  &.oith-ref-double {
+    border-bottom: 1px solid grey;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-color: grey;
+    &.ref-selected {
+      text-decoration: none;
+      // text-decoration-skip-ink: none;
+      // text-decoration-color: grey;
+      border-bottom: 3px solid #dc143c;
+    }
+  }
+  &.oith-ref-single {
+    border-bottom: 1px solid grey;
+    &.ref-selected {
+      border-bottom: 3px solid #f68d2e;
+    }
+  }
+}
+
+:host-context([id*='title1']) {
+  f {
+    font-size: 24px;
+  }
+}
+:host-context([id*='study_summary1']) {
+  f {
+    margin: 0 0 6pt;
+    font-style: italic;
+  }
+}
+
+// :host-context([id*='study_summary1']),
+:host-context([id*='title_number1']),
+:host-context([id*='title1']) {
+  f {
+    font-weight: 700 !important;
+  }
+}
+
+:host-context(.paragraph-mode) {
+  .verse-number {
+    vertical-align: super;
+    font-size: 8pt;
+  }
+}
+
+:host-context(.edit-mode) f {
+  // pointer-events: none;
+}
