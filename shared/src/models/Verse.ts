@@ -14,6 +14,7 @@ export const enum NodeName {
 }
 
 export class Verse {
+  public noteID: string;
   public _id: string | undefined;
   public _rev: string | undefined;
   public verseID: string | undefined;

@@ -15,6 +15,7 @@ import { last } from 'lodash';
 import { VisibilityService } from '../../services/visibility.service';
 import { ChapterService } from '../../services/chapter.service';
 import { findByAttribute } from '../../services/history.service';
+import { asyncScrollIntoView } from '../../scroll-into-view';
 
 @Component({
   selector: 'app-format-tag',
@@ -157,7 +158,7 @@ export class FormatTagComponent implements OnInit {
     return '0,0';
   }
 
-  public formatTagClick(event: Event): void {
+  public async formatTagClick(event: Event): Promise<void> {
     // const selection = window.getSelection();
     // console.log('hhgg');
     // console.log(event);
@@ -178,10 +179,7 @@ export class FormatTagComponent implements OnInit {
 
       if (r) {
         r.highlight = true;
-        const e = document.querySelector(`#${r}`);
-        if (e) {
-          e.scrollIntoView();
-        }
+        await asyncScrollIntoView(`#eng-${r.secondaryNoteID}`);
       } else {
         this.refList = undefined;
       }

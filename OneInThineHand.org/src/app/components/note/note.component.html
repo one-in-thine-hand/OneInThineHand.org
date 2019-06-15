@@ -4,6 +4,7 @@
     <ul
       class="secondary-note"
       *ngFor="let secondaryNote of getSecondaryNotes()"
+      id="eng-{{ secondaryNote.id }}"
     >
       <li (click)="this.notePhraseClick(secondaryNote)" class="note-phrase">
         {{ getNotePhrase(secondaryNote.notePhrase) }}
