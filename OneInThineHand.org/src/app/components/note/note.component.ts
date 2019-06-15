@@ -10,6 +10,8 @@ import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { getInputValue } from './getInputValue';
 
 @Component({
   selector: 'app-note',
@@ -19,10 +21,12 @@ import { FormatTagService } from '../../services/format-tag.service';
 export class NoteComponent implements OnInit {
   @Input() public note: Note;
 
+  public tempNote: SecondaryNote | undefined;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
     public formatTagService: FormatTagService,
+    public modalService: NgbModal,
   ) {}
 
   public ngOnInit() {}
@@ -155,4 +159,41 @@ export class NoteComponent implements OnInit {
     }
     console.log(secondaryNote);
   }
+
+  public async addNote(content): Promise<void> {
+    try {
+      const result = await this.modalService.open(content, {
+        ariaLabelledBy: 'modal-basic-title',
+        backdropClass: 'add-notes-backdrop',
+        backdrop: false,
+      }).result;
+      console.log(result);
+
+      // .result.then(
+      //   result => {
+      //     this.closeResult = `Closed with: ${result}`;
+      //   },
+      //   reason => {
+      //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      //   },
+      // );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public saveNote(modal): void {
+    this.tempNote = new SecondaryNote();
+    this.tempNote.notePhrase = new NotePhrase();
+    this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
+
+    console.log(getInputValue('#noteReferenceTemp'));
+    console.log(getInputValue('#noteReferenceLabelTemp'));
+    modal.close('Save click');
+  }
+}
+
+export function getTextContent(selector: string): string {
+  const e = document.querySelector(selector);
+  return e && e.textContent ? e.textContent : '';
 }

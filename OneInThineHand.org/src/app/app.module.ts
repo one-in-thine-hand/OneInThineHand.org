@@ -42,6 +42,7 @@ import { HeaderDropdownComponent } from './components/header-dropdown/header-dro
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { PreprocessorService } from './services/preprocessor.service';
 import { PageStateService } from './services/page-state.service';
+import { AddNoteComponent } from './components/add-note/add-note.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -74,6 +75,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     ChapterComponent,
     HeaderDropdownComponent,
     LandingPageComponent,
+    AddNoteComponent,
   ],
   imports: [
     NgbModule,
