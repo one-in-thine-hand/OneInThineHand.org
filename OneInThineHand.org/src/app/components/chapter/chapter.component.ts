@@ -226,7 +226,7 @@ export class ChapterComponent implements OnInit {
         (document.querySelector('.chapter-grid') as Element).scrollTop,
       );
       await asyncScrollIntoView('verse');
-      await asyncScrollIntoView('note');
+      await asyncScrollIntoView('verse-notes');
       // const verseElement = document.querySelector('verse');
       // const noteElement = document.querySelector('note');
       // if (verseElement) {

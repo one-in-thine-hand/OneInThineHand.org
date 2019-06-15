@@ -1,10 +1,10 @@
-<ul *ngIf="note" id="note-{{ note._id }}">
+<verse-notes *ngIf="note" id="note-{{ note._id }}">
   <li class="note-short-title">
     {{ note.noteShortTitle }}
     <button class="add-note-btn" (click)="addNote(content)"></button>
   </li>
   <ng-container *ngIf="note.secondaryNotes">
-    <ul
+    <note
       class="secondary-note"
       *ngFor="let secondaryNote of getSecondaryNotes()"
       id="eng-{{ secondaryNote.id }}"
@@ -22,9 +22,9 @@
           <span [innerHTML]="noteRef.text"></span>
         </li>
       </ul>
-    </ul>
+    </note>
   </ng-container>
-</ul>
+</verse-notes>
 
 <ng-template #content let-modal
   ><div class="modal-header">

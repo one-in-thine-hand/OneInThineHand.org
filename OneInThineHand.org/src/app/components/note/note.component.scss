@@ -1,8 +1,28 @@
-ul {
+verse-notes {
+  note {
+    list-style: none;
+    li {
+      list-style: none;
+    }
+  }
   list-style: none;
-}
-.note-phrase {
-  user-select: none;
+  .note-phrase {
+    user-select: none;
+  }
+  .highlight {
+    background: green;
+  }
+  .add-note-btn {
+    height: 16px;
+    position: relative;
+    float: right;
+    top: 5px;
+    right: 5px;
+  }
+  .note-short-title {
+    font-family: serif;
+    font-weight: 700;
+  }
 }
 
 :host-context(.app-note) > ul {
@@ -12,18 +32,4 @@ ul {
   ul {
     margin-right: 20px;
   }
-}
-.highlight {
-  background: green;
-}
-.add-note-btn {
-  height: 16px;
-  position: relative;
-  float: right;
-  top: 5px;
-  right: 5px;
-}
-.note-short-title {
-  font-family: serif;
-  font-weight: 700;
 }
