@@ -197,22 +197,10 @@ export class ChapterComponent implements OnInit {
           v.context = true;
         },
       );
-      console.log(
-        `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
+      await asyncScrollIntoView(
+        `#verse-${chapterParams.book}-${chapterParams.chapter}-${
           highlightOffSets[0]
         }-eng-verse`,
-      );
-
-      console.log(
-        `#verse-${chapterParams.book.replace('_', '-')}-${
-          chapterParams.chapter
-        }-${highlightOffSets[0]}-eng-verse`,
-      );
-
-      await asyncScrollIntoView(
-        `#verse-${chapterParams.book.replace('_', '-')}-${
-          chapterParams.chapter
-        }-${highlightOffSets[0]}-eng-verse`,
         { timeout: 100 },
       );
 
@@ -272,9 +260,7 @@ export class ChapterComponent implements OnInit {
             (verse): boolean => {
               return (
                 verse._id ===
-                `${chapterParams.book.replace('_', '-')}-${
-                  chapterParams.chapter
-                }-${c}-eng-verse`
+                `${chapterParams.book}-${chapterParams.chapter}-${c}-eng-verse`
               );
             },
           );
@@ -329,32 +315,36 @@ export class ChapterComponent implements OnInit {
     );
   }
 
-  public onScroll(): void {
+  public async onScroll(): Promise<void> {
     console.log('hhg');
     this.pageStateService.updateHistory();
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
       if (verseElement.getBoundingClientRect().bottom - 48 > 0) {
-        let noteElement = document.querySelector(
-          `#${verseElement.id.replace(/verse/g, 'note')}`,
-        );
+        // let noteElement = document.querySelector(
+        //   `#${verseElement.id.replace(/verse/g, 'note')}`,
+        // );
         console.log(verseElement.id);
 
         console.log(`#${verseElement.id.replace(/verse/g, 'note')}`);
 
-        if (noteElement) {
-          noteElement.scrollIntoView();
-        } else {
+        if (
+          !(await asyncScrollIntoView(
+            `#${verseElement.id.replace(/verse/g, 'note')}`,
+          ))
+        ) {
           if (x === 0) {
-            noteElement = document.querySelector('.notes-top');
+            // noteElement = document.querySelector('.notes-top');
+            await asyncScrollIntoView('.notes-top');
           } else if (x === verseElements.length - 1) {
-            noteElement = document.querySelector('.notes-bottom');
+            await asyncScrollIntoView('.notes-bottom');
+            // noteElement = document.querySelector('.notes-bottom');
           }
 
-          if (noteElement) {
-            noteElement.scrollIntoView();
-          }
+          // if (noteElement) {
+          // noteElement.scrollIntoView();
+          // }
         }
 
         break;
