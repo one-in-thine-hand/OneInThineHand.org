@@ -154,8 +154,12 @@ export class NoteComponent implements OnInit {
 
         // console.log(range);
       } catch (error) {
+        if (secondaryNote.refTag) {
+          secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
+        }
         console.log(error);
       }
+    } else {
     }
     console.log(secondaryNote);
   }
