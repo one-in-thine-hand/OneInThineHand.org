@@ -37,3 +37,19 @@ class Options {
   public document?: Document | undefined;
   public timeout?: number | undefined;
 }
+
+export async function asyncQuerySelector(
+  selector: string,
+): Promise<Element | null> {
+  return document.querySelector(selector);
+}
+export async function asyncScrollTop(
+  selector: string,
+  top: number = 0,
+): Promise<void> {
+  const element = await asyncQuerySelector(selector);
+
+  if (element) {
+    element.scrollTop = top;
+  }
+}

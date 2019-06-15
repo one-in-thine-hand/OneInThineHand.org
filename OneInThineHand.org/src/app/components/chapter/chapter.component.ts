@@ -14,7 +14,7 @@ import { PageStateService } from '../../services/page-state.service';
 import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 import { HistoryService } from '../../services/history.service';
-import { asyncScrollIntoView } from '../../scroll-into-view';
+import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -96,6 +96,7 @@ export class ChapterComponent implements OnInit {
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
         console.log(this.popStateActivated);
+        await asyncScrollTop('.chapter-grid');
 
         console.log(params);
         const chapterParams = this.paramService.parseChapterParams(params);
@@ -156,6 +157,7 @@ export class ChapterComponent implements OnInit {
                 this.chapterVerses,
                 this.chapter,
               );
+
               if (this.chapterVerses.verses) {
                 this.setHighlighting(chapterParams, this.chapterVerses.verses);
               }
@@ -197,6 +199,7 @@ export class ChapterComponent implements OnInit {
           v.context = true;
         },
       );
+
       await asyncScrollIntoView(
         `#verse-${chapterParams.book}-${chapterParams.chapter}-${
           highlightOffSets[0]
@@ -219,15 +222,23 @@ export class ChapterComponent implements OnInit {
       //   }, 200);
       // }
     } else {
-      const verseElement = document.querySelector('verse');
-      const noteElement = document.querySelector('note');
-      if (verseElement) {
-        verseElement.scrollIntoView();
-      }
+      console.log(
+        (document.querySelector('.chapter-grid') as Element).scrollTop,
+      );
+      await asyncScrollIntoView('verse');
+      await asyncScrollIntoView('note');
+      // const verseElement = document.querySelector('verse');
+      // const noteElement = document.querySelector('note');
+      // if (verseElement) {
+      //   verseElement.scrollIntoView();
+      // }
 
-      if (noteElement) {
-        noteElement.scrollIntoView();
-      }
+      // if (noteElement) {
+      //   noteElement.scrollIntoView();
+      // }
+      console.log(
+        (document.querySelector('.chapter-grid') as Element).scrollTop,
+      );
       // const chapterGrid = document.querySelector('.chapter-grid');
       // const notesGrid = document.querySelector('#notes');
       // if (chapterGrid) {
