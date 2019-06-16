@@ -1,3 +1,8 @@
+## <small>5.0.6 (2019-06-16)</small>
+
+
+
+
 ## <small>5.0.5 (2019-06-16)</small>
 
 * Data format work ([23fa843](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/23fa843))
@@ -11,6 +16,7 @@
 * testing scroll into view ([4f29d11](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4f29d11))
 * update to ids ([fb311b6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fb311b6))
 * Updatw to ids ([f933782](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f933782))
+* v5.0.5 ([9d6fad4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9d6fad4))
 * work on notes ([d7787e1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d7787e1))
 * Working on adding the data format changes ([1f321ce](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f321ce))
 
