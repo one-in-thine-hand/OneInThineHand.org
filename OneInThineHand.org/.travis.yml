@@ -1,11 +1,10 @@
 os:
   - linux
-  - osx
 language: node_js
 node_js:
   - '11'
   - '10'
-dist: xenial
+dist: trusty
 sudo: required
 services:
   - xvfb

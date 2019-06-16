@@ -22,9 +22,7 @@ export class ChapterService {
           // console.log(verse._id);
           const note = notes.find(
             (n): boolean => {
-              return n._id
-                ? n._id.replace('note', 'verse') === verse._id
-                : false;
+              return n._id ? n._id.replace('-notes', '') === verse._id : false;
             },
           );
 

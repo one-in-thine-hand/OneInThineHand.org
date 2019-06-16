@@ -12,6 +12,7 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
+import { VerseNotes } from '../../../../../shared/src/models/notes/Note';
 
 @Component({
   selector: 'app-note',
@@ -19,7 +20,7 @@ import { getInputValue } from './getInputValue';
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-  @Input() public note: Note;
+  @Input() public verseNotes: VerseNotes;
 
   public tempNote: SecondaryNote | undefined;
   public constructor(
@@ -39,8 +40,8 @@ export class NoteComponent implements OnInit {
 
   public getSecondaryNotes(): SecondaryNote[] {
     let secondaryNotes: SecondaryNote[] = [];
-    if (this.note && this.note.notes) {
-      secondaryNotes = this.note.notes.filter(
+    if (this.verseNotes && this.verseNotes.notes) {
+      secondaryNotes = this.verseNotes.notes.filter(
         (secondaryNote): boolean => {
           if (
             secondaryNote.visible &&
@@ -114,13 +115,13 @@ export class NoteComponent implements OnInit {
             'verse-id',
           );
           console.log(element1VerseID);
-          console.log(this.note._id);
+          console.log(this.verseNotes._id);
 
           if (
             element1VerseID &&
-            element1VerseID.replace('verse', 'note') === this.note._id &&
+            element1VerseID.replace('verse', 'note') === this.verseNotes._id &&
             element2VerseID &&
-            element2VerseID.replace('verse', 'note') === this.note._id
+            element2VerseID.replace('verse', 'note') === this.verseNotes._id
           ) {
             const offsets1 = ((elements[0] as HTMLElement).getAttribute(
               'offsets',
