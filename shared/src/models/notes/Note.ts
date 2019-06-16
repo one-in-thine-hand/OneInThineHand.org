@@ -96,7 +96,7 @@ export class VerseNotes {
   public noteID: string | undefined;
   public noteShortTitle: string | undefined;
   public noteTitle: string | undefined;
-  public secondaryNotes: Note[] | undefined;
+  public notes: Note[] | undefined;
   // public chapterDataAid: string | undefined;
 }
 

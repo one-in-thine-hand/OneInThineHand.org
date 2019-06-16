@@ -448,7 +448,7 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
     verse.verseID.startsWith('p')
       ? verse.verseID.replace('p', '')
       : verse.verseID
-  }-notes`;
+  }-verse-notes`;
   // console.log(id);
 
   const formatGroups = await queryFormatGroups(verseElement);

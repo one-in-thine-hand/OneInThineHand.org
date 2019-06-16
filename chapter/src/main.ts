@@ -5,7 +5,6 @@ import { Chapter } from './Chapter';
 import { parseParagraphs } from './parseParagraphs';
 import { parseElementAttribute } from './parseElementAttribute';
 import * as he from 'he';
-import { bookNames } from '../../shared/src/shared';
 export async function parseNoteIDS(document: Document): Promise<string[]> {
   return Array.from(document.querySelectorAll('footer note')).map(
     (note): string => {
@@ -41,15 +40,15 @@ export async function parseChapter(
   const title = await extractInnerHTML(document, 'title');
   // console.log(id);
 
-  chapter._id = `${id}-chapter`;
-  const book = bookNames.find(
-    (bookName): boolean => {
-      return chapter._id.startsWith(bookName.chapterStartsWith);
-    },
-  );
-  if (book) {
-    chapter._id = chapter._id.replace(book.chapterStartsWith, book.startsWith);
-  }
+  chapter._id = id; // `${id}-chapter`;
+  // const book = bookNames.find(
+  //   (bookName): boolean => {
+  //     return chapter._id.startsWith(bookName.chapterStartsWith);
+  //   },
+  // );
+  // if (book) {
+  //   chapter._id = chapter._id.replace(book.chapterStartsWith, book.startsWith);
+  // }
   chapter.language = language;
   chapter.paragraphs = paragraphs;
   chapter.dataAid = dataAid;

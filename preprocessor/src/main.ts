@@ -8,10 +8,6 @@ import { basename } from 'path';
 import { JSDOM } from 'jsdom';
 import { ChapterProcessor } from '../../chapter/src/main';
 import { NoteProcessor, ChapterNotes } from '../../notes/src/main';
-import {
-  getID,
-  getLanguage,
-} from '../../shared/src/functions/getFormatTagType';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -45,8 +41,8 @@ async function processScriptureFiles(
         const document = new JSDOM(scriptureFile).window.document;
         const verses = await formaTags.main(document);
         const chapter = await chapterProcessor.main(document);
-        const lang = await getLanguage(document);
-        const id = await getID(document, lang);
+        // const lang = await getLanguage(document);
+        // const id = await getID(document, lang);
         // console.log(chapter);
         // getID()
         // console.log(dirname(normalize(scriptureFileName)));
@@ -69,11 +65,15 @@ async function processScriptureFiles(
         // console.log(`${directory}/${basename(id)}-verses.json`);
 
         await writeFile(
-          normalize(`${directory}/${basename(id)}-verses.json`),
+          normalize(
+            `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
+          ),
           JSON.stringify(verses),
         );
         await writeFile(
-          normalize(`${directory}/${basename(id)}-chapter.json`),
+          normalize(
+            `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
+          ),
           JSON.stringify(chapter),
         );
         count = count + 1;
@@ -102,22 +102,22 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
         } else if (notes.notes) {
           notes.notes.map(
             (note): void => {
-              // console.log(note.secondaryNotes);
+              // console.log(note.notes);
               if (value.notes) {
                 const newNote = value.notes.find(
                   (n): boolean => {
                     return n._id === note._id;
                   },
                 );
-                if (newNote && newNote.secondaryNotes) {
-                  note.secondaryNotes = note.secondaryNotes
-                    ? note.secondaryNotes.concat(newNote.secondaryNotes)
-                    : newNote.secondaryNotes;
+                if (newNote && newNote.notes) {
+                  note.notes = note.notes
+                    ? note.notes.concat(newNote.notes)
+                    : newNote.notes;
 
-                  note.secondaryNotes = uniq(note.secondaryNotes);
+                  note.notes = uniq(note.notes);
                 }
               }
-              // console.log(note.secondaryNotes);
+              // console.log(note.notes);
             },
           );
         }

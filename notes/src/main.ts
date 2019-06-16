@@ -45,7 +45,7 @@ function parseNotes(verseNotes: Element): Note[] {
   return Array.from(verseNotes.childNodes)
     .filter(
       (childNode): boolean => {
-        return childNode.nodeName.toLowerCase() === 'div';
+        return childNode.nodeName.toLowerCase() === 'note';
       },
     )
     .map(
@@ -71,18 +71,21 @@ function parseNotes(verseNotes: Element): Note[] {
 }
 
 async function isNoteFile(document: Document): Promise<boolean> {
-  return document.querySelector('div.chapter') !== null;
+  return document.querySelector('chapter') !== null;
 }
 
 function parseShortTitle(verseMarker: string): string {
   return `Verse ${verseMarker} Notes`;
 }
 function parseNoteTitle(verseMarker: string, chapterID: string): string {
+  const lang = chapterID.split('-')[0];
   const name = bookNames.find(
     (bookName): boolean => {
-      return chapterID.startsWith(bookName.startsWith);
+      return chapterID.replace(`${lang}-`, '').startsWith(bookName.startsWith);
     },
   );
+
+  // console.log(name);
 
   verseMarker = verseMarker;
   if (!name) {
@@ -116,7 +119,7 @@ export class NoteProcessor {
     document: Document,
   ): Promise<Map<string, ChapterNotes> | undefined> {
     if (await isNoteFile(document)) {
-      Array.from(document.querySelectorAll('div.chapter')).map(
+      Array.from(document.querySelectorAll('chapter')).map(
         (chapterElement): void => {
           const id = chapterElement.id;
 
@@ -142,7 +145,7 @@ export class NoteProcessor {
                   chapterElement.id,
                 );
 
-                verseNotes.secondaryNotes = parseNotes(noteElement);
+                verseNotes.notes = parseNotes(noteElement);
 
                 return verseNotes;
               },
