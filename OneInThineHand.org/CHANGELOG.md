@@ -1,5 +1,11 @@
+## <small>5.0.7 (2019-06-16)</small>
+
+
+
+
 ## <small>5.0.6 (2019-06-16)</small>
 
+* v5.0.6 ([ec14b57](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ec14b57))
 
 
 
