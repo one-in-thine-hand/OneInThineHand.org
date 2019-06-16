@@ -219,15 +219,15 @@ export class PreprocessorService {
     const saveNote = notes.find((n): boolean => {
       return n._id === note._id;
     });
-    console.log(note.secondaryNotes);
+    console.log(note.notes);
 
     if (saveNote) {
-      if (saveNote.secondaryNotes && note.secondaryNotes) {
-        saveNote.secondaryNotes = saveNote.secondaryNotes.concat(
-          note.secondaryNotes,
+      if (saveNote.notes && note.notes) {
+        saveNote.notes = saveNote.notes.concat(
+          note.notes,
         );
-      } else if (saveNote.secondaryNotes === undefined && note.secondaryNotes) {
-        saveNote.secondaryNotes = note.secondaryNotes;
+      } else if (saveNote.notes === undefined && note.notes) {
+        saveNote.notes = note.notes;
       }
     } else {
       notes.push(note);

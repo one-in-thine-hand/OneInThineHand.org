@@ -5,7 +5,7 @@ import { Verse } from '../../shared/src/shared';
 import { parseVerses } from './functions/parseVerses';
 import { isChapter } from './functions/queryVerseElements';
 import {
-  getID,
+  getChapterID,
   getLanguage,
 } from '../../shared/src/functions/getFormatTagType';
 
@@ -27,7 +27,7 @@ export class FormatTags {
       const chapterVerses = new ChapterVerses();
       chapterVerses.verses = verses;
       const language = await getLanguage(document);
-      chapterVerses._id = `${await getID(document, language)}-verses`;
+      chapterVerses._id = `${await getChapterID(document, language)}-verses`;
       // console.log(chapterVerses);
       return chapterVerses;
       // return await parseVerses(document);

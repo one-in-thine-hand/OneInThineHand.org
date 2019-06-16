@@ -39,8 +39,8 @@ export class NoteComponent implements OnInit {
 
   public getSecondaryNotes(): SecondaryNote[] {
     let secondaryNotes: SecondaryNote[] = [];
-    if (this.note && this.note.secondaryNotes) {
-      secondaryNotes = this.note.secondaryNotes.filter(
+    if (this.note && this.note.notes) {
+      secondaryNotes = this.note.notes.filter(
         (secondaryNote): boolean => {
           if (
             secondaryNote.visible &&

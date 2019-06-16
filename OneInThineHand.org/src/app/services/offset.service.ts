@@ -14,8 +14,8 @@ export class OffsetService {
     if (notes) {
       notes.map(
         (note): void => {
-          if (note.secondaryNotes) {
-            note.secondaryNotes.map(
+          if (note.notes) {
+            note.notes.map(
               (secondaryNote): void => {
                 secondaryNote.uncompressedOffsets = parseOffsets(
                   secondaryNote.offsets,

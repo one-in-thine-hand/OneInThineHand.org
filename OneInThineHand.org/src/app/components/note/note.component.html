@@ -3,7 +3,7 @@
     {{ note.noteShortTitle }}
     <button class="add-note-btn" (click)="addNote(content)"></button>
   </li>
-  <ng-container *ngIf="note.secondaryNotes">
+  <ng-container *ngIf="note.notes">
     <note
       class="secondary-note"
       *ngFor="let secondaryNote of getSecondaryNotes()"

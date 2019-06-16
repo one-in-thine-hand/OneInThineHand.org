@@ -32,8 +32,8 @@ export class FlattenService {
           if (note._id) {
             this.verseNotesMap.set(note._id, note);
           }
-          if (note.secondaryNotes) {
-            note.secondaryNotes.map(
+          if (note.notes) {
+            note.notes.map(
               (sN): void => {
                 if (sN.id) {
                   this.notesMap.set(sN.id, sN);

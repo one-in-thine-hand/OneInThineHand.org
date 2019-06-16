@@ -38,8 +38,8 @@ export class ChapterService {
     if (this.chapterNotes && this.chapterNotes.notes) {
       this.chapterNotes.notes.map(
         (note): void => {
-          if (note.secondaryNotes) {
-            note.secondaryNotes.map(
+          if (note.notes) {
+            note.notes.map(
               (secondaryNote): void => {
                 if (secondaryNote.refTag) {
                   secondaryNote.refTag.highlight = false;

@@ -22,8 +22,8 @@ export class VisibilityService {
       this.resetHighlight();
       notes.map(
         (note): void => {
-          if (note.secondaryNotes) {
-            note.secondaryNotes.map(
+          if (note.notes) {
+            note.notes.map(
               (sN): void => {
                 switch (sN.noteType) {
                   case NoteType.Eng: {
@@ -72,8 +72,8 @@ export class VisibilityService {
   public showMissingOffsets(notes: Note[]): void {
     notes.map(
       (note): void => {
-        if (note.secondaryNotes) {
-          note.secondaryNotes.map(
+        if (note.notes) {
+          note.notes.map(
             (sN): void => {
               console.log(sN.offsets);
 

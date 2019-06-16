@@ -1,6 +1,7 @@
 import { formatTagTypeOptions } from '../constants/verse-selectors';
 import { FormatTagType, FormatTagTypeOptions } from '../enums/enums';
 import { range } from 'lodash';
+import { bookNames } from '../models/BookName';
 export function getFormatTagType(
   formatType: FormatTagType,
 ): FormatTagTypeOptions | undefined {
@@ -70,16 +71,31 @@ export function getElementAttribute(
   throw 'Attribute not found';
 }
 
-export async function getID(
+export async function getChapterID(
   document: Document,
   language: string,
 ): Promise<string> {
-  return `${getElementAttribute(
+  let id = `${getElementAttribute(
     document,
     'html',
     'data-uri',
     new RegExp(new RegExp(/(?!\\)[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+$/g)),
-  ).replace(/\//g, '-')}-${language}`;
+  ).replace(/\//g, '-')}`;
+
+  const book = bookNames.find(
+    (bookName): boolean => {
+      return id.startsWith(bookName.chapterStartsWith);
+    },
+  );
+
+  if (book) {
+    id = `${language}-${id.replace(
+      book.chapterStartsWith,
+      book.startsWith,
+    )}-chapter`;
+  }
+  // console.log(`${id} - ${book ? book.startsWith : 'nothing'}`);
+  return id;
 }
 export async function getLanguage(document: Document): Promise<string> {
   return getElementAttribute(document, 'html', 'lang', new RegExp(/.+/g));

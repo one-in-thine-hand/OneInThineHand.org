@@ -106,7 +106,7 @@ export class ChapterComponent implements OnInit {
           this.chapterVerses &&
           this.chapterVerses.verses &&
           this.chapter._id ===
-            `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`
+            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`
         ) {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
@@ -141,15 +141,18 @@ export class ChapterComponent implements OnInit {
           } else {
             try {
               this.chapter = (await this.databaseService.getDatabaseItem(
-                `${chapterParams.book}-${chapterParams.chapter}-eng-chapter`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                `${chapterParams.book.replace('_', '-')}-${
+                `eng-${chapterParams.book}-${
                   chapterParams.chapter
-                }-eng-verses`,
+                }-chapter-verses`,
               )) as ChapterVerses;
+              console.log(
+                `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
+              );
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
-                `${chapterParams.book}-${chapterParams.chapter}-eng-notes`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
               )) as ChapterNotes;
 
               await this.setChapterVariables(

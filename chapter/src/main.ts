@@ -1,10 +1,10 @@
 import { parseLanguage } from './parseLanguage';
-import { parseID } from './parseID';
 
 import { Chapter } from './Chapter';
 import { parseParagraphs } from './parseParagraphs';
 import { parseElementAttribute } from './parseElementAttribute';
 import * as he from 'he';
+import { getChapterID } from '../../shared/src/functions/getFormatTagType';
 export async function parseNoteIDS(document: Document): Promise<string[]> {
   return Array.from(document.querySelectorAll('footer note')).map(
     (note): string => {
@@ -30,7 +30,7 @@ export async function parseChapter(
   const chapter = new Chapter();
   const language = await parseLanguage(document);
 
-  const id = await parseID(document, language);
+  const id = await getChapterID(document, language);
 
   const paragraphs = await parseParagraphs(document);
   const dataAid = await parseElementAttribute(document, 'html', 'data-aid');

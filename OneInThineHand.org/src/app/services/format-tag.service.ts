@@ -185,8 +185,8 @@ export class FormatTagService {
     return undefined;
   }
   public getRefTags(o: number, note: Note | undefined): RefTag[] | undefined {
-    if (note && note.secondaryNotes) {
-      const oFtags = note.secondaryNotes
+    if (note && note.notes) {
+      const oFtags = note.notes
         .filter(
           (f): boolean => {
             return (
