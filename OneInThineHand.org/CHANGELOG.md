@@ -1,9 +1,28 @@
+## <small>5.0.5 (2019-06-16)</small>
+
+* Data format work ([23fa843](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/23fa843))
+* Fixed note titles being bold ([be8d61d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/be8d61d))
+* Fixed page being scrolled 16px down on page load ([49d7641](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/49d7641))
+* Fixes for verse highlighting ([f081a7f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f081a7f))
+* IDS updated ([df2a67d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/df2a67d))
+* Most features working again ([a81cf40](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a81cf40))
+* Note fixes ([65c54b6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/65c54b6))
+* starting work on navigation ([71eebd2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/71eebd2))
+* testing scroll into view ([4f29d11](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4f29d11))
+* update to ids ([fb311b6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fb311b6))
+* Updatw to ids ([f933782](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f933782))
+* work on notes ([d7787e1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d7787e1))
+* Working on adding the data format changes ([1f321ce](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f321ce))
+
+
+
 ## <small>5.0.4 (2019-06-14)</small>
 
 * Added basic history ([7f50c4e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7f50c4e))
 * adding save state to history ([831ac79](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/831ac79))
 * note ref highlight ([6866a65](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6866a65))
 * Updated history code ([c8ea018](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c8ea018))
+* v5.0.4 ([07808aa](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/07808aa))
 
 
 
