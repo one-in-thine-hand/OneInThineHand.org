@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { Note, Verse, SecondaryNote } from '../../../../shared/src/shared';
+import { Note, Verse } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 

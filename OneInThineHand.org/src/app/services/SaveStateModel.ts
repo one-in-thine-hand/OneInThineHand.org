@@ -1,4 +1,4 @@
-import { ReferenceLabels } from '../../../../shared/src/models/notes/Note';
+import { ReferenceLabels } from '../../../../shared/src/shared';
 
 export class RefLabelSetting {
   public visible: boolean;

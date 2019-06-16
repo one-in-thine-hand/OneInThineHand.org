@@ -27,12 +27,12 @@ export {
 } from './enums/enums';
 
 export {
-  Note,
+  VerseNotes as Note,
   ReferenceLabel as NoteCategory,
   NotePhrase,
   NoteRef,
   NoteType,
-  SecondaryNote,
+  Note as SecondaryNote,
 } from './models/notes/Note';
 
 export {
@@ -52,3 +52,11 @@ export {
 export { Visibility, getVisible } from './interfaces/visibliity';
 
 export { BookName, bookNames } from './models/BookName';
+
+export {
+  ReferenceLabels,
+  getReferenceLabelByClassName,
+  getReferenceLabelByNoteCategory,
+  getReferenceLabelByReferenceLabelName,
+  getReferenceLabelByReferenceLabelShortName,
+} from './models/notes/ReferenceLabels';

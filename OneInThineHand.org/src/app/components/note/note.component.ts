@@ -6,7 +6,7 @@ import {
   getVisible,
   NoteRef,
 } from '../../../../../shared/src/shared';
-import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
+import { ReferenceLabels } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';

@@ -1,5 +1,6 @@
 import { Visibility } from '../../interfaces/visibliity';
 import { FormatTag, RefTag } from '../format_tags/FormatTag';
+import { getReferenceLabelByClassName } from './ReferenceLabels';
 
 // import * as he from 'he';
 
@@ -28,12 +29,17 @@ export const enum NoteCategory {
   TRN,
 }
 
+export interface NumericalOrder {
+  sortOrder: number;
+}
+
 export class NoteTypeConvert {
   public noteType: NoteType;
   public className: string;
 }
 
-export class ReferenceLabel implements Visibility {
+export class ReferenceLabel implements Visibility, NumericalOrder {
+  public sortOrder: number;
   public visible: boolean | undefined;
   public noteCategory: NoteCategory;
   public className: string;
@@ -47,117 +53,9 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   { noteType: NoteType.TC, className: 'tc-note' },
 ];
 
-export const ReferenceLabels: ReferenceLabel[] = [
-  {
-    className: 'reference-label-alt',
-    noteCategory: NoteCategory.ALT,
-    referenceLabelName: 'Alternative Reading',
-    visible: true,
-    referenceLabelShortName: 'ALT',
-  },
-  {
-    className: 'reference-label-bd',
-    noteCategory: NoteCategory.BD,
-    referenceLabelName: 'Bible Dictionary',
-    visible: true,
-    referenceLabelShortName: 'BD',
-  },
-  {
-    className: 'reference-label-cross-ref',
-    noteCategory: NoteCategory.CR,
-    referenceLabelName: 'Cross Reference',
-    visible: true,
-    referenceLabelShortName: 'CR',
-  },
-  {
-    className: 'reference-label-error',
-    noteCategory: NoteCategory.ERR,
-    referenceLabelName: 'ERROR',
-    visible: true,
-    referenceLabelShortName: 'ERR',
-  },
-  {
-    className: 'reference-label-geography',
-    noteCategory: NoteCategory.GEO,
-    referenceLabelName: 'Geography',
-    visible: true,
-    referenceLabelShortName: 'GEO',
-  },
-  {
-    className: 'reference-label-gs',
-    noteCategory: NoteCategory.GS,
-    referenceLabelName: 'Guide to the Scriptures',
-    visible: true,
-    referenceLabelShortName: 'GS',
-  },
-  {
-    className: 'reference-label-harmony',
-    noteCategory: NoteCategory.HMY,
-    referenceLabelName: 'Harmony',
-    visible: true,
-    referenceLabelShortName: 'HMY',
-  },
-  {
-    className: 'reference-label-hebrew',
-    noteCategory: NoteCategory.HEB,
-    referenceLabelName: 'Hebrew',
-    visible: true,
-    referenceLabelShortName: 'HEB',
-  },
-  {
-    className: 'reference-label-history',
-    noteCategory: NoteCategory.HST,
-    referenceLabelName: 'History',
-    visible: true,
-    referenceLabelShortName: 'HST',
-  },
-  {
-    className: 'reference-label-ie',
-    noteCategory: NoteCategory.IE,
-    referenceLabelName: 'IE',
-    visible: true,
-    referenceLabelShortName: 'IE',
-  },
-  {
-    className: 'reference-label-or',
-    noteCategory: NoteCategory.OR,
-    referenceLabelName: 'OR',
-    visible: true,
-    referenceLabelShortName: 'OR',
-  },
-  {
-    className: 'reference-label-phrasing',
-    noteCategory: NoteCategory.PHR,
-    referenceLabelName: 'Phrase',
-    visible: true,
-    referenceLabelShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-quotation',
-    noteCategory: NoteCategory.QUO,
-    referenceLabelName: 'Quotation',
-    visible: true,
-    referenceLabelShortName: 'QUO',
-  },
-  {
-    className: 'reference-label-tg',
-    noteCategory: NoteCategory.TG,
-    referenceLabelName: 'Topical Guide',
-    visible: true,
-    referenceLabelShortName: 'TG',
-  },
-  {
-    className: 'reference-label-translation',
-    noteCategory: NoteCategory.TRN,
-    referenceLabelName: 'Translation',
-    visible: true,
-    referenceLabelShortName: 'TRN',
-  },
-];
-
 export class NoteRef implements Visibility {
   public _id: string | undefined;
-  // tslint:disable-next-line:variable-name
+
   public _rev: string | undefined;
   // public classList: string[] | undefined;
   public noteCategory: NoteCategory | undefined;
@@ -168,16 +66,15 @@ export class NoteRef implements Visibility {
 }
 
 export class NotePhrase implements Visibility {
-  // tslint:disable-next-line:variable-name
   public _id: string | undefined;
-  // tslint:disable-next-line:variable-name
+
   public _rev: string | undefined;
   // public classList: string[] | undefined;
   public text: string | undefined;
   public visible: boolean | undefined;
 }
 
-export class SecondaryNote implements Visibility {
+export class Note implements Visibility {
   public classList: string[] | undefined;
   public id: string | undefined;
   public noteMarker: string | undefined | null;
@@ -193,24 +90,20 @@ export class SecondaryNote implements Visibility {
   public refTag: RefTag | undefined;
 }
 
-export class Note {
+export class VerseNotes {
   public _id: string | undefined;
   public _rev: string | undefined;
   public noteID: string | undefined;
   public noteShortTitle: string | undefined;
   public noteTitle: string | undefined;
-  public secondaryNotes: SecondaryNote[] | undefined;
+  public secondaryNotes: Note[] | undefined;
   // public chapterDataAid: string | undefined;
 }
 
 export function getNoteReferenceLabel(noteRefElement: Element): NoteCategory {
   const refElement = noteRefElement.querySelector('[class*="reference-label"]');
   if (refElement) {
-    const referenceLabel = ReferenceLabels.find(
-      (refLabel): boolean => {
-        return refLabel.className === refElement.className;
-      },
-    );
+    const referenceLabel = getReferenceLabelByClassName(refElement.className);
 
     refElement.remove();
 
