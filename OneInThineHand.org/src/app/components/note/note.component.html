@@ -18,7 +18,7 @@
         [ngClass]="{ highlight: secondaryNote.highlight }"
       >
         <li *ngFor="let noteRef of getNoteRefs(secondaryNote)">
-          <span>{{ convertNoteCategory(noteRef) }}</span>
+          <span>{{ convertNoteCategory(noteRef) }} </span>
           <span [innerHTML]="noteRef.text"></span>
         </li>
       </ul>

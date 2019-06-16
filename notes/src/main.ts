@@ -79,6 +79,8 @@ function parseShortTitle(verseMarker: string): string {
 }
 function parseNoteTitle(verseMarker: string, chapterID: string): string {
   const lang = chapterID.split('-')[0];
+  // console.log(lang);
+
   const name = bookNames.find(
     (bookName): boolean => {
       return chapterID.replace(`${lang}-`, '').startsWith(bookName.startsWith);
@@ -89,6 +91,8 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
 
   verseMarker = verseMarker;
   if (!name) {
+    console.log(lang);
+
     throw chapterID;
   }
   return `${name ? name.fullName : ''} ${
@@ -135,18 +139,24 @@ export class NoteProcessor {
             .map(
               (noteElement: Element): VerseNotes => {
                 const verseNotes = new VerseNotes();
-                verseNotes._id = noteElement.id;
+                try {
+                  verseNotes._id = noteElement.id;
 
-                const verseMarker = verseNotes._id.split('-')[2];
+                  let verseMarker = ''; //verseNotes._id.split('-')[3];
 
-                verseNotes.noteShortTitle = parseShortTitle(verseMarker);
-                verseNotes.noteTitle = parseNoteTitle(
-                  verseMarker,
-                  chapterElement.id,
-                );
+                  verseMarker = verseNotes._id.split('-')[3];
 
-                verseNotes.notes = parseNotes(noteElement);
+                  verseNotes.noteShortTitle = parseShortTitle(verseMarker);
+                  verseNotes.noteTitle = parseNoteTitle(
+                    verseMarker,
+                    chapterElement.id,
+                  );
 
+                  verseNotes.notes = parseNotes(noteElement);
+                } catch (error) {
+                  console.log(error);
+                  // verseMarker = '';
+                }
                 return verseNotes;
               },
             );
