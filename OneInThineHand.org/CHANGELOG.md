@@ -1,5 +1,13 @@
+## <small>5.0.8 (2019-06-16)</small>
+
+* Added submit button ([2a487aa](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2a487aa))
+* Fixed offets ([9b17c60](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9b17c60))
+
+
+
 ## <small>5.0.7 (2019-06-16)</small>
 
+* v5.0.7 ([96c6ec2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96c6ec2))
 
 
 
