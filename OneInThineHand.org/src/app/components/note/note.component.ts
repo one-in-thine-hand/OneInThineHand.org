@@ -29,7 +29,7 @@ export class NoteComponent implements OnInit {
     public modalService: NgbModal,
   ) {}
 
-  public ngOnInit() {}
+  public ngOnInit(): void {}
 
   public getNotePhrase(notePhrase: NotePhrase | undefined): string {
     return notePhrase && notePhrase.text

@@ -1,4 +1,4 @@
-<verse-notes *ngIf="note" id="note-{{ note._id }}">
+<verse-notes *ngIf="note" [id]="note._id">
   <li class="note-short-title">
     {{ note.noteShortTitle }}
     <button class="add-note-btn" (click)="addNote(content)"></button>

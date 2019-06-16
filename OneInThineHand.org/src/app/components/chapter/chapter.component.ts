@@ -341,13 +341,9 @@ export class ChapterComponent implements OnInit {
         // );
         console.log(verseElement.id);
 
-        console.log(`#${verseElement.id.replace(/verse/g, 'note')}`);
+        console.log(`#${verseElement.id}-notes`);
 
-        if (
-          !(await asyncScrollIntoView(
-            `#${verseElement.id.replace(/verse/g, 'note')}`,
-          ))
-        ) {
+        if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
           if (x === 0) {
             // noteElement = document.querySelector('.notes-top');
             await asyncScrollIntoView('.notes-top');
