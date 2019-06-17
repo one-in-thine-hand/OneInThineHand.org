@@ -51,6 +51,7 @@
     "@angular/platform-browser": "8.0.0",
     "@angular/platform-browser-dynamic": "8.0.0",
     "@angular/router": "8.0.0",
+    "@angular/service-worker": "8.0.0",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "@types/jasmine": "2.8.7",
@@ -95,6 +96,7 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
+    "@angular/pwa": "^0.800.3",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
     "@types/lodash": "^4.14.133",
     "axios": "^0.19.0",

@@ -43,6 +43,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { PreprocessorService } from './services/preprocessor.service';
 import { PageStateService } from './services/page-state.service';
 import { AddNoteComponent } from './components/add-note/add-note.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppConfig } from '../environments/environment';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -89,6 +91,9 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: AppConfig.production,
     }),
   ],
   providers: [
