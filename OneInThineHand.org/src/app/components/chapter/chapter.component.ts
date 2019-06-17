@@ -89,19 +89,17 @@ export class ChapterComponent implements OnInit {
     this.popStateActivated = event.state !== null;
     this.pageStateService.timer = undefined;
 
-    console.log(this.popStateActivated);
+    console.log(`Activate History ${this.popStateActivated}`);
     console.log(event);
   }
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
-        console.log(this.popStateActivated);
+        await this.setHistory();
         await asyncScrollTop('.chapter-grid');
 
-        console.log(params);
         const chapterParams = this.paramService.parseChapterParams(params);
-        console.log(chapterParams);
         if (
           this.chapter &&
           this.chapterVerses &&
@@ -111,34 +109,40 @@ export class ChapterComponent implements OnInit {
         ) {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
-          if (
-            this.popStateActivated &&
-            (await this.pageStateService.pageStateExists(
-              `${chapterParams.book}-${chapterParams.chapter}-eng-page-state`,
-            ))
-          ) {
-            if (this.pageStateService.currentPageState) {
-              this.chapter = this.pageStateService.currentPageState.chapter;
-              this.chapterVerses = this.pageStateService.currentPageState.chapterVerses;
+          const pageState = this.pageStateService.pageStateMap.get(
+            `eng-${chapterParams.book}-${
+              chapterParams.chapter
+            }-chapter-page-state`,
+          );
 
-              this.chapterNotes = this.pageStateService.currentPageState.chapterNotes;
-              await this.setChapterVariables(
-                this.chapterNotes,
-                this.chapterVerses,
-                this.chapter,
-                false,
-              );
-              const chapterGrid = document.querySelector('.chapter-grid');
-              const notesGrid = document.querySelector('#notes');
+          if (this.popStateActivated && pageState) {
+            console.log('Page State Activated');
 
-              if (chapterGrid) {
-                chapterGrid.scrollTop = this.pageStateService.currentPageState.chapterGridScrollTop;
-              }
-              if (notesGrid) {
-                notesGrid.scrollTop = this.pageStateService.currentPageState.notesScrollTop;
-              }
-              this.popStateActivated = false;
+            this.chapter = pageState.chapter;
+            this.chapterVerses = pageState.chapterVerses;
+
+            this.chapterNotes = pageState.chapterNotes;
+            await this.setChapterVariables(
+              this.chapterNotes,
+              this.chapterVerses,
+              this.chapter,
+              false,
+            );
+            const chapterGrid = document.querySelector('.chapter-grid');
+            const notesGrid = document.querySelector('#notes');
+
+            if (chapterGrid) {
+              console.log(pageState.chapterGridScrollTop);
+
+              chapterGrid.scrollTop = pageState.chapterGridScrollTop;
             }
+            if (notesGrid) {
+              console.log(pageState.notesScrollTop);
+              notesGrid.scrollTop = pageState.notesScrollTop;
+            }
+            this.popStateActivated = false;
+            // if (this.pageStateService.currentPageState) {
+            // }
           } else {
             try {
               this.chapter = (await this.databaseService.getDatabaseItem(
@@ -149,9 +153,6 @@ export class ChapterComponent implements OnInit {
                   chapterParams.chapter
                 }-chapter-verses`,
               )) as ChapterVerses;
-              console.log(
-                `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
-              );
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
               )) as ChapterNotes;
@@ -166,7 +167,7 @@ export class ChapterComponent implements OnInit {
                 this.setHighlighting(chapterParams, this.chapterVerses.verses);
               }
             } catch (error) {
-              console.log(error);
+              // console.log(error);
             }
           }
         }
@@ -175,20 +176,35 @@ export class ChapterComponent implements OnInit {
       },
     );
   }
+  private async setHistory(): Promise<void> {
+    if (this.chapter && this.chapterVerses && this.chapterNotes) {
+      this.pageStateService.newPage(
+        this.chapter,
+        this.chapterVerses,
+        this.chapterNotes,
+      );
+    }
+  }
 
+  public nextChapter(): void {
+    this.popStateActivated = true;
+  }
+  public previousChapter(): void {
+    this.popStateActivated = true;
+  }
   private highlightVerses(
     chapterParams: ChapterParams,
     highlightOffSets: number[] | undefined,
     item: Verse[],
     attrName: string,
   ): void {
-    console.log(highlightOffSets);
-    const asdf = this.getHighlightVerses(chapterParams, highlightOffSets, item);
-    console.log(asdf);
+    // console.log(highlightOffSets);
+    this.getHighlightVerses(chapterParams, highlightOffSets, item);
+    // console.log(asdf);
 
     this.getHighlightVerses(chapterParams, highlightOffSets, item).map(
       (v): void => {
-        console.log(v);
+        // console.log(v);
 
         v[attrName] = true;
       },
@@ -253,7 +269,7 @@ export class ChapterComponent implements OnInit {
           );
         },
       );
-      console.log(filteredVerses);
+      // console.log(filteredVerses);
 
       return filteredVerses.filter(
         (v): boolean => {
@@ -295,16 +311,16 @@ export class ChapterComponent implements OnInit {
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(chapterNotes.notes);
-    console.log(
-      this.chapterVerses !== undefined &&
-        this.chapterVerses.verses !== undefined &&
-        chapter !== undefined,
-    );
+    // console.log(
+    //   this.chapterVerses !== undefined &&
+    //     this.chapterVerses.verses !== undefined &&
+    //     chapter !== undefined,
+    // );
   }
 
   public async onScroll(): Promise<void> {
-    console.log('hhg');
-    this.pageStateService.updateHistory();
+    // console.log('hhg');
+    // this.pageStateService.updateHistory();
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
@@ -312,9 +328,9 @@ export class ChapterComponent implements OnInit {
         // let noteElement = document.querySelector(
         //   `#${verseElement.id.replace(/verse/g, 'note')}`,
         // );
-        console.log(verseElement.id);
+        // console.log(verseElement.id);
 
-        console.log(`#${verseElement.id}-notes`);
+        // console.log(`#${verseElement.id}-notes`);
 
         if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
           if (x === 0) {

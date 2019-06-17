@@ -26,8 +26,6 @@ export class OffsetService {
                     secondaryNote.offsets === 'all') &&
                   secondaryNote.noteRefs
                 ) {
-                  console.log(secondaryNote.uncompressedOffsets);
-
                   const formatTag = new FormatTag();
                   const refTag = new RefTag();
                   refTag.uncompressedOffsets =

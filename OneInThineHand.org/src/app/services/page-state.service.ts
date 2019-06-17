@@ -11,7 +11,7 @@ import { PageState } from './PageState';
 })
 export class PageStateService {
   public pageStateMap: Map<string, PageState> = new Map();
-  public currentPageState: PageState | undefined;
+  // public currentPageState: PageState | undefined;
   public timer: NodeJS.Timer | undefined;
   public constructor(
     private databaseService: DatabaseService,
@@ -31,28 +31,28 @@ export class PageStateService {
       //   chapterID.replace('chapter', 'page-state'),
       // );
 
-      const pageState = this.pageStateMap.get(
-        chapterID.replace('chapter', 'page-state'),
-      );
+      const pageState = this.pageStateMap.get(`${chapterID}-page-state`);
+      console.log(`${chapterID}-page-state`);
+
       // console.log(chapterID.replace('chapter', 'page-state'));
 
-      this.currentPageState = pageState as PageState;
+      // this.currentPageState = pageState as PageState;
       if (
-        this.currentPageState &&
-        this.currentPageState.chapter &&
-        this.currentPageState.chapterNotes &&
-        this.currentPageState.chapterVerses
+        pageState &&
+        pageState.chapter &&
+        pageState.chapterNotes &&
+        pageState.chapterVerses
       ) {
-        this.startHistory();
+        // this.startHistory();
         return true;
       } else {
-        this.currentPageState = undefined;
+        // this.currentPageState = undefined;
         return false;
       }
       return pageState !== undefined;
     } catch (error) {
       console.log(error);
-      this.currentPageState = undefined;
+      // this.currentPageState = undefined;
       return false;
     }
   }
@@ -69,48 +69,51 @@ export class PageStateService {
     }
     // if (!this.currentPageState) {
     // }
-    this.currentPageState = new PageState();
-    this.currentPageState._id = chapter._id.replace('chapter', 'page-state');
-    this.currentPageState.chapterNotes = chapterNotes;
-    this.currentPageState.chapter = chapter;
-    this.currentPageState.chapterVerses = chapterVerses;
-    this.setScrollTop();
-    // await this.databaseService.updateDatabaseItem(this.currentPageState);
-    this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
+
+    const pageState = new PageState();
+    pageState._id = `${chapter._id}-page-state`;
+    console.log(pageState);
+
+    pageState.chapterNotes = chapterNotes;
+    pageState.chapter = chapter;
+    pageState.chapterVerses = chapterVerses;
+
+    this.setScrollTop(pageState);
+    // await this.databaseService.updateDatabaseItem(pageState);
+    this.pageStateMap.set(pageState._id, pageState);
     this.startHistory();
   }
 
   public updateHistory(): void {
-    if (this.currentPageState) {
-      console.log(this.currentPageState._id);
-      this.setScrollTop();
-      // this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
-    }
+    // if (this.currentPageState) {
+    //   console.log(this.currentPageState._id);
+    //   this.setScrollTop();
+    //   // this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
+    // }
   }
 
   private startHistory(): void {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    this.timer = setInterval(async (): Promise<void> => {
-      if (this.currentPageState) {
-        this.setScrollTop();
-        // console.log(this.currentPageState);
-        // await this.databaseService.updateDatabaseItem(this.currentPageState);
-      }
-    }, 2000);
+    // if (this.timer) {
+    //   clearInterval(this.timer);
+    // }
+    // this.timer = setInterval(async (): Promise<void> => {
+    //   if (this.currentPageState) {
+    //     this.setScrollTop();
+    //     // console.log(this.currentPageState);
+    //     // await this.databaseService.updateDatabaseItem(this.currentPageState);
+    //   }
+    // }, 2000);
   }
 
-  public setScrollTop(): void {
-    if (this.currentPageState) {
+  public setScrollTop(pageState: PageState): void {
+    if (pageState) {
       const chapterGrid = document.querySelector('.chapter-grid');
       const notesGrid = document.querySelector('#notes');
-
       if (chapterGrid) {
-        this.currentPageState.chapterGridScrollTop = chapterGrid.scrollTop;
+        pageState.chapterGridScrollTop = chapterGrid.scrollTop;
       }
       if (notesGrid) {
-        this.currentPageState.notesScrollTop = notesGrid.scrollTop;
+        pageState.notesScrollTop = notesGrid.scrollTop;
       }
     }
   }

@@ -4,7 +4,11 @@
   [ngClass]="{ 'paragraph-mode': this.saveStateService.data.paragraphsVisible }"
 >
   <div style=" user-select: none;"></div>
-  <div class="left-chapter-nav-btn chapter-nav-btn" style=" user-select: none;">
+  <div
+    class="left-chapter-nav-btn chapter-nav-btn"
+    style=" user-select: none;"
+    (click)="previousChapter()"
+  >
     <i
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +35,7 @@
   <div
     class="right-chapter-nav-btn chapter-nav-btn"
     style=" user-select: none;"
+    (click)="nextChapter()"
   >
     <i>
       <svg
