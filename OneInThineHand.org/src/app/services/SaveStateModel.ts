@@ -15,6 +15,7 @@ export class SaveStateModel {
   public secondaryNotesVisible = false;
   public englishNotesVisible = false;
   public newNotesVisible = false;
+  public englishOverlayVisible = false;
   public translatorNotesVisible = true;
   public fontSize = '16';
   public language: string;

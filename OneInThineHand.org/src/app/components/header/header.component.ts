@@ -150,4 +150,5 @@ export class HeaderComponent implements OnInit {
   public async loadNoteFile(event: Event): Promise<void> {
     await this.preprocessorService.loadNoteFiles(event);
   }
+  public onSubmit(): void {}
 }

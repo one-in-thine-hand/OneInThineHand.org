@@ -31,9 +31,15 @@ export {
   ReferenceLabel as NoteCategory,
   NotePhrase,
   NoteRef,
-  NoteType,
   Note as SecondaryNote,
 } from './models/notes/Note';
+
+export {
+  NoteType,
+  NoteTypeConvert,
+  NoteTypeConverts,
+  getNoteType,
+} from './models/notes/NoteType';
 
 export {
   verseSelectors,

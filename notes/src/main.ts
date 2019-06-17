@@ -6,11 +6,9 @@ import {
   NoteRef,
 } from '../../shared/src/shared';
 import { bookNames } from './consts';
-import {
-  getNoteReferenceLabel,
-  getNoteType,
-} from '../../shared/src/models/notes/Note';
+import { getNoteType } from '../../shared/src/shared';
 import * as he from 'he';
+import { getNoteReferenceLabel } from '../../shared/src/models/notes/Note';
 
 function parseNotePhrase(element: Element): NotePhrase | undefined {
   const notePhraseElement = element.querySelector('.note-phrase');

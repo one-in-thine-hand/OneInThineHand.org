@@ -221,37 +221,6 @@ export class ChapterComponent implements OnInit {
         highlighting = highlighting.concat(contextOffsets);
       }
 
-      // const highlight = this.getHighlightVerses(
-      //   chapterParams,
-      //   highlightOffSets,
-      //   verses,
-      // );
-      // highlight.map(
-      //   (v): void => {
-      //     v.highlight = true;
-      //   },
-      // );
-      // // highlighting = highlighting.concat(highlight);
-      // const context = this.getHighlightVerses(
-      //   chapterParams,
-      //   contextOffsets,
-      //   verses,
-      // );
-
-      // context.map(
-      //   (v): void => {
-      //     v.context = true;
-      //   },
-      // );3
-      // console.log(
-      //   sortBy(
-      //     highlighting,
-      //     (h): number => {
-      //       return h;
-      //     },
-      //   ),
-      // );
-
       await asyncScrollIntoView(
         `#eng-${chapterParams.book}-${chapterParams.chapter}-${
           sortBy(highlighting)[0]
@@ -259,56 +228,11 @@ export class ChapterComponent implements OnInit {
         { timeout: 100 },
       );
 
-      // const verseElement = document.querySelector(
-      //   `#${chapterParams.book.replace('_', '-')}-${chapterParams.chapter}-${
-      //     highlightOffSets[0]
-      //   }-eng-verse`,
-      // );
-      // console.log(verseElement);
-
-      // if (verseElement) {
-      //   console.log(verseElement);
-
-      //   setTimeout((): void => {
-      //     verseElement.scrollIntoView();
-      //   }, 200);
-      // }
+      // const ve
     } else {
-      console.log(
-        (document.querySelector('.chapter-grid') as Element).scrollTop,
-      );
       await asyncScrollIntoView('verse');
       await asyncScrollIntoView('verse-notes');
-      // const verseElement = document.querySelector('verse');
-      // const noteElement = document.querySelector('note');
-      // if (verseElement) {
-      //   verseElement.scrollIntoView();
-      // }
-
-      // if (noteElement) {
-      //   noteElement.scrollIntoView();
-      // }
-      console.log(
-        (document.querySelector('.chapter-grid') as Element).scrollTop,
-      );
-      // const chapterGrid = document.querySelector('.chapter-grid');
-      // const notesGrid = document.querySelector('#notes');
-      // if (chapterGrid) {
-      //   chapterGrid.scrollTop = 0;
-      // }
-      // if (notesGrid) {
-      //   notesGrid.scrollTop = 0;
-      // }
     }
-    // verses.map((verse): void => {
-    //   console.log(verse._id);
-
-    //   console.log(
-    //     `${chapterParams.book.replace('_', '-')}-${
-    //       chapterParams.chapter
-    //     }-eng-verse` === verse._id,
-    //   );
-    // });
   }
 
   public getHighlightVerses(

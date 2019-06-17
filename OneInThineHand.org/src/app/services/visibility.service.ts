@@ -38,7 +38,10 @@ export class VisibilityService {
                     sN.visible = this.saveStateService.data.translatorNotesVisible;
                     break;
                   }
-
+                  case NoteType.EngOverlay: {
+                    sN.visible = this.saveStateService.data.translatorNotesVisible;
+                    break;
+                  }
                   default: {
                     sN.visible = false;
                     break;

@@ -126,6 +126,16 @@
     <h2>Note Types</h2>
     <ul>
       <li
+        (click)="refLabelClick('englishOverlayVisible')"
+        [ngClass]="{
+          'btn-primary': this.saveStateService.data.englishOverlayVisible,
+          ' btn-secondary': !this.saveStateService.data.englishOverlayVisible
+        }"
+        class="btn btn-primary"
+      >
+        English Overlay
+      </li>
+      <li
         (click)="refLabelClick('englishNotesVisible')"
         [ngClass]="{
           'btn-primary': this.saveStateService.data.englishNotesVisible,
@@ -159,7 +169,7 @@
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">
-      <form>
+      <form (ngSubmit)="onSubmit()">
         Load Files
         <input
           multiple

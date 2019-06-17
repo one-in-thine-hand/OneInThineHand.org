@@ -1,15 +1,7 @@
 import { Visibility } from '../../interfaces/visibliity';
 import { FormatTag, RefTag } from '../format_tags/FormatTag';
 import { getReferenceLabelByClassName } from './ReferenceLabels';
-
-// import * as he from 'he';
-
-// import * as he from 'he';
-export enum NoteType {
-  Eng = 2,
-  New = 1,
-  TC = 3,
-}
+import { NoteType } from './NoteType';
 
 export const enum NoteCategory {
   ALT,
@@ -33,11 +25,6 @@ export interface NumericalOrder {
   sortOrder: number;
 }
 
-export class NoteTypeConvert {
-  public noteType: NoteType;
-  public className: string;
-}
-
 export class ReferenceLabel implements Visibility, NumericalOrder {
   public sortOrder: number;
   public visible: boolean | undefined;
@@ -46,12 +33,6 @@ export class ReferenceLabel implements Visibility, NumericalOrder {
   public referenceLabelName: string;
   public referenceLabelShortName: string;
 }
-
-export const NoteTypeConverts: NoteTypeConvert[] = [
-  { noteType: NoteType.Eng, className: 'eng-note' },
-  { noteType: NoteType.New, className: 'new-note' },
-  { noteType: NoteType.TC, className: 'tc-note' },
-];
 
 export class NoteRef implements Visibility {
   public _id: string | undefined;
@@ -113,15 +94,4 @@ export function getNoteReferenceLabel(noteRefElement: Element): NoteCategory {
   } else {
     return NoteCategory.ERR;
   }
-}
-export function getNoteType(
-  secondaryNoteElement: Element,
-): NoteType | undefined {
-  const noteType = NoteTypeConverts.find(
-    (noteTypeConvert): boolean => {
-      return noteTypeConvert.className === secondaryNoteElement.className;
-    },
-  );
-
-  return noteType ? noteType.noteType : undefined;
 }
