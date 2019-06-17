@@ -1,7 +1,14 @@
+## <small>5.0.11 (2019-06-17)</small>
+
+* fixes to note types ([4dacfd7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4dacfd7))
+
+
+
 ## <small>5.0.10 (2019-06-17)</small>
 
 * Added the new note type ([b4616f4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b4616f4))
 * Switched to sorting by all highlighting ([2bdccb4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2bdccb4))
+* v5.0.10 ([31dbdb2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/31dbdb2))
 
 
 
