@@ -30,7 +30,7 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.ERR,
     referenceLabelName: 'ERROR',
     visible: true,
-    referenceLabelShortName: 'ERR',
+    referenceLabelShortName: 'ERROR',
   },
   {
     sortOrder: 0,
@@ -39,6 +39,14 @@ export const ReferenceLabels: ReferenceLabel[] = [
     referenceLabelName: 'Geography',
     visible: true,
     referenceLabelShortName: 'GEO',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-greek',
+    noteCategory: NoteCategory.GR,
+    referenceLabelName: 'Greek',
+    visible: true,
+    referenceLabelShortName: 'GR',
   },
   {
     sortOrder: 0,

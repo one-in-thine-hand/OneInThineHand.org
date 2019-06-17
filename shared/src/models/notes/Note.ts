@@ -9,6 +9,7 @@ export const enum NoteCategory {
   CR,
   ERR,
   GEO,
+  GR,
   GS,
   HMY,
   HEB,

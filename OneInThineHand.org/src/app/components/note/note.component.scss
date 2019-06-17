@@ -33,3 +33,18 @@ verse-notes {
     margin-right: 20px;
   }
 }
+
+.note-category {
+  font-weight: 700;
+}
+
+verse-notes {
+  .note-short-title {
+    display: block;
+  }
+  > * {
+    margin-left: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
