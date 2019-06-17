@@ -11,6 +11,11 @@ import * as JSZip from 'jszip';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
 import { FormatTagService } from '../../services/format-tag.service';
+import {
+  ReferenceLabel,
+  NoteCategory,
+} from '../../../../../shared/src/models/notes/Note';
+import { sortBy } from 'lodash';
 
 @Component({
   selector: 'app-header',
@@ -93,6 +98,18 @@ export class HeaderComponent implements OnInit {
     this.location.forward();
   }
 
+  public getNoteCategories(): ReferenceLabel[] {
+    return sortBy(
+      this.saveStateService.data.ReferenceLabelSetting.filter(
+        (refLabelSetting): boolean => {
+          return refLabelSetting.noteCategory !== NoteCategory.ERR;
+        },
+      ),
+      (refLabelSetting): number => {
+        return refLabelSetting.noteCategory;
+      },
+    );
+  }
   public async showOrphanRefs(): Promise<void> {}
   public async loadChapterFile(event: Event): Promise<void> {
     this.uploading = true;

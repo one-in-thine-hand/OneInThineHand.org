@@ -113,7 +113,7 @@
     <ul>
       <li
         (click)="refLabelClick(r)"
-        *ngFor="let r of this.saveStateService.data.ReferenceLabelSetting"
+        *ngFor="let r of getNoteCategories()"
         [ngClass]="{
           'btn-primary': r.visible,
           ' btn-secondary': !r.visible

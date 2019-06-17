@@ -3,7 +3,7 @@ verse {
     padding: 0 0 6pt 5px;
     border-left: 3px solid #f68d2e;
   }
-  &.context {
+  &.context:not(.highlight) {
     padding: 0 0 6pt 5px;
     border-left: 3px solid #2ca1a5;
   }
