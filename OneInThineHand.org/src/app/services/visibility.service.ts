@@ -39,7 +39,7 @@ export class VisibilityService {
                     break;
                   }
                   case NoteType.EngOverlay: {
-                    sN.visible = this.saveStateService.data.translatorNotesVisible;
+                    sN.visible = this.saveStateService.data.englishOverlayVisible;
                     break;
                   }
                   default: {
