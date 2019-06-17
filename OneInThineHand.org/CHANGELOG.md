@@ -1,5 +1,13 @@
+## <small>5.0.10 (2019-06-17)</small>
+
+* Added the new note type ([b4616f4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b4616f4))
+* Switched to sorting by all highlighting ([2bdccb4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2bdccb4))
+
+
+
 ## <small>5.0.9 (2019-06-16)</small>
 
+* v5.0.9 ([1f55840](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f55840))
 
 
 
