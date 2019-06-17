@@ -1,3 +1,4 @@
+import { sortBy } from 'lodash';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
@@ -175,6 +176,25 @@ export class ChapterComponent implements OnInit {
     );
   }
 
+  private highlightVerses(
+    chapterParams: ChapterParams,
+    highlightOffSets: number[] | undefined,
+    item: Verse[],
+    attrName: string,
+  ): void {
+    console.log(highlightOffSets);
+    const asdf = this.getHighlightVerses(chapterParams, highlightOffSets, item);
+    console.log(asdf);
+
+    this.getHighlightVerses(chapterParams, highlightOffSets, item).map(
+      (v): void => {
+        console.log(v);
+
+        v[attrName] = true;
+      },
+    );
+  }
+
   private async setHighlighting(
     chapterParams: ChapterParams,
     verses: Verse[],
@@ -191,22 +211,51 @@ export class ChapterComponent implements OnInit {
       },
     );
 
+    this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
+    this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
+
     if (highlightOffSets) {
-      this.getHighlightVerses(chapterParams, highlightOffSets, verses).map(
-        (v): void => {
-          v.highlight = true;
-        },
-      );
-      this.getHighlightVerses(chapterParams, contextOffsets, verses).map(
-        (v): void => {
-          v.context = true;
-        },
-      );
+      let highlighting: number[] = [];
+      highlighting = highlighting.concat(highlightOffSets);
+      if (contextOffsets) {
+        highlighting = highlighting.concat(contextOffsets);
+      }
+
+      // const highlight = this.getHighlightVerses(
+      //   chapterParams,
+      //   highlightOffSets,
+      //   verses,
+      // );
+      // highlight.map(
+      //   (v): void => {
+      //     v.highlight = true;
+      //   },
+      // );
+      // // highlighting = highlighting.concat(highlight);
+      // const context = this.getHighlightVerses(
+      //   chapterParams,
+      //   contextOffsets,
+      //   verses,
+      // );
+
+      // context.map(
+      //   (v): void => {
+      //     v.context = true;
+      //   },
+      // );3
+      // console.log(
+      //   sortBy(
+      //     highlighting,
+      //     (h): number => {
+      //       return h;
+      //     },
+      //   ),
+      // );
 
       await asyncScrollIntoView(
-        `#verse-${chapterParams.book}-${chapterParams.chapter}-${
-          highlightOffSets[0]
-        }-eng-verse`,
+        `#eng-${chapterParams.book}-${chapterParams.chapter}-${
+          sortBy(highlighting)[0]
+        }-verse`,
         { timeout: 100 },
       );
 
@@ -274,7 +323,7 @@ export class ChapterComponent implements OnInit {
             (verse): boolean => {
               return (
                 verse._id ===
-                `${chapterParams.book}-${chapterParams.chapter}-${c}-eng-verse`
+                `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
               );
             },
           );

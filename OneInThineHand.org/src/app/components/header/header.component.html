@@ -159,7 +159,7 @@
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">
-      <form action="post">
+      <form>
         Load Files
         <input
           multiple
@@ -168,7 +168,7 @@
           id="chapterFileOpener"
           (change)="this.loadChapterFile($event)"
         />
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
     <div *ngIf="this.uploading">Loading Files</div>
