@@ -1,6 +1,13 @@
+## <small>5.0.12 (2019-06-17)</small>
+
+* Working on note styling ([585c309](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/585c309))
+
+
+
 ## <small>5.0.11 (2019-06-17)</small>
 
 * fixes to note types ([4dacfd7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4dacfd7))
+* v5.0.11 ([7305cab](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7305cab))
 
 
 
