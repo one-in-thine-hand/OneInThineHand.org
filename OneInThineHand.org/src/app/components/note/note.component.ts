@@ -206,6 +206,10 @@ export class NoteComponent implements OnInit {
     console.log(getInputValue('#noteReferenceLabelTemp'));
     modal.close('Save click');
   }
+
+  public highlight(note: Note): boolean {
+    return note.refTag && note.refTag.highlight ? true : false;
+  }
 }
 
 export function getTextContent(selector: string): string {

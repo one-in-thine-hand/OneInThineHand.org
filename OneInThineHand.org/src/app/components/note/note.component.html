@@ -8,6 +8,7 @@
       class="secondary-note"
       *ngFor="let note of getSecondaryNotes()"
       id="eng-{{ note.id }}"
+      [ngClass]="{ highlight: highlight(note) }"
     >
       <app-note-phrase
         [note]="note"
@@ -16,11 +17,7 @@
       <!-- <li (click)="this.notePhraseClick(note)" class="note-phrase">
         {{ getNotePhrase(note.notePhrase) }}
       </li> -->
-      <ul
-        class="note-refs"
-        *ngIf="note.noteRefs"
-        [ngClass]="{ highlight: note.highlight }"
-      >
+      <ul class="note-refs" *ngIf="note.noteRefs">
         <li
           (click)="noteRefClick($event)"
           *ngFor="let noteRef of getNoteRefs(note)"

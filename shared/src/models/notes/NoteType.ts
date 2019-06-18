@@ -1,6 +1,12 @@
 // import * as he from 'he';
 // import * as he from 'he';
 
+// import * as he from 'he';
+// import * as he from 'he';
+// import * as he from 'he';
+// import * as he from 'he';
+// import * as he from 'he';
+// import * as he from 'he';
 export const enum NoteCategory {
   ALT,
   BD,
@@ -18,6 +24,8 @@ export const enum NoteCategory {
   QUO,
   TG,
   TRN,
+  TRN1,
+  TRN2
 }
 
 export enum NoteType {
