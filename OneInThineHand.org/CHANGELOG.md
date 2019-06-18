@@ -1,3 +1,9 @@
+## <small>5.0.14 (2019-06-18)</small>
+
+* Fixes to note categories ([a6f8520](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a6f8520))
+
+
+
 ## <small>5.0.13 (2019-06-18)</small>
 
 * Added service worker ([254c6ad](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/254c6ad))
@@ -8,6 +14,7 @@
 * Page state work ([09372db](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/09372db))
 * Update to visibility settings ([f8927a9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f8927a9))
 * Updates to note layout and note settings ([3f5f346](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3f5f346))
+* v5.0.13 ([20f2e90](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/20f2e90))
 
 
 
