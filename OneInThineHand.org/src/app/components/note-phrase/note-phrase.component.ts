@@ -62,6 +62,11 @@ export class NotePhraseComponent implements OnInit {
     if (selection) {
       try {
         const range = selection.getRangeAt(0);
+        if (range.toString().length === 0) {
+          console.log(range.toString().length);
+
+          throw 'No selection';
+        }
         const elements = [
           this.validateSelectedNodes(range.startContainer),
           this.validateSelectedNodes(range.endContainer),
@@ -115,6 +120,8 @@ export class NotePhraseComponent implements OnInit {
               this.chapterService.chapterNotes,
             );
             console.log('asdf');
+          } else {
+            throw 'No valid selection';
           }
         }
         // console.log(elements);
@@ -122,6 +129,8 @@ export class NotePhraseComponent implements OnInit {
         // console.log(range);
       } catch (error) {
         if (secondaryNote.refTag) {
+          console.log(error);
+
           secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
         }
         console.log(error);

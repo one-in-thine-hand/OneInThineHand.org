@@ -158,35 +158,49 @@ export class FormatTagComponent implements OnInit {
     return '0,0';
   }
 
+  private checkNoTextIsSelected(): boolean {
+    try {
+      const selection = window.getSelection();
+      return selection
+        ? selection.getRangeAt(0).toString().length === 0
+        : false;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public async formatTagClick(event: Event): Promise<void> {
     // const selection = window.getSelection();
     // console.log('hhgg');
     // console.log(event);
     // this.visibilityService.resetHighlight();
-    this.chapterService.resetNoteVis();
+    console.log(event);
+    if (this.checkNoTextIsSelected()) {
+      this.chapterService.resetNoteVis();
 
-    if (this.fMerged.refTags) {
-      if (this.refList === undefined) {
-        this.refList = this.fMerged.refTags.map(
-          (refT): string => {
-            return refT.secondaryNoteID;
-          },
-        );
-      }
-      const id = this.refList.pop();
-      const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
-      console.log(r);
+      if (this.fMerged.refTags) {
+        if (this.refList === undefined) {
+          this.refList = this.fMerged.refTags.map(
+            (refT): string => {
+              return refT.secondaryNoteID;
+            },
+          );
+        }
+        const id = this.refList.pop();
+        const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
+        console.log(r);
 
-      if (r) {
-        r.highlight = true;
-        await asyncScrollIntoView(`#eng-${r.secondaryNoteID}`);
-      } else {
-        this.refList = undefined;
+        if (r) {
+          r.highlight = true;
+          await asyncScrollIntoView(`#eng-${r.secondaryNoteID}`);
+        } else {
+          this.refList = undefined;
+        }
+        // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
       }
-      // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
+      // if (selection) {
+      //   selection.addRange(selection.getRangeAt(0));
+      // }
     }
-    // if (selection) {
-    //   selection.addRange(selection.getRangeAt(0));
-    // }
   }
 }

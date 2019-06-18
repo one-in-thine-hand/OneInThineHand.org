@@ -26,6 +26,10 @@ export class ChapterComponent implements OnInit {
   public chapter: Chapter | undefined;
   public chapterNotes: ChapterNotes;
   public chapterVerses: ChapterVerses | undefined;
+  public ctrlKeyPressed: boolean;
+  public shiftKeyPressed: boolean;
+  public ctrlKeyInterval: any;
+  public shiftKeyInterval: any;
 
   public constructor(
     public chapterService: ChapterService,
@@ -44,10 +48,42 @@ export class ChapterComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   public async onKeyUp(event: KeyboardEvent): Promise<void> {
     if (event instanceof KeyboardEvent) {
-      if (event.ctrlKey) {
-        // console.log(event);
+      // console.log(event);
+      if (event.ctrlKey || event.key.toLowerCase() === 'control') {
+        console.log('asdfiojasdoifj');
 
-        switch (event.key) {
+        this.ctrlKeyPressed = true;
+        if (this.ctrlKeyInterval !== undefined) {
+          clearInterval(this.ctrlKeyInterval);
+        }
+        this.ctrlKeyInterval = setInterval((): void => {
+          this.ctrlKeyPressed = false;
+          clearInterval(this.ctrlKeyInterval);
+        }, 1000);
+        // setTimeout((): void => {
+        //   this.ctrlKeyPressed = false;
+        // }, 1000);
+      }
+      if (event.shiftKey || event.key.toLowerCase() === 'shift') {
+        this.shiftKeyPressed = true;
+        if (this.shiftKeyInterval !== undefined) {
+          clearInterval(this.shiftKeyInterval);
+        }
+        this.shiftKeyInterval = setInterval((): void => {
+          this.shiftKeyPressed = false;
+          clearInterval(this.shiftKeyInterval);
+        }, 1000);
+        // setTimeout((): void => {
+        //   this.shiftKeyPressed = false;
+        // }, 1000);
+      }
+      // console.log(event);
+
+      // console.log(this.ctrlKeyPressed);
+      // console.log(this.shiftKeyPressed);
+
+      if (this.ctrlKeyPressed) {
+        switch (event.key.toLowerCase()) {
           case 'z': {
             if (this.chapterVerses && this.chapterNotes) {
               this.historyService.undoHistory(
@@ -72,10 +108,11 @@ export class ChapterComponent implements OnInit {
 
             break;
           }
-          case 'S': {
-            // console.log('hggg');
-            if (event.shiftKey) {
+          case 's': {
+            if (this.shiftKeyPressed) {
+              console.log('hggg');
               await this.databaseService.updateDatabaseItem(this.chapterNotes);
+              console.log('Finished');
             }
             break;
           }
