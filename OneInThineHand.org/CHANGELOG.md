@@ -1,6 +1,13 @@
+## <small>5.0.16 (2019-06-18)</small>
+
+* Fixed note type settings ([8536b47](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8536b47))
+
+
+
 ## <small>5.0.15 (2019-06-18)</small>
 
 * Update to keyboard combo for saving file ([b47b264](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b47b264))
+* v5.0.15 ([ee1105e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ee1105e))
 
 
 
