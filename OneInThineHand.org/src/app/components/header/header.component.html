@@ -126,6 +126,19 @@
     <h2>Note Types</h2>
     <ul>
       <li
+        (click)="refLabelClick(r)"
+        *ngFor="let r of this.saveStateService.data.noteTypeSettings"
+        [ngClass]="{
+          'btn-primary': r.visible,
+          ' btn-secondary': !r.visible
+        }"
+        class="btn btn-primary"
+      >
+        {{ r.shortName }}
+      </li>
+    </ul>
+    <!-- <ul>
+      <li
         (click)="refLabelClick('englishOverlayVisible')"
         [ngClass]="{
           'btn-primary': this.saveStateService.data.englishOverlayVisible,
@@ -165,7 +178,7 @@
       >
         Translation
       </li>
-    </ul>
+    </ul> -->
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">

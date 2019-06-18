@@ -33,6 +33,7 @@ export class NoteTypeConvert {
   public className: string;
   public shortName: string;
   public longName: string;
+  public visible: boolean;
 }
 export const NoteTypeConverts: NoteTypeConvert[] = [
   {
@@ -40,30 +41,35 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     className: 'overlay-print',
     shortName: 'Print',
     longName: 'Print',
+    visible: true,
   },
   {
     noteType: NoteType.TRANSLATION,
     className: 'overlay-trn',
     shortName: 'Translation',
     longName: 'Translation',
+    visible: true,
   },
   {
     noteType: NoteType.TEST,
     className: 'overlay-new-notes',
     shortName: 'Test',
     longName: 'Test',
+    visible: true,
   },
   {
     noteType: NoteType.EXISTING,
     className: 'overlay-eng-notes',
     shortName: 'Existing',
     longName: 'Existing',
+    visible: true,
   },
   {
     noteType: NoteType.TC,
     className: 'overlay-tc-notes',
     shortName: 'TC',
     longName: 'TC',
+    visible: true,
   },
 ];
 

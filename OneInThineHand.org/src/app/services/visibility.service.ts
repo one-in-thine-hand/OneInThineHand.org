@@ -25,32 +25,40 @@ export class VisibilityService {
           if (note.notes) {
             note.notes.map(
               (sN): void => {
-                switch (sN.noteType) {
-                  case NoteType.EXISTING: {
-                    sN.visible = this.saveStateService.data.existingNotesVisible;
-                    break;
-                  }
-                  case NoteType.PRINT: {
-                    sN.visible = this.saveStateService.data.printNotesVisible;
-                    break;
-                  }
-                  case NoteType.TC: {
-                    sN.visible = this.saveStateService.data.tcNotesVisible;
-                    break;
-                  }
-                  case NoteType.TEST: {
-                    sN.visible = this.saveStateService.data.testOverlayVisible;
-                    break;
-                  }
-                  case NoteType.TRANSLATION: {
-                    sN.visible = this.saveStateService.data.translationOverlayVisible;
-                    break;
-                  }
-                  default: {
-                    sN.visible = false;
-                    break;
-                  }
-                }
+                const noteTypeSetting = this.saveStateService.data.noteTypeSettings.find(
+                  (nC): boolean => {
+                    return nC.noteType === sN.noteType;
+                  },
+                );
+
+                sN.visible = noteTypeSetting ? noteTypeSetting.visible : true;
+
+                // switch (sN.noteType) {
+                //   case NoteType.EXISTING: {
+                //     sN.visible = this.saveStateService.data.existingNotesVisible;
+                //     break;
+                //   }
+                //   case NoteType.PRINT: {
+                //     sN.visible = this.saveStateService.data.printNotesVisible;
+                //     break;
+                //   }
+                //   case NoteType.TC: {
+                //     sN.visible = this.saveStateService.data.tcNotesVisible;
+                //     break;
+                //   }
+                //   case NoteType.TEST: {
+                //     sN.visible = this.saveStateService.data.testOverlayVisible;
+                //     break;
+                //   }
+                //   case NoteType.TRANSLATION: {
+                //     sN.visible = this.saveStateService.data.translationOverlayVisible;
+                //     break;
+                //   }
+                //   default: {
+                //     sN.visible = false;
+                //     break;
+                //   }
+                // }
                 if (sN.id) {
                   this.secondaryNotesHighlight.set(
                     sN.id,

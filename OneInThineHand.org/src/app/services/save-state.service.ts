@@ -26,7 +26,17 @@ export class SaveStateService {
       }
 
       this.mergeNoteSettings(this.data.noteTypeSettings, NoteTypeConverts);
+      this.data.noteTypeSettings = this.data.noteTypeSettings.filter(
+        (noteTypeSetting): boolean => {
+          if (noteTypeSetting.visible === undefined) {
+            noteTypeSetting.visible = true;
+          }
+          return noteTypeSetting.className.startsWith('overlay');
+        },
+      );
       this.mergeNoteSettings(this.data.ReferenceLabelSetting, ReferenceLabels);
+      console.log(this.data.noteTypeSettings);
+
       this.data.ReferenceLabelSetting = this.data.ReferenceLabelSetting.filter(
         (refLabelSetting): boolean => {
           return refLabelSetting.className.startsWith('reference-label');

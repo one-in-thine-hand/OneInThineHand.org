@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
   }
   public refLabelClick(ref: { visible: boolean } | string): void {
     const asdf = this.electronService.isElectron();
-    console.log(asdf);
+    console.log(ref);
 
     if ((ref as { visible: boolean }).visible !== undefined) {
       (ref as { visible: boolean }).visible = !(ref as { visible: boolean })
