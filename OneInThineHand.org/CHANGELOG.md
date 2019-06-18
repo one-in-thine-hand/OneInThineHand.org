@@ -1,6 +1,13 @@
+## <small>5.0.18 (2019-06-18)</small>
+
+* Hopefully the actual fix for uploading ([ed4f426](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ed4f426))
+
+
+
 ## <small>5.0.17 (2019-06-18)</small>
 
 * Fixing file upload ([6977a80](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6977a80))
+* v5.0.17 ([58debc2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/58debc2))
 
 
 
