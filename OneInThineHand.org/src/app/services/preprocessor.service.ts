@@ -12,6 +12,12 @@ import PQueue from 'p-queue';
 })
 export class PreprocessorService {
   private noteProcessor = new NoteProcessor();
+  private zipMimeTypes = [
+    'application/zip',
+    'application/octet-stream',
+    'application/x-zip-compressed',
+    'multipart/x-zip',
+  ];
   private formatTagProcessor = new FormatTags();
   private chapterProcessor = new ChapterProcessor();
   public constructor(private databaseService: DatabaseService) {}
@@ -36,7 +42,7 @@ export class PreprocessorService {
         const queue = new PQueue({ concurrency: 1 });
         const promises = Array.from(zipFiles).map(
           async (zipFile): Promise<void> => {
-            if (zipFile.type === 'application/x-zip-compressed') {
+            if (this.zipMimeTypes.includes(zipFile.type)) {
               try {
                 const data = await new Response(zipFile).arrayBuffer();
                 const files = await JSZip.loadAsync(data);
