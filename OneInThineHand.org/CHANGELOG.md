@@ -1,6 +1,13 @@
+## <small>5.0.15 (2019-06-18)</small>
+
+* Update to keyboard combo for saving file ([b47b264](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b47b264))
+
+
+
 ## <small>5.0.14 (2019-06-18)</small>
 
 * Fixes to note categories ([a6f8520](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a6f8520))
+* v5.0.14 ([c5f1d52](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c5f1d52))
 
 
 
