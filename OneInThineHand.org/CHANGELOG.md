@@ -1,6 +1,13 @@
+## <small>5.0.17 (2019-06-18)</small>
+
+* Fixing file upload ([6977a80](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6977a80))
+
+
+
 ## <small>5.0.16 (2019-06-18)</small>
 
 * Fixed note type settings ([8536b47](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8536b47))
+* v5.0.16 ([8d6db0b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8d6db0b))
 
 
 
