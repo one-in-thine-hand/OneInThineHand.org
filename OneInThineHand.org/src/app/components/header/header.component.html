@@ -1,4 +1,4 @@
-<header class="oith-header bg-primary">
+<header class="oith-header">
   <ul class="oith-header-left">
     <li id="navToggle" (click)="navigationPaneToggle()">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -38,14 +38,15 @@
         />
       </svg>
     </li>
-    <li id="chapterName" class="chapter-name">
+    <li></li>
+    <!-- <li id="chapterName" class="chapter-name">
       <span class="header-title">
         {{ this.headerService.getTitle() }}
       </span>
       <span class="header-short-title">
         {{ this.headerService.getShortTitle() }}
       </span>
-    </li>
+    </li> -->
     <li id="btnForward" (click)="this.forwardClick()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
