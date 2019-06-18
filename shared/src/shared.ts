@@ -27,15 +27,16 @@ export {
 } from './enums/enums';
 
 export {
-  VerseNotes as Note,
-  ReferenceLabel as NoteCategory,
+  VerseNotes,
+  ReferenceLabel,
   NotePhrase,
   NoteRef,
-  Note as SecondaryNote,
+  Note,
 } from './models/notes/Note';
 
 export {
   NoteType,
+  NoteCategory,
   NoteTypeConvert,
   NoteTypeConverts,
   getNoteType,

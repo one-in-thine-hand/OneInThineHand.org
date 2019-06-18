@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Note, parseOffsets, FormatTag } from '../../../../shared/src/shared';
+import {
+  Note,
+  parseOffsets,
+  FormatTag,
+  VerseNotes,
+} from '../../../../shared/src/shared';
 import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 
 @Injectable({
@@ -8,7 +13,7 @@ import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 export class OffsetService {
   public constructor() {}
 
-  public expandNotes(notes: Note[] | undefined): void {
+  public expandNotes(notes: VerseNotes[] | undefined): void {
     // console.log(notes);
 
     if (notes) {

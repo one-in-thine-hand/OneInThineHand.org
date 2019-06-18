@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
-import { Note, NoteType } from '../../../../shared/src/shared';
+import { Note, NoteType, VerseNotes } from '../../../../shared/src/shared';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class VisibilityService {
       },
     );
   }
-  public resetNoteVisibility(notes: Note[] | undefined): void {
+  public resetNoteVisibility(notes: VerseNotes[] | undefined): void {
     if (notes) {
       this.resetHighlight();
       notes.map(
@@ -26,20 +26,24 @@ export class VisibilityService {
             note.notes.map(
               (sN): void => {
                 switch (sN.noteType) {
-                  case NoteType.Eng: {
-                    sN.visible = this.saveStateService.data.englishNotesVisible;
+                  case NoteType.EXISTING: {
+                    sN.visible = this.saveStateService.data.existingNotesVisible;
                     break;
                   }
-                  case NoteType.New: {
-                    sN.visible = this.saveStateService.data.newNotesVisible;
+                  case NoteType.PRINT: {
+                    sN.visible = this.saveStateService.data.printNotesVisible;
                     break;
                   }
                   case NoteType.TC: {
-                    sN.visible = this.saveStateService.data.translatorNotesVisible;
+                    sN.visible = this.saveStateService.data.tcNotesVisible;
                     break;
                   }
-                  case NoteType.EngOverlay: {
-                    sN.visible = this.saveStateService.data.englishOverlayVisible;
+                  case NoteType.TEST: {
+                    sN.visible = this.saveStateService.data.testOverlayVisible;
+                    break;
+                  }
+                  case NoteType.TRANSLATION: {
+                    sN.visible = this.saveStateService.data.translationOverlayVisible;
                     break;
                   }
                   default: {
@@ -48,8 +52,14 @@ export class VisibilityService {
                   }
                 }
                 if (sN.id) {
-                  this.secondaryNotesHighlight.set(sN.id, sN.visible);
-                  this.secondaryNotesVisibility.set(sN.id, sN.visible);
+                  this.secondaryNotesHighlight.set(
+                    sN.id,
+                    sN.visible ? sN.visible : false,
+                  );
+                  this.secondaryNotesVisibility.set(
+                    sN.id,
+                    sN.visible ? sN.visible : false,
+                  );
                 }
 
                 if (sN.visible) {
@@ -72,7 +82,7 @@ export class VisibilityService {
     }
   }
 
-  public showMissingOffsets(notes: Note[]): void {
+  public showMissingOffsets(notes: VerseNotes[]): void {
     notes.map(
       (note): void => {
         if (note.notes) {

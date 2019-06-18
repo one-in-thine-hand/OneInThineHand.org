@@ -29,6 +29,11 @@ export class SaveStateModel {
   public underLineRefs: boolean = true;
   public ReferenceLabelSetting = ReferenceLabels;
   public editMode = false;
+  public translationOverlayVisible: boolean | undefined;
+  public existingNotesVisible: boolean | undefined;
+  public printNotesVisible: boolean | undefined;
+  public tcNotesVisible: boolean | undefined;
+  public testOverlayVisible: boolean | undefined;
 }
 
 // export const refLabelSettingsTemplate = [

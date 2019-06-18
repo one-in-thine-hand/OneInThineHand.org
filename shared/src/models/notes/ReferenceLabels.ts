@@ -1,4 +1,5 @@
-import { ReferenceLabel, NoteCategory } from './Note';
+import { ReferenceLabel } from './Note';
+import { NoteCategory } from './NoteType';
 export const ReferenceLabels: ReferenceLabel[] = [
   {
     sortOrder: 0,

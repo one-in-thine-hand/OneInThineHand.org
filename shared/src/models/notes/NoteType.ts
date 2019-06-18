@@ -1,10 +1,31 @@
 // import * as he from 'he';
 // import * as he from 'he';
+
+export const enum NoteCategory {
+  ALT,
+  BD,
+  CR,
+  ERR,
+  GEO,
+  GR,
+  GS,
+  HMY,
+  HEB,
+  HST,
+  IE,
+  OR,
+  PHR,
+  QUO,
+  TG,
+  TRN,
+}
+
 export enum NoteType {
-  New = 1,
-  Eng = 2,
-  TC = 3,
-  EngOverlay = 4,
+  PRINT = 0,
+  TRANSLATION = 1,
+  TEST = 2,
+  EXISTING = 3,
+  TC = 4,
 }
 
 export class NoteTypeConvert {
@@ -15,28 +36,34 @@ export class NoteTypeConvert {
 }
 export const NoteTypeConverts: NoteTypeConvert[] = [
   {
-    noteType: NoteType.Eng,
-    className: 'eng-note',
-    shortName: 'Eng',
-    longName: 'English Notes',
+    noteType: NoteType.PRINT,
+    className: 'overlay-print',
+    shortName: 'Print',
+    longName: 'Print',
   },
   {
-    noteType: NoteType.New,
-    className: 'new-note',
-    shortName: 'New',
-    longName: 'Note',
+    noteType: NoteType.TRANSLATION,
+    className: 'overlay-trn',
+    shortName: 'Translation',
+    longName: 'Translation',
+  },
+  {
+    noteType: NoteType.TEST,
+    className: 'overlay-new-notes',
+    shortName: 'Test',
+    longName: 'Test',
+  },
+  {
+    noteType: NoteType.EXISTING,
+    className: 'overlay-eng-notes',
+    shortName: 'Existing',
+    longName: 'Existing',
   },
   {
     noteType: NoteType.TC,
-    className: 'tc-note',
+    className: 'overlay-tc-notes',
     shortName: 'TC',
-    longName: 'Translators Copy',
-  },
-  {
-    noteType: NoteType.EngOverlay,
-    className: 'eng-overlay',
-    shortName: 'ENG',
-    longName: 'English OverLay',
+    longName: 'TC',
   },
 ];
 

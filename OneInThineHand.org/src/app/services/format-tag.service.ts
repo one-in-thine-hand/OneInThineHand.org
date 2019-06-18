@@ -7,6 +7,7 @@ import {
   FormatGroupType,
   parseOffsets,
   DisplayAs,
+  VerseNotes,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
@@ -79,7 +80,7 @@ export class FormatTagService {
   public buildFormatGroups(
     formatGroups: FormatGroup[] | undefined,
     fTags: FormatTag[] | undefined,
-    note: Note | undefined,
+    note: VerseNotes | undefined,
     verse: Verse,
   ): void {
     if (formatGroups && fTags) {
@@ -103,7 +104,7 @@ export class FormatTagService {
   public buildFormatGroup(
     grp: FormatGroup,
     fTags: FormatTag[] | undefined,
-    note: Note | undefined,
+    note: VerseNotes | undefined,
     verse: Verse,
   ): void {
     grp.uncompressedOffsets = parseOffsets(grp.offsets);
@@ -184,7 +185,10 @@ export class FormatTagService {
     }
     return undefined;
   }
-  public getRefTags(o: number, note: Note | undefined): RefTag[] | undefined {
+  public getRefTags(
+    o: number,
+    note: VerseNotes | undefined,
+  ): RefTag[] | undefined {
     if (note && note.notes) {
       const oFtags = note.notes
         .filter(

@@ -11,11 +11,9 @@ import * as JSZip from 'jszip';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
 import { FormatTagService } from '../../services/format-tag.service';
-import {
-  ReferenceLabel,
-  NoteCategory,
-} from '../../../../../shared/src/models/notes/Note';
+import { ReferenceLabel } from '../../../../../shared/src/models/notes/Note';
 import { sortBy } from 'lodash';
+import { NoteCategory } from '../../../../../shared/src/shared';
 
 @Component({
   selector: 'app-header',

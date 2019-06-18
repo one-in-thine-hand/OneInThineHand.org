@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 
+// import {  } from "@ng-bootstrap/ng-bootstrap/";
 @Injectable({
   providedIn: 'root',
 })
 export class HeaderService {
   public headerTitle: string = '';
   public headerShortTitle: string = '';
-  public constructor(private router: Router) {
+  public constructor() {
     // router.events.subscribe((value): void => {
     //   // console.log('asdfoijaosdfij');
     //   if (value instanceof NavigationStart) {

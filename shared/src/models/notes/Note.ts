@@ -1,26 +1,7 @@
 import { Visibility } from '../../interfaces/visibliity';
 import { FormatTag, RefTag } from '../format_tags/FormatTag';
 import { getReferenceLabelByClassName } from './ReferenceLabels';
-import { NoteType } from './NoteType';
-
-export const enum NoteCategory {
-  ALT,
-  BD,
-  CR,
-  ERR,
-  GEO,
-  GR,
-  GS,
-  HMY,
-  HEB,
-  HST,
-  IE,
-  OR,
-  PHR,
-  QUO,
-  TG,
-  TRN,
-}
+import { NoteType, NoteCategory } from './NoteType';
 
 export interface NumericalOrder {
   sortOrder: number;

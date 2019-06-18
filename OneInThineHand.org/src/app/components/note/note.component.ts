@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
   NotePhrase,
-  Note,
-  SecondaryNote,
   getVisible,
   NoteRef,
 } from '../../../../../shared/src/shared';
@@ -12,7 +10,7 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-import { VerseNotes } from '../../../../../shared/src/models/notes/Note';
+import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
 
 @Component({
   selector: 'app-note',
@@ -22,7 +20,7 @@ import { VerseNotes } from '../../../../../shared/src/models/notes/Note';
 export class NoteComponent implements OnInit {
   @Input() public verseNotes: VerseNotes;
 
-  public tempNote: SecondaryNote | undefined;
+  public tempNote: Note | undefined;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -38,8 +36,8 @@ export class NoteComponent implements OnInit {
       : 'Note Phrase Missing';
   }
 
-  public getSecondaryNotes(): SecondaryNote[] {
-    let secondaryNotes: SecondaryNote[] = [];
+  public getSecondaryNotes(): Note[] {
+    let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
       secondaryNotes = this.verseNotes.notes.filter(
         (secondaryNote): boolean => {
@@ -57,7 +55,7 @@ export class NoteComponent implements OnInit {
     return secondaryNotes;
   }
 
-  public getNoteRefs(secondaryNote: SecondaryNote): NoteRef[] {
+  public getNoteRefs(secondaryNote: Note): NoteRef[] {
     return getVisible(secondaryNote.noteRefs);
   }
   /**
@@ -109,7 +107,7 @@ export class NoteComponent implements OnInit {
     return undefined;
   }
 
-  public async notePhraseClick(secondaryNote: SecondaryNote): Promise<void> {
+  public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();
 
     if (selection) {
@@ -200,7 +198,7 @@ export class NoteComponent implements OnInit {
   }
 
   public saveNote(modal): void {
-    this.tempNote = new SecondaryNote();
+    this.tempNote = new Note();
     this.tempNote.notePhrase = new NotePhrase();
     this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
 

@@ -1,6 +1,6 @@
 import {
-  Note as VerseNotes,
-  SecondaryNote as Note,
+  VerseNotes,
+  Note,
   getElementsAttribute,
   NotePhrase,
   NoteRef,

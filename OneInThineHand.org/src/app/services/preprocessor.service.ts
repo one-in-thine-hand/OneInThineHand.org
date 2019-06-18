@@ -4,7 +4,7 @@ import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService, DatabaseItem } from './database.service';
 import { FormatTags } from '../../../../format-tags/src/main';
-import { Note } from '../../../../shared/src/shared';
+import { VerseNotes } from '../../../../shared/src/shared';
 import PQueue from 'p-queue';
 
 @Injectable({
@@ -40,9 +40,11 @@ export class PreprocessorService {
               const data = await new Response(zipFile).arrayBuffer();
               const files = await JSZip.loadAsync(data);
               const onlyFiles = this.sliceArray(
-                Object.keys(files.files).filter((key): boolean => {
-                  return files.files[key].dir === false;
-                }),
+                Object.keys(files.files).filter(
+                  (key): boolean => {
+                    return files.files[key].dir === false;
+                  },
+                ),
                 100,
               );
 
@@ -150,9 +152,11 @@ export class PreprocessorService {
               const data = await new Response(zipFile).arrayBuffer();
               const files = await JSZip.loadAsync(data);
               const promises = Object.keys(files.files)
-                .filter((key): boolean => {
-                  return files.files[key].dir === false;
-                })
+                .filter(
+                  (key): boolean => {
+                    return files.files[key].dir === false;
+                  },
+                )
                 .map(
                   async (key): Promise<void> => {
                     try {
@@ -172,24 +176,28 @@ export class PreprocessorService {
                       );
                       const notes = await this.noteProcessor.run(newDocument);
                       if (notes) {
-                        notes.forEach((value, key): void => {
-                          if (notesMap.has(key) && value.notes) {
-                            const noteChapter = notesMap.get(key);
-                            if (noteChapter && noteChapter.notes) {
-                              value.notes.forEach((note): void => {
-                                if (noteChapter.notes) {
-                                  this.mergeSecondaryNotes(
-                                    noteChapter.notes,
-                                    note,
-                                  );
-                                }
-                              });
+                        notes.forEach(
+                          (value, key): void => {
+                            if (notesMap.has(key) && value.notes) {
+                              const noteChapter = notesMap.get(key);
+                              if (noteChapter && noteChapter.notes) {
+                                value.notes.forEach(
+                                  (note): void => {
+                                    if (noteChapter.notes) {
+                                      this.mergeSecondaryNotes(
+                                        noteChapter.notes,
+                                        note,
+                                      );
+                                    }
+                                  },
+                                );
+                              }
+                            } else {
+                              console.log('adsfasdf');
+                              notesMap.set(key, value);
                             }
-                          } else {
-                            console.log('adsfasdf');
-                            notesMap.set(key, value);
-                          }
-                        });
+                          },
+                        );
                       }
                       console.log(notes);
 
@@ -215,17 +223,17 @@ export class PreprocessorService {
       console.log('Finished');
     }
   }
-  public mergeSecondaryNotes(notes: Note[], note: Note): void {
-    const saveNote = notes.find((n): boolean => {
-      return n._id === note._id;
-    });
+  public mergeSecondaryNotes(notes: VerseNotes[], note: VerseNotes): void {
+    const saveNote = notes.find(
+      (n): boolean => {
+        return n._id === note._id;
+      },
+    );
     console.log(note.notes);
 
     if (saveNote) {
       if (saveNote.notes && note.notes) {
-        saveNote.notes = saveNote.notes.concat(
-          note.notes,
-        );
+        saveNote.notes = saveNote.notes.concat(note.notes);
       } else if (saveNote.notes === undefined && note.notes) {
         saveNote.notes = note.notes;
       }
