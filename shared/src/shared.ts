@@ -67,3 +67,5 @@ export {
   getReferenceLabelByReferenceLabelName,
   getReferenceLabelByReferenceLabelShortName,
 } from './models/notes/ReferenceLabels';
+
+export { sortNotes } from './functions/sortNotes';

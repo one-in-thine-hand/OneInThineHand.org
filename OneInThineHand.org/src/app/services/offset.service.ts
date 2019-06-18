@@ -4,6 +4,7 @@ import {
   parseOffsets,
   FormatTag,
   VerseNotes,
+  sortNotes,
 } from '../../../../shared/src/shared';
 import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 
@@ -13,10 +14,11 @@ import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 export class OffsetService {
   public constructor() {}
 
-  public expandNotes(notes: VerseNotes[] | undefined): void {
+  public async expandNotes(notes: VerseNotes[] | undefined): Promise<void> {
     // console.log(notes);
 
     if (notes) {
+      await sortNotes(notes);
       notes.map(
         (note): void => {
           if (note.notes) {

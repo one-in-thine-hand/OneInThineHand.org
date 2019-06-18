@@ -324,7 +324,7 @@ export class ChapterComponent implements OnInit {
     chapter: Chapter,
     newPage: boolean = true,
   ): Promise<void> {
-    this.offsetService.expandNotes(chapterNotes.notes);
+    await this.offsetService.expandNotes(chapterNotes.notes);
     if (chapterVerses && chapterVerses.verses) {
       this.chapterService.mergeVersesNotes(
         chapterVerses.verses,

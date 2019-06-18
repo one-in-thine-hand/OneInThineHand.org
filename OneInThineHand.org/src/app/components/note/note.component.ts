@@ -3,6 +3,7 @@ import {
   NotePhrase,
   getVisible,
   NoteRef,
+  getReferenceLabelByNoteCategory,
 } from '../../../../../shared/src/shared';
 import { ReferenceLabels } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
@@ -10,7 +11,11 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
+import {
+  VerseNotes,
+  Note,
+  getNoteReferenceLabel,
+} from '../../../../../shared/src/models/notes/Note';
 
 @Component({
   selector: 'app-note',
@@ -64,9 +69,19 @@ export class NoteComponent implements OnInit {
   public convertNoteCategory(noteRef: NoteRef): string {
     const nc = ReferenceLabels.find(
       (rl): boolean => {
+        // if (
+        //   rl.noteCategory === noteRef.noteCategory &&
+        //   noteRef.text &&
+        //   noteRef.text.includes('many')
+        // ) {
+        //   // console.log(ReferenceLabels);
+        // }
         return rl.noteCategory === noteRef.noteCategory;
       },
     );
+    // if (noteRef.text && noteRef.text.includes('many')) {
+    //   // console.log(nc);
+    // }
     return nc ? nc.referenceLabelShortName : 'extERR';
   }
 
@@ -154,7 +169,7 @@ export class NoteComponent implements OnInit {
               range.startOffset}-${parseInt(offsets2[0], 10) +
               range.endOffset -
               1}`},${secondaryNote.offsets}`;
-            this.offsetService.expandNotes(this.chapterService.notes);
+            await this.offsetService.expandNotes(this.chapterService.notes);
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
@@ -209,6 +224,14 @@ export class NoteComponent implements OnInit {
 
   public highlight(note: Note): boolean {
     return note.refTag && note.refTag.highlight ? true : false;
+  }
+
+  public getRefClass(noteRef: NoteRef): string {
+    if (noteRef && noteRef.noteCategory) {
+      const nC = getReferenceLabelByNoteCategory(noteRef.noteCategory);
+      return nC ? nC.className : '';
+    }
+    return '';
   }
 }
 

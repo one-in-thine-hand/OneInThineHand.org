@@ -21,6 +21,7 @@
         <li
           (click)="noteRefClick($event)"
           *ngFor="let noteRef of getNoteRefs(note)"
+          [class]="getRefClass(noteRef)"
         >
           <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
           <span [innerHTML]="noteRef.text"></span>

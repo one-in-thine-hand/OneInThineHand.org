@@ -114,7 +114,7 @@ export class NotePhraseComponent implements OnInit {
               1}`},${secondaryNote.offsets}`;
             console.log(secondaryNote.offsets);
 
-            this.offsetService.expandNotes(this.chapterService.notes);
+            await this.offsetService.expandNotes(this.chapterService.notes);
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,

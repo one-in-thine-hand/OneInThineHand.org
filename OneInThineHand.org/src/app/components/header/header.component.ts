@@ -111,7 +111,9 @@ export class HeaderComponent implements OnInit {
   public async showOrphanRefs(): Promise<void> {}
   public async loadChapterFile(event: Event): Promise<void> {
     this.uploading = true;
-    await this.preprocessorService.loadChapterFiles(event);
+    await this.preprocessorService.loadChapterFiles(
+      event.target as HTMLInputElement,
+    );
     this.uploading = false;
     console.log('Finished');
 
@@ -165,5 +167,14 @@ export class HeaderComponent implements OnInit {
   public async loadNoteFile(event: Event): Promise<void> {
     await this.preprocessorService.loadNoteFiles(event);
   }
-  public onSubmit(): void {}
+  public async onSubmit(): Promise<void> {
+    const fileInput = document.querySelector('#chapterFileOpener');
+    if (fileInput) {
+      this.uploading = true;
+      await this.preprocessorService.loadChapterFiles(
+        fileInput as HTMLInputElement,
+      );
+      this.uploading = false;
+    }
+  }
 }

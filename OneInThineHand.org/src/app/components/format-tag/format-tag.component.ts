@@ -141,8 +141,8 @@ export class FormatTagComponent implements OnInit {
       console.log();
     }
     if (
-      this.classList.toString().replace(/,/s, ' ') !==
-      classList.toString().replace(/,/s, ' ')
+      this.classList.toString().replace(/,/g, ' ') !==
+      classList.toString().replace(/,/g, ' ')
     ) {
       this.classList = classList;
     }

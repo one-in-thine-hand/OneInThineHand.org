@@ -183,15 +183,9 @@
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">
-      <form (ngSubmit)="onSubmit()">
+      <form (ngSubmit)="onSubmit()" #fileUpload="ngForm">
         Load Files
-        <input
-          multiple
-          type="file"
-          name="chapter-file"
-          id="chapterFileOpener"
-          (change)="this.loadChapterFile($event)"
-        />
+        <input single type="file" name="chapter-file" id="chapterFileOpener" />
         <button type="submit">Submit</button>
       </form>
     </div>
