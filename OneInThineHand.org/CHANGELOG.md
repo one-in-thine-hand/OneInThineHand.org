@@ -1,5 +1,19 @@
+## <small>5.0.13 (2019-06-18)</small>
+
+* Added service worker ([254c6ad](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/254c6ad))
+* Adding a second header ([96dca45](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96dca45))
+* Improvements to sync scrolling ([bc66f1b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bc66f1b))
+* More layout work ([dcf467c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/dcf467c))
+* More standardization ([ff0f5cb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ff0f5cb))
+* Page state work ([09372db](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/09372db))
+* Update to visibility settings ([f8927a9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f8927a9))
+* Updates to note layout and note settings ([3f5f346](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3f5f346))
+
+
+
 ## <small>5.0.12 (2019-06-17)</small>
 
+* v5.0.12 ([ea32969](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ea32969))
 * Working on note styling ([585c309](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/585c309))
 
 
