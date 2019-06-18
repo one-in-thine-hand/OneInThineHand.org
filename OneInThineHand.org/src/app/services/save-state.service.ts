@@ -31,6 +31,15 @@ export class SaveStateService {
           if (noteTypeSetting.visible === undefined) {
             noteTypeSetting.visible = true;
           }
+          if (
+            !NoteTypeConverts.find(
+              (nTC): boolean => {
+                return nTC.className.includes(noteTypeSetting.className);
+              },
+            )
+          ) {
+            return false;
+          }
           return noteTypeSetting.className.startsWith('overlay');
         },
       );

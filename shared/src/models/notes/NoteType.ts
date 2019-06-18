@@ -25,7 +25,7 @@ export const enum NoteCategory {
   TG,
   TRN,
   TRN1,
-  TRN2
+  TRN2,
 }
 
 export enum NoteType {
@@ -60,21 +60,21 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   },
   {
     noteType: NoteType.TEST,
-    className: 'overlay-new-notes',
+    className: 'overlay-new-note',
     shortName: 'Test',
     longName: 'Test',
     visible: true,
   },
   {
     noteType: NoteType.EXISTING,
-    className: 'overlay-eng-notes',
+    className: 'overlay-eng-note',
     shortName: 'Existing',
     longName: 'Existing',
     visible: true,
   },
   {
     noteType: NoteType.TC,
-    className: 'overlay-tc-notes',
+    className: 'overlay-tc-note',
     shortName: 'TC',
     longName: 'TC',
     visible: true,
