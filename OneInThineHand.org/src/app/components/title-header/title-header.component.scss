@@ -4,4 +4,28 @@
   font-size: 30px;
   font-weight: 700;
   text-align: center;
+  grid-template-rows: 48px;
+  grid-template-columns: 48px auto 48px;
+
+  li,
+  #headerDropdown {
+    width: 48px;
+    display: grid;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 31px;
+    color: black;
+    font-weight: bold;
+    user-select: none;
+    height: 48px;
+    &#chapterName.chapter-name {
+      font-family: serif !important;
+      width: auto;
+    }
+    svg {
+      width: 24px;
+    }
+  }
 }
