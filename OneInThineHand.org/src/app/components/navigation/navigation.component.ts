@@ -21,7 +21,9 @@ export class NavigationComponent implements OnInit {
       event.target
     ) {
       try {
-        const addressBarInput = (event.target as HTMLInputElement).value.trim();
+        const addressBarInput = (event.target as HTMLInputElement).value
+          .trim()
+          .replace(':', '.');
         await this.navigationService.parseAddressBarUrl(addressBarInput);
       } catch (error) {
         console.log(error);

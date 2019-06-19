@@ -26,23 +26,28 @@ export class SaveStateService {
       }
 
       this.mergeNoteSettings(this.data.noteTypeSettings, NoteTypeConverts);
-      this.data.noteTypeSettings = this.data.noteTypeSettings.filter(
-        (noteTypeSetting): boolean => {
-          if (noteTypeSetting.visible === undefined) {
-            noteTypeSetting.visible = true;
-          }
-          if (
-            !NoteTypeConverts.find(
-              (nTC): boolean => {
-                return nTC.className.includes(noteTypeSetting.className);
-              },
-            )
-          ) {
-            return false;
-          }
-          return noteTypeSetting.className.startsWith('overlay');
-        },
-      );
+
+      if (this.data.noteTypeSettings) {
+        this.data.noteTypeSettings = this.data.noteTypeSettings.filter(
+          (noteTypeSetting): boolean => {
+            if (noteTypeSetting.visible === undefined) {
+              noteTypeSetting.visible = true;
+            }
+            if (
+              !NoteTypeConverts.find(
+                (nTC): boolean => {
+                  return nTC.className.includes(noteTypeSetting.className);
+                },
+              )
+            ) {
+              return false;
+            }
+            return noteTypeSetting.className.startsWith('overlay');
+          },
+        );
+      } else {
+        this.data.noteTypeSettings = NoteTypeConverts;
+      }
       this.mergeNoteSettings(this.data.ReferenceLabelSetting, ReferenceLabels);
       console.log(this.data.noteTypeSettings);
 

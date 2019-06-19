@@ -133,17 +133,17 @@ export const ReferenceLabels: ReferenceLabel[] = [
     sortOrder: 0,
     className: 'reference-label-translation-1',
     noteCategory: NoteCategory.TRN1,
-    referenceLabelName: 'Translation-1',
+    referenceLabelName: 'Translation',
     visible: true,
-    referenceLabelShortName: 'TRN-1',
+    referenceLabelShortName: 'TRN',
   },
   {
     sortOrder: 0,
     className: 'reference-label-translation-2',
     noteCategory: NoteCategory.TRN2,
-    referenceLabelName: 'Translation-2',
+    referenceLabelName: 'Translation',
     visible: true,
-    referenceLabelShortName: 'TRN-2',
+    referenceLabelShortName: 'TRN',
   },
 ];
 
