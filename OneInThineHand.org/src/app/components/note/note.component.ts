@@ -16,6 +16,7 @@ import {
   Note,
   getNoteReferenceLabel,
 } from '../../../../../shared/src/models/notes/Note';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-note',
@@ -31,6 +32,7 @@ export class NoteComponent implements OnInit {
     public offsetService: OffsetService,
     public formatTagService: FormatTagService,
     public modalService: NgbModal,
+    public domSanitizer: DomSanitizer,
   ) {}
 
   public ngOnInit(): void {}
@@ -41,6 +43,11 @@ export class NoteComponent implements OnInit {
       : 'Note Phrase Missing';
   }
 
+  public getNoteRefText(noteRef: NoteRef): SafeHtml {
+    return this.domSanitizer.bypassSecurityTrustHtml(
+      noteRef.text ? noteRef.text : '',
+    );
+  }
   public getSecondaryNotes(): Note[] {
     let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
