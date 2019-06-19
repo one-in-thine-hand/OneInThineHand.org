@@ -1,6 +1,16 @@
+## <small>5.0.19 (2019-06-19)</small>
+
+* Added insertion and deletion ([4c1727f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4c1727f))
+* Adding padding on note highlighting ([46fc95a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/46fc95a))
+* fixed sync scroll ([782aeb9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/782aeb9))
+* Support for colon in address bar ([2ebff37](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2ebff37))
+
+
+
 ## <small>5.0.18 (2019-06-18)</small>
 
 * Hopefully the actual fix for uploading ([ed4f426](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ed4f426))
+* v5.0.18 ([feccc64](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/feccc64))
 
 
 
