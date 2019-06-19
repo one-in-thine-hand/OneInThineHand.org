@@ -95,15 +95,15 @@ export class NoteComponent implements OnInit {
   private getContainerOffsets(container: HTMLElement): void {}
 
   public noteRefClick(event: Event): void {
-    try {
-      if (
-        event.target !== null &&
-        (event.target as Element).nodeName.toLowerCase() === 'a'
-      ) {
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   if (
+    //     event.target !== null &&
+    //     (event.target as Element).nodeName.toLowerCase() === 'a'
+    //   ) {
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   private validateSelectedNodes(node: Node): Element | undefined {

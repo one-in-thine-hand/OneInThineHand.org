@@ -19,7 +19,6 @@
       </li> -->
       <ul class="note-refs" *ngIf="note.noteRefs">
         <li
-          (click)="noteRefClick($event)"
           *ngFor="let noteRef of getNoteRefs(note)"
           [class]="getRefClass(noteRef)"
         >
