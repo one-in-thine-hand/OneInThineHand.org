@@ -14,6 +14,7 @@ import { FormatTagService } from '../../services/format-tag.service';
 import { ReferenceLabel } from '../../../../../shared/src/models/notes/Note';
 import { sortBy } from 'lodash';
 import { NoteCategory } from '../../../../../shared/src/shared';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
     public preprocessorService: PreprocessorService,
     public electronService: ElectronService,
     public formatTagService: FormatTagService,
+    public databaseService: DatabaseService,
   ) {}
 
   private noteProcessor = new NoteProcessor();

@@ -25,7 +25,12 @@ export class DatabaseService {
 
     // console.log(this.db);
   }
-
+  /**
+   * allDocs
+   */
+  public async allDocs(): Promise<PouchDB.Core.AllDocsResponse<{}>> {
+    return await this.db.allDocs();
+  }
   public async getDatabaseItem(
     _id: string,
   ): Promise<{ _id: string; _rev: string }> {
@@ -35,14 +40,18 @@ export class DatabaseService {
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {
     const docs = await this.db.allDocs();
 
-    docs.rows.map((doc): void => {
-      const item = items.find((item): boolean => {
-        return item._id === doc.id;
-      });
-      if (item) {
-        item._rev = doc.value.rev;
-      }
-    });
+    docs.rows.map(
+      (doc): void => {
+        const item = items.find(
+          (item): boolean => {
+            return item._id === doc.id;
+          },
+        );
+        if (item) {
+          item._rev = doc.value.rev;
+        }
+      },
+    );
 
     await this.db.bulkDocs(items);
   }

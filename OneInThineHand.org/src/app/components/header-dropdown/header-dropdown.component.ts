@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
 import { DatabaseService } from '../../services/database.service';
+import { sortBy } from 'lodash';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -57,5 +58,37 @@ export class HeaderDropdownComponent implements OnInit {
    */
   public edit() {
     this.saveState.data.editMode = !this.saveState.data.editMode;
+  }
+
+  /**
+   * exportBook
+   */
+  public async exportBook(): Promise<void> {
+    if (this.chapterService.chapter) {
+      const idSplit = this.chapterService.chapter._id.split('-');
+      console.log(`${idSplit[0]}-${idSplit[1]}`);
+      const docs = await this.databaseService.allDocs();
+      const ifs = sortBy(
+        docs.rows
+          .filter(
+            (d): boolean => {
+              return (
+                d.id.includes(`${idSplit[0]}-${idSplit[1]}`) &&
+                d.id.includes('note')
+              );
+            },
+          )
+          .map(
+            (d): string => {
+              return d.id;
+            },
+          ),
+        (a): number => {
+          return parseInt(a.split('-')[2]);
+        },
+      );
+
+      console.log(ifs);
+    }
   }
 }
