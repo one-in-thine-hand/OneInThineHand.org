@@ -361,7 +361,7 @@ export class ChapterComponent implements OnInit {
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
-      if (verseElement.getBoundingClientRect().bottom - 54 > 0) {
+      if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
         // let noteElement = document.querySelector(
         //   `#${verseElement.id.replace(/verse/g, 'note')}`,
         // );
