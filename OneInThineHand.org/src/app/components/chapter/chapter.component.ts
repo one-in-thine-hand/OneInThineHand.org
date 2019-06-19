@@ -164,6 +164,7 @@ export class ChapterComponent implements OnInit {
               this.chapterVerses,
               this.chapter,
               false,
+              true,
             );
             const chapterGrid = document.querySelector('.chapter-grid');
             const notesGrid = document.querySelector('#notes');
@@ -323,18 +324,21 @@ export class ChapterComponent implements OnInit {
     chapterVerses: ChapterVerses,
     chapter: Chapter,
     newPage: boolean = true,
+    pageStateActive: boolean = false,
   ): Promise<void> {
-    await this.offsetService.expandNotes(chapterNotes.notes);
-    if (chapterVerses && chapterVerses.verses) {
-      this.chapterService.mergeVersesNotes(
-        chapterVerses.verses,
-        chapterNotes.notes,
+    if (!pageStateActive) {
+      await this.offsetService.expandNotes(chapterNotes.notes);
+      if (chapterVerses && chapterVerses.verses) {
+        this.chapterService.mergeVersesNotes(
+          chapterVerses.verses,
+          chapterNotes.notes,
+        );
+      }
+      await this.formatTagService.resetFormatTags(
+        this.chapterVerses,
+        this.chapterNotes,
       );
     }
-    await this.formatTagService.resetFormatTags(
-      this.chapterVerses,
-      this.chapterNotes,
-    );
     this.chapterService.chapter = chapter;
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses

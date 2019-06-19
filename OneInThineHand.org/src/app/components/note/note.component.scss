@@ -1,4 +1,12 @@
 verse-notes {
+  .note-short-title {
+    display: block;
+  }
+  > * {
+    margin-left: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
   note {
     list-style: none;
     display: block;
@@ -38,15 +46,4 @@ verse-notes {
 
 .note-category {
   font-weight: 700;
-}
-
-verse-notes {
-  .note-short-title {
-    display: block;
-  }
-  > * {
-    margin-left: 20px;
-    display: inline-block;
-    margin-right: 10px;
-  }
 }
