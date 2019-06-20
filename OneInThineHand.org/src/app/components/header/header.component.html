@@ -185,7 +185,12 @@
     <div *ngIf="!this.uploading">
       <form (ngSubmit)="onSubmit()" #fileUpload="ngForm">
         Load Files
-        <input single type="file" name="chapter-file" id="chapterFileOpener" />
+        <input
+          multiple
+          type="file"
+          name="chapter-file"
+          id="chapterFileOpener"
+        />
         <button type="submit">Submit</button>
       </form>
     </div>
