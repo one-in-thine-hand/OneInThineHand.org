@@ -1,5 +1,17 @@
+## <small>5.0.21 (2019-06-20)</small>
+
+* bug fixes ([7ca773a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7ca773a))
+* Export almost works ([bd58c66](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bd58c66))
+* export work ([2b1ec0f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2b1ec0f))
+* Fixed error where note phrase would stay highlighted ([d8c9fdc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d8c9fdc))
+* support for exporting books ([686b9dd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/686b9dd))
+* Working on exporting ([2eafc3d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2eafc3d))
+
+
+
 ## <small>5.0.20 (2019-06-19)</small>
 
+* v5.0.20 ([8184f09](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8184f09))
 
 
 
