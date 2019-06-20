@@ -8,7 +8,10 @@ import {
 import { bookNames } from './consts';
 import { getNoteType } from '../../shared/src/shared';
 import * as he from 'he';
-import { getNoteReferenceLabel } from '../../shared/src/models/notes/Note';
+import {
+  getNoteReferenceLabel,
+  noteRefHasNoneClass,
+} from '../../shared/src/models/notes/Note';
 
 function parseNotePhrase(element: Element): NotePhrase | undefined {
   const notePhraseElement = element.querySelector('.note-phrase');
@@ -33,6 +36,10 @@ function parseNoteRefs(element: Element): NoteRef[] {
       const noteRef = new NoteRef();
 
       noteRef.noteCategory = getNoteReferenceLabel(noteRefElement);
+
+      if (noteRefHasNoneClass(noteRefElement)) {
+        noteRef.none = true;
+      }
       noteRef.text = he.decode(noteRefElement.innerHTML);
       return noteRef;
     },

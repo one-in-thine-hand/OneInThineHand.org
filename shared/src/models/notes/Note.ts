@@ -21,6 +21,7 @@ export class NoteRef implements Visibility {
 
   public _rev: string | undefined;
   // public classList: string[] | undefined;
+  public none: boolean | undefined;
   public noteCategory: NoteCategory | undefined;
 
   public text: string | undefined;
@@ -66,14 +67,32 @@ export class VerseNotes {
 export function getNoteReferenceLabel(noteRefElement: Element): NoteCategory {
   const refElement = noteRefElement.querySelector('[class*="reference-label"]');
   if (refElement) {
-    const referenceLabel = getReferenceLabelByClassName(refElement.className);
+    try {
+      const classList = refElement.className.split(' ');
+      const referenceLabel = getReferenceLabelByClassName(classList[0]);
 
-    refElement.remove();
+      // refElement.remove();
 
-    return referenceLabel
-      ? (referenceLabel.noteCategory as NoteCategory)
-      : NoteCategory.ERR;
+      return referenceLabel
+        ? (referenceLabel.noteCategory as NoteCategory)
+        : NoteCategory.ERR;
+    } catch (error) {
+      return NoteCategory.ERR;
+    }
   } else {
     return NoteCategory.ERR;
   }
+}
+export function noteRefHasNoneClass(
+  noteRefElement: Element,
+): boolean | undefined {
+  const refElement = noteRefElement.querySelector('[class*="reference-label"]');
+
+  if (refElement) {
+    const none = refElement.classList.contains('none');
+    refElement.remove();
+    return none;
+    // return refElement.classList.contains('none');
+  }
+  return undefined;
 }

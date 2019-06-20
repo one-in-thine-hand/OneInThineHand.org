@@ -1,6 +1,6 @@
 import { formatTagTypeOptions } from '../constants/verse-selectors';
 import { FormatTagType, FormatTagTypeOptions } from '../enums/enums';
-import { range } from 'lodash';
+import { range, sortBy, uniq } from 'lodash';
 import { bookNames } from '../models/BookName';
 export function getFormatTagType(
   formatType: FormatTagType,
@@ -39,16 +39,30 @@ export function getFormatTagTypeFromNode(node: Node): FormatTagType[] {
 export function getRanges(array: number[]): [number, number][] {
   const ranges: [number, number][] = [];
   let rstart: number, rend: number;
-  for (let i = 0; i < array.length; i++) {
-    rstart = array[i];
+  const sortedArray = uniq(
+    sortBy(
+      array,
+      (u): number => {
+        return u;
+      },
+    ),
+  );
+  for (let i = 0; i < sortedArray.length; i++) {
+    rstart = sortedArray[i];
     rend = rstart;
-    while (array[i + 1] - array[i] === 1) {
-      rend = array[i + 1]; // increment the index if the numbers sequential
+    while (sortedArray[i + 1] - sortedArray[i] === 1) {
+      rend = sortedArray[i + 1]; // increment the index if the numbers sequential
       i++;
     }
     ranges.push(rstart === rend ? [rstart, rstart] : [rstart, rend]);
   }
-  return ranges;
+  return ranges.filter(
+    (range): boolean => {
+      // console.log(typeof range[0]);
+
+      return isNaN(range[0]) === false && isNaN(range[1]) === false;
+    },
+  );
 }
 
 export function getElementAttribute(
