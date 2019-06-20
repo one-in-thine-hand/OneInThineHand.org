@@ -28,7 +28,7 @@ export class ChapterComponent implements OnInit {
   public chapterVerses: ChapterVerses | undefined;
   public ctrlKeyPressed: boolean;
   public shiftKeyPressed: boolean;
-  public ctrlKeyInterval: any;
+  public ctrlKeyInterval;
   public shiftKeyInterval: any;
 
   public constructor(

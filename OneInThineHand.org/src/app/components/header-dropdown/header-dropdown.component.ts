@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
 import { DatabaseService } from '../../services/database.service';
 import { sortBy } from 'lodash';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -18,10 +19,11 @@ export class HeaderDropdownComponent implements OnInit {
   public constructor(
     public saveState: SaveStateService,
     public chapterService: ChapterService,
+    public databaseService: DatabaseService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
     public visibilityService: VisibilityService,
-    public databaseService: DatabaseService,
+    public exportService: ExportService,
     private location: Location,
   ) {}
 
@@ -64,29 +66,6 @@ export class HeaderDropdownComponent implements OnInit {
    * exportBook
    */
   public async exportBook(): Promise<void> {
-    if (this.chapterService.chapter) {
-      const idSplit = this.chapterService.chapter._id.split('-');
-      console.log(`${idSplit[0]}-${idSplit[1]}`);
-      const docs = await this.databaseService.allDocs();
-      if (docs) {
-        const ifs = sortBy(
-          docs.rows
-            .filter((d): boolean => {
-              return (
-                d.id.includes(`${idSplit[0]}-${idSplit[1]}`) &&
-                d.id.includes('note')
-              );
-            })
-            .map((d): string => {
-              return d.id;
-            }),
-          (a): number => {
-            return parseInt(a.split('-')[2]);
-          },
-        );
-
-        console.log(ifs);
-      }
-    }
+    await this.exportService.exportBook();
   }
 }

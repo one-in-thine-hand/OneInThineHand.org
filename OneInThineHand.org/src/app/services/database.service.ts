@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb-browser';
+import { CouchDoc as CouchDocGet } from '../../../../shared/src/shared';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +13,16 @@ export class DatabaseService {
     if (this.db === undefined) {
       this.db = new PouchDB(`${window.location.hostname}-oneinthinehand-org`);
     }
+  }
+  public async bulkGet(
+    ids: CouchDocGet[],
+  ): Promise<PouchDB.Core.BulkGetResponse<{}> | undefined> {
+    try {
+      if (this.db) {
+        return await this.db.bulkGet({ docs: ids });
+      }
+    } catch (error) {}
+    return undefined;
   }
 
   public async updateDatabaseItem(item: {

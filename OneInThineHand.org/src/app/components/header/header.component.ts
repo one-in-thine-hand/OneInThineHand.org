@@ -7,7 +7,6 @@ import { VisibilityService } from '../../services/visibility.service';
 import { Location } from '@angular/common';
 import { HeaderService } from '../../services/header.service';
 import { ElectronService } from '../../providers/electron.service';
-import * as JSZip from 'jszip';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
 import { FormatTagService } from '../../services/format-tag.service';
