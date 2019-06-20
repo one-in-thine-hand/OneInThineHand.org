@@ -20,37 +20,29 @@ export class ChapterService {
     notes: VerseNotes[] | undefined,
   ): void {
     if (notes) {
-      verses.map(
-        (verse): void => {
-          // console.log(verse._id);
-          const note = notes.find(
-            (n): boolean => {
-              return n._id ? n._id.replace('-notes', '') === verse._id : false;
-            },
-          );
+      verses.map((verse): void => {
+        // console.log(verse._id);
+        const note = notes.find((n): boolean => {
+          return n._id ? n._id.replace('-notes', '') === verse._id : false;
+        });
 
-          verse.note = note;
-          // console.log(note);
-        },
-      );
+        verse.note = note;
+        // console.log(note);
+      });
     }
   }
   public resetNoteVis(): void {
     if (this.chapterNotes && this.chapterNotes.notes) {
-      this.chapterNotes.notes.map(
-        (note): void => {
-          if (note.notes) {
-            note.notes.map(
-              (secondaryNote): void => {
-                if (secondaryNote.refTag) {
-                  secondaryNote.refTag.highlight = false;
-                }
-                // secondaryNote.highlight = false;s
-              },
-            );
-          }
-        },
-      );
+      this.chapterNotes.notes.map((note): void => {
+        if (note.notes) {
+          note.notes.map((secondaryNote): void => {
+            if (secondaryNote.refTag) {
+              secondaryNote.refTag.highlight = false;
+            }
+            // secondaryNote.highlight = false;s
+          });
+        }
+      });
     }
   }
 }

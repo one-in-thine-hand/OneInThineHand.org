@@ -56,7 +56,7 @@ export class HeaderDropdownComponent implements OnInit {
   /**
    * edit
    */
-  public edit() {
+  public edit(): void {
     this.saveState.data.editMode = !this.saveState.data.editMode;
   }
 
@@ -68,27 +68,25 @@ export class HeaderDropdownComponent implements OnInit {
       const idSplit = this.chapterService.chapter._id.split('-');
       console.log(`${idSplit[0]}-${idSplit[1]}`);
       const docs = await this.databaseService.allDocs();
-      const ifs = sortBy(
-        docs.rows
-          .filter(
-            (d): boolean => {
+      if (docs) {
+        const ifs = sortBy(
+          docs.rows
+            .filter((d): boolean => {
               return (
                 d.id.includes(`${idSplit[0]}-${idSplit[1]}`) &&
                 d.id.includes('note')
               );
-            },
-          )
-          .map(
-            (d): string => {
+            })
+            .map((d): string => {
               return d.id;
-            },
-          ),
-        (a): number => {
-          return parseInt(a.split('-')[2]);
-        },
-      );
+            }),
+          (a): number => {
+            return parseInt(a.split('-')[2]);
+          },
+        );
 
-      console.log(ifs);
+        console.log(ifs);
+      }
     }
   }
 }

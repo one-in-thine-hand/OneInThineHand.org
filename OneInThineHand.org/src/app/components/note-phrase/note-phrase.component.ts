@@ -130,6 +130,7 @@ export class NotePhraseComponent implements OnInit {
       } catch (error) {
         if (secondaryNote.refTag) {
           console.log(error);
+          this.chapterService.resetNoteVis();
 
           secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
         }

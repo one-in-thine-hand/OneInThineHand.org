@@ -6,54 +6,62 @@ import PouchDB from 'pouchdb-browser';
 export class DatabaseService {
   public constructor() {}
   // public PouchDB = require('pouchdb');
-  private db = new PouchDB(`${window.location.hostname}-oneinthinehand-org`);
+  private db: PouchDB.Database<{}> | undefined;
+
+  public initReadingMode(): void {
+    if (this.db === undefined) {
+      this.db = new PouchDB(`${window.location.hostname}-oneinthinehand-org`);
+    }
+  }
 
   public async updateDatabaseItem(item: {
     _id: string;
     _rev: string | undefined;
   }): Promise<void> {
-    try {
-      const dbItem = await this.db.get(item._id);
-      item._rev = dbItem._rev;
-      // console.log(dbItem);
-    } catch (error) {
-      console.log(error);
+    if (this.db) {
+      try {
+        const dbItem = await this.db.get(item._id);
+        item._rev = dbItem._rev;
+        // console.log(dbItem);
+      } catch (error) {
+        console.log(error);
+      }
+      // console.log(item);
+
+      await this.db.put(item);
+
+      // console.log(this.db);
     }
-    // console.log(item);
-
-    await this.db.put(item);
-
-    // console.log(this.db);
   }
   /**
    * allDocs
    */
-  public async allDocs(): Promise<PouchDB.Core.AllDocsResponse<{}>> {
-    return await this.db.allDocs();
+  public async allDocs(): Promise<
+    PouchDB.Core.AllDocsResponse<{}> | undefined
+  > {
+    if (this.db) return await this.db.allDocs();
   }
   public async getDatabaseItem(
     _id: string,
-  ): Promise<{ _id: string; _rev: string }> {
-    return await this.db.get(_id);
+  ): Promise<{ _id: string; _rev: string } | undefined> {
+    if (this.db) return await this.db.get(_id);
   }
 
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {
-    const docs = await this.db.allDocs();
+    if (this.db) {
+      const docs = await this.db.allDocs();
 
-    docs.rows.map(
-      (doc): void => {
-        const item = items.find(
-          (item): boolean => {
-            return item._id === doc.id;
-          },
-        );
+      docs.rows.map((doc): void => {
+        const item = items.find((item): boolean => {
+          return item._id === doc.id;
+        });
         if (item) {
           item._rev = doc.value.rev;
         }
-      },
-    );
+      });
 
-    await this.db.bulkDocs(items);
+      await this.db.bulkDocs(items);
+    }
   }
 }
 
