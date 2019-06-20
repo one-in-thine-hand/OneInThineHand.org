@@ -6,6 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
 import { DatabaseService } from '../../services/database.service';
+import { sortBy } from 'lodash';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -17,10 +19,11 @@ export class HeaderDropdownComponent implements OnInit {
   public constructor(
     public saveState: SaveStateService,
     public chapterService: ChapterService,
+    public databaseService: DatabaseService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
     public visibilityService: VisibilityService,
-    public databaseService: DatabaseService,
+    public exportService: ExportService,
     private location: Location,
   ) {}
 
@@ -55,7 +58,14 @@ export class HeaderDropdownComponent implements OnInit {
   /**
    * edit
    */
-  public edit() {
+  public edit(): void {
     this.saveState.data.editMode = !this.saveState.data.editMode;
+  }
+
+  /**
+   * exportBook
+   */
+  public async exportBook(): Promise<void> {
+    await this.exportService.exportBook();
   }
 }

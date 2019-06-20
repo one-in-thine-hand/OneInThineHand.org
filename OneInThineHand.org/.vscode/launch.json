@@ -15,7 +15,7 @@
       "type": "edge",
       "request": "launch",
       "name": "Launch Edge",
-      "version": "canary",
+      "version": "dev",
       "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}",
       "skipFiles": [

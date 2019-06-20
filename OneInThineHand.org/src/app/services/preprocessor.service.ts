@@ -47,11 +47,9 @@ export class PreprocessorService {
                 const data = await new Response(zipFile).arrayBuffer();
                 const files = await JSZip.loadAsync(data);
                 const onlyFiles = this.sliceArray(
-                  Object.keys(files.files).filter(
-                    (key): boolean => {
-                      return files.files[key].dir === false;
-                    },
-                  ),
+                  Object.keys(files.files).filter((key): boolean => {
+                    return files.files[key].dir === false;
+                  }),
                   100,
                 );
 
@@ -139,11 +137,9 @@ export class PreprocessorService {
               const data = await new Response(zipFile).arrayBuffer();
               const files = await JSZip.loadAsync(data);
               const promises = Object.keys(files.files)
-                .filter(
-                  (key): boolean => {
-                    return files.files[key].dir === false;
-                  },
-                )
+                .filter((key): boolean => {
+                  return files.files[key].dir === false;
+                })
                 .map(
                   async (key): Promise<void> => {
                     try {
@@ -163,28 +159,24 @@ export class PreprocessorService {
                       );
                       const notes = await this.noteProcessor.run(newDocument);
                       if (notes) {
-                        notes.forEach(
-                          (value, key): void => {
-                            if (notesMap.has(key) && value.notes) {
-                              const noteChapter = notesMap.get(key);
-                              if (noteChapter && noteChapter.notes) {
-                                value.notes.forEach(
-                                  (note): void => {
-                                    if (noteChapter.notes) {
-                                      this.mergeSecondaryNotes(
-                                        noteChapter.notes,
-                                        note,
-                                      );
-                                    }
-                                  },
-                                );
-                              }
-                            } else {
-                              console.log('adsfasdf');
-                              notesMap.set(key, value);
+                        notes.forEach((value, key): void => {
+                          if (notesMap.has(key) && value.notes) {
+                            const noteChapter = notesMap.get(key);
+                            if (noteChapter && noteChapter.notes) {
+                              value.notes.forEach((note): void => {
+                                if (noteChapter.notes) {
+                                  this.mergeSecondaryNotes(
+                                    noteChapter.notes,
+                                    note,
+                                  );
+                                }
+                              });
                             }
-                          },
-                        );
+                          } else {
+                            console.log('adsfasdf');
+                            notesMap.set(key, value);
+                          }
+                        });
                       }
                       console.log(notes);
 
@@ -211,11 +203,9 @@ export class PreprocessorService {
     }
   }
   public mergeSecondaryNotes(notes: VerseNotes[], note: VerseNotes): void {
-    const saveNote = notes.find(
-      (n): boolean => {
-        return n._id === note._id;
-      },
-    );
+    const saveNote = notes.find((n): boolean => {
+      return n._id === note._id;
+    });
     console.log(note.notes);
 
     if (saveNote) {

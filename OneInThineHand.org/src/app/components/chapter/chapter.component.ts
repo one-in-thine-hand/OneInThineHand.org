@@ -28,7 +28,7 @@ export class ChapterComponent implements OnInit {
   public chapterVerses: ChapterVerses | undefined;
   public ctrlKeyPressed: boolean;
   public shiftKeyPressed: boolean;
-  public ctrlKeyInterval: any;
+  public ctrlKeyInterval;
   public shiftKeyInterval: any;
 
   public constructor(
@@ -131,6 +131,7 @@ export class ChapterComponent implements OnInit {
   }
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
+    this.databaseService.initReadingMode();
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
         await this.setHistory();
@@ -147,9 +148,7 @@ export class ChapterComponent implements OnInit {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
           const pageState = this.pageStateService.pageStateMap.get(
-            `eng-${chapterParams.book}-${
-              chapterParams.chapter
-            }-chapter-page-state`,
+            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
           );
 
           if (this.popStateActivated && pageState) {
@@ -164,6 +163,7 @@ export class ChapterComponent implements OnInit {
               this.chapterVerses,
               this.chapter,
               false,
+              true,
             );
             const chapterGrid = document.querySelector('.chapter-grid');
             const notesGrid = document.querySelector('#notes');
@@ -186,9 +186,7 @@ export class ChapterComponent implements OnInit {
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                `eng-${chapterParams.book}-${
-                  chapterParams.chapter
-                }-chapter-verses`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
               )) as ChapterVerses;
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
@@ -257,12 +255,10 @@ export class ChapterComponent implements OnInit {
 
     // console.log(this.getHighlightVerses(chapterParams, contextOffsets, verses));
     // console.log(contextOffsets);
-    verses.forEach(
-      (verse): void => {
-        verse.highlight = false;
-        verse.context = false;
-      },
-    );
+    verses.forEach((verse): void => {
+      verse.highlight = false;
+      verse.context = false;
+    });
 
     this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
     this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
@@ -294,25 +290,19 @@ export class ChapterComponent implements OnInit {
     verses: Verse[],
   ): Verse[] {
     if (context) {
-      const filteredVerses = context.map(
-        (c): Verse | undefined => {
-          return verses.find(
-            (verse): boolean => {
-              return (
-                verse._id ===
-                `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
-              );
-            },
+      const filteredVerses = context.map((c): Verse | undefined => {
+        return verses.find((verse): boolean => {
+          return (
+            verse._id ===
+            `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
           );
-        },
-      );
+        });
+      });
       // console.log(filteredVerses);
 
-      return filteredVerses.filter(
-        (v): boolean => {
-          return v !== undefined;
-        },
-      ) as Verse[];
+      return filteredVerses.filter((v): boolean => {
+        return v !== undefined;
+      }) as Verse[];
     } else {
       return [];
     }
@@ -323,18 +313,21 @@ export class ChapterComponent implements OnInit {
     chapterVerses: ChapterVerses,
     chapter: Chapter,
     newPage: boolean = true,
+    pageStateActive: boolean = false,
   ): Promise<void> {
-    await this.offsetService.expandNotes(chapterNotes.notes);
-    if (chapterVerses && chapterVerses.verses) {
-      this.chapterService.mergeVersesNotes(
-        chapterVerses.verses,
-        chapterNotes.notes,
+    if (!pageStateActive) {
+      await this.offsetService.expandNotes(chapterNotes.notes);
+      if (chapterVerses && chapterVerses.verses) {
+        this.chapterService.mergeVersesNotes(
+          chapterVerses.verses,
+          chapterNotes.notes,
+        );
+      }
+      await this.formatTagService.resetFormatTags(
+        this.chapterVerses,
+        this.chapterNotes,
       );
     }
-    await this.formatTagService.resetFormatTags(
-      this.chapterVerses,
-      this.chapterNotes,
-    );
     this.chapterService.chapter = chapter;
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses
