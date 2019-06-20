@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { sortBy } from 'lodash';
+import { sortBy, uniq } from 'lodash';
 import { DatabaseService } from './database.service';
 import { ChapterService } from './chapter.service';
 import {
@@ -7,6 +7,7 @@ import {
   Note,
   getReferenceLabelByNoteCategory,
   ReferenceLabel,
+  getRanges,
 } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { saveAs } from 'file-saver';
@@ -26,17 +27,15 @@ export class ExportService {
   public async exportBook(): Promise<void> {
     if (this.chapterService.chapter) {
       const idSplit = this.chapterService.chapter._id.split('-');
-      console.log(`${idSplit[0]}-${idSplit[1]}`);
+      const bookName = `${idSplit[0]}-${idSplit[1]}`;
+
       const docs = await this.databaseService.allDocs();
       if (docs) {
         const ids = sortBy(
           docs.rows
             .filter(
               (d): boolean => {
-                return (
-                  d.id.includes(`${idSplit[0]}-${idSplit[1]}`) &&
-                  d.id.includes('note')
-                );
+                return d.id.includes(bookName) && d.id.includes('note');
               },
             )
             .map(
@@ -67,9 +66,9 @@ export class ExportService {
           const blob = new Blob([exportText], {
             type: 'text/html;charset=utf=8',
           });
-          saveAs(blob, 'test.html');
-          console.log(blob);
-          console.log(exportText);
+          saveAs(blob, `${bookName}.html`);
+          // console.log(blob);
+          // console.log(exportText);
         }
       }
     }
@@ -94,11 +93,33 @@ export class ExportService {
       return notes
         .map(
           (note): string => {
+            if (note.uncompressedOffsets) {
+              note.offsets = getRanges(note.uncompressedOffsets)
+                .map(
+                  (offsets): string => {
+                    return offsets.join('-');
+                  },
+                )
+                .join(',');
+              console.log(note.offsets);
+
+              // console.log(getRanges(note.uncompressedOffsets));
+              // console.log(
+              //   sortBy(
+              //     note.uncompressedOffsets,
+              //     (u): number => {
+              //       return u;
+              //     },
+              //   ),
+              // );
+            }
             return `<note${
               note.classList !== undefined
                 ? `class="${note.classList.join(' ')}"`
                 : ''
-            } id="${note.id}">
+            } id="${note.id}" ${
+              note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
+            }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''
           }</p>
@@ -114,9 +135,9 @@ export class ExportService {
 
                 return `<p class="note-reference"><span class="${
                   refLabel ? refLabel.className : ''
-                }">${refLabel ? refLabel.referenceLabelShortName : ''} </span>${
-                  noteRef.text
-                }</p>`;
+                }${noteRef.none === true ? ' none' : ''}">${
+                  refLabel ? refLabel.referenceLabelShortName : ''
+                } </span>${noteRef.text}</p>`;
               },
             )
             .join('\n')}

@@ -74,6 +74,11 @@ export class NoteComponent implements OnInit {
    * convertNoteCategory
    */
   public convertNoteCategory(noteRef: NoteRef): string {
+    // console.log(noteRef.none);
+
+    if (noteRef.none === true) {
+      return '';
+    }
     const nc = ReferenceLabels.find(
       (rl): boolean => {
         // if (
