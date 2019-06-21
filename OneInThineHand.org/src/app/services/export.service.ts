@@ -11,7 +11,7 @@ import {
 } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { saveAs } from 'file-saver';
-
+import { decode, encode } from 'he';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,11 +33,9 @@ export class ExportService {
       if (docs) {
         const ids = sortBy(
           docs.rows
-            .filter(
-              (d): boolean => {
-                return d.id.includes(bookName) && d.id.includes('note');
-              },
-            )
+            .filter((d): boolean => {
+              return d.id.includes(bookName) && d.id.includes('note');
+            })
             .map(
               (d): CouchDoc => {
                 return { id: d.id, rev: d.value.rev };
@@ -56,11 +54,9 @@ export class ExportService {
                 return (r.docs[0] as any).ok as ChapterNotes;
               },
             )
-            .map(
-              (cNotes): string => {
-                return this.chapterNotesToString(cNotes);
-              },
-            )
+            .map((cNotes): string => {
+              return this.chapterNotesToString(cNotes);
+            })
             .join('\n')}`;
 
           const blob = new Blob([exportText], {
@@ -77,13 +73,11 @@ export class ExportService {
     let chapterNotesString = `<chapter id="${cNotes._id}">`;
     if (cNotes.notes) {
       chapterNotesString = `${chapterNotesString} ${cNotes.notes
-        .map(
-          (verseNote): string => {
-            return `<verse-notes id="${verseNote._id}">${this.notesToString(
-              verseNote.notes,
-            )}</verse-notes>`;
-          },
-        )
+        .map((verseNote): string => {
+          return `<verse-notes id="${verseNote._id}">${this.notesToString(
+            verseNote.notes,
+          )}</verse-notes>`;
+        })
         .join('')}</chapter>`;
     }
     return chapterNotesString;
@@ -91,60 +85,69 @@ export class ExportService {
   public notesToString(notes: Note[] | undefined): string {
     if (notes) {
       return notes
-        .map(
-          (note): string => {
-            if (note.uncompressedOffsets) {
-              note.offsets = getRanges(note.uncompressedOffsets)
-                .map(
-                  (offsets): string => {
-                    return offsets.join('-');
-                  },
-                )
-                .join(',');
-              console.log(note.offsets);
+        .map((note): string => {
+          if (note.uncompressedOffsets) {
+            note.offsets = getRanges(note.uncompressedOffsets)
+              .map((offsets): string => {
+                return offsets.join('-');
+              })
+              .join(',');
+            console.log(note.offsets);
 
-              // console.log(getRanges(note.uncompressedOffsets));
-              // console.log(
-              //   sortBy(
-              //     note.uncompressedOffsets,
-              //     (u): number => {
-              //       return u;
-              //     },
-              //   ),
-              // );
-            }
-            return `<note${
-              note.classList !== undefined
-                ? `class="${note.classList.join(' ')}"`
-                : ''
-            } id="${note.id}" ${
-              note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
-            }>
+            // console.log(getRanges(note.uncompressedOffsets));
+            // console.log(
+            //   sortBy(
+            //     note.uncompressedOffsets,
+            //     (u): number => {
+            //       return u;
+            //     },
+            //   ),
+            // );
+          }
+          return `<note${
+            note.classList !== undefined
+              ? `class="${note.classList.join(' ')}"`
+              : ''
+          } id="${note.id}" ${
+            note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
+          }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''
           }</p>
           ${note.noteRefs
-            .map(
-              (noteRef): string => {
-                let refLabel: ReferenceLabel | undefined;
-                if (noteRef.noteCategory) {
-                  refLabel = getReferenceLabelByNoteCategory(
-                    noteRef.noteCategory,
-                  );
-                }
+            .map((noteRef): string => {
+              let refLabel: ReferenceLabel | undefined;
+              if (noteRef.noteCategory) {
+                refLabel = getReferenceLabelByNoteCategory(
+                  noteRef.noteCategory,
+                );
+              }
+              console.log();
 
-                return `<p class="note-reference"><span class="${
-                  refLabel ? refLabel.className : ''
-                }${noteRef.none === true ? ' none' : ''}">${
-                  refLabel ? refLabel.referenceLabelShortName : ''
-                } </span>${noteRef.text}</p>`;
-              },
-            )
+              return `<p class="note-reference"><span class="${
+                refLabel ? refLabel.className : ''
+              }${noteRef.none === true ? ' none' : ''}">${
+                refLabel ? refLabel.referenceLabelShortName : ''
+              } </span>${this.createElementFromHTML(noteRef.text).replace(
+                /&nbsp;/g,
+                ' ',
+              )})}</p>`;
+            })
             .join('\n')}
           </note>`;
-          },
-        )
+        })
         .join('\n');
+    }
+    return '';
+  }
+
+  private createElementFromHTML(htmlString: string | undefined): string {
+    if (htmlString) {
+      const div = document.createElement('div');
+      div.innerHTML = htmlString.trim();
+
+      // Change this to div.childNodes to support multiple top-level nodes
+      return div.innerHTML;
     }
     return '';
   }
