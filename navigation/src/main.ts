@@ -4,7 +4,10 @@ import { normalize } from 'path';
 import { readFile, writeFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 import { getNavigationItem } from './getNavigationItem';
-import { NavigationItem } from '../../shared/src/shared';
+import {
+  NavigationItem,
+  flattenNavigationItems,
+} from '../../shared/src/shared';
 
 export function filterTextNodes(childNode: Node): Node[] {
   return Array.from(childNode.childNodes).filter(
@@ -120,9 +123,11 @@ async function main(): Promise<void> {
       return undefined;
     },
   );
+  const nI = await Promise.all(navItems);
+  await writeFile(normalize('./manifests.json'), JSON.stringify(nI));
   await writeFile(
-    normalize('./manifests.json'),
-    JSON.stringify(await Promise.all(navItems)),
+    normalize('./manifests2.json'),
+    JSON.stringify(flattenNavigationItems(nI as NavigationItem[])),
   );
 }
 
