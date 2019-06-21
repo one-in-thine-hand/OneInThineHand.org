@@ -1,5 +1,11 @@
+## <small>5.0.24 (2019-06-21)</small>
+
+
+
+
 ## <small>5.0.23 (2019-06-21)</small>
 
+* v5.0.23 ([d11443e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d11443e))
 
 
 
