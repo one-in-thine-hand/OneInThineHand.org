@@ -4,12 +4,7 @@ import { normalize } from 'path';
 import { readFile, writeFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 import { getNavigationItem } from './getNavigationItem';
-export class NavigationItem {
-  public navItem: NavigationItem[] | undefined;
-  public href: string | undefined;
-  public title: string;
-  public shortTitle: string;
-}
+import { NavigationItem } from '../../shared/src/shared';
 
 export function filterTextNodes(childNode: Node): Node[] {
   return Array.from(childNode.childNodes).filter(
@@ -31,8 +26,6 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
       (childNode): void => {
         if (childNode.nodeName.toLowerCase() === 'ul') {
           try {
-            console.log(childNode.childNodes);
-
             Array.from(childNode.childNodes)
               .filter(
                 (childNode): boolean => {
@@ -41,7 +34,11 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
               )
               .map(
                 (li: Element): void => {
-                  const navItem = getNavigationItem(li);
+                  const navItem = getNavigationItem(
+                    li,
+                    'a .title',
+                    'a .short-title',
+                  );
                   if (navItem) {
                     children.push(navItem);
                   }
@@ -53,17 +50,25 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
           // return childNode.textContent;
         } else if (childNode.nodeName.toLowerCase() === 'section') {
           // return childNode.textContent;
-          const navItem = new NavigationItem();
-          const headerElement = (childNode as Element).querySelector('header');
-          if (headerElement) {
-            navItem.title =
-              headerElement && headerElement.textContent
-                ? headerElement.textContent.trim()
-                : '';
-            navItem.shortTitle =
-              headerElement && headerElement.textContent
-                ? headerElement.textContent.trim()
-                : '';
+          // const navItem = new NavigationItem();
+          // const headerElement = (childNode as Element).querySelector('header');
+          // if (headerElement) {
+          //   navItem.title =
+          //     headerElement && headerElement.textContent
+          //       ? headerElement.textContent.trim()
+          //       : '';
+          //   navItem.shortTitle =
+          //     headerElement && headerElement.textContent
+          //       ? headerElement.textContent.trim()
+          //       : '';
+          // }
+          const navItem = getNavigationItem(
+            childNode as Element,
+            'header p',
+            'header p',
+          );
+          if (navItem) {
+            children.push(navItem);
           }
         }
       },
@@ -73,7 +78,7 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
 
 async function main(): Promise<void> {
   const fileNames = await FastGlob(normalize(`./manifests/**/**`));
-  console.log(fileNames);
+  // console.log(fileNames);
   const navItems = fileNames.map(
     async (fileName: string): Promise<NavigationItem | undefined> => {
       const file = await readFile(fileName);
@@ -84,14 +89,31 @@ async function main(): Promise<void> {
         const navItem = new NavigationItem();
 
         const textElem = document.querySelector('header h1');
+        const dataUri = document.querySelector('[data-uri]');
+        if (dataUri) {
+          const urlStart = (dataUri.getAttribute('data-uri') as string).split(
+            '/',
+          )[2];
 
+          Array.from(document.querySelectorAll('a[href]'))
+            .filter(
+              (a: HTMLAnchorElement): boolean => {
+                return !a.href.includes('/');
+              },
+            )
+            .map(
+              (a: HTMLAnchorElement): void => {
+                a.href = `${urlStart}/${a.href}`;
+              },
+            );
+        }
         navItem.title =
           textElem && textElem.textContent ? textElem.textContent : '';
 
         const manifestElement = document.querySelector('nav.manifest');
 
         if (manifestElement) {
-          navItem.navItem = getChildNavigation(manifestElement);
+          navItem.navItems = getChildNavigation(manifestElement);
         }
         return navItem;
       }
