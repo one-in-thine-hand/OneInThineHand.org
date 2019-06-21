@@ -135,7 +135,7 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.TRN1,
     referenceLabelName: 'Translation',
     visible: true,
-    referenceLabelShortName: 'TRN',
+    referenceLabelShortName: 'TRN-1',
   },
   {
     sortOrder: 0,
@@ -143,7 +143,7 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.TRN2,
     referenceLabelName: 'Translation',
     visible: true,
-    referenceLabelShortName: 'TRN',
+    referenceLabelShortName: 'TRN-2',
   },
 ];
 

@@ -8,6 +8,7 @@ import {
   getReferenceLabelByNoteCategory,
   ReferenceLabel,
   getRanges,
+  NoteTypeConverts,
 } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { saveAs } from 'file-saver';
@@ -49,7 +50,7 @@ export class ExportService {
 
         const bulkGetDocs = await this.databaseService.bulkGet(ids);
         if (bulkGetDocs) {
-          const exportText = `<?xml version="1.0" encoding="UTF-8"?>\n
+          const exportText = `<?xml version="1.0" encoding="UTF-8"?>
           <html>
             <head>
             <meta charset="UTF-8"/>
@@ -128,11 +129,22 @@ export class ExportService {
               //   ),
               // );
             }
-            return `<note${
-              note.classList !== undefined
-                ? `class="${note.classList.join(' ')}"`
-                : ''
-            } id="${note.id}" ${
+
+            const getNoteType = NoteTypeConverts.find(
+              (nTC): boolean => {
+                return nTC.noteType === note.noteType;
+              },
+            );
+            let classList: string[] = [];
+
+            if (getNoteType) {
+              classList.push(getNoteType.className);
+            }
+
+            if (note.classList) {
+              classList = classList.concat(note.classList);
+            }
+            return `<note class="${classList.join(' ')}" id="${note.id}" ${
               note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
             }>
           <p class="note-phrase">${
@@ -153,7 +165,7 @@ export class ExportService {
                 }${noteRef.none === true ? ' none' : ''}">${
                   refLabel ? refLabel.referenceLabelShortName : ''
                 } </span>${
-                  noteRef.text ? noteRef.text.replace('&', '&amp') : ''
+                  noteRef.text ? noteRef.text.replace(/&/g, '&amp;') : ''
                 }</p>`;
               },
             )

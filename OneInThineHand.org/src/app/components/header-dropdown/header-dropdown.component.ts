@@ -6,7 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
 import { DatabaseService } from '../../services/database.service';
-import { sortBy } from 'lodash';
 import { ExportService } from '../../services/export.service';
 
 @Component({
@@ -53,6 +52,7 @@ export class HeaderDropdownComponent implements OnInit {
       await this.databaseService.updateDatabaseItem(
         this.chapterService.chapterNotes,
       );
+      console.log('Finished');
     }
   }
   /**
