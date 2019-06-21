@@ -122,7 +122,6 @@ export class ExportService {
                   noteRef.noteCategory,
                 );
               }
-              console.log();
 
               return `<p class="note-reference"><span class="${
                 refLabel ? refLabel.className : ''
