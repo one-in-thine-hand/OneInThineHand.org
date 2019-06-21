@@ -1,3 +1,8 @@
+## <small>5.0.23 (2019-06-21)</small>
+
+
+
+
 ## <small>5.0.22 (2019-06-21)</small>
 
 * encoding fixes ([4395b8b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4395b8b))
@@ -6,6 +11,7 @@
 * flatten nav ([4af6c21](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4af6c21))
 * further export fixes ([cefa07e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/cefa07e))
 * nav maybe done ([7cae197](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7cae197))
+* v5.0.22 ([ebb380e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ebb380e))
 * working on nav ([8b3d455](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8b3d455))
 
 
