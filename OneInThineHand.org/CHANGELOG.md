@@ -1,3 +1,15 @@
+## <small>5.0.22 (2019-06-21)</small>
+
+* encoding fixes ([4395b8b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4395b8b))
+* Export bug fixes ([b893a3f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b893a3f))
+* export seems to work ([5dc946c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5dc946c))
+* flatten nav ([4af6c21](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4af6c21))
+* further export fixes ([cefa07e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/cefa07e))
+* nav maybe done ([7cae197](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7cae197))
+* working on nav ([8b3d455](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8b3d455))
+
+
+
 ## <small>5.0.21 (2019-06-20)</small>
 
 * bug fixes ([7ca773a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7ca773a))
@@ -5,6 +17,7 @@
 * export work ([2b1ec0f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2b1ec0f))
 * Fixed error where note phrase would stay highlighted ([d8c9fdc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d8c9fdc))
 * support for exporting books ([686b9dd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/686b9dd))
+* v5.0.21 ([785b9a4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/785b9a4))
 * Working on exporting ([2eafc3d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2eafc3d))
 
 
