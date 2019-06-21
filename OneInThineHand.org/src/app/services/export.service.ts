@@ -128,10 +128,9 @@ export class ExportService {
                 refLabel ? refLabel.className : ''
               }${noteRef.none === true ? ' none' : ''}">${
                 refLabel ? refLabel.referenceLabelShortName : ''
-              } </span>${this.createElementFromHTML(noteRef.text).replace(
-                /&nbsp;/g,
-                ' ',
-              )})}</p>`;
+              } </span>${
+                noteRef.text ? noteRef.text.replace('&', '&amp') : ''
+              }</p>`;
             })
             .join('\n')}
           </note>`;
