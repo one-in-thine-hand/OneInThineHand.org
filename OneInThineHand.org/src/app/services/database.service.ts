@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb-browser';
 import { CouchDoc as CouchDocGet } from '../../../../shared/src/shared';
+import { isEqual } from 'lodash';
 @Injectable({
   providedIn: 'root',
 })
@@ -31,7 +32,8 @@ export class DatabaseService {
   }): Promise<void> {
     if (this.db) {
       try {
-        const dbItem = await this.db.get(item._id);
+        const dbItem = await this.db.get(item._id, {});
+
         item._rev = dbItem._rev;
         // console.log(dbItem);
       } catch (error) {

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { SaveStateService } from './services/save-state.service';
 import { SwUpdate } from '@angular/service-worker';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // import { SwUpdate } from '@angular/service-worker';
 
@@ -18,19 +19,18 @@ export class AppComponent {
     private translate: TranslateService,
     public saveStateService: SaveStateService,
     private swUpdate: SwUpdate,
+    public act: Router,
   ) {
     translate.setDefaultLang('en');
-    this.swUpdate.available.subscribe(
-      (evt): void => {
-        if (!document.querySelector('.update-button')) {
-          // matCSS.toast({
-          //   html:
-          //     '<span class="update-button" onclick="location.reload()">Click here to update</span>',
-          //   displayLength: 1000000,
-          // });
-        }
-      },
-    );
+    this.swUpdate.available.subscribe((evt): void => {
+      if (!document.querySelector('.update-button')) {
+        // matCSS.toast({
+        //   html:
+        //     '<span class="update-button" onclick="location.reload()">Click here to update</span>',
+        //   displayLength: 1000000,
+        // });
+      }
+    });
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron()) {

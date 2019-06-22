@@ -115,6 +115,7 @@ export class ChapterNotes {
   public _id: string;
   public _rev: string | undefined;
   public notes: VerseNotes[] | undefined;
+  public save: boolean | undefined;
 }
 
 export class NoteProcessor {

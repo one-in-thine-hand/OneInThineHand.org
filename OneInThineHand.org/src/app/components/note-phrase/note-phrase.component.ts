@@ -119,6 +119,9 @@ export class NotePhraseComponent implements OnInit {
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
             );
+            if (this.chapterService.chapterNotes) {
+              this.chapterService.chapterNotes.save = true;
+            }
             console.log('asdf');
           } else {
             throw 'No valid selection';

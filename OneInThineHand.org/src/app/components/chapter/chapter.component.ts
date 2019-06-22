@@ -1,5 +1,5 @@
 import { sortBy } from 'lodash';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
@@ -16,12 +16,18 @@ import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 import { HistoryService } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
+import { SaveService } from '../../services/save.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
-export class ChapterComponent implements OnInit {
+export class ChapterComponent implements OnInit, OnDestroy {
+  public async ngOnDestroy(): Promise<void> {
+    console.log('destroy');
+    await this.setHistory();
+    this.chapterService.chapterNotes = undefined;
+  }
   public popStateActivated = false;
   public chapter: Chapter | undefined;
   public chapterNotes: ChapterNotes;
@@ -36,6 +42,7 @@ export class ChapterComponent implements OnInit {
     public offsetService: OffsetService,
     public visibilityService: VisibilityService,
     public saveStateService: SaveStateService,
+    public saveService: SaveService,
     public headerService: HeaderService,
     public databaseService: DatabaseService,
     public activatedRouter: ActivatedRoute,
@@ -111,7 +118,8 @@ export class ChapterComponent implements OnInit {
           case 's': {
             if (this.shiftKeyPressed) {
               console.log('hggg');
-              await this.databaseService.updateDatabaseItem(this.chapterNotes);
+              await this.saveService.save();
+              // await this.databaseService.updateDatabaseItem(this.chapterNotes);
               console.log('Finished');
             }
             break;
@@ -148,9 +156,7 @@ export class ChapterComponent implements OnInit {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
           const pageState = this.pageStateService.pageStateMap.get(
-            `eng-${chapterParams.book}-${
-              chapterParams.chapter
-            }-chapter-page-state`,
+            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
           );
 
           if (this.popStateActivated && pageState) {
@@ -188,9 +194,7 @@ export class ChapterComponent implements OnInit {
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                `eng-${chapterParams.book}-${
-                  chapterParams.chapter
-                }-chapter-verses`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
               )) as ChapterVerses;
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
@@ -212,6 +216,7 @@ export class ChapterComponent implements OnInit {
         }
         this.historyService.init();
         this.popStateActivated = false;
+        this.saveService.start();
       },
     );
   }
@@ -259,12 +264,10 @@ export class ChapterComponent implements OnInit {
 
     // console.log(this.getHighlightVerses(chapterParams, contextOffsets, verses));
     // console.log(contextOffsets);
-    verses.forEach(
-      (verse): void => {
-        verse.highlight = false;
-        verse.context = false;
-      },
-    );
+    verses.forEach((verse): void => {
+      verse.highlight = false;
+      verse.context = false;
+    });
 
     this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
     this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
@@ -296,25 +299,19 @@ export class ChapterComponent implements OnInit {
     verses: Verse[],
   ): Verse[] {
     if (context) {
-      const filteredVerses = context.map(
-        (c): Verse | undefined => {
-          return verses.find(
-            (verse): boolean => {
-              return (
-                verse._id ===
-                `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
-              );
-            },
+      const filteredVerses = context.map((c): Verse | undefined => {
+        return verses.find((verse): boolean => {
+          return (
+            verse._id ===
+            `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
           );
-        },
-      );
+        });
+      });
       // console.log(filteredVerses);
 
-      return filteredVerses.filter(
-        (v): boolean => {
-          return v !== undefined;
-        },
-      ) as Verse[];
+      return filteredVerses.filter((v): boolean => {
+        return v !== undefined;
+      }) as Verse[];
     } else {
       return [];
     }
