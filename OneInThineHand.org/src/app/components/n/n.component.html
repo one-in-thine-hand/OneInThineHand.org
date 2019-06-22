@@ -1,6 +1,6 @@
 <note
   class="secondary-note"
-  id="eng-{{ note.id }}"
+  id="{{ note.id }}"
   [ngClass]="{ highlight: highlight(note) }"
 >
   <app-note-phrase
@@ -16,17 +16,23 @@
         <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
         <span [innerHTML]="getNoteRefText(noteRef)"></span>
       </li>
-      <li>
+      <!-- <li>
         <textarea *ngIf="edit" name="note-ref" id="">{{
           noteRef.text
         }}</textarea>
-      </li></ng-container
-    >
+      </li> -->
+    </ng-container>
   </ul>
 
-  <textarea *ngIf="edit" class="offsets" name="note-ref" id="" rows="5">{{
-    note.offsets
-  }}</textarea>
+  <textarea
+    *ngIf="edit"
+    class="offsets"
+    name="note-ref"
+    id=""
+    rows="1"
+    [(ngModel)]="note.offsets"
+    (input)="offsetsInput($event, note)"
+  ></textarea>
   <span class="edit-buttons"
     ><button class=" btn btn-outline-primary" (click)="edit = !edit">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

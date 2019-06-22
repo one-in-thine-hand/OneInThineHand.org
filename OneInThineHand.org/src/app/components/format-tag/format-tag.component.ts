@@ -100,8 +100,6 @@ export class FormatTagComponent implements OnInit {
           },
         ).length > 0
       ) {
-        console.log('jhhh0');
-
         classList.push('ref-selected');
       } else {
         this.refList = undefined;
@@ -192,7 +190,7 @@ export class FormatTagComponent implements OnInit {
 
         if (r) {
           r.highlight = true;
-          await asyncScrollIntoView(`#eng-${r.secondaryNoteID}`);
+          await asyncScrollIntoView(`#${r.secondaryNoteID}`);
         } else {
           this.refList = undefined;
         }

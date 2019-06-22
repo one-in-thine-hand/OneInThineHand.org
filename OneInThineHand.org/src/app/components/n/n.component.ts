@@ -7,8 +7,13 @@ import {
   NoteRef,
   NotePhrase,
   ReferenceLabels,
+  getRanges,
 } from '../../../../../shared/src/shared';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+import { OffsetService } from '../../services/offset.service';
+import { ChapterService } from '../../services/chapter.service';
+import { FormatTagService } from '../../services/format-tag.service';
+import { SaveService } from '../../services/save.service';
 
 @Component({
   selector: 'app-n',
@@ -20,7 +25,13 @@ export class NComponent implements OnInit {
   @Input() public verseNotes: VerseNotes;
   public edit: boolean = false;
 
-  public constructor(public domSanitizer: DomSanitizer) {}
+  public constructor(
+    public domSanitizer: DomSanitizer,
+    public offsetService: OffsetService,
+    public chapterService: ChapterService,
+    public formatTagService: FormatTagService,
+    public saveService: SaveService,
+  ) {}
 
   public ngOnInit() {}
 
@@ -33,16 +44,18 @@ export class NComponent implements OnInit {
     if (noteRef.none === true) {
       return '';
     }
-    const nc = ReferenceLabels.find((rl): boolean => {
-      // if (
-      //   rl.noteCategory === noteRef.noteCategory &&
-      //   noteRef.text &&
-      //   noteRef.text.includes('many')
-      // ) {
-      //   // console.log(ReferenceLabels);
-      // }
-      return rl.noteCategory === noteRef.noteCategory;
-    });
+    const nc = ReferenceLabels.find(
+      (rl): boolean => {
+        // if (
+        //   rl.noteCategory === noteRef.noteCategory &&
+        //   noteRef.text &&
+        //   noteRef.text.includes('many')
+        // ) {
+        //   // console.log(ReferenceLabels);
+        // }
+        return rl.noteCategory === noteRef.noteCategory;
+      },
+    );
     // if (noteRef.text && noteRef.text.includes('many')) {
     //   // console.log(nc);
     // }
@@ -72,5 +85,49 @@ export class NComponent implements OnInit {
   }
   public getNoteRefs(secondaryNote: Note): NoteRef[] {
     return getVisible(secondaryNote.noteRefs);
+  }
+  public async offsetsInput(event: Event, note: Note): Promise<void> {
+    if (event.type === 'input' && event.target) {
+      const supportedCharacters = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        ',',
+        '-',
+      ];
+      note.offsets = (event.target as HTMLTextAreaElement).value
+        .split('')
+        .map(
+          (v): string => {
+            return supportedCharacters.includes(v) ? v : '';
+          },
+        )
+        .join('');
+      // console.log(note.offsets);
+
+      await this.offsetService.expandNotes(this.chapterService.notes);
+      await this.formatTagService.resetFormatTags(
+        this.chapterService.chapterVerses,
+        this.chapterService.chapterNotes,
+      );
+
+      if (note.uncompressedOffsets) {
+        note.offsets = getRanges(note.uncompressedOffsets)
+          .map(
+            (offsets): string => {
+              return offsets.join('-');
+            },
+          )
+          .join(',');
+      }
+      await this.saveService.save();
+    }
   }
 }

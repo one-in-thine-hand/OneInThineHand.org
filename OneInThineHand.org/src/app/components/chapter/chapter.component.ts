@@ -14,7 +14,7 @@ import { ChapterNotes } from '../../../../../notes/src/main';
 import { PageStateService } from '../../services/page-state.service';
 import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
-import { HistoryService } from '../../services/history.service';
+// import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
 @Component({
@@ -47,8 +47,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public activatedRouter: ActivatedRoute,
     public paramService: ParamService,
     public pageStateService: PageStateService,
-    public formatTagService: FormatTagService,
-    public historyService: HistoryService,
+    public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
   @HostListener('window:keyup', ['$event'])
@@ -91,26 +90,26 @@ export class ChapterComponent implements OnInit, OnDestroy {
       if (this.ctrlKeyPressed) {
         switch (event.key.toLowerCase()) {
           case 'z': {
-            if (this.chapterVerses && this.chapterNotes) {
-              this.historyService.undoHistory(
-                this.chapterNotes,
-                this.saveStateService.data,
-                this.chapterVerses,
-              );
-              // await
-            }
+            // if (this.chapterVerses && this.chapterNotes) {
+            //   this.historyService.undoHistory(
+            //     this.chapterNotes,
+            //     this.saveStateService.data,
+            //     this.chapterVerses,
+            //   );
+            // await
+            // }
             // await this.formatTagService.resetFormatTags(this.chapterVerses);
             break;
           }
           case 'y': {
-            console.log('y');
-            if (this.chapterVerses && this.chapterNotes) {
-              this.historyService.redoHistory(
-                this.chapterNotes,
-                this.chapterVerses,
-                this.saveStateService.data,
-              );
-            }
+            // console.log('y');
+            // if (this.chapterVerses && this.chapterNotes) {
+            //   this.historyService.redoHistory(
+            //     this.chapterNotes,
+            //     this.chapterVerses,
+            //     this.saveStateService.data,
+            //   );
+            // }
 
             break;
           }
@@ -155,7 +154,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
           const pageState = this.pageStateService.pageStateMap.get(
-            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
+            `eng-${chapterParams.book}-${
+              chapterParams.chapter
+            }-chapter-page-state`,
           );
 
           if (this.popStateActivated && pageState) {
@@ -193,12 +194,13 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                `eng-${chapterParams.book}-${
+                  chapterParams.chapter
+                }-chapter-verses`,
               )) as ChapterVerses;
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
               )) as ChapterNotes;
-
               await this.setChapterVariables(
                 this.chapterNotes,
                 this.chapterVerses,
@@ -213,7 +215,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
             }
           }
         }
-        this.historyService.init();
+        // this.historyService.init();
         this.popStateActivated = false;
       },
     );
@@ -260,12 +262,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
 
-    // console.log(this.getHighlightVerses(chapterParams, contextOffsets, verses));
-    // console.log(contextOffsets);
-    verses.forEach((verse): void => {
-      verse.highlight = false;
-      verse.context = false;
-    });
+    verses.forEach(
+      (verse): void => {
+        verse.highlight = false;
+        verse.context = false;
+      },
+    );
 
     this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
     this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
@@ -297,19 +299,25 @@ export class ChapterComponent implements OnInit, OnDestroy {
     verses: Verse[],
   ): Verse[] {
     if (context) {
-      const filteredVerses = context.map((c): Verse | undefined => {
-        return verses.find((verse): boolean => {
-          return (
-            verse._id ===
-            `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
+      const filteredVerses = context.map(
+        (c): Verse | undefined => {
+          return verses.find(
+            (verse): boolean => {
+              return (
+                verse._id ===
+                `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
+              );
+            },
           );
-        });
-      });
+        },
+      );
       // console.log(filteredVerses);
 
-      return filteredVerses.filter((v): boolean => {
-        return v !== undefined;
-      }) as Verse[];
+      return filteredVerses.filter(
+        (v): boolean => {
+          return v !== undefined;
+        },
+      ) as Verse[];
     } else {
       return [];
     }
@@ -348,39 +356,19 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(chapterNotes.notes);
-    // console.log(
-    //   this.chapterVerses !== undefined &&
-    //     this.chapterVerses.verses !== undefined &&
-    //     chapter !== undefined,
-    // );
   }
 
   public async onScroll(): Promise<void> {
-    // console.log('hhg');
-    // this.pageStateService.updateHistory();
     const verseElements = Array.from(document.querySelectorAll('verse'));
     for (let x = 0; x < verseElements.length; x++) {
       const verseElement = verseElements[x];
       if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
-        // let noteElement = document.querySelector(
-        //   `#${verseElement.id.replace(/verse/g, 'note')}`,
-        // );
-        // console.log(verseElement.id);
-
-        // console.log(`#${verseElement.id}-notes`);
-
         if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
           if (x === 0) {
-            // noteElement = document.querySelector('.notes-top');
             await asyncScrollIntoView('.notes-top');
           } else if (x === verseElements.length - 1) {
             await asyncScrollIntoView('.notes-bottom');
-            // noteElement = document.querySelector('.notes-bottom');
           }
-
-          // if (noteElement) {
-          // noteElement.scrollIntoView();
-          // }
         }
 
         break;
