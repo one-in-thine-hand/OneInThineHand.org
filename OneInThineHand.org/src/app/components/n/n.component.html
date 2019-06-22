@@ -17,14 +17,14 @@
         <span [innerHTML]="getNoteRefText(noteRef)"></span>
       </li>
       <li>
-        <textarea *ngIf="edit" name="note-ref" id="" rows="1">{{
+        <textarea *ngIf="edit" name="note-ref" id="">{{
           noteRef.text
         }}</textarea>
       </li></ng-container
     >
   </ul>
 
-  <textarea *ngIf="edit" name="note-ref" id="" rows="5">{{
+  <textarea *ngIf="edit" class="offsets" name="note-ref" id="" rows="5">{{
     note.offsets
   }}</textarea>
   <span class="edit-buttons"

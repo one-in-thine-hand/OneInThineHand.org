@@ -79,4 +79,7 @@ note {
 textarea {
   resize: none;
   width: 100%;
+  &.offsets {
+    height: 30px;
+  }
 }
