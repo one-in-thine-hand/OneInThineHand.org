@@ -33,11 +33,9 @@ export class ExportService {
       if (docs) {
         const ids = sortBy(
           docs.rows
-            .filter(
-              (d): boolean => {
-                return d.id.includes(bookName) && d.id.includes('note');
-              },
-            )
+            .filter((d): boolean => {
+              return d.id.includes(bookName) && d.id.includes('note');
+            })
             .map(
               (d): CouchDoc => {
                 return { id: d.id, rev: d.value.rev };
@@ -63,11 +61,9 @@ export class ExportService {
                   return (r.docs[0] as any).ok as ChapterNotes;
                 },
               )
-              .map(
-                (cNotes): string => {
-                  return this.chapterNotesToString(cNotes);
-                },
-              )
+              .map((cNotes): string => {
+                return this.chapterNotesToString(cNotes);
+              })
               .join('\n')}
               </body>
               </html>`;
@@ -89,13 +85,11 @@ export class ExportService {
     )}">`;
     if (cNotes.notes) {
       chapterNotesString = `${chapterNotesString} ${cNotes.notes
-        .map(
-          (verseNote): string => {
-            return `<verse-notes id="${verseNote._id}">${this.notesToString(
-              verseNote.notes,
-            )}</verse-notes>`;
-          },
-        )
+        .map((verseNote): string => {
+          return `<verse-notes id="${verseNote._id}">${this.notesToString(
+            verseNote.notes,
+          )}</verse-notes>`;
+        })
         .join('')}</chapter>`;
     }
     return chapterNotesString;
@@ -103,76 +97,68 @@ export class ExportService {
   public notesToString(notes: Note[] | undefined): string {
     if (notes) {
       return notes
-        .map(
-          (note): string => {
-            if (note.uncompressedOffsets) {
-              if (note.uncompressedOffsets.includes(0)) {
-                note.offsets = 'all';
-              } else {
-                note.offsets = getRanges(note.uncompressedOffsets)
-                  .map(
-                    (offsets): string => {
-                      return offsets.join('-');
-                    },
-                  )
-                  .join(',');
-              }
-              // console.log(note.offsets);
-
-              // console.log(getRanges(note.uncompressedOffsets));
-              // console.log(
-              //   sortBy(
-              //     note.uncompressedOffsets,
-              //     (u): number => {
-              //       return u;
-              //     },
-              //   ),
-              // );
+        .map((note): string => {
+          if (note.uncompressedOffsets) {
+            if (note.uncompressedOffsets.includes(0)) {
+              note.offsets = 'all';
+            } else {
+              note.offsets = getRanges(note.uncompressedOffsets)
+                .map((offsets): string => {
+                  return offsets.join('-');
+                })
+                .join(',');
             }
+            // console.log(note.offsets);
 
-            const getNoteType = NoteTypeConverts.find(
-              (nTC): boolean => {
-                return nTC.noteType === note.noteType;
-              },
-            );
-            let classList: string[] = [];
+            // console.log(getRanges(note.uncompressedOffsets));
+            // console.log(
+            //   sortBy(
+            //     note.uncompressedOffsets,
+            //     (u): number => {
+            //       return u;
+            //     },
+            //   ),
+            // );
+          }
 
-            if (getNoteType) {
-              classList.push(getNoteType.className);
-            }
+          const getNoteType = NoteTypeConverts.find((nTC): boolean => {
+            return nTC.noteType === note.noteType;
+          });
+          let classList: string[] = [];
 
-            if (note.classList) {
-              classList = classList.concat(note.classList);
-            }
-            return `<note class="${classList.join(' ')}" id="${note.id}" ${
-              note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
-            }>
+          if (getNoteType) {
+            classList.push(getNoteType.className);
+          }
+
+          if (note.classList) {
+            classList = classList.concat(note.classList);
+          }
+          return `<note class="${classList.join(' ')}" id="${note.id}" ${
+            note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
+          }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''
           }</p>
           ${note.noteRefs
-            .map(
-              (noteRef): string => {
-                let refLabel: ReferenceLabel | undefined;
-                if (noteRef.noteCategory) {
-                  refLabel = getReferenceLabelByNoteCategory(
-                    noteRef.noteCategory,
-                  );
-                }
+            .map((noteRef): string => {
+              let refLabel: ReferenceLabel | undefined;
+              if (noteRef.noteCategory) {
+                refLabel = getReferenceLabelByNoteCategory(
+                  noteRef.noteCategory,
+                );
+              }
 
-                return `<p class="note-reference"><span class="${
-                  refLabel ? refLabel.className : ''
-                }${noteRef.none === true ? ' none' : ''}">${
-                  refLabel ? refLabel.referenceLabelShortName : ''
-                } </span>${
-                  noteRef.text ? noteRef.text.replace(/&/g, '&amp;') : ''
-                }</p>`;
-              },
-            )
+              return `<p class="note-reference"><span class="${
+                refLabel ? refLabel.className : ''
+              }${noteRef.none === true ? ' none' : ''}">${
+                refLabel ? refLabel.referenceLabelShortName : ''
+              } </span>${
+                noteRef.text ? noteRef.text.replace(/&/g, '&amp;') : ''
+              }</p>`;
+            })
             .join('\n')}
           </note>`;
-          },
-        )
+        })
         .join('\n');
     }
     return '';

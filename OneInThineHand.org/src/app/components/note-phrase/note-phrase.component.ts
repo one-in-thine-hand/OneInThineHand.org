@@ -8,6 +8,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SaveService } from '../../services/save.service';
 
 @Component({
   selector: 'app-note-phrase',
@@ -23,8 +24,9 @@ export class NotePhraseComponent implements OnInit {
     public offsetService: OffsetService,
     public formatTagService: FormatTagService,
     public modalService: NgbModal,
+    public saveService: SaveService,
   ) {}
-  public ngOnInit() {}
+  public ngOnInit(): void {}
 
   public getNotePhrase(notePhrase: NotePhrase | undefined): string {
     return notePhrase && notePhrase.text
@@ -33,8 +35,6 @@ export class NotePhraseComponent implements OnInit {
   }
 
   private validateSelectedNodes(node: Node): Element | undefined {
-    console.log(node);
-
     if (
       (node as HTMLElement).getAttribute !== undefined &&
       (node as HTMLElement).getAttribute('offsets') !== null
@@ -61,86 +61,73 @@ export class NotePhraseComponent implements OnInit {
 
     if (selection) {
       try {
-        const range = selection.getRangeAt(0);
-        if (range.toString().length === 0) {
-          console.log(range.toString().length);
+        await this.addOffsets(selection, secondaryNote);
+      } catch (error) {}
 
-          throw 'No selection';
-        }
-        const elements = [
-          this.validateSelectedNodes(range.startContainer),
-          this.validateSelectedNodes(range.endContainer),
-        ];
-        console.log(elements);
-
-        if (elements[0] !== undefined && elements[1] !== undefined) {
-          const element1VerseID = (elements[0] as HTMLElement).getAttribute(
-            'verse-id',
-          );
-          const element2VerseID = (elements[1] as HTMLElement).getAttribute(
-            'verse-id',
-          );
-          console.log(`${element1VerseID}-notes`);
-          console.log(this.verseNotes._id);
-
-          console.log(`${element2VerseID}-notes`);
-
-          if (
-            element1VerseID &&
-            `${element1VerseID}-notes` === this.verseNotes._id &&
-            element2VerseID &&
-            `${element2VerseID}-notes` === this.verseNotes._id
-          ) {
-            const offsets1 = ((elements[0] as HTMLElement).getAttribute(
-              'offsets',
-            ) as string).split('-');
-            const offsets2 = ((elements[1] as HTMLElement).getAttribute(
-              'offsets',
-            ) as string).split('-');
-            console.log(
-              `${parseInt(offsets1[0], 10) + range.startOffset} ${parseInt(
-                offsets2[0],
-                10,
-              ) +
-                range.endOffset +
-                1}`,
-            );
-            if (secondaryNote.offsets === undefined) {
-              secondaryNote.offsets = '';
-            }
-            secondaryNote.offsets = `${`${parseInt(offsets1[0], 10) +
-              range.startOffset}-${parseInt(offsets2[0], 10) +
-              range.endOffset -
-              1}`},${secondaryNote.offsets}`;
-            console.log(secondaryNote.offsets);
-
-            await this.offsetService.expandNotes(this.chapterService.notes);
-            await this.formatTagService.resetFormatTags(
-              this.chapterService.chapterVerses,
-              this.chapterService.chapterNotes,
-            );
-            if (this.chapterService.chapterNotes) {
-              this.chapterService.chapterNotes.save = true;
-            }
-            console.log('asdf');
-          } else {
-            throw 'No valid selection';
-          }
-        }
-        // console.log(elements);
-
-        // console.log(range);
-      } catch (error) {
-        if (secondaryNote.refTag) {
-          console.log(error);
-          this.chapterService.resetNoteVis();
-
-          secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
-        }
-        console.log(error);
+      if (secondaryNote.refTag) {
+        const oldHighlight = secondaryNote.refTag.highlight;
+        this.chapterService.resetNoteVis();
+        secondaryNote.refTag.highlight = !oldHighlight;
       }
-    } else {
     }
-    console.log(secondaryNote);
+  }
+
+  private async addOffsets(
+    selection: Selection,
+    secondaryNote: Note,
+  ): Promise<void> {
+    const range = selection.getRangeAt(0);
+    if (range.toString().length === 0) {
+      throw 'No selection';
+    }
+    const elements = [
+      this.validateSelectedNodes(range.startContainer),
+      this.validateSelectedNodes(range.endContainer),
+    ];
+    if (elements[0] !== undefined && elements[1] !== undefined) {
+      const element1VerseID = (elements[0] as HTMLElement).getAttribute(
+        'verse-id',
+      );
+      const element2VerseID = (elements[1] as HTMLElement).getAttribute(
+        'verse-id',
+      );
+      if (
+        element1VerseID &&
+        `${element1VerseID}-notes` === this.verseNotes._id &&
+        element2VerseID &&
+        `${element2VerseID}-notes` === this.verseNotes._id
+      ) {
+        const offsets1 = ((elements[0] as HTMLElement).getAttribute(
+          'offsets',
+        ) as string).split('-');
+        const offsets2 = ((elements[1] as HTMLElement).getAttribute(
+          'offsets',
+        ) as string).split('-');
+
+        if (secondaryNote.offsets === undefined) {
+          secondaryNote.offsets = '';
+        }
+        secondaryNote.offsets = `${`${parseInt(offsets1[0], 10) +
+          range.startOffset}-${parseInt(offsets2[0], 10) +
+          range.endOffset -
+          1}`},${secondaryNote.offsets}`;
+        await this.offsetService.expandNotes(this.chapterService.notes);
+        await this.formatTagService.resetFormatTags(
+          this.chapterService.chapterVerses,
+          this.chapterService.chapterNotes,
+        );
+        if (this.chapterService.chapterNotes) {
+          this.chapterService.chapterNotes.save = true;
+        }
+
+        this.saveService.save();
+
+        if (secondaryNote.refTag) {
+          secondaryNote.refTag.highlight = false;
+        }
+      } else {
+        throw 'No valid selection';
+      }
+    }
   }
 }

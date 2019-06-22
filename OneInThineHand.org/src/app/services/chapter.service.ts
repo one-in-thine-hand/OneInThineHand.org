@@ -3,6 +3,7 @@ import { Chapter } from '../../../../chapter/src/Chapter';
 import { Note, Verse, VerseNotes } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class ChapterService {
   public notes: VerseNotes[] | undefined;
   public chapterNotes: ChapterNotes | undefined;
   public chapterVerses: ChapterVerses | undefined;
+
   public constructor() {}
 
   public mergeVersesNotes(

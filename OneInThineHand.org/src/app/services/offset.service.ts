@@ -39,8 +39,17 @@ export class OffsetService {
               if (secondaryNote.id) {
                 refTag.secondaryNoteID = secondaryNote.id;
               }
+              console.log(
+                secondaryNote.offsets !== 'all' &&
+                  (secondaryNote.uncompressedOffsets &&
+                    !secondaryNote.uncompressedOffsets.includes(0)),
+              );
 
-              if (secondaryNote.offsets === 'all') {
+              if (
+                secondaryNote.offsets !== 'all' &&
+                (secondaryNote.uncompressedOffsets &&
+                  !secondaryNote.uncompressedOffsets.includes(0))
+              ) {
                 refTag.refs = secondaryNote.noteRefs
                   .map((ref): string => {
                     return ref._id ? ref._id : '';
@@ -56,6 +65,9 @@ export class OffsetService {
                     return ref.trim() !== '';
                   });
               } else {
+                console.log();
+                console.log(secondaryNote.notePhrase);
+
                 refTag.offsets = 'all';
                 formatTag.refs = ['all'];
               }

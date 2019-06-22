@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { SaveStateService } from './services/save-state.service';
 import { SwUpdate } from '@angular/service-worker';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 // import { SwUpdate } from '@angular/service-worker';
 

@@ -24,7 +24,6 @@ import { SaveService } from '../../services/save.service';
 })
 export class ChapterComponent implements OnInit, OnDestroy {
   public async ngOnDestroy(): Promise<void> {
-    console.log('destroy');
     await this.setHistory();
     this.chapterService.chapterNotes = undefined;
   }
@@ -216,7 +215,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
         }
         this.historyService.init();
         this.popStateActivated = false;
-        this.saveService.start();
       },
     );
   }
