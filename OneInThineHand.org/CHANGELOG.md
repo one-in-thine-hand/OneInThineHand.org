@@ -1,5 +1,17 @@
+## <small>5.0.25 (2019-06-22)</small>
+
+* Added editing offsets directly ([fce0d3f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fce0d3f))
+* bug fixes ([3d44c6c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3d44c6c))
+* Bug fixes ([8175bb8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8175bb8))
+* More edit work ([44f9d64](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/44f9d64))
+* Working on adding save ([2cfc4cd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2cfc4cd))
+* Working on editing ([031ec8f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/031ec8f))
+
+
+
 ## <small>5.0.24 (2019-06-21)</small>
 
+* v5.0.24 ([459cbc7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/459cbc7))
 
 
 
