@@ -47,6 +47,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppConfig } from '../environments/environment';
 import { ToastComponent } from './components/toast/toast.component';
 import { TitleHeaderComponent } from './components/title-header/title-header.component';
+import { NComponent } from './components/n/n.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -82,6 +83,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     AddNoteComponent,
     ToastComponent,
     TitleHeaderComponent,
+    NComponent,
   ],
   imports: [
     NgbModule,

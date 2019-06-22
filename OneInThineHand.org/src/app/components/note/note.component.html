@@ -4,29 +4,11 @@
     <button class="add-note-btn" (click)="addNote(content)"></button>
   </li>
   <ng-container *ngIf="verseNotes.notes">
-    <note
-      class="secondary-note"
+    <app-n
       *ngFor="let note of getSecondaryNotes()"
-      id="eng-{{ note.id }}"
-      [ngClass]="{ highlight: highlight(note) }"
-    >
-      <app-note-phrase
-        [note]="note"
-        [verseNotes]="this.verseNotes"
-      ></app-note-phrase>
-      <!-- <li (click)="this.notePhraseClick(note)" class="note-phrase">
-        {{ getNotePhrase(note.notePhrase) }}
-      </li> -->
-      <ul class="note-refs" *ngIf="note.noteRefs">
-        <li
-          *ngFor="let noteRef of getNoteRefs(note)"
-          [class]="getRefClass(noteRef)"
-        >
-          <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
-          <span [innerHTML]="getNoteRefText(noteRef)"></span>
-        </li>
-      </ul>
-    </note>
+      [note]="note"
+      [verseNotes]="this.verseNotes"
+    ></app-n>
   </ng-container>
 </verse-notes>
 

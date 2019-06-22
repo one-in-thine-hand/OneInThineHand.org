@@ -25,7 +25,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class NoteComponent implements OnInit {
   @Input() public verseNotes: VerseNotes;
-
+  public edit: boolean = false;
   public tempNote: Note | undefined;
   public constructor(
     public chapterService: ChapterService,
@@ -37,17 +37,6 @@ export class NoteComponent implements OnInit {
 
   public ngOnInit(): void {}
 
-  public getNotePhrase(notePhrase: NotePhrase | undefined): string {
-    return notePhrase && notePhrase.text
-      ? notePhrase.text
-      : 'Note Phrase Missing';
-  }
-
-  public getNoteRefText(noteRef: NoteRef): SafeHtml {
-    return this.domSanitizer.bypassSecurityTrustHtml(
-      noteRef.text ? noteRef.text : '',
-    );
-  }
   public getSecondaryNotes(): Note[] {
     let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
@@ -65,36 +54,6 @@ export class NoteComponent implements OnInit {
       );
     }
     return secondaryNotes;
-  }
-
-  public getNoteRefs(secondaryNote: Note): NoteRef[] {
-    return getVisible(secondaryNote.noteRefs);
-  }
-  /**
-   * convertNoteCategory
-   */
-  public convertNoteCategory(noteRef: NoteRef): string {
-    // console.log(noteRef.none);
-
-    if (noteRef.none === true) {
-      return '';
-    }
-    const nc = ReferenceLabels.find(
-      (rl): boolean => {
-        // if (
-        //   rl.noteCategory === noteRef.noteCategory &&
-        //   noteRef.text &&
-        //   noteRef.text.includes('many')
-        // ) {
-        //   // console.log(ReferenceLabels);
-        // }
-        return rl.noteCategory === noteRef.noteCategory;
-      },
-    );
-    // if (noteRef.text && noteRef.text.includes('many')) {
-    //   // console.log(nc);
-    // }
-    return nc ? nc.referenceLabelShortName : 'extERR';
   }
 
   private getContainerOffsets(container: HTMLElement): void {}
@@ -232,18 +191,6 @@ export class NoteComponent implements OnInit {
     console.log(getInputValue('#noteReferenceTemp'));
     console.log(getInputValue('#noteReferenceLabelTemp'));
     modal.close('Save click');
-  }
-
-  public highlight(note: Note): boolean {
-    return note.refTag && note.refTag.highlight ? true : false;
-  }
-
-  public getRefClass(noteRef: NoteRef): string {
-    if (noteRef && noteRef.noteCategory) {
-      const nC = getReferenceLabelByNoteCategory(noteRef.noteCategory);
-      return nC ? nC.className : '';
-    }
-    return '';
   }
 }
 
