@@ -31,13 +31,28 @@
       float: left;
       z-index: 1050;
       position: fixed;
+
+      .backdrop {
+        z-index: 950;
+        position: fixed;
+        top: 96px;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
     }
     &.navigation-mobile-hide {
       display: none;
+      .backdrop {
+        display: none;
+      }
     }
   }
   @media only screen and (min-width: 992px) {
     &.navigation-hide {
+      display: none;
+    }
+    .backdrop {
       display: none;
     }
   }

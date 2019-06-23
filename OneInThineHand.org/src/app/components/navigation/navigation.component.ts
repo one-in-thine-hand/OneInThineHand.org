@@ -85,48 +85,61 @@ export class NavigationComponent implements OnInit {
 
     if (navItem && navItem.id !== undefined && !navItem.active) {
       if (navItem.navItems) {
-        navItem.navItems.map(
-          (n): void => {
-            n.active = false;
-            n.display = true;
-          },
-        );
+        this.setNavItemsDisplay(navItem.navItems, false, true);
       }
-      navItems.map(
-        (n): void => {
-          n.display = false;
-          n.active = false;
-        },
-      );
-      navItem.display = true;
-      navItem.active = true;
+      // navItems.map(
+      //   (n): void => {
+      //     n.display = false;
+      //     n.active = false;
+      //   },
+      // );
+      this.setNavItemsDisplay(navItems, false, false);
+      this.setNavItemDisplay(navItem, true, true);
+      // navItem.display = true;
+      // navItem.active = true;
       console.log(navItem);
       return navItem;
     }
     if (navItem) {
-      navItems.map(
-        (n): void => {
-          n.active = false;
-          n.display = true;
-        },
-      );
+      this.setNavItemsDisplay(navItems, false, true);
       navItem.active = true;
       return navItem;
     } else {
       for (let x = 0; x < navItems.length; x++) {
         const i = navItems[x];
         if (i.navItems && this.findNav(id, i.navItems)) {
-          i.active = false;
-          i.display = true;
+          this.setNavItemDisplay(i, false, true);
           return i;
         } else {
-          i.active = false;
-          i.display = false;
+          this.setNavItemDisplay(i, false, false);
+          // i.active = false;
+          // i.display = false;
         }
       }
     }
     return undefined;
   }
+  private setNavItemsDisplay(
+    navItems: NavigationItem[],
+    active: boolean,
+    display: boolean,
+  ): void {
+    navItems.map(
+      (n): void => {
+        this.setNavItemDisplay(n, active, display);
+      },
+    );
+  }
+
+  private setNavItemDisplay(
+    n: NavigationItem,
+    active: boolean,
+    display: boolean,
+  ): void {
+    n.active = active;
+    n.display = display;
+  }
+
   public async addressBarKeyUp(
     event: KeyboardEvent | undefined,
   ): Promise<void> {
