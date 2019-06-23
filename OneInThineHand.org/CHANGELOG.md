@@ -1,3 +1,10 @@
+## <small>5.0.27 (2019-06-23)</small>
+
+* Dismissing the modal ([7aa7cb1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7aa7cb1))
+* Working on modal ([a9d3cb4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a9d3cb4))
+
+
+
 ## <small>5.0.26 (2019-06-23)</small>
 
 * Adding edit mode ([43e3333](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/43e3333))
@@ -6,6 +13,7 @@
 * nav fixes ([ebf35fc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ebf35fc))
 * nav pane ([82044e8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/82044e8))
 * Navigation update ([24bb176](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/24bb176))
+* v5.0.26 ([325ae5a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/325ae5a))
 
 
 
