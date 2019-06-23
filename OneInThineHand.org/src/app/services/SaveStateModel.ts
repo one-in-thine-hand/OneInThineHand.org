@@ -34,6 +34,7 @@ export class SaveStateModel {
   public printNotesVisible: boolean | undefined;
   public tcNotesVisible: boolean | undefined;
   public testOverlayVisible: boolean | undefined;
+  public navigationMobilePaneToggle: boolean = false;
 }
 
 // export const refLabelSettingsTemplate = [

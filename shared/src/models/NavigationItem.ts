@@ -4,6 +4,7 @@ export class NavigationItem {
   public title: string;
   public shortTitle: string;
   public active: boolean | undefined;
+  public display: boolean;
 }
 
 export function flattenNavigationItems(
@@ -20,4 +21,23 @@ export function flattenNavigationItems(
     },
   );
   return n;
+}
+export function flattenNavigationItem(
+  navItem: NavigationItem,
+): NavigationItem[] {
+  let navItems: NavigationItem[] = [navItem];
+
+  if (navItem.navItems) {
+    navItem.navItems.map(
+      (n): void => {
+        if (n.navItems) {
+          navItems = navItems.concat(flattenNavigationItem(n));
+        } else {
+          navItems.push(n);
+        }
+      },
+    );
+  }
+
+  return navItems;
 }

@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
+import { SaveStateService } from '../../services/save-state.service';
+import * as navigation from '../../../assets/manifests.json';
+import { NavigationItem } from '../../../../../shared/src/shared';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { ParamService } from '../../services/param.service';
+import { flattenNavigationItem } from '../../../../../shared/src/models/NavigationItem';
 
 @Component({
   selector: 'app-navigation',
@@ -7,10 +14,78 @@ import { NavigationService } from '../../services/navigation.service';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  public constructor(public navigationService: NavigationService) {}
+  public constructor(
+    public navigationService: NavigationService,
+    public tempSettingsService: TempSettingsService,
+    public saveStateService: SaveStateService,
+    public activatedRouter: ActivatedRoute,
+    public router: Router,
+    public paramService: ParamService,
+  ) {}
 
-  public ngOnInit(): void {}
+  public currentNavItems: NavigationItem[] = [];
 
+  public navigationItems = navigation.navigation.filter((navItem): boolean => {
+    return navItem.title !== '';
+  }) as NavigationItem[];
+  public ngOnInit(): void {
+    this.router.events.subscribe((value): void => {
+      if (value instanceof NavigationEnd) {
+        console.log(value);
+        try {
+          // const chapterParams = this.paramService.parseChapterParams(params);
+          const n = this.findNav(
+            value.url.split('.')[0].replace('/', ''),
+            this.navigationItems,
+          );
+          if (n) {
+            this.currentNavItems = flattenNavigationItem(n).filter(
+              (nk): boolean => {
+                return nk.display === true;
+              },
+            );
+          } else {
+            throw '';
+          }
+        } catch (error) {
+          console.log(error);
+
+          this.currentNavItems = this.navigationItems;
+        }
+      }
+    });
+    this.activatedRouter.params.subscribe((): void => {});
+  }
+  public findNav(
+    id: string,
+    navItems: NavigationItem[],
+  ): NavigationItem | undefined {
+    const navItem = navItems.find((navItem): boolean => {
+      return navItem.href === id;
+    });
+
+    if (navItem) {
+      navItems.map((n): void => {
+        n.active = false;
+        n.display = true;
+      });
+      navItem.active = true;
+      return navItem;
+    } else {
+      for (let x = 0; x < navItems.length; x++) {
+        const i = navItems[x];
+        if (i.navItems && this.findNav(id, i.navItems)) {
+          i.active = false;
+          i.display = true;
+          return i;
+        } else {
+          i.active = false;
+          i.display = false;
+        }
+      }
+    }
+    return undefined;
+  }
   public async addressBarKeyUp(
     event: KeyboardEvent | undefined,
   ): Promise<void> {
@@ -29,5 +104,12 @@ export class NavigationComponent implements OnInit {
         console.log(error);
       }
     }
+  }
+
+  public getNavHeight(): string {
+    return `${window.innerHeight - 192}px`;
+  }
+  public getNavGrid(): string {
+    return `48px ${window.innerHeight - 192}px 48px`;
   }
 }

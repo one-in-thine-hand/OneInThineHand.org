@@ -154,9 +154,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
           this.setHighlighting(chapterParams, this.chapterVerses.verses);
         } else {
           const pageState = this.pageStateService.pageStateMap.get(
-            `eng-${chapterParams.book}-${
-              chapterParams.chapter
-            }-chapter-page-state`,
+            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
           );
 
           if (this.popStateActivated && pageState) {
@@ -194,9 +192,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                `eng-${chapterParams.book}-${
-                  chapterParams.chapter
-                }-chapter-verses`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
               )) as ChapterVerses;
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
@@ -262,12 +258,10 @@ export class ChapterComponent implements OnInit, OnDestroy {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
 
-    verses.forEach(
-      (verse): void => {
-        verse.highlight = false;
-        verse.context = false;
-      },
-    );
+    verses.forEach((verse): void => {
+      verse.highlight = false;
+      verse.context = false;
+    });
 
     this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
     this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
@@ -299,25 +293,19 @@ export class ChapterComponent implements OnInit, OnDestroy {
     verses: Verse[],
   ): Verse[] {
     if (context) {
-      const filteredVerses = context.map(
-        (c): Verse | undefined => {
-          return verses.find(
-            (verse): boolean => {
-              return (
-                verse._id ===
-                `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
-              );
-            },
+      const filteredVerses = context.map((c): Verse | undefined => {
+        return verses.find((verse): boolean => {
+          return (
+            verse._id ===
+            `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
           );
-        },
-      );
+        });
+      });
       // console.log(filteredVerses);
 
-      return filteredVerses.filter(
-        (v): boolean => {
-          return v !== undefined;
-        },
-      ) as Verse[];
+      return filteredVerses.filter((v): boolean => {
+        return v !== undefined;
+      }) as Verse[];
     } else {
       return [];
     }

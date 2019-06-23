@@ -9,6 +9,24 @@
         />
       </svg>
     </li> -->
+    <li
+      (click)="tempSettingsService.editMode = !tempSettingsService.editMode"
+      [ngClass]="{ 'bg-light': tempSettingsService.editMode }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 302 276"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        shape-rendering="geometricPrecision"
+        text-rendering="geometricPrecision"
+        image-rendering="optimizeQuality"
+      >
+        <path
+          d="M70 212l-18-3c-3-7-6-15 4-34C100 98 228 2 287 0c28 3 11 35-13 59-29 28-69 58-86 71 11 0 22-1 33-1-56 49-90 63-116 62 15 2 30 3 45 4-30 13-59 23-80 17zM3 276c-1-3-2-5-3-7C88 164 176 81 267 30 164 102 75 184 3 276z"
+        />
+      </svg>
+    </li>
   </ul>
   <ul class="oith-header-middle">
     <li
