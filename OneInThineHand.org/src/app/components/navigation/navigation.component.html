@@ -1,4 +1,14 @@
-<div class="navigation-parent">
+<div
+  class="navigation-parent"
+  [ngClass]="{
+    'navigation-hide': !this.saveStateService.navigationPaneToggle,
+    'navigation-mobile-hide': !this.tempSettingsService
+      .navigationMobilePaneToggle,
+    'navigation-mobile-show': this.tempSettingsService
+      .navigationMobilePaneToggle
+  }"
+  [ngStyle]="{ 'grid-template-rows': getNavGrid() }"
+>
   <div>
     <input
       class="form-control"
@@ -9,4 +19,11 @@
       (keyup)="addressBarKeyUp($event)"
     />
   </div>
+  <ul *ngIf="tempSettingsService.editMode">
+    <li></li>
+  </ul>
+  <ul *ngIf="!tempSettingsService.editMode">
+    <li>Navigation</li>
+  </ul>
+  <li>Navigation</li>
 </div>

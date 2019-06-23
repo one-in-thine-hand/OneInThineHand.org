@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,7 +9,11 @@ import { NavigationService } from '../../services/navigation.service';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  public constructor(public navigationService: NavigationService) {}
+  public constructor(
+    public navigationService: NavigationService,
+    public tempSettingsService: TempSettingsService,
+    public saveStateService: SaveStateService,
+  ) {}
 
   public ngOnInit(): void {}
 
@@ -29,5 +35,12 @@ export class NavigationComponent implements OnInit {
         console.log(error);
       }
     }
+  }
+
+  public getNavHeight(): string {
+    return `${window.innerHeight - 192}px`;
+  }
+  public getNavGrid(): string {
+    return `48px ${window.innerHeight - 192}px 48px`;
   }
 }
