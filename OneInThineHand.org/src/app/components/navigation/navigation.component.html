@@ -51,13 +51,14 @@
     ></span>
     <span>Settings</span>
   </li>
-  <div
-    class="backdrop"
-    [ngClass]="{
-      'navigation-mobile-hide': !this.tempSettingsService
-        .navigationMobilePaneToggle,
-      'navigation-mobile-show': this.tempSettingsService
-        .navigationMobilePaneToggle
-    }"
-  ></div>
 </div>
+<div
+  class="backdrop"
+  (click)="this.tempSettingsService.navigationMobilePaneToggle = false"
+  [ngClass]="{
+    'navigation-mobile-hide': !this.tempSettingsService
+      .navigationMobilePaneToggle,
+    'navigation-mobile-show': this.tempSettingsService
+      .navigationMobilePaneToggle
+  }"
+></div>

@@ -33,6 +33,7 @@ export class NavigationComponent implements OnInit {
   public ngOnInit(): void {
     this.router.events.subscribe(
       async (value): Promise<void> => {
+        this.tempSettingsService.navigationMobilePaneToggle = false;
         if (value instanceof NavigationEnd) {
           console.log(value);
           await this.resetNavigation(this.navigationItems);
