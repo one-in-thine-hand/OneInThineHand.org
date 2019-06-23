@@ -1,6 +1,12 @@
+## <small>5.0.28 (2019-06-23)</small>
+
+
+
+
 ## <small>5.0.27 (2019-06-23)</small>
 
 * Dismissing the modal ([7aa7cb1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7aa7cb1))
+* v5.0.27 ([b8d8b85](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b8d8b85))
 * Working on modal ([a9d3cb4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a9d3cb4))
 
 
