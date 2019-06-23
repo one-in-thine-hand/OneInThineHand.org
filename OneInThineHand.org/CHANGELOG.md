@@ -1,9 +1,21 @@
+## <small>5.0.26 (2019-06-23)</small>
+
+* Adding edit mode ([43e3333](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/43e3333))
+* Figured out navigation layout ([9ae59d4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9ae59d4))
+* nav avaliable ([844ae8e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/844ae8e))
+* nav fixes ([ebf35fc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ebf35fc))
+* nav pane ([82044e8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/82044e8))
+* Navigation update ([24bb176](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/24bb176))
+
+
+
 ## <small>5.0.25 (2019-06-22)</small>
 
 * Added editing offsets directly ([fce0d3f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fce0d3f))
 * bug fixes ([3d44c6c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3d44c6c))
 * Bug fixes ([8175bb8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8175bb8))
 * More edit work ([44f9d64](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/44f9d64))
+* v5.0.25 ([fade764](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fade764))
 * Working on adding save ([2cfc4cd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2cfc4cd))
 * Working on editing ([031ec8f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/031ec8f))
 
