@@ -1,5 +1,6 @@
 import { NavigationItem } from '../../shared/src/shared';
 import { filterTextNodes, getChildNavigation } from './main';
+import cuid from 'cuid';
 
 function hasNav(li: Element): boolean {
   return (
@@ -28,6 +29,7 @@ export function getNavigationItem(
     navItem.title = title && title.textContent ? title.textContent : '';
     navItem.shortTitle =
       shortTitle && shortTitle.textContent ? shortTitle.textContent : '';
+    navItem.id = cuid.slug();
     navItem.navItems = Array.from(li.querySelectorAll('ul li'))
       .map(
         (e): NavigationItem | undefined => {
@@ -44,7 +46,9 @@ export function getNavigationItem(
     const title = li.querySelector(titleSelector);
     const shortTitle = li.querySelector(shortTitleSelector);
     navItem.href =
-      aElement && aElement.href ? aElement.href.replace('.html', '') : '';
+      aElement && aElement.href
+        ? `#/${aElement.href.replace('.html', '')}`
+        : '';
     navItem.title = title && title.textContent ? title.textContent : '';
     navItem.shortTitle =
       shortTitle && shortTitle.textContent ? shortTitle.textContent : '';
@@ -53,8 +57,10 @@ export function getNavigationItem(
 
     if (cN[1] && cN[1].nodeName.toLowerCase() === 'ul') {
       navItem.href = undefined;
+      navItem.id = cuid.slug();
       navItem.navItems = getChildNavigation(li as Element);
     } else {
+      navItem.id = undefined;
       navItem.navItems = undefined;
     }
     if (navItem.href && navItem.href.includes('about:blank#')) {

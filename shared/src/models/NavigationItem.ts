@@ -5,6 +5,7 @@ export class NavigationItem {
   public shortTitle: string;
   public active: boolean | undefined;
   public display: boolean;
+  public id: string | undefined;
 }
 
 export function flattenNavigationItems(

@@ -25,50 +25,91 @@ export class NavigationComponent implements OnInit {
 
   public currentNavItems: NavigationItem[] = [];
 
-  public navigationItems = navigation.navigation.filter((navItem): boolean => {
-    return navItem.title !== '';
-  }) as NavigationItem[];
+  public navigationItems = navigation.navigation.filter(
+    (navItem): boolean => {
+      return navItem.title !== '';
+    },
+  ) as NavigationItem[];
   public ngOnInit(): void {
-    this.router.events.subscribe((value): void => {
-      if (value instanceof NavigationEnd) {
-        console.log(value);
-        try {
-          // const chapterParams = this.paramService.parseChapterParams(params);
-          const n = this.findNav(
-            value.url.split('.')[0].replace('/', ''),
-            this.navigationItems,
-          );
-          if (n) {
-            this.currentNavItems = flattenNavigationItem(n).filter(
-              (nk): boolean => {
-                return nk.display === true;
-              },
-            );
-          } else {
-            throw '';
-          }
-        } catch (error) {
-          console.log(error);
+    this.router.events.subscribe(
+      async (value): Promise<void> => {
+        if (value instanceof NavigationEnd) {
+          console.log(value);
+          await this.resetNavigation(this.navigationItems);
+          try {
+            // const chapterParams = this.paramService.parseChapterParams(params);
+            const n = this.findNav(value.url, this.navigationItems);
+            if (n) {
+              this.currentNavItems = flattenNavigationItem(n).filter(
+                (nk): boolean => {
+                  return nk.display === true;
+                },
+              );
+            } else {
+              throw '';
+            }
+          } catch (error) {
+            console.log(error);
 
-          this.currentNavItems = this.navigationItems;
+            this.currentNavItems = this.navigationItems;
+          }
         }
-      }
-    });
+      },
+    );
     this.activatedRouter.params.subscribe((): void => {});
+  }
+
+  public async goHome(): Promise<void> {
+    this.currentNavItems = this.navigationItems;
+  }
+  public async resetNavigation(navItems: NavigationItem[]): Promise<void> {
+    navItems.map(
+      async (navItem): Promise<void> => {
+        navItem.active = false;
+        navItem.display = false;
+        if (navItem.navItems) {
+          await this.resetNavigation(navItem.navItems);
+        }
+      },
+    );
   }
   public findNav(
     id: string,
     navItems: NavigationItem[],
   ): NavigationItem | undefined {
-    const navItem = navItems.find((navItem): boolean => {
-      return navItem.href === id;
-    });
+    const navItem = navItems.find(
+      (navItem): boolean => {
+        return navItem.href === `#${id}` || navItem.id === `${id}`;
+      },
+    );
 
+    if (navItem && navItem.id !== undefined && !navItem.active) {
+      if (navItem.navItems) {
+        navItem.navItems.map(
+          (n): void => {
+            n.active = false;
+            n.display = true;
+          },
+        );
+      }
+      navItems.map(
+        (n): void => {
+          n.display = false;
+          n.active = false;
+        },
+      );
+      navItem.display = true;
+      navItem.active = true;
+      console.log(navItem);
+      return navItem;
+    }
     if (navItem) {
-      navItems.map((n): void => {
-        n.active = false;
-        n.display = true;
-      });
+      navItems.map(
+        (n): void => {
+          n.active = false;
+          n.display = true;
+        },
+      );
       navItem.active = true;
       return navItem;
     } else {
@@ -111,5 +152,23 @@ export class NavigationComponent implements OnInit {
   }
   public getNavGrid(): string {
     return `48px ${window.innerHeight - 192}px 48px`;
+  }
+
+  public async navigationParentClick(navItem: NavigationItem): Promise<void> {
+    await this.resetNavigation(this.navigationItems);
+    if (navItem.id !== undefined) {
+      const n = this.findNav(navItem.id, this.navigationItems);
+      console.log(n);
+
+      if (n) {
+        this.currentNavItems = flattenNavigationItem(n).filter(
+          (nk): boolean => {
+            return nk.display === true;
+          },
+        );
+      } else {
+        this.currentNavItems = this.navigationItems;
+      }
+    }
   }
 }

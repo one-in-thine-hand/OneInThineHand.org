@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
-import { Note, NoteType, VerseNotes } from '../../../../shared/src/shared';
+import { VerseNotes } from '../../../../shared/src/shared';
 
 @Injectable({
   providedIn: 'root',

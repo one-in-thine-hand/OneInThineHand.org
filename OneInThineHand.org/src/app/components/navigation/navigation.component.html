@@ -23,14 +23,16 @@
     <li></li>
   </ul>
   <ul *ngIf="!tempSettingsService.editMode" class="navigation">
-    <li><span>Scriptures</span></li>
+    <li (click)="goHome()"><span>Scriptures</span></li>
     <ng-container *ngIf="currentNavItems">
       <li
         *ngFor="let navItem of currentNavItems"
         [ngClass]="{ active: navItem.active }"
       >
         <a *ngIf="navItem.href" [href]="navItem.href"> {{ navItem.title }}</a>
-        <span *ngIf="!navItem.href"> {{ navItem.title }}</span>
+        <span *ngIf="!navItem.href" (click)="navigationParentClick(navItem)">
+          {{ navItem.title }}</span
+        >
       </li>
     </ng-container>
   </ul>

@@ -35,7 +35,7 @@ export class NComponent implements OnInit {
     public saveService: SaveService,
   ) {}
 
-  public ngOnInit() {}
+  public ngOnInit(): void {}
 
   /**
    * convertNoteCategory
@@ -46,16 +46,18 @@ export class NComponent implements OnInit {
     if (noteRef.none === true) {
       return '';
     }
-    const nc = ReferenceLabels.find((rl): boolean => {
-      // if (
-      //   rl.noteCategory === noteRef.noteCategory &&
-      //   noteRef.text &&
-      //   noteRef.text.includes('many')
-      // ) {
-      //   // console.log(ReferenceLabels);
-      // }
-      return rl.noteCategory === noteRef.noteCategory;
-    });
+    const nc = ReferenceLabels.find(
+      (rl): boolean => {
+        // if (
+        //   rl.noteCategory === noteRef.noteCategory &&
+        //   noteRef.text &&
+        //   noteRef.text.includes('many')
+        // ) {
+        //   // console.log(ReferenceLabels);
+        // }
+        return rl.noteCategory === noteRef.noteCategory;
+      },
+    );
     // if (noteRef.text && noteRef.text.includes('many')) {
     //   // console.log(nc);
     // }
@@ -104,9 +106,11 @@ export class NComponent implements OnInit {
       ];
       note.offsets = (event.target as HTMLTextAreaElement).value
         .split('')
-        .map((v): string => {
-          return supportedCharacters.includes(v) ? v : '';
-        })
+        .map(
+          (v): string => {
+            return supportedCharacters.includes(v) ? v : '';
+          },
+        )
         .join('');
       // console.log(note.offsets);
 
@@ -118,9 +122,11 @@ export class NComponent implements OnInit {
 
       if (note.uncompressedOffsets) {
         note.offsets = getRanges(note.uncompressedOffsets)
-          .map((offsets): string => {
-            return offsets.join('-');
-          })
+          .map(
+            (offsets): string => {
+              return offsets.join('-');
+            },
+          )
           .join(',');
       }
       await this.saveService.save();

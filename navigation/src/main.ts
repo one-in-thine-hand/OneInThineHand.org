@@ -8,6 +8,7 @@ import {
   NavigationItem,
   flattenNavigationItems,
 } from '../../shared/src/shared';
+import cuid from 'cuid';
 
 export function filterTextNodes(childNode: Node): Node[] {
   return Array.from(childNode.childNodes).filter(
@@ -116,6 +117,7 @@ async function main(): Promise<void> {
         const manifestElement = document.querySelector('nav.manifest');
 
         if (manifestElement) {
+          navItem.id = cuid.slug();
           navItem.navItems = getChildNavigation(manifestElement);
         }
         return navItem;
@@ -124,7 +126,8 @@ async function main(): Promise<void> {
     },
   );
   const nI = await Promise.all(navItems);
-  await writeFile(normalize('./manifests.json'), JSON.stringify(nI));
+  const navigation = { navigation: nI };
+  await writeFile(normalize('./manifests.json'), JSON.stringify(navigation));
   await writeFile(
     normalize('./manifests2.json'),
     JSON.stringify(flattenNavigationItems(nI as NavigationItem[])),
