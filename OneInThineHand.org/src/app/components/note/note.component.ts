@@ -1,22 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  NotePhrase,
-  getVisible,
-  NoteRef,
-  getReferenceLabelByNoteCategory,
-} from '../../../../../shared/src/shared';
-import { ReferenceLabels } from '../../../../../shared/src/shared';
+import { NotePhrase, getVisible } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-import {
-  VerseNotes,
-  Note,
-  getNoteReferenceLabel,
-} from '../../../../../shared/src/models/notes/Note';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-note',
@@ -56,9 +46,7 @@ export class NoteComponent implements OnInit {
     return secondaryNotes;
   }
 
-  private getContainerOffsets(container: HTMLElement): void {}
-
-  public noteRefClick(event: Event): void {
+  public noteRefClick(): void {
     // try {
     //   if (
     //     event.target !== null &&
