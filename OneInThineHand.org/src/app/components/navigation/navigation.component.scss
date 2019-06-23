@@ -9,6 +9,9 @@
 
     margin: 0;
     padding: 0;
+    &.navigation {
+      overflow-y: scroll;
+    }
   }
   list-style: none;
   background-color: whitesmoke;
@@ -40,13 +43,19 @@
   }
   li {
     display: grid;
-    grid-template-columns: 48px auto;
+    font-size: 20px;
+    grid-template-columns: auto;
     > * {
       display: flex;
       align-self: center;
     }
-    .symbol {
-      justify-content: center;
+    justify-content: center;
+    &.with-symbol {
+      grid-template-columns: 48px auto;
+      justify-content: left;
+      .symbol {
+        justify-content: center;
+      }
     }
   }
 }

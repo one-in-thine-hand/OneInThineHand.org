@@ -27,8 +27,6 @@ export class OffsetService {
           notes.map((note): void => {
             if (note.notes) {
               note.notes.map((secondaryNote): void => {
-                console.log(secondaryNote.offsets);
-
                 secondaryNote.uncompressedOffsets = parseOffsets(
                   secondaryNote.offsets,
                 );
