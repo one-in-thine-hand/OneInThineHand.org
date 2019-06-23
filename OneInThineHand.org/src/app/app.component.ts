@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
@@ -41,4 +41,7 @@ export class AppComponent {
       console.log('Mode web');
     }
   }
+
+  @HostListener('window:resize')
+  public windowResize(): void {}
 }

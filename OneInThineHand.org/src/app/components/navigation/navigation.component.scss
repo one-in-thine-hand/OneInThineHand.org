@@ -38,4 +38,15 @@
       display: none;
     }
   }
+  li {
+    display: grid;
+    grid-template-columns: 48px auto;
+    > * {
+      display: flex;
+      align-self: center;
+    }
+    .symbol {
+      justify-content: center;
+    }
+  }
 }
