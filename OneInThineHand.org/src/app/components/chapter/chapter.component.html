@@ -7,7 +7,7 @@
   <div
     class="left-chapter-nav-btn chapter-nav-btn"
     style=" user-select: none;"
-    (click)="previousChapter()"
+    (click)="gotoChapter(chapter.previousPage)"
   >
     <i
       ><svg
@@ -35,7 +35,7 @@
   <div
     class="right-chapter-nav-btn chapter-nav-btn"
     style=" user-select: none;"
-    (click)="nextChapter()"
+    (click)="gotoChapter(chapter.nextPage)"
   >
     <i>
       <svg

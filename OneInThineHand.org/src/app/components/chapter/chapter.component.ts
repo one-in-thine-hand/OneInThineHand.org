@@ -7,7 +7,7 @@ import { OffsetService } from '../../services/offset.service';
 import { SaveStateService } from '../../services/save-state.service';
 import { HeaderService } from '../../services/header.service';
 import { DatabaseService } from '../../services/database.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ParamService, ChapterParams } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
@@ -47,6 +47,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public activatedRouter: ActivatedRoute,
     public paramService: ParamService,
     public pageStateService: PageStateService,
+    public router: Router,
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
@@ -226,8 +227,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
     }
   }
 
-  public nextChapter(): void {
-    this.popStateActivated = true;
+  public gotoChapter(href: string | undefined): void {
+    console.log(href);
+    if (href) {
+      this.router.navigateByUrl(href.replace('#/', ''));
+      this.popStateActivated = true;
+    }
   }
   public previousChapter(): void {
     this.popStateActivated = true;

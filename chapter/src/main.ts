@@ -1,5 +1,5 @@
 import { parseLanguage } from './parseLanguage';
-
+import { navigation } from '../manifests2.json';
 import { Chapter } from './Chapter';
 import { parseParagraphs } from './parseParagraphs';
 import { parseElementAttribute } from './parseElementAttribute';
@@ -40,15 +40,44 @@ export async function parseChapter(
   const title = await extractInnerHTML(document, 'title');
   // console.log(id);
 
-  chapter._id = id; // `${id}-chapter`;
-  // const book = bookNames.find(
-  //   (bookName): boolean => {
-  //     return chapter._id.startsWith(bookName.chapterStartsWith);
-  //   },
+  chapter._id = id;
+  // console.log(
+  //   `#/${id
+  //     .replace(`${language}-`, '')
+  //     .replace('-chapter', '')
+  //     .replace('-', '/')
+  //     .replace('_', '-')}`,
   // );
-  // if (book) {
-  //   chapter._id = chapter._id.replace(book.chapterStartsWith, book.startsWith);
-  // }
+
+  const value = navigation.find(
+    (n): boolean => {
+      return (
+        n.href ===
+        `#/${id
+          .replace(`${language}-`, '')
+          .replace('-chapter', '')
+          .replace('-', '/')
+          .replace('_', '-')}`
+      );
+    },
+  );
+
+  if (value) {
+    const index = navigation.indexOf(value);
+    if (index !== undefined) {
+      if (index === 0) {
+        chapter.previousPage = navigation[navigation.length - 1].href;
+      } else {
+        chapter.previousPage = navigation[index - 1].href;
+      }
+      if (index === navigation.length - 1) {
+        chapter.nextPage = navigation[0].href;
+      } else {
+        chapter.nextPage = navigation[index + 1].href;
+      }
+    }
+  }
+
   chapter.language = language;
   chapter.paragraphs = paragraphs;
   chapter.dataAid = dataAid;
