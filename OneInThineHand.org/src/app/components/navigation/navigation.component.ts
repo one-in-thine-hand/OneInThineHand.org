@@ -25,11 +25,9 @@ export class NavigationComponent implements OnInit {
 
   public currentNavItems: NavigationItem[] = [];
 
-  public navigationItems = navigation.navigation.filter(
-    (navItem): boolean => {
-      return navItem.title !== '';
-    },
-  ) as NavigationItem[];
+  public navigationItems = navigation.navigation.filter((navItem): boolean => {
+    return navItem.title !== '';
+  }) as NavigationItem[];
   public ngOnInit(): void {
     this.router.events.subscribe(
       async (value): Promise<void> => {
@@ -39,7 +37,10 @@ export class NavigationComponent implements OnInit {
           await this.resetNavigation(this.navigationItems);
           try {
             // const chapterParams = this.paramService.parseChapterParams(params);
-            const n = this.findNav(value.url, this.navigationItems);
+            const n = this.findNav(
+              value.url.split('.')[0],
+              this.navigationItems,
+            );
             if (n) {
               this.currentNavItems = flattenNavigationItem(n).filter(
                 (nk): boolean => {
@@ -47,7 +48,7 @@ export class NavigationComponent implements OnInit {
                 },
               );
             } else {
-              throw '';
+              throw new Error('');
             }
           } catch (error) {
             console.log(error);
@@ -78,15 +79,19 @@ export class NavigationComponent implements OnInit {
     id: string,
     navItems: NavigationItem[],
   ): NavigationItem | undefined {
-    const navItem = navItems.find(
-      (navItem): boolean => {
-        return navItem.href === `#${id}` || navItem.id === `${id}`;
-      },
-    );
+    console.log(id);
 
-    if (navItem && navItem.id !== undefined && !navItem.active) {
-      if (navItem.navItems) {
-        this.setNavItemsDisplay(navItem.navItems, false, true);
+    const navigationItem = navItems.find((navItem): boolean => {
+      return navItem.href === `#${id}` || navItem.id === `${id}`;
+    });
+
+    if (
+      navigationItem &&
+      navigationItem.id !== undefined &&
+      !navigationItem.active
+    ) {
+      if (navigationItem.navItems) {
+        this.setNavItemsDisplay(navigationItem.navItems, false, true);
       }
       // navItems.map(
       //   (n): void => {
@@ -95,16 +100,16 @@ export class NavigationComponent implements OnInit {
       //   },
       // );
       this.setNavItemsDisplay(navItems, false, false);
-      this.setNavItemDisplay(navItem, true, true);
+      this.setNavItemDisplay(navigationItem, true, true);
       // navItem.display = true;
       // navItem.active = true;
-      console.log(navItem);
-      return navItem;
+      console.log(navigationItem);
+      return navigationItem;
     }
-    if (navItem) {
+    if (navigationItem) {
       this.setNavItemsDisplay(navItems, false, true);
-      navItem.active = true;
-      return navItem;
+      navigationItem.active = true;
+      return navigationItem;
     } else {
       for (let x = 0; x < navItems.length; x++) {
         const i = navItems[x];
@@ -125,11 +130,9 @@ export class NavigationComponent implements OnInit {
     active: boolean,
     display: boolean,
   ): void {
-    navItems.map(
-      (n): void => {
-        this.setNavItemDisplay(n, active, display);
-      },
-    );
+    navItems.map((n): void => {
+      this.setNavItemDisplay(n, active, display);
+    });
   }
 
   private setNavItemDisplay(
