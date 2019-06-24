@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
   "engines": {
-    "node": ">= 10.13 <11"
+    "node": ">= 10.13"
   },
   "devDependencies": {
     "@types/jest": "^23.3.12",

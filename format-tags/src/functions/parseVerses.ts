@@ -488,7 +488,7 @@ export async function parseVerses(document: Document): Promise<Verse[]> {
   );
   const versePromises = verseElements.map(
     async (verseElement): Promise<Verse | undefined> => {
-      return await parseVerse(verseElement);
+      return parseVerse(verseElement);
     },
   );
   const verses = (await Promise.all(versePromises)).filter(

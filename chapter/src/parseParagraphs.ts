@@ -49,5 +49,5 @@ export async function parseParagraphs(
       return paragraph;
     },
   );
-  return await Promise.all(paragraphPromises);
+  return Promise.all(paragraphPromises);
 }
