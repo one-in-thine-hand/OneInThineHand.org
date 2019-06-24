@@ -111,8 +111,8 @@ export class FormatGroupComponent implements OnInit {
   }
 
   private getRefTags(fMerged: FMerged, offset: number): void {
-    // if (this.verse.note && this.verse.note.secondaryNotes) {
-    //   this.verse.note.secondaryNotes.map(
+    // if (this.verse.note && this.verse.note.notes) {
+    //   this.verse.note.notes.map(
     //     (secondaryNote): void => {
     //       if (secondaryNote.visible && secondaryNote.refTag) {
     //         if (
@@ -128,7 +128,7 @@ export class FormatGroupComponent implements OnInit {
     //       }
     //     },
     //   );
-    //   this.verse.note.secondaryNotes.map(
+    //   this.verse.note.notes.map(
     //     (secondaryNote): void => {
     //       if (secondaryNote.formatTag) {
     //         if (secondaryNote.formatTag.offsets === 'all') {

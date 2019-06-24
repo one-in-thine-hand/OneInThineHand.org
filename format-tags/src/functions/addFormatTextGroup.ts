@@ -47,13 +47,13 @@ function nodeToFormatGroup(
     }
     case 'ruby': {
       formatGroup = new FormatGroupRuby();
-      throw 'Ruby has not been implemented yet';
+      throw new Error('Ruby has not been implemented yet');
       break;
     }
     case 'a': {
       if ((node as Element).querySelectorAll('ruby').length > 0) {
         formatGroup = new FormatGroupRubyA();
-        throw 'Ruby has not been implemented yet';
+        throw new Error('Ruby has not been implemented yet');
       } else {
         formatGroup = new FormatGroupA();
       }
@@ -71,7 +71,7 @@ function nodeToFormatGroup(
       } else {
         // console.log(node);
 
-        throw 'Unknown FormatGroup detected';
+        throw new Error('Unknown FormatGroup detected');
       }
 
       break;

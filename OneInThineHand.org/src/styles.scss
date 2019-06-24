@@ -43,7 +43,7 @@ body {
 }
 div.main {
   display: grid;
-  grid-template-rows: 48px auto;
+  grid-template-rows: 48px 48px auto;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -106,4 +106,11 @@ div.main {
 
 .add-notes-backdrop {
   background: none;
+}
+
+insertion {
+  font-weight: 700;
+}
+deletion {
+  font-style: italic;
 }

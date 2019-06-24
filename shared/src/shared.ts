@@ -27,13 +27,20 @@ export {
 } from './enums/enums';
 
 export {
-  Note,
-  ReferenceLabel as NoteCategory,
+  VerseNotes,
+  ReferenceLabel,
   NotePhrase,
   NoteRef,
-  NoteType,
-  SecondaryNote,
+  Note,
 } from './models/notes/Note';
+
+export {
+  NoteType,
+  NoteCategory,
+  NoteTypeConvert,
+  NoteTypeConverts,
+  getNoteType,
+} from './models/notes/NoteType';
 
 export {
   verseSelectors,
@@ -52,3 +59,19 @@ export {
 export { Visibility, getVisible } from './interfaces/visibliity';
 
 export { BookName, bookNames } from './models/BookName';
+
+export {
+  ReferenceLabels,
+  getReferenceLabelByClassName,
+  getReferenceLabelByNoteCategory,
+  getReferenceLabelByReferenceLabelName,
+  getReferenceLabelByReferenceLabelShortName,
+} from './models/notes/ReferenceLabels';
+
+export { sortNotes } from './functions/sortNotes';
+
+export { CouchDocGet as CouchDoc } from './interfaces/CouchDoc';
+export {
+  NavigationItem,
+  flattenNavigationItems,
+} from './models/NavigationItem';

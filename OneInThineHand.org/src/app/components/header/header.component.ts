@@ -7,10 +7,14 @@ import { VisibilityService } from '../../services/visibility.service';
 import { Location } from '@angular/common';
 import { HeaderService } from '../../services/header.service';
 import { ElectronService } from '../../providers/electron.service';
-import * as JSZip from 'jszip';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
 import { FormatTagService } from '../../services/format-tag.service';
+import { ReferenceLabel } from '../../../../../shared/src/models/notes/Note';
+import { sortBy } from 'lodash';
+import { NoteCategory } from '../../../../../shared/src/shared';
+import { DatabaseService } from '../../services/database.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +34,8 @@ export class HeaderComponent implements OnInit {
     public preprocessorService: PreprocessorService,
     public electronService: ElectronService,
     public formatTagService: FormatTagService,
+    public databaseService: DatabaseService,
+    public tempSettingsService: TempSettingsService,
   ) {}
 
   private noteProcessor = new NoteProcessor();
@@ -69,7 +75,7 @@ export class HeaderComponent implements OnInit {
   }
   public refLabelClick(ref: { visible: boolean } | string): void {
     const asdf = this.electronService.isElectron();
-    console.log(asdf);
+    console.log(ref);
 
     if ((ref as { visible: boolean }).visible !== undefined) {
       (ref as { visible: boolean }).visible = !(ref as { visible: boolean })
@@ -93,10 +99,24 @@ export class HeaderComponent implements OnInit {
     this.location.forward();
   }
 
+  public getNoteCategories(): ReferenceLabel[] {
+    return sortBy(
+      this.saveStateService.data.ReferenceLabelSetting.filter(
+        (refLabelSetting): boolean => {
+          return refLabelSetting.noteCategory !== NoteCategory.ERR;
+        },
+      ),
+      (refLabelSetting): number => {
+        return refLabelSetting.noteCategory;
+      },
+    );
+  }
   public async showOrphanRefs(): Promise<void> {}
   public async loadChapterFile(event: Event): Promise<void> {
     this.uploading = true;
-    await this.preprocessorService.loadChapterFiles(event);
+    await this.preprocessorService.loadChapterFiles(
+      event.target as HTMLInputElement,
+    );
     this.uploading = false;
     console.log('Finished');
 
@@ -149,5 +169,15 @@ export class HeaderComponent implements OnInit {
 
   public async loadNoteFile(event: Event): Promise<void> {
     await this.preprocessorService.loadNoteFiles(event);
+  }
+  public async onSubmit(): Promise<void> {
+    const fileInput = document.querySelector('#chapterFileOpener');
+    if (fileInput) {
+      this.uploading = true;
+      await this.preprocessorService.loadChapterFiles(
+        fileInput as HTMLInputElement,
+      );
+      this.uploading = false;
+    }
   }
 }

@@ -19,12 +19,11 @@ import {
   Verse,
   getFormatTagType,
   getRanges,
-  bookNames,
 } from '../../../shared/src/shared';
 import { NodeName } from '../../../shared/src/models/Verse';
 import { queryFormatGroups } from './queryFormatGroups';
 import {
-  getID,
+  getChapterID,
   getLanguage,
 } from '../../../shared/src/functions/getFormatTagType';
 
@@ -435,39 +434,38 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   const lang = await getLanguage(verseElement.ownerDocument as Document);
 
   verse.verseID = verseElement.id;
-  let id = await getID(verseElement.ownerDocument as Document, lang);
-  id = id.replace(
+  let chapterID = await getChapterID(
+    verseElement.ownerDocument as Document,
     lang,
-    `${lang}-${
-      verse.verseID.startsWith('p')
-        ? verse.verseID.replace('p', '')
-        : verse.verseID
-    }-verse`,
   );
-  verse.noteID = `${lang}-${
+  verse.noteID = `${chapterID.replace('chapter', '')}${
     verse.verseID.startsWith('p')
       ? verse.verseID.replace('p', '')
       : verse.verseID
-  }-notes`;
+  }-verse-notes`;
   // console.log(id);
 
   const formatGroups = await queryFormatGroups(verseElement);
 
   verse.formatGroups = formatGroups ? formatGroups : [];
-  const book = bookNames.find(
-    (bookName): boolean => {
-      return id.startsWith(bookName.chapterStartsWith);
-    },
-  );
-  if (book) {
-    id = id.replace(book.chapterStartsWith, book.startsWith);
-  }
-  if (id) {
-    verse._id = id;
-  } else {
-    return undefined;
-  }
-
+  // const book = bookNames.find(
+  //   (bookName): boolean => {
+  //     return chapterID.startsWith(bookName.chapterStartsWith);
+  //   },
+  // );
+  // if (book) {
+  //   chapterID = chapterID.replace(book.chapterStartsWith, book.startsWith);
+  // }
+  // if (chapterID) {
+  //   verse._id = chapterID;
+  // } else {
+  //   return undefined;
+  // }
+  verse._id = `${chapterID.replace('chapter', '')}${
+    verse.verseID.startsWith('p')
+      ? verse.verseID.replace('p', '')
+      : verse.verseID
+  }-verse`;
   verse.formatTags = buildFormatTags(verseElement);
   verse.classList = verseElement.className;
   verse.text = verseElement.textContent ? verseElement.textContent : '';
@@ -490,7 +488,7 @@ export async function parseVerses(document: Document): Promise<Verse[]> {
   );
   const versePromises = verseElements.map(
     async (verseElement): Promise<Verse | undefined> => {
-      return await parseVerse(verseElement);
+      return parseVerse(verseElement);
     },
   );
   const verses = (await Promise.all(versePromises)).filter(

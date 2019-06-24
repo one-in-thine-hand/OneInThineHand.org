@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { last } from 'lodash';
 import { Router } from '@angular/router';
+import { NavigationItem } from '../../../../shared/src/shared';
 @Injectable({
   providedIn: 'root',
 })
@@ -189,16 +190,33 @@ export class NavigationService {
   private getHighlightAndContext(addressBarInput: string): void {}
 
   private getBookName(addressBarInput: string): string[] | undefined {
-    return this.bookNames.find(
-      (bN): boolean => {
-        return (
-          bN.find(
-            (b): boolean => {
-              return addressBarInput.toLowerCase().includes(b.toLowerCase());
-            },
-          ) !== undefined
-        );
-      },
-    );
+    return this.bookNames.find((bN): boolean => {
+      return (
+        bN.find((b): boolean => {
+          return addressBarInput.toLowerCase().includes(b.toLowerCase());
+        }) !== undefined
+      );
+    });
+  }
+
+  public findNav(
+    id: string,
+    navItems: NavigationItem[],
+  ): NavigationItem | undefined {
+    const navItem = navItems.find((navItem): boolean => {
+      return navItem.href === id;
+    });
+
+    if (navItem) {
+      return navItem;
+    } else {
+      for (let x = 0; x < navItems.length; x++) {
+        const i = navItems[x];
+        if (i.navItems && this.findNav(id, i.navItems)) {
+          return i;
+        }
+      }
+    }
+    return undefined;
   }
 }

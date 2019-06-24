@@ -3,10 +3,10 @@ import {
   Verse,
   FormatGroup,
   FormatTag,
-  Note,
   FormatGroupType,
   parseOffsets,
   DisplayAs,
+  VerseNotes,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
@@ -17,6 +17,7 @@ import { ChapterVerses } from '../../../../format-tags/src/main';
 import { HistoryService } from './history.service';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { SaveStateService } from './save-state.service';
+import PQueue from 'p-queue/dist';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,32 +34,37 @@ export class FormatTagService {
     item.uncompressedOffsets = parseOffsets(item.offsets);
   }
 
+  public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
   public async resetFormatTags(
     chapterVerses: ChapterVerses | undefined,
     chapterNotes: ChapterNotes | undefined,
   ): Promise<void> {
-    if (chapterVerses && chapterNotes) {
-      this.historyService.addHistory(
-        chapterVerses,
-        this.saveStateService.data,
-        chapterNotes,
-      );
-    }
-    if (chapterVerses && chapterVerses.verses) {
-      chapterVerses.verses.map(
-        (verse): void => {
-          this.buildOffsets(verse.formatGroups);
-          this.buildOffsets(verse.formatTags);
-          this.buildFormatGroups(
-            verse.formatGroups,
-            verse.formatTags,
-            verse.note,
-            verse,
+    await this.resetFormatTagsQueue.add(
+      (): void => {
+        if (chapterVerses && chapterNotes) {
+          this.historyService.addHistory(
+            chapterVerses,
+            this.saveStateService.data,
+            chapterNotes,
           );
-        },
-      );
-      console.log(chapterVerses);
-    }
+        }
+        if (chapterVerses && chapterVerses.verses) {
+          chapterVerses.verses.map(
+            (verse): void => {
+              this.buildOffsets(verse.formatGroups);
+              this.buildOffsets(verse.formatTags);
+              this.buildFormatGroups(
+                verse.formatGroups,
+                verse.formatTags,
+                verse.note,
+                verse,
+              );
+            },
+          );
+          console.log(chapterVerses);
+        }
+      },
+    );
   }
   public buildOffsets(
     formatGroups:
@@ -79,7 +85,7 @@ export class FormatTagService {
   public buildFormatGroups(
     formatGroups: FormatGroup[] | undefined,
     fTags: FormatTag[] | undefined,
-    note: Note | undefined,
+    note: VerseNotes | undefined,
     verse: Verse,
   ): void {
     if (formatGroups && fTags) {
@@ -103,7 +109,7 @@ export class FormatTagService {
   public buildFormatGroup(
     grp: FormatGroup,
     fTags: FormatTag[] | undefined,
-    note: Note | undefined,
+    note: VerseNotes | undefined,
     verse: Verse,
   ): void {
     grp.uncompressedOffsets = parseOffsets(grp.offsets);
@@ -184,11 +190,17 @@ export class FormatTagService {
     }
     return undefined;
   }
-  public getRefTags(o: number, note: Note | undefined): RefTag[] | undefined {
-    if (note && note.secondaryNotes) {
-      const oFtags = note.secondaryNotes
+  public getRefTags(
+    o: number,
+    note: VerseNotes | undefined,
+  ): RefTag[] | undefined {
+    if (note && note.notes) {
+      const oFtags = note.notes
         .filter(
           (f): boolean => {
+            if (f.refTag && f.refTag.offsets === 'all') {
+              return true;
+            }
             return (
               f.refTag !== undefined &&
               f.uncompressedOffsets !== undefined &&

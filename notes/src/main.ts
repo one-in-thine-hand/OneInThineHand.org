@@ -1,21 +1,17 @@
 import {
+  VerseNotes,
   Note,
-  SecondaryNote,
   getElementsAttribute,
   NotePhrase,
   NoteRef,
 } from '../../shared/src/shared';
 import { bookNames } from './consts';
+import { getNoteType } from '../../shared/src/shared';
+import * as he from 'he';
 import {
   getNoteReferenceLabel,
-  getNoteType,
+  noteRefHasNoneClass,
 } from '../../shared/src/models/notes/Note';
-import * as he from 'he';
-
-// function parseInnerHTML(element: Element, selector: string): string {
-//   const childElement = element.querySelector(selector);
-//   return childElement ? childElement.innerHTML : '';
-// }
 
 function parseNotePhrase(element: Element): NotePhrase | undefined {
   const notePhraseElement = element.querySelector('.note-phrase');
@@ -24,7 +20,6 @@ function parseNotePhrase(element: Element): NotePhrase | undefined {
   }
   const notePhrase = new NotePhrase();
 
-  // notePhrase.classList = Array.from(notePhraseElement.classList.values());
   notePhrase.text = he.decode(notePhraseElement.innerHTML);
   return notePhrase;
 }
@@ -39,105 +34,70 @@ function parseNoteRefs(element: Element): NoteRef[] {
   return Array.from(noteRefElements).map(
     (noteRefElement): NoteRef => {
       const noteRef = new NoteRef();
-      // noteRef.classList = Array.from(noteRefElement.classList.values());
+
       noteRef.noteCategory = getNoteReferenceLabel(noteRefElement);
+
+      if (noteRefHasNoneClass(noteRefElement)) {
+        noteRef.none = true;
+      }
       noteRef.text = he.decode(noteRefElement.innerHTML);
       return noteRef;
     },
   );
 }
 
-function parseSecondaryNotes(noteElement: Element): SecondaryNote[] {
-  return Array.from(noteElement.childNodes)
+function parseNotes(verseNotes: Element): Note[] {
+  return Array.from(verseNotes.childNodes)
     .filter(
       (childNode): boolean => {
-        return childNode.nodeName.toLowerCase() === 'div';
+        return childNode.nodeName.toLowerCase() === 'note';
       },
     )
     .map(
-      (secondaryNoteElement: Element): SecondaryNote => {
-        const secondaryNote = new SecondaryNote();
-        secondaryNote.id = secondaryNoteElement.id;
+      (noteElement: Element): Note => {
+        const note = new Note();
+        note.id = noteElement.id;
 
-        if (!secondaryNote.id.includes('eng-note')) {
-          secondaryNote.id = `${secondaryNote.id}`;
+        if (!note.id.includes('eng-note')) {
+          note.id = `${note.id}`;
         }
 
-        secondaryNote.noteMarker = getElementsAttribute(
-          secondaryNoteElement,
-          'note-marker',
-        );
-        secondaryNote.verseMarker = getElementsAttribute(
-          secondaryNoteElement,
-          'verse-marker',
-        );
-        secondaryNote.notePhrase = parseNotePhrase(secondaryNoteElement);
+        note.noteMarker = getElementsAttribute(noteElement, 'note-marker');
+        note.verseMarker = getElementsAttribute(noteElement, 'verse-marker');
+        note.notePhrase = parseNotePhrase(noteElement);
 
-        secondaryNote.noteRefs = parseNoteRefs(secondaryNoteElement);
+        note.noteRefs = parseNoteRefs(noteElement);
 
-        secondaryNote.noteType = getNoteType(secondaryNoteElement);
-        secondaryNote.offsets = getElementsAttribute(
-          secondaryNoteElement,
-          'offsets',
-        );
-        return secondaryNote;
+        note.noteType = getNoteType(noteElement);
+        note.offsets = getElementsAttribute(noteElement, 'offsets');
+        return note;
       },
     );
 }
 
 async function isNoteFile(document: Document): Promise<boolean> {
-  return document.querySelector('div.chapter') !== null;
+  return document.querySelector('chapter') !== null;
 }
-
-// function parseVerseNumber(noteElement: Element, chapterID: string): string {
-//   const verseMarkerElement = noteElement.querySelector('[verse-marker]');
-//   let verseMarker: string | null = null;
-//   if (verseMarkerElement) {
-//     verseMarker = verseMarkerElement.getAttribute('verse-marker');
-//   }
-//   if (verseMarker !== null) {
-//     // console.log(verseMarker);
-
-//     return verseMarker;
-//   } else {
-//     const name = bookNames.find(
-//       (bookName): boolean => {
-//         return chapterID.startsWith(bookName.startsWith);
-//       },
-//     );
-//     return name
-//       ? chapterID
-//           .replace(name.startsWith, '')
-//           .replace('-eng-chapter', '')
-//           .replace('-tc-chapter', '')
-//           .replace('-new-chapter', '')
-//       : '';
-//   }
-
-//   return noteElement.id
-//     .replace(
-//       chapterID
-//         .replace('-eng-chapter', '')
-//         .replace('-tc-chapter', '')
-//         .replace('-new-chapter', ''),
-//       '',
-//     )
-//     .replace('-eng-note', '')
-//     .replace('-', '');
-// }
 
 function parseShortTitle(verseMarker: string): string {
   return `Verse ${verseMarker} Notes`;
 }
 function parseNoteTitle(verseMarker: string, chapterID: string): string {
+  const lang = chapterID.split('-')[0];
+  // console.log(lang);
+
   const name = bookNames.find(
     (bookName): boolean => {
-      return chapterID.startsWith(bookName.startsWith);
+      return chapterID.replace(`${lang}-`, '').startsWith(bookName.startsWith);
     },
   );
 
+  // console.log(name);
+
   verseMarker = verseMarker;
   if (!name) {
+    console.log(lang);
+
     throw chapterID;
   }
   return `${name ? name.fullName : ''} ${
@@ -154,10 +114,12 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
 export class ChapterNotes {
   public _id: string;
   public _rev: string | undefined;
-  public notes: Note[] | undefined;
+  public notes: VerseNotes[] | undefined;
+  public save: boolean | undefined;
 }
+
 export class NoteProcessor {
-  public notesMap: Map<string, Note[]> = new Map();
+  public notesMap: Map<string, VerseNotes[]> = new Map();
   public chapterNotesMap: Map<string, ChapterNotes> = new Map();
 
   /**
@@ -167,11 +129,9 @@ export class NoteProcessor {
     document: Document,
   ): Promise<Map<string, ChapterNotes> | undefined> {
     if (await isNoteFile(document)) {
-      Array.from(document.querySelectorAll('div.chapter')).map(
+      Array.from(document.querySelectorAll('chapter')).map(
         (chapterElement): void => {
           const id = chapterElement.id;
-          // const notes: Note[] = [];
-          // console.log(id);
 
           const chapterNotes = new ChapterNotes();
           chapterNotes._id = id.replace('chapter', 'notes');
@@ -179,47 +139,41 @@ export class NoteProcessor {
           const notes = Array.from(chapterElement.childNodes)
             .filter(
               (node): boolean => {
-                return node.nodeName.toLowerCase() === 'note';
+                return node.nodeName.toLowerCase() === 'verse-notes';
               },
             )
             .map(
-              (noteElement: Element): Note => {
-                const note = new Note();
-                note._id = noteElement.id;
+              (noteElement: Element): VerseNotes => {
+                const verseNotes = new VerseNotes();
+                try {
+                  verseNotes._id = noteElement.id;
 
-                if (!note._id.includes('eng-note')) {
-                  note._id = `${note._id}-eng-note`;
+                  let verseMarker = ''; //verseNotes._id.split('-')[3];
+
+                  verseMarker = verseNotes._id.split('-')[3];
+
+                  verseNotes.noteShortTitle = parseShortTitle(verseMarker);
+                  verseNotes.noteTitle = parseNoteTitle(
+                    verseMarker,
+                    chapterElement.id,
+                  );
+
+                  verseNotes.notes = parseNotes(noteElement);
+                } catch (error) {
+                  console.log(error);
+                  // verseMarker = '';
                 }
-                const verseMarker = note._id.split('-')[2];
-                // console.log(verseMarker);
-
-                // const verseMarker = parseVerseNumber(
-                //   noteElement,
-                //   chapterElement.id,
-                // );
-                // console.log(note._id.split('-')[1]);
-
-                note.noteShortTitle = parseShortTitle(verseMarker);
-                note.noteTitle = parseNoteTitle(verseMarker, chapterElement.id);
-                // console.log(note.noteShortTitle);
-                // console.log(note.noteTitle);
-
-                note.secondaryNotes = parseSecondaryNotes(noteElement);
-
-                // console.log(note.secondaryNotes);
-                return note;
+                return verseNotes;
               },
             );
-          // console.log(`${id} ${notes.length} ${this.notesMap.size}`);
 
           chapterNotes.notes = notes;
-          // console.log(chapterNotes.notes[0].secondaryNotes);
 
           this.chapterNotesMap.set(chapterNotes._id, chapterNotes);
           this.notesMap.set(id, notes);
         },
       );
-      // console.log(this.notesMap.size);
+
       return this.chapterNotesMap;
     } else {
       return undefined;

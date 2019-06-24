@@ -1,6 +1,6 @@
 import { FormatGroup } from './format_groups/FormatGroup';
 import { FormatTag } from './format_tags/FormatTag';
-import { Note } from './notes/Note';
+import { VerseNotes } from './notes/Note';
 // import { NoteLDSSource } from '../../../oith.notes/src/models/Note'
 export const enum NodeName {
   p,
@@ -23,7 +23,7 @@ export class Verse {
   public text: string | undefined;
   public formatTags: FormatTag[] | undefined;
   public nodeName: NodeName | undefined;
-  public note: Note | undefined;
+  public note: VerseNotes | undefined;
   public context: boolean | undefined;
   public highlight: boolean | undefined;
 }
