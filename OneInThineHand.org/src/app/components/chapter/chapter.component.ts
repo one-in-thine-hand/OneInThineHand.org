@@ -23,19 +23,6 @@ import { SaveService } from '../../services/save.service';
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit, OnDestroy {
-  public async ngOnDestroy(): Promise<void> {
-    await this.setHistory();
-    this.chapterService.chapterNotes = undefined;
-  }
-  public popStateActivated = false;
-  public chapter: Chapter | undefined;
-  public chapterNotes: ChapterNotes;
-  public chapterVerses: ChapterVerses | undefined;
-  public ctrlKeyPressed: boolean;
-  public shiftKeyPressed: boolean;
-  public ctrlKeyInterval;
-  public shiftKeyInterval: any;
-
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -50,6 +37,18 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public router: Router,
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
+  public popStateActivated = false;
+  public chapter: Chapter | undefined;
+  public chapterNotes: ChapterNotes;
+  public chapterVerses: ChapterVerses | undefined;
+  public ctrlKeyPressed: boolean;
+  public shiftKeyPressed: boolean;
+  public ctrlKeyInterval: NodeJS.Timer | undefined;
+  public shiftKeyInterval: NodeJS.Timer | undefined;
+  public async ngOnDestroy(): Promise<void> {
+    await this.setHistory();
+    this.chapterService.chapterNotes = undefined;
+  }
 
   @HostListener('window:keyup', ['$event'])
   public async onKeyUp(event: KeyboardEvent): Promise<void> {
@@ -64,7 +63,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
         }
         this.ctrlKeyInterval = setInterval((): void => {
           this.ctrlKeyPressed = false;
-          clearInterval(this.ctrlKeyInterval);
+          if (this.ctrlKeyInterval) {
+            clearInterval(this.ctrlKeyInterval);
+          }
         }, 1000);
         // setTimeout((): void => {
         //   this.ctrlKeyPressed = false;
@@ -77,7 +78,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
         }
         this.shiftKeyInterval = setInterval((): void => {
           this.shiftKeyPressed = false;
-          clearInterval(this.shiftKeyInterval);
+          if (this.shiftKeyInterval) {
+            clearInterval(this.shiftKeyInterval);
+          }
         }, 1000);
         // setTimeout((): void => {
         //   this.shiftKeyPressed = false;
