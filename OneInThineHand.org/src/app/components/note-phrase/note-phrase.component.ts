@@ -78,7 +78,7 @@ export class NotePhraseComponent implements OnInit {
   ): Promise<void> {
     const range = selection.getRangeAt(0);
     if (range.toString().length === 0) {
-      throw 'No selection';
+      throw new Error('No selection');
     }
     const elements = [
       this.validateSelectedNodes(range.startContainer),
