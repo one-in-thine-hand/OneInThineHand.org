@@ -1,0 +1,41 @@
+{
+  "name": "node-typescript-boilerplate",
+  "version": "0.0.0",
+  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "engines": {
+    "node": ">= 10.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.12",
+    "@types/node": "^10.12.18",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "~23.6.0",
+    "prettier": "1.15.3",
+    "rimraf": "^2.6.3",
+    "ts-jest": "~23.10.5",
+    "tsutils": "~3.7.0",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "lint": "tslint -t stylish --project \"tsconfig.json\"",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "author": "Jared Parkinson <jared@parkinson.im>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/fs-extra": "^7.0.0",
+    "@types/jsdom": "^12.2.3",
+    "fast-glob": "^3.0.2",
+    "fs-extra": "^8.0.1",
+    "jsdom": "^15.1.1",
+    "tslib": "~1.9.3"
+  }
+}
