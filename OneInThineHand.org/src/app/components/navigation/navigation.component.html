@@ -25,15 +25,20 @@
   <ul *ngIf="!tempSettingsService.editMode" class="navigation">
     <li (click)="goHome()"><span>Scriptures</span></li>
     <ng-container *ngIf="currentNavItems">
-      <li
-        *ngFor="let navItem of currentNavItems"
-        [ngClass]="{ active: navItem.active }"
-      >
-        <a *ngIf="navItem.href" [href]="navItem.href"> {{ navItem.title }}</a>
-        <span *ngIf="!navItem.href" (click)="navigationParentClick(navItem)">
-          {{ navItem.title }}</span
+      <ng-container *ngFor="let navItem of currentNavItems">
+        <li
+          *ngIf="navItem.href"
+          [ngClass]="{ active: navItem.active }"
+          class="chapter-link"
         >
-      </li>
+          <a [href]="navItem.href"> {{ navItem.title }}</a>
+        </li>
+        <li *ngIf="!navItem.href" class="book-link">
+          <span (click)="navigationParentClick(navItem)">
+            {{ navItem.title }}</span
+          >
+        </li>
+      </ng-container>
     </ng-container>
   </ul>
   <li class="with-symbol">

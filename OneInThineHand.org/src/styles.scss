@@ -66,8 +66,9 @@ div.main {
       #notes {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
           0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        background: gainsboro;
+        background: #f7f8f8;
         overflow-y: scroll;
+        padding-top: 5px;
       }
       @include oithContentGrid($smallScreen, 50% 50%, 100vw);
 
@@ -113,4 +114,8 @@ insertion {
 }
 deletion {
   font-style: italic;
+}
+
+a {
+  color: #007fa4;
 }

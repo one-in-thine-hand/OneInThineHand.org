@@ -42,13 +42,11 @@ export class FormatTagComponent implements OnInit {
   public getText(): string {
     const text = this.fMerged.text;
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
-      const richFormatTags = this.fMerged.formatTags.filter(
-        (f): boolean => {
-          return (
-            f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
-          );
-        },
-      );
+      const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
+        return (
+          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+        );
+      });
       // .map(
       //   (f): void => {
       //     console.log(f);
@@ -72,15 +70,13 @@ export class FormatTagComponent implements OnInit {
   }
   private getVisibleRefTags(): RefTag[] | undefined {
     if (this.fMerged.refTags) {
-      return this.fMerged.refTags.filter(
-        (refTag): boolean => {
-          return (
-            this.visibilityService.secondaryNotesVisibility.get(
-              refTag.secondaryNoteID,
-            ) === true
-          );
-        },
-      );
+      return this.fMerged.refTags.filter((refTag): boolean => {
+        return (
+          this.visibilityService.secondaryNotesVisibility.get(
+            refTag.secondaryNoteID,
+          ) === true
+        );
+      });
     }
   }
 
@@ -94,11 +90,9 @@ export class FormatTagComponent implements OnInit {
         : classList.push('oith-ref-single');
 
       if (
-        visibleRefTags.filter(
-          (f): boolean => {
-            return f.highlight === true;
-          },
-        ).length > 0
+        visibleRefTags.filter((f): boolean => {
+          return f.highlight === true;
+        }).length > 0
       ) {
         classList.push('ref-selected');
       } else {
@@ -113,28 +107,22 @@ export class FormatTagComponent implements OnInit {
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
-        .filter(
-          (f): boolean => {
-            return (
-              (f.displayAs === DisplayAs.CLASS &&
-                f.optional !== Optional.NEVER) ||
-              f.formatType === FormatTagType.verseNumber
-            );
-          },
-        )
-        .map(
-          (f): void => {
-            const fTO = formatTagTypeOptions.find(
-              (formatTagOption): boolean => {
-                return formatTagOption.formatTagType === f.formatType;
-              },
-            );
-            // console.log(fTO ? fTO.className : 'Nothing');
-            if (fTO && fTO.className) {
-              classList.push(fTO.className);
-            }
-          },
-        );
+        .filter((f): boolean => {
+          return (
+            (f.displayAs === DisplayAs.CLASS &&
+              f.optional !== Optional.NEVER) ||
+            f.formatType === FormatTagType.verseNumber
+          );
+        })
+        .map((f): void => {
+          const fTO = formatTagTypeOptions.find((formatTagOption): boolean => {
+            return formatTagOption.formatTagType === f.formatType;
+          });
+          // console.log(fTO ? fTO.className : 'Nothing');
+          if (fTO && fTO.className) {
+            classList.push(fTO.className);
+          }
+        });
 
       console.log();
     }
@@ -178,11 +166,9 @@ export class FormatTagComponent implements OnInit {
 
       if (this.fMerged.refTags) {
         if (this.refList === undefined) {
-          this.refList = this.fMerged.refTags.map(
-            (refT): string => {
-              return refT.secondaryNoteID;
-            },
-          );
+          this.refList = this.fMerged.refTags.map((refT): string => {
+            return refT.secondaryNoteID;
+          });
         }
         const id = this.refList.pop();
         const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
@@ -190,7 +176,12 @@ export class FormatTagComponent implements OnInit {
 
         if (r) {
           r.highlight = true;
-          await asyncScrollIntoView(`#${r.secondaryNoteID}`);
+          console.log((this.verse.note as any)._id as string);
+
+          await asyncScrollIntoView(
+            `#${(this.verse.note as any)._id as string}`,
+          );
+          // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
         } else {
           this.refList = undefined;
         }
