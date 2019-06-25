@@ -53,13 +53,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.NEVER,
   },
   {
-    className: 'deityName',
+    className: 'deity-name',
     formatTagType: FormatTagType.deityName,
-    optional: Optional.NEVER,
-    displayAs: DisplayAs.NEVER,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'smallcaps',
+    className: 'small-caps',
     formatTagType: FormatTagType.smallCaps,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
@@ -89,7 +89,7 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.NEVER,
   },
   {
-    className: 'shortTitle',
+    className: 'short-title',
     formatTagType: FormatTagType.shortTitle,
     optional: Optional.NEVER,
     displayAs: DisplayAs.NEVER,
