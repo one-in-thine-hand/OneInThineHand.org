@@ -26,7 +26,8 @@
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "start": " tsc && node --abort-on-uncaught-exception --max-old-space-size=16000 build/src/main.js"
   },
   "author": "Jared Parkinson <jared@parkinson.im>",
   "license": "Apache-2.0",
