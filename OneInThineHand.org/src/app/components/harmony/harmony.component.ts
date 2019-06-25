@@ -41,17 +41,6 @@ export class HarmonyComponent implements OnInit {
             } else if ((col as HarmonyCell).harmonyXRef !== undefined) {
               const harmonyXRefs = (col as HarmonyCell)
                 .harmonyXRef as HarmonyXRef[];
-              // console.log(
-              //   flatten(
-              //     harmonyXRefs
-              //       .filter((h): boolean => {
-              //         return h.harmonyVerse !== undefined;
-              //       })
-              //       .map((harmonyXRef): HarmonyVerse[] => {
-              //         return harmonyXRef.harmonyVerse as HarmonyVerse[];
-              //       }),
-              //   ),
-              // );
               return flatten(
                 harmonyXRefs
                   .filter((h): boolean => {
@@ -109,24 +98,6 @@ export class HarmonyComponent implements OnInit {
                     harmonyVerse.verse = verse;
                   }
                 });
-                // console.log(verses);
-
-                // docs.results.map((doc): void => {
-                //   const verse = (doc.docs[0] as any).ok as Verse;
-                //   if (verse && verse._id) {
-                //     const harmonyVerse = harmonyVerses.find(
-                //       (harmonyVerse): boolean => {
-                //         return (
-                //           harmonyVerse.verseRef ===
-                //           (verse._id as string).replace('-verse', '')
-                //         );
-                //       },
-                //     );
-                //     if (harmonyVerse) {
-                //       harmonyVerse.verse = verse;
-                //     }
-                //   }
-                // });
               }
             },
           );
@@ -138,18 +109,6 @@ export class HarmonyComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-
-    // this.harmony.harmonyCells.map((row): void => {
-    //   row.map(
-    //     async (col: HarmonyCell | HarmonyXRef): Promise<void> => {
-    //       if ((col as HarmonyCell).harmonyVerses) {
-    //         this.processHarmonyCell(col as HarmonyCell);
-    //       } else if ((col as HarmonyCell).harmonyXRef !== undefined) {
-    //         await this.processHarmonyXRef(col);
-    //       }
-    //     },
-    //   );
-    // });
 
     console.log(this.harmony);
   }
@@ -213,20 +172,5 @@ export class HarmonyComponent implements OnInit {
         }
       });
     }
-  }
-
-  public async getHarmonyVerses(
-    harmonyVerses: HarmonyVerse[],
-  ): Promise<HarmonyVerse[]> {
-    const verseIDS = harmonyVerses.map(
-      (harmonyVerse): CouchDoc => {
-        return { id: harmonyVerse.verseRef, rev: '' };
-      },
-    );
-    const versesDocs = await this.databaseService.bulkGet(verseIDS);
-    if (versesDocs) {
-      console.log(versesDocs.results.length);
-    }
-    return harmonyVerses;
   }
 }

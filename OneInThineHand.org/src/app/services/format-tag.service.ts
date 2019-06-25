@@ -35,8 +35,21 @@ export class FormatTagService {
   }
 
   public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
+  public resetVerseQueue = new PQueue({ concurrency: 1 });
 
   public async resetVerses(verses: Verse[]): Promise<void> {
+    // const promises = this.sliceArray(verses, 4000).map(
+    //   async (verse): Promise<void> => {
+    //     await this.resetVerseQueue.add((): void => {
+    //       verse.map((v): void => {
+    //         this.buildOffsets(v.formatGroups);
+    //         this.buildOffsets(v.formatTags);
+    //         this.buildFormatGroups(v.formatGroups, v.formatTags, v.note, v);
+    //       });
+    //     });
+    //   },
+    // );
+    // await Promise.all(promises);
     verses.map((verse): void => {
       this.buildOffsets(verse.formatGroups);
       this.buildOffsets(verse.formatTags);
@@ -49,6 +62,15 @@ export class FormatTagService {
     });
   }
 
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
+    }
+    return newArray;
+  }
   public async resetFormatTags(
     chapterVerses: ChapterVerses | undefined,
     chapterNotes: ChapterNotes | undefined,

@@ -42,30 +42,6 @@ export class HeaderDropdownComponent implements OnInit {
       const docs = await this.databaseService.allDocs();
 
       if (docs) {
-        // console.log(docs.rows.length);
-        // docs.rows
-        //   .filter((doc): boolean => {
-        //     return doc.id.includes('verses');
-        //   })
-        //   .map(
-        //     async (row): Promise<void> => {
-        //       await this.pQueueVerses.add(
-        //         async (): Promise<void> => {
-        //           console.log('running');
-
-        //           const verseDoc = await this.databaseService.getDatabaseItem(
-        //             row.id,
-        //           );
-        //           if (verseDoc) {
-        //             await this.databaseService.bulkDocs(
-        //               ((verseDoc as ChapterVerses).verses as Verse[]) as any[],
-        //             );
-        //             console.log('Finished');
-        //           }
-        //         },
-        //       );
-        //     },
-        //   );
         const verses = docs.rows
           .filter((doc): boolean => {
             return doc.id.includes('verses');
@@ -75,21 +51,6 @@ export class HeaderDropdownComponent implements OnInit {
               return ((await this.databaseService.getDatabaseItem(
                 row.id,
               )) as ChapterVerses).verses as Verse[];
-              await this.pQueueVerses.add(
-                async (): Promise<void> => {
-                  console.log('running');
-
-                  const verseDoc = await this.databaseService.getDatabaseItem(
-                    row.id,
-                  );
-                  if (verseDoc) {
-                    await this.databaseService.bulkDocs(
-                      ((verseDoc as ChapterVerses).verses as Verse[]) as any[],
-                    );
-                    console.log('Finished');
-                  }
-                },
-              );
             },
           );
         const promises = this.sliceArray(
@@ -128,21 +89,12 @@ export class HeaderDropdownComponent implements OnInit {
 
   public async showNotes(): Promise<void> {
     this.showOrphanNotes = false;
-    // this.refService.resetChapterVisbility();
   }
   public async showOrphanRefs(): Promise<void> {
     console.log('hgg');
 
     if (this.chapterService.notes)
       this.visibilityService.showMissingOffsets(this.chapterService.notes);
-    // const fRefs = await this.refService.getWRefList();
-    // if (fRefs) {
-    //   this.showOrphanNotes = true;
-    //   await this.refService.setListOfNotesVisibility(fRefs, false);
-    //   // fRefs.map((fRefs): void => {});
-    //   console.log(Array.from(this.refService.noteVis.values()));
-    // }
-    // +console.log(fRefs);
   }
 
   public async save(): Promise<void> {
