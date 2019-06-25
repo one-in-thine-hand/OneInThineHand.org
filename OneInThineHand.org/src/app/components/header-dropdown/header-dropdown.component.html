@@ -22,7 +22,11 @@
     <button ngbDropdownItem>Add Note</button>
     <button ngbDropdownItem>Highlight</button>
     <button ngbDropdownItem>Underline</button>
-    <button ngbDropdownItem (click)="prepareForHarmony()">
+    <button
+      *ngIf="!this.preparingHarmony"
+      ngbDropdownItem
+      (click)="prepareForHarmony()"
+    >
       Prepare for Harmony
     </button>
 

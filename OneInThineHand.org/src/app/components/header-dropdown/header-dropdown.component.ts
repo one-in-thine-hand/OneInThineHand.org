@@ -19,6 +19,7 @@ import { flatten } from 'lodash';
 })
 export class HeaderDropdownComponent implements OnInit {
   public showOrphanNotes: boolean = false;
+  preparingHarmony: boolean;
   public constructor(
     public saveState: SaveStateService,
     public chapterService: ChapterService,
@@ -103,9 +104,12 @@ export class HeaderDropdownComponent implements OnInit {
             );
           },
         );
+        this.preparingHarmony = true;
         await Promise.all(promises);
 
+        this.preparingHarmony = false;
         console.log('Finished');
+        alert('Finished');
       }
     } catch (error) {
       console.log(error);
