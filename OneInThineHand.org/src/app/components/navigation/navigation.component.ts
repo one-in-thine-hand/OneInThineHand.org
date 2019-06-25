@@ -79,7 +79,7 @@ export class NavigationComponent implements OnInit {
     id: string,
     navItems: NavigationItem[],
   ): NavigationItem | undefined {
-    console.log(id);
+    // console.log(id);
 
     const navigationItem = navItems.find((navItem): boolean => {
       return navItem.href === `#${id}` || navItem.id === `${id}`;

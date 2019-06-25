@@ -1,7 +1,7 @@
 import FastGlob from 'fast-glob';
 import { readFile, writeFile, pathExists, mkdirp } from 'fs-extra';
 import { JSDOM } from 'jsdom';
-import { HarmonyCell, HarmonyXRef, HarmonyVerse } from './Harmony';
+import { HarmonyCell, HarmonyXRef, HarmonyVerse, Harmony } from './Harmony';
 import { normalize, basename } from 'path';
 export async function getHarmoniesFileNames(): Promise<string[]> {
   return FastGlob('../scripture_files/harmony/**/**', {
@@ -176,18 +176,22 @@ async function main(): Promise<void> {
               }
             },
           );
-          rowsE.map(
-            (row): void => {
-              console.log(row.length);
-            },
-          );
-          console.log(
-            normalize(
-              `../scripture_files/scriptures/harmony/${fileName
-                .replace('.html', '')
-                .replace(' ', '_')}.json`,
-            ),
-          );
+          // rowsE.map(
+          //   (row): void => {
+          //     console.log(row.length);
+          //   },
+          // );
+
+          const harmony = new Harmony();
+          harmony._id = 'eng-harmony';
+          harmony.harmonyCells = rowsE;
+          // console.log(
+          //   normalize(
+          //     `../scripture_files/scriptures/harmony/${fileName
+          //       .replace('.html', '')
+          //       .replace(' ', '_')}.json`,
+          //   ),
+          // );
           if (
             !(await pathExists(
               normalize('../scripture_files/scriptures/harmony'),
@@ -197,16 +201,18 @@ async function main(): Promise<void> {
               await mkdirp(normalize('../scripture_files/scriptures/harmony')),
             );
           }
-          const results = await writeFile(
+          await writeFile(
             normalize(
               `../scripture_files/scriptures/harmony/${basename(
-                fileName,
-              ).replace('.html', '')}.json`,
+                fileName.toLowerCase(),
+              )
+                .replace('.html', '')
+                .replace(' ', '_')}.json`,
             ),
-            JSON.stringify(rowsE),
+            JSON.stringify(harmony),
           );
 
-          console.log(results);
+          // console.log(results);
 
           // rows.map(
           //   (row): void => {
