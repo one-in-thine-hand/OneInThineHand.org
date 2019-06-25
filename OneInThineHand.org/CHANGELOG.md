@@ -1,3 +1,9 @@
+## <small>5.0.34 (2019-06-25)</small>
+
+* Harmony actually loads now ([ce9b48c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ce9b48c))
+
+
+
 ## <small>5.0.33 (2019-06-25)</small>
 
 * Adding harmony ([0ae38ce](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0ae38ce))
@@ -10,6 +16,7 @@
 * Null check fix ([eebe55b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/eebe55b))
 * refactoring ([573fc18](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/573fc18))
 * Refactoring ([30588c7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/30588c7))
+* v5.0.33 ([2799b99](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2799b99))
 
 
 
