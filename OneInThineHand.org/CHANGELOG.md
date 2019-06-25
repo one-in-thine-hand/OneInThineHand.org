@@ -1,6 +1,14 @@
+## <small>5.0.35 (2019-06-25)</small>
+
+* Added alert to harmony ([1d4c484](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d4c484))
+* Adding format tags to harmony ([06a2825](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/06a2825))
+
+
+
 ## <small>5.0.34 (2019-06-25)</small>
 
 * Harmony actually loads now ([ce9b48c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ce9b48c))
+* v5.0.34 ([bdcb21b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bdcb21b))
 
 
 
