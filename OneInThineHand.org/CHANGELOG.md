@@ -1,5 +1,21 @@
+## <small>5.0.33 (2019-06-25)</small>
+
+* Adding harmony ([0ae38ce](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0ae38ce))
+* css layout work ([59b98b4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/59b98b4))
+* Fixed navigation error ([d44bbc8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d44bbc8))
+* Harmony data format version 1 ([304c9e9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/304c9e9))
+* Harmony work ([084e75f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/084e75f))
+* missed a file ([51e915e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/51e915e))
+* More harmony work ([19867c0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/19867c0))
+* Null check fix ([eebe55b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/eebe55b))
+* refactoring ([573fc18](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/573fc18))
+* Refactoring ([30588c7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/30588c7))
+
+
+
 ## <small>5.0.31 (2019-06-24)</small>
 
+* v5.0.31 ([4dbd4bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4dbd4bb))
 
 
 
