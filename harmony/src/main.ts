@@ -35,7 +35,7 @@ function calculateColumnLength(rows: Element[]): number {
 
 function filterTextNodes(nodes: Node[]): Node[] {
   return nodes.filter(
-    (node): boolean => {
+    (node: Node): boolean => {
       return node.nodeName.toLowerCase() !== '#text';
     },
   );
@@ -123,10 +123,12 @@ async function main(): Promise<void> {
                   columnLength,
                 );
                 return columns.map(
-                  (column): HarmonyCell | HarmonyXRef => {
+                  (
+                    column: HTMLTableDataCellElement,
+                  ): HarmonyCell | HarmonyXRef => {
                     try {
                       const childNodes = Array.from(column.childNodes).filter(
-                        (node): boolean => {
+                        (node: Node): boolean => {
                           return node.nodeName.toLowerCase() !== '#text';
                         },
                       );

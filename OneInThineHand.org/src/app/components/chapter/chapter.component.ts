@@ -12,7 +12,11 @@ import { ParamService, ChapterParams } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
 import { PageStateService } from '../../services/page-state.service';
-import { parseOffsets, Verse } from '../../../../../shared/src/shared';
+import {
+  parseOffsets,
+  Verse,
+  CouchDoc,
+} from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
@@ -206,6 +210,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 this.chapterVerses,
                 this.chapter,
               );
+              await this.testGettingIndividualVerses();
 
               if (this.chapterVerses.verses) {
                 this.setHighlighting(chapterParams, this.chapterVerses.verses);
@@ -220,6 +225,26 @@ export class ChapterComponent implements OnInit, OnDestroy {
       },
     );
   }
+  private async testGettingIndividualVerses(): Promise<void> {
+    if (this.chapterVerses && this.chapterVerses.verses) {
+      const chapterVersesIds = this.chapterVerses.verses.map(
+        (verse): CouchDoc => {
+          return { id: verse._id as string, rev: '' };
+        },
+      );
+      const testVerses = await this.databaseService.bulkGet(chapterVersesIds);
+      if (testVerses) {
+        console.log(
+          testVerses.results.map(
+            (result): Verse => {
+              return (result.docs[0] as any).ok;
+            },
+          ),
+        );
+      }
+    }
+  }
+
   private async setHistory(): Promise<void> {
     if (this.chapter && this.chapterVerses && this.chapterNotes) {
       this.pageStateService.newPage(

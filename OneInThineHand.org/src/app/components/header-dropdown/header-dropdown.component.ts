@@ -5,8 +5,12 @@ import { TextSelectService } from '../../services/text-select.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { ExportService } from '../../services/export.service';
+import { ChapterVerses } from '../../../../../format-tags/src/main';
+import { Verse } from '../../../../../shared/src/shared';
+import PQueue from 'p-queue/dist';
+import { flatten } from 'lodash';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -23,10 +27,100 @@ export class HeaderDropdownComponent implements OnInit {
     public modalService: NgbModal,
     public visibilityService: VisibilityService,
     public exportService: ExportService,
+
     private location: Location,
   ) {}
 
+  public pQueueVerses = new PQueue({ concurrency: 1 });
+
   public ngOnInit(): void {}
+  public async prepareForHarmony(): Promise<void> {
+    console.log('aoisdjfoiasjdfoiajsdf');
+
+    try {
+      const docs = await this.databaseService.allDocs();
+
+      if (docs) {
+        // console.log(docs.rows.length);
+        // docs.rows
+        //   .filter((doc): boolean => {
+        //     return doc.id.includes('verses');
+        //   })
+        //   .map(
+        //     async (row): Promise<void> => {
+        //       await this.pQueueVerses.add(
+        //         async (): Promise<void> => {
+        //           console.log('running');
+
+        //           const verseDoc = await this.databaseService.getDatabaseItem(
+        //             row.id,
+        //           );
+        //           if (verseDoc) {
+        //             await this.databaseService.bulkDocs(
+        //               ((verseDoc as ChapterVerses).verses as Verse[]) as any[],
+        //             );
+        //             console.log('Finished');
+        //           }
+        //         },
+        //       );
+        //     },
+        //   );
+        const verses = docs.rows
+          .filter((doc): boolean => {
+            return doc.id.includes('verses');
+          })
+          .map(
+            async (row): Promise<Verse[]> => {
+              return ((await this.databaseService.getDatabaseItem(
+                row.id,
+              )) as ChapterVerses).verses as Verse[];
+              await this.pQueueVerses.add(
+                async (): Promise<void> => {
+                  console.log('running');
+
+                  const verseDoc = await this.databaseService.getDatabaseItem(
+                    row.id,
+                  );
+                  if (verseDoc) {
+                    await this.databaseService.bulkDocs(
+                      ((verseDoc as ChapterVerses).verses as Verse[]) as any[],
+                    );
+                    console.log('Finished');
+                  }
+                },
+              );
+            },
+          );
+        const promises = this.sliceArray(
+          flatten(await Promise.all(verses)),
+          1000,
+        ).map(
+          async (slice): Promise<void> => {
+            await this.pQueueVerses.add(
+              async (): Promise<void> => {
+                await this.databaseService.bulkDocs(slice as DatabaseItem[]);
+              },
+            );
+          },
+        );
+        await Promise.all(promises);
+
+        console.log('Finished');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
+    }
+    return newArray;
+  }
 
   public async showNotes(): Promise<void> {
     this.showOrphanNotes = false;
