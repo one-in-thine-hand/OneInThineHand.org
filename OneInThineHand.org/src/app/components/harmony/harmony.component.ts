@@ -10,6 +10,7 @@ import { CouchDoc, Verse } from '../../../../../shared/src/shared';
 import { DatabaseService } from '../../services/database.service';
 import { flatten, uniq } from 'lodash';
 import PQueue from 'p-queue/dist';
+import { FormatTagService } from '../../services/format-tag.service';
 @Component({
   selector: 'app-harmony',
   templateUrl: './harmony.component.html',
@@ -18,7 +19,10 @@ import PQueue from 'p-queue/dist';
 export class HarmonyComponent implements OnInit {
   public harmony: Harmony | undefined;
   public harmonyDocQueue = new PQueue({ concurrency: 1 });
-  public constructor(public databaseService: DatabaseService) {}
+  public constructor(
+    public databaseService: DatabaseService,
+    public formatTagService: FormatTagService,
+  ) {}
 
   public async ngOnInit(): Promise<void> {
     this.databaseService.initReadingMode();
@@ -80,22 +84,49 @@ export class HarmonyComponent implements OnInit {
               const docs = await this.databaseService.bulkGet(slice);
 
               if (docs) {
-                docs.results.map((doc): void => {
-                  const verse = (doc.docs[0] as any).ok as Verse;
-                  if (verse && verse._id) {
-                    const harmonyVerse = harmonyVerses.find(
-                      (harmonyVerse): boolean => {
-                        return (
-                          harmonyVerse.verseRef ===
-                          (verse._id as string).replace('-verse', '')
-                        );
-                      },
-                    );
-                    if (harmonyVerse) {
-                      harmonyVerse.verse = verse;
-                    }
+                const verses = docs.results
+                  .map(
+                    (doc): Verse => {
+                      return (doc.docs[0] as any).ok as Verse;
+                    },
+                  )
+                  .filter((verse): boolean => {
+                    return verse !== undefined && verse._id !== undefined;
+                  });
+                await this.formatTagService.resetVerses(verses);
+
+                verses.map((verse): void => {
+                  const harmonyVerse = harmonyVerses.find(
+                    (harmonyVerse): boolean => {
+                      return (
+                        verse._id !== undefined &&
+                        harmonyVerse.verseRef ===
+                          verse._id.replace('-verse', '')
+                      );
+                    },
+                  );
+                  if (harmonyVerse) {
+                    harmonyVerse.verse = verse;
                   }
                 });
+                // console.log(verses);
+
+                // docs.results.map((doc): void => {
+                //   const verse = (doc.docs[0] as any).ok as Verse;
+                //   if (verse && verse._id) {
+                //     const harmonyVerse = harmonyVerses.find(
+                //       (harmonyVerse): boolean => {
+                //         return (
+                //           harmonyVerse.verseRef ===
+                //           (verse._id as string).replace('-verse', '')
+                //         );
+                //       },
+                //     );
+                //     if (harmonyVerse) {
+                //       harmonyVerse.verse = verse;
+                //     }
+                //   }
+                // });
               }
             },
           );
@@ -103,7 +134,7 @@ export class HarmonyComponent implements OnInit {
       );
       await Promise.all(promises);
       this.harmony = harmony;
-      console.log(verseIDS);
+      // console.log(verseIDS);
     } catch (error) {
       console.log(error);
     }

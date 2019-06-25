@@ -160,7 +160,7 @@ export class FormatTagComponent implements OnInit {
     // console.log('hhgg');
     // console.log(event);
     // this.visibilityService.resetHighlight();
-    console.log(event);
+    // console.log(event);
     if (this.checkNoTextIsSelected()) {
       this.chapterService.resetNoteVis();
 

@@ -6,9 +6,15 @@
           <ng-container *ngIf="harmonyCol.harmonyVerses">
             <harmony-verses
               *ngFor="let harmonyVerse of harmonyCol.harmonyVerses"
-              ><verse *ngIf="harmonyVerse.verse">{{
+            >
+              <app-verse
+                *ngIf="harmonyVerse.verse"
+                [verse]="harmonyVerse.verse"
+              ></app-verse>
+
+              <!-- <verse *ngIf="harmonyVerse.verse">{{
                 harmonyVerse.verse.text
-              }}</verse>
+              }}</verse> -->
             </harmony-verses>
           </ng-container>
           <ng-container *ngIf="harmonyCol.harmonyXRef">
@@ -18,11 +24,17 @@
                 <ng-container
                   *ngFor="let harmonyVerse of harmonyXRef.harmonyVerse"
                 >
-                  <x-ref>{{ harmonyVerse.verseTitle }}</x-ref>
+                  <x-ref *ngIf="harmonyVerse.verseTitle">{{
+                    harmonyVerse.verseTitle
+                  }}</x-ref>
 
-                  <verse *ngIf="harmonyVerse.verse">{{
+                  <app-verse
+                    *ngIf="harmonyVerse.verse"
+                    [verse]="harmonyVerse.verse"
+                  ></app-verse>
+                  <!-- <verse *ngIf="harmonyVerse.verse">{{
                     harmonyVerse.verse.text
-                  }}</verse>
+                  }}</verse> -->
                 </ng-container>
               </ng-container>
             </harmony-xrefs>

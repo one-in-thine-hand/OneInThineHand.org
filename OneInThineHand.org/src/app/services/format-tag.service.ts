@@ -35,32 +35,49 @@ export class FormatTagService {
   }
 
   public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
+
+  public async resetVerses(verses: Verse[]): Promise<void> {
+    verses.map((verse): void => {
+      this.buildOffsets(verse.formatGroups);
+      this.buildOffsets(verse.formatTags);
+      this.buildFormatGroups(
+        verse.formatGroups,
+        verse.formatTags,
+        verse.note,
+        verse,
+      );
+    });
+  }
+
   public async resetFormatTags(
     chapterVerses: ChapterVerses | undefined,
     chapterNotes: ChapterNotes | undefined,
   ): Promise<void> {
-    await this.resetFormatTagsQueue.add((): void => {
-      if (chapterVerses && chapterNotes) {
-        this.historyService.addHistory(
-          chapterVerses,
-          this.saveStateService.data,
-          chapterNotes,
-        );
-      }
-      if (chapterVerses && chapterVerses.verses) {
-        chapterVerses.verses.map((verse): void => {
-          this.buildOffsets(verse.formatGroups);
-          this.buildOffsets(verse.formatTags);
-          this.buildFormatGroups(
-            verse.formatGroups,
-            verse.formatTags,
-            verse.note,
-            verse,
+    await this.resetFormatTagsQueue.add(
+      async (): Promise<void> => {
+        if (chapterVerses && chapterNotes) {
+          this.historyService.addHistory(
+            chapterVerses,
+            this.saveStateService.data,
+            chapterNotes,
           );
-        });
-        console.log(chapterVerses);
-      }
-    });
+        }
+        if (chapterVerses && chapterVerses.verses) {
+          await this.resetVerses(chapterVerses.verses);
+          // chapterVerses.verses.map((verse): void => {
+          //   this.buildOffsets(verse.formatGroups);
+          //   this.buildOffsets(verse.formatTags);
+          //   this.buildFormatGroups(
+          //     verse.formatGroups,
+          //     verse.formatTags,
+          //     verse.note,
+          //     verse,
+          //   );
+          // });
+          console.log(chapterVerses);
+        }
+      },
+    );
   }
   public buildOffsets(
     formatGroups:
