@@ -26,10 +26,10 @@ export class HarmonyComponent implements OnInit {
       '/assets/harmony/harmony_of the gospels.json',
     );
 
-    this.harmony = harmonyData.data as Harmony;
+    const harmony = harmonyData.data as Harmony;
 
     const harmonyVerses = flatten(
-      this.harmony.harmonyCells.map((row): HarmonyVerse[] => {
+      harmony.harmonyCells.map((row): HarmonyVerse[] => {
         return flatten(
           row.map((col: HarmonyCell | HarmonyXRef): HarmonyVerse[] => {
             if ((col as HarmonyCell).harmonyVerses) {
@@ -67,7 +67,7 @@ export class HarmonyComponent implements OnInit {
     const verseIDS = uniq(
       harmonyVerses.map(
         (harmonyVerse): CouchDoc => {
-          return { id: harmonyVerse.verseRef, rev: '' };
+          return { id: `${harmonyVerse.verseRef}-verse`, rev: '' };
         },
       ),
     );
@@ -80,13 +80,29 @@ export class HarmonyComponent implements OnInit {
               const docs = await this.databaseService.bulkGet(slice);
 
               if (docs) {
-                console.log(docs.results);
+                docs.results.map((doc): void => {
+                  const verse = (doc.docs[0] as any).ok as Verse;
+                  if (verse && verse._id) {
+                    const harmonyVerse = harmonyVerses.find(
+                      (harmonyVerse): boolean => {
+                        return (
+                          harmonyVerse.verseRef ===
+                          (verse._id as string).replace('-verse', '')
+                        );
+                      },
+                    );
+                    if (harmonyVerse) {
+                      harmonyVerse.verse = verse;
+                    }
+                  }
+                });
               }
             },
           );
         },
       );
       await Promise.all(promises);
+      this.harmony = harmony;
       console.log(verseIDS);
     } catch (error) {
       console.log(error);
