@@ -19,6 +19,9 @@ import { FormatTagService } from '../../services/format-tag.service';
 export class HarmonyComponent implements OnInit {
   public harmony: Harmony | undefined;
   public harmonyDocQueue = new PQueue({ concurrency: 1 });
+  public harmonyDocQueue2 = new PQueue({ concurrency: 1 });
+  public verses: Map<string, Verse> = new Map();
+  public harmonyRows: HarmonyCell[][] = [];
   public constructor(
     public databaseService: DatabaseService,
     public formatTagService: FormatTagService,
@@ -32,85 +35,94 @@ export class HarmonyComponent implements OnInit {
 
     const harmony = harmonyData.data as Harmony;
 
-    const harmonyVerses = flatten(
-      harmony.harmonyCells.map((row): HarmonyVerse[] => {
-        return flatten(
-          row.map((col: HarmonyCell | HarmonyXRef): HarmonyVerse[] => {
-            if ((col as HarmonyCell).harmonyVerses) {
-              return (col as HarmonyCell).harmonyVerses as HarmonyVerse[];
-            } else if ((col as HarmonyCell).harmonyXRef !== undefined) {
-              const harmonyXRefs = (col as HarmonyCell)
-                .harmonyXRef as HarmonyXRef[];
-              return flatten(
-                harmonyXRefs
-                  .filter((h): boolean => {
-                    return h.harmonyVerse !== undefined;
-                  })
-                  .map((harmonyXRef): HarmonyVerse[] => {
-                    return harmonyXRef.harmonyVerse as HarmonyVerse[];
-                  }),
-              );
-              // await this.processHarmonyXRef(c?ol);
-            }
-            return [];
-          }),
-        );
-      }),
-    );
-    const verseIDS = uniq(
-      harmonyVerses.map(
-        (harmonyVerse): CouchDoc => {
-          return { id: `${harmonyVerse.verseRef}-verse`, rev: '' };
-        },
-      ),
-    );
+    // await Promise.all(testPromises);
+    // this.harmony = harmony;
+    console.log(this.harmonyDocQueue2);
 
-    try {
-      const promises = this.sliceArray(verseIDS, 100).map(
-        async (slice): Promise<void> => {
-          await this.harmonyDocQueue.add(
-            async (): Promise<void> => {
-              const docs = await this.databaseService.bulkGet(slice);
+    // const harmonyVerses = flatten(
+    //   harmony.harmonyCells.map((row): HarmonyVerse[] => {
+    //     return flatten(
+    //       row.map((col: HarmonyCell | HarmonyXRef): HarmonyVerse[] => {
+    //         if ((col as HarmonyCell).harmonyVerses) {
+    //           return (col as HarmonyCell).harmonyVerses as HarmonyVerse[];
+    //         } else if ((col as HarmonyCell).harmonyXRef !== undefined) {
+    //           const harmonyXRefs = (col as HarmonyCell)
+    //             .harmonyXRef as HarmonyXRef[];
+    //           return flatten(
+    //             harmonyXRefs
+    //               .filter((h): boolean => {
+    //                 return h.harmonyVerse !== undefined;
+    //               })
+    //               .map((harmonyXRef): HarmonyVerse[] => {
+    //                 return harmonyXRef.harmonyVerse as HarmonyVerse[];
+    //               }),
+    //           );
+    //           // await this.processHarmonyXRef(c?ol);
+    //         }
+    //         return [];
+    //       }),
+    //     );
+    //   }),
+    // );
+    // const verseIDS = uniq(
+    //   harmonyVerses.map(
+    //     (harmonyVerse): CouchDoc => {
+    //       return { id: `${harmonyVerse.verseRef}-verse`, rev: '' };
+    //     },
+    //   ),
+    // );
 
-              if (docs) {
-                const verses = docs.results
-                  .map(
-                    (doc): Verse => {
-                      return (doc.docs[0] as any).ok as Verse;
-                    },
-                  )
-                  .filter((verse): boolean => {
-                    return verse !== undefined && verse._id !== undefined;
-                  });
-                await this.formatTagService.resetVerses(verses);
+    // try {
+    //   const promises = this.sliceArray(verseIDS, 100).map(
+    //     async (slice): Promise<void> => {
+    //       await this.harmonyDocQueue.add(
+    //         async (): Promise<void> => {
+    //           const docs = await this.databaseService.bulkGet(slice);
 
-                verses.map((verse): void => {
-                  const harmonyVerse = harmonyVerses.find(
-                    (harmonyVerse): boolean => {
-                      return (
-                        verse._id !== undefined &&
-                        harmonyVerse.verseRef ===
-                          verse._id.replace('-verse', '')
-                      );
-                    },
-                  );
-                  if (harmonyVerse) {
-                    harmonyVerse.verse = verse;
-                  }
-                });
-              }
-            },
-          );
-        },
-      );
-      await Promise.all(promises);
-      this.harmony = harmony;
-      // console.log(verseIDS);
-    } catch (error) {
-      console.log(error);
-    }
+    //           if (docs) {
+    //             const verses = docs.results
+    //               .map(
+    //                 (doc): Verse => {
+    //                   return (doc.docs[0] as any).ok as Verse;
+    //                 },
+    //               )
+    //               .filter((verse): boolean => {
+    //                 return verse !== undefined && verse._id !== undefined;
+    //               });
+    //             await this.formatTagService.resetVerses(verses);
 
-    console.log(this.harmony);
+    //             verses.map((verse): void => {
+    //               const harmonyVerse = harmonyVerses.find(
+    //                 (harmonyVerse): boolean => {
+    //                   return (
+    //                     verse._id !== undefined &&
+    //                     harmonyVerse.verseRef ===
+    //                       verse._id.replace('-verse', '')
+    //                   );
+    //                 },
+    //               );
+    //               if (harmonyVerse) {
+    //                 harmonyVerse.verse = verse;
+    //               }
+    //             });
+    //           }
+    //         },
+    //       );
+    //     },
+    //   );
+    //   await Promise.all(promises);
+    //   this.harmony = harmony;
+    //   // console.log(verseIDS);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    // console.log(this.harmony);
+  }
+  public test(harmonyRow) {
+    // console.log(harmonyRow);
+
+    return 'asdf';
   }
   private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
     const newArray: T[][] = [];

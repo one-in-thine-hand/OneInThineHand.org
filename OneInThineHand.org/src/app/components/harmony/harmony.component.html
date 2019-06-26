@@ -1,12 +1,14 @@
 <div style="overflow-y: scroll; height: 100%;">
-  <table *ngIf="this.harmony && this.harmony.harmonyCells">
-    <tr *ngFor="let harmonyRow of this.harmony.harmonyCells">
+  <table *ngIf="this.harmonyRows.length > 0">
+    <tr *ngFor="let harmonyRow of this.harmonyRows">
+      <span>{{ this.test(harmonyRow) }}</span>
       <ng-container *ngFor="let harmonyCol of harmonyRow">
         <td [attr.sort-key]="harmonyCol.sortKey">
           <ng-container *ngIf="harmonyCol.harmonyVerses">
             <harmony-verses
               *ngFor="let harmonyVerse of harmonyCol.harmonyVerses"
             >
+              <span>{{ this.verses.has(harmonyVerse.verseRef) }}</span>
               <app-verse
                 *ngIf="harmonyVerse.verse"
                 [verse]="harmonyVerse.verse"
@@ -28,6 +30,7 @@
                     harmonyVerse.verseTitle
                   }}</x-ref>
 
+                  <span>{{ this.verses.has(harmonyVerse.verseRef) }}</span>
                   <app-verse
                     *ngIf="harmonyVerse.verse"
                     [verse]="harmonyVerse.verse"
