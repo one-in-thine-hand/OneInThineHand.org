@@ -129,7 +129,159 @@
   </div>
   <div class="modal-body settings">
     <h2>Note Categories</h2>
-    <ul>
+    <table class="table">
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-quotation')
+          }"
+          (click)="quotationClick()"
+        >
+          QUO
+        </td>
+        <td
+          (click)="quotationMoreClick()"
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-quotation-2')
+          }"
+        >
+          More
+        </td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-phrasing')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-phrasing'])"
+        >
+          PHR
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-translation')
+          }"
+          (click)="trnClick()"
+        >
+          TRN
+        </td>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-translation-2')
+          }"
+          (click)="trnMoreClick()"
+        >
+          More
+        </td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-alt')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-alt'])"
+        >
+          ALT
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-or')
+          }"
+          (click)="orClick()"
+        >
+          OR
+        </td>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-or-2')
+          }"
+          (click)="orMoreClick()"
+        >
+          More
+        </td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-ie')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-ie'])"
+        >
+          IE
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-cross-ref')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-cross-ref'])"
+        >
+          CR
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-harmony')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-harmony'])"
+        >
+          HMY
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-history')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-history'])"
+        >
+          HST
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-geography')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-geography'])"
+        >
+          GEO
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-doctrine')
+          }"
+          (click)="
+            noteCategoryBtnClick([
+              'reference-label-doctrine',
+              'reference-label-bd',
+              'reference-label-tg',
+              'reference-label-gs'
+            ])
+          "
+        >
+          DOCT
+        </td>
+        <td></td>
+      </tr>
+    </table>
+
+    <!-- <ul>
       <li
         (click)="refLabelClick(r)"
         *ngFor="let r of getNoteCategories()"
@@ -141,7 +293,7 @@
       >
         {{ r.referenceLabelShortName }}
       </li>
-    </ul>
+    </ul> -->
     <h2>Note Types</h2>
     <ul>
       <li

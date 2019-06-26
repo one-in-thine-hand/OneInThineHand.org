@@ -27,6 +27,10 @@ export class SaveStateService {
 
       this.mergeNoteSettings(this.data.noteTypeSettings, NoteTypeConverts);
 
+      if (this.data.noteCategorySettings === undefined) {
+        this.data.noteCategorySettings = ReferenceLabels;
+      }
+
       if (this.data.noteTypeSettings) {
         this.data.noteTypeSettings = this.data.noteTypeSettings.filter(
           (noteTypeSetting): boolean => {
@@ -34,11 +38,9 @@ export class SaveStateService {
               noteTypeSetting.visible = true;
             }
             if (
-              !NoteTypeConverts.find(
-                (nTC): boolean => {
-                  return nTC.className.includes(noteTypeSetting.className);
-                },
-              )
+              !NoteTypeConverts.find((nTC): boolean => {
+                return nTC.className.includes(noteTypeSetting.className);
+              })
             ) {
               return false;
             }
@@ -84,20 +86,16 @@ export class SaveStateService {
     noteSettingsMaster: T[],
   ): void {
     if (noteSettings) {
-      noteSettingsMaster.map(
-        (noteTypeConvert): void => {
-          if (
-            !noteSettings.find(
-              (nT): boolean => {
-                return nT.className === noteTypeConvert.className;
-              },
-            )
-          ) {
-            console.log(noteTypeConvert);
-            noteSettings.push(noteTypeConvert);
-          }
-        },
-      );
+      noteSettingsMaster.map((noteTypeConvert): void => {
+        if (
+          !noteSettings.find((nT): boolean => {
+            return nT.className === noteTypeConvert.className;
+          })
+        ) {
+          console.log(noteTypeConvert);
+          noteSettings.push(noteTypeConvert);
+        }
+      });
     } else {
       noteSettings = noteSettingsMaster;
     }
