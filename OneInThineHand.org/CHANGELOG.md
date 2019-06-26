@@ -1,7 +1,15 @@
+## <small>5.0.36 (2019-06-26)</small>
+
+* Refactoring ([0d5bd91](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0d5bd91))
+* Update to note category settings ([920bca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/920bca4))
+
+
+
 ## <small>5.0.35 (2019-06-25)</small>
 
 * Added alert to harmony ([1d4c484](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d4c484))
 * Adding format tags to harmony ([06a2825](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/06a2825))
+* v5.0.35 ([b517fea](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b517fea))
 
 
 
