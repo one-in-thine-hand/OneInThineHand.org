@@ -1,7 +1,16 @@
+## <small>5.0.37 (2019-06-27)</small>
+
+* Fixing label names ([fad9107](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fad9107))
+* Harmony work didn't work ([3f3c9f9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3f3c9f9))
+* testing loading part of harmony ([12d9feb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/12d9feb))
+
+
+
 ## <small>5.0.36 (2019-06-26)</small>
 
 * Refactoring ([0d5bd91](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0d5bd91))
 * Update to note category settings ([920bca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/920bca4))
+* v5.0.36 ([712f981](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/712f981))
 
 
 
