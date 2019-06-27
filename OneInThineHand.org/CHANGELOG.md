@@ -1,5 +1,12 @@
+## <small>5.0.40 (2019-06-27)</small>
+
+* Fixed underlining ([93cec44](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/93cec44))
+
+
+
 ## <small>5.0.39 (2019-06-27)</small>
 
+* v5.0.39 ([2e352c6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2e352c6))
 
 
 
