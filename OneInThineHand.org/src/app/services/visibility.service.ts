@@ -13,6 +13,7 @@ export class VisibilityService {
   public resetHighlight(): void {
     this.secondaryNotesHighlight.forEach((x, k): void => {
       this.secondaryNotesHighlight.set(k, false);
+      this.secondaryNotesVisibility.set(k, false);
     });
   }
   public resetNoteVisibility(notes: VerseNotes[] | undefined): void {
@@ -55,6 +56,23 @@ export class VisibilityService {
             //     break;
             //   }
             // }
+
+            if (sN.visible) {
+              const visibility = sN.noteRefs.map((noteRef): boolean => {
+                const nC = this.saveStateService.data.noteCategorySettings.find(
+                  (rL): boolean => {
+                    return rL.noteCategory === noteRef.noteCategory;
+                  },
+                );
+                noteRef.visible = nC ? nC.visible : false;
+                // if (noteRef.visible === true) {
+                //   console.log(this.saveStateService.data.noteCategorySettings);
+                // }
+                return noteRef.visible ? noteRef.visible : false;
+              });
+              sN.visible = visibility.includes(true);
+            }
+
             if (sN.id) {
               this.secondaryNotesHighlight.set(
                 sN.id,
@@ -64,17 +82,6 @@ export class VisibilityService {
                 sN.id,
                 sN.visible ? sN.visible : false,
               );
-            }
-
-            if (sN.visible) {
-              sN.noteRefs.map((noteRef): void => {
-                const nC = this.saveStateService.data.noteCategorySettings.find(
-                  (rL): boolean => {
-                    return rL.noteCategory === noteRef.noteCategory;
-                  },
-                );
-                noteRef.visible = nC ? nC.visible : false;
-              });
             }
           });
         }

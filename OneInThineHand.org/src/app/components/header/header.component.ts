@@ -237,7 +237,9 @@ export class HeaderComponent implements OnInit {
     return noteCategory && noteCategory.visible ? noteCategory.visible : false;
     // return true;
   }
-  private findNoteCategorySetting(noteCategoryClassName: string) {
+  private findNoteCategorySetting(
+    noteCategoryClassName: string,
+  ): ReferenceLabel | undefined {
     return this.saveStateService.data.noteCategorySettings.find(
       (noteCategory): boolean => {
         return noteCategory.className === noteCategoryClassName;

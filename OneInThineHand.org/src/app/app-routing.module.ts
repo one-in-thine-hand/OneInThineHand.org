@@ -10,6 +10,10 @@ const routes: Routes = [
     component: LandingPageComponent,
   },
   {
+    path: 'harmony/:page',
+    component: HarmonyComponent,
+  },
+  {
     path: 'harmony',
     component: HarmonyComponent,
   },
