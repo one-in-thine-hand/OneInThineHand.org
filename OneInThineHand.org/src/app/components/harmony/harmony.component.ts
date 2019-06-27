@@ -64,8 +64,8 @@ export class HarmonyComponent implements OnInit {
         sortBy(
           this.sliceArray(
             harmony.harmonyCells.slice(
-              page * 100 - 100,
-              page * 100,
+              page * 50 - 50,
+              page * 50,
             ) as HarmonyCell[][],
             100,
           ),
