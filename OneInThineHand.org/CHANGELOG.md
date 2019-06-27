@@ -1,8 +1,14 @@
+## <small>5.0.38 (2019-06-27)</small>
+
+
+
+
 ## <small>5.0.37 (2019-06-27)</small>
 
 * Fixing label names ([fad9107](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fad9107))
 * Harmony work didn't work ([3f3c9f9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3f3c9f9))
 * testing loading part of harmony ([12d9feb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/12d9feb))
+* v5.0.37 ([a430590](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a430590))
 
 
 
