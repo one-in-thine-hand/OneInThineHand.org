@@ -15,6 +15,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { SaveService } from '../../services/save.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { sortBy } from 'lodash';
 
 @Component({
   selector: 'app-n',
@@ -46,18 +47,16 @@ export class NComponent implements OnInit {
     if (noteRef.none === true) {
       return '';
     }
-    const nc = ReferenceLabels.find(
-      (rl): boolean => {
-        // if (
-        //   rl.noteCategory === noteRef.noteCategory &&
-        //   noteRef.text &&
-        //   noteRef.text.includes('many')
-        // ) {
-        //   // console.log(ReferenceLabels);
-        // }
-        return rl.noteCategory === noteRef.noteCategory;
-      },
-    );
+    const nc = ReferenceLabels.find((rl): boolean => {
+      // if (
+      //   rl.noteCategory === noteRef.noteCategory &&
+      //   noteRef.text &&
+      //   noteRef.text.includes('many')
+      // ) {
+      //   // console.log(ReferenceLabels);
+      // }
+      return rl.noteCategory === noteRef.noteCategory;
+    });
     // if (noteRef.text && noteRef.text.includes('many')) {
     //   // console.log(nc);
     // }
@@ -86,7 +85,10 @@ export class NComponent implements OnInit {
     return '';
   }
   public getNoteRefs(secondaryNote: Note): NoteRef[] {
-    return getVisible(secondaryNote.noteRefs);
+    // return getVisible(secondaryNote.noteRefs)
+    return sortBy(getVisible(secondaryNote.noteRefs), nr => {
+      return nr.noteCategory;
+    }).reverse();
   }
   public async offsetsInput(event: Event, note: Note): Promise<void> {
     if (event.type === 'input' && event.target) {
@@ -106,11 +108,9 @@ export class NComponent implements OnInit {
       ];
       note.offsets = (event.target as HTMLTextAreaElement).value
         .split('')
-        .map(
-          (v): string => {
-            return supportedCharacters.includes(v) ? v : '';
-          },
-        )
+        .map((v): string => {
+          return supportedCharacters.includes(v) ? v : '';
+        })
         .join('');
       // console.log(note.offsets);
 
@@ -122,14 +122,17 @@ export class NComponent implements OnInit {
 
       if (note.uncompressedOffsets) {
         note.offsets = getRanges(note.uncompressedOffsets)
-          .map(
-            (offsets): string => {
-              return offsets.join('-');
-            },
-          )
+          .map((offsets): string => {
+            return offsets.join('-');
+          })
           .join(',');
       }
       await this.saveService.save();
     }
+  }
+  public getVerseNotes(): VerseNotes {
+    if (this.verseNotes) {
+    }
+    return this.verseNotes;
   }
 }

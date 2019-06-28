@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
 import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { sortBy } from 'lodash';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -43,7 +43,9 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    return secondaryNotes;
+    return sortBy(secondaryNotes, n => {
+      return n.noteType;
+    }).reverse();
   }
 
   public noteRefClick(): void {

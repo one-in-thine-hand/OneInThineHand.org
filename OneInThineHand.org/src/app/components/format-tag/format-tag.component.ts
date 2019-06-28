@@ -172,11 +172,9 @@ export class FormatTagComponent implements OnInit {
           const tempRefList = this.getVisibleRefTags();
 
           if (tempRefList) {
-            this.refList = tempRefList
-              .map((refTag): string => {
-                return refTag.secondaryNoteID;
-              })
-              .sort();
+            this.refList = tempRefList.map((refTag): string => {
+              return refTag.secondaryNoteID;
+            });
           }
         }
         if (this.refList) {
