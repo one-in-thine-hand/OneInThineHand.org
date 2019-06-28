@@ -60,6 +60,25 @@ export class NavigationComponent implements OnInit {
     );
     this.activatedRouter.params.subscribe((): void => {});
   }
+  /**
+   * isSingleChapter
+nI:NavigationItem   */
+  public isSingleChapter(nI: NavigationItem): boolean {
+    return [
+      'Obadiah',
+      'Philemon',
+      '2John',
+      '3John',
+      'Jude',
+      'Enos',
+      'Jarom',
+      'Omni',
+      'WordsofMormon',
+      'JosephSmith—Matthew',
+      'JosephSmith—History',
+      'ArticlesofFaith',
+    ].includes(nI.title.replace(/\s/g, ''));
+  }
 
   public async goHome(): Promise<void> {
     this.currentNavItems = this.navigationItems;

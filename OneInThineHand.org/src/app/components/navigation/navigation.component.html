@@ -28,7 +28,10 @@
       <ng-container *ngFor="let navItem of currentNavItems">
         <li
           *ngIf="navItem.href"
-          [ngClass]="{ active: navItem.active }"
+          [ngClass]="{
+            active: navItem.active,
+            's-c': isSingleChapter(navItem)
+          }"
           class="chapter-link"
         >
           <a [href]="navItem.href"> {{ navItem.title }}</a>

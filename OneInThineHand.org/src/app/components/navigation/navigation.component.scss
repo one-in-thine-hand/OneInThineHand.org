@@ -47,6 +47,9 @@
 
     &.chapter-link {
       margin-left: 35px !important;
+      &.s-c {
+        margin-left: 20px !important;
+      }
     }
   }
 }
