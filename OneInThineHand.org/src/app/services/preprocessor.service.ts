@@ -39,44 +39,42 @@ export class PreprocessorService {
 
       //
       if (zipFiles) {
-        const queue = new PQueue({ concurrency: 1 });
+        const queue = new PQueue({ concurrency: 5 });
         const promises = Array.from(zipFiles).map(
           async (zipFile): Promise<void> => {
             if (this.zipMimeTypes.includes(zipFile.type)) {
               try {
                 const data = await new Response(zipFile).arrayBuffer();
                 const files = await JSZip.loadAsync(data);
-                const onlyFiles = this.sliceArray(
-                  Object.keys(files.files).filter((key): boolean => {
+                const onlyFiles = Object.keys(files.files).filter(
+                  (key): boolean => {
                     return files.files[key].dir === false;
-                  }),
-                  100,
+                  },
                 );
 
-                onlyFiles.map((onlyFile): void => {
-                  console.log(onlyFile);
-                  // const file =
-
-                  onlyFile.map(
-                    async (key): Promise<void> => {
-                      const file = JSON.parse(
-                        await files.file(files.files[key].name).async('text'),
-                      ) as {
-                        _id: string;
-                        _rev: string | undefined;
-                      }[];
-                      console.log(file);
-                      this.sliceArray(file, 100).map(async i => {
-                        await queue.add(
-                          async (): Promise<void> => {
-                            await this.databaseService.bulkDocs(i);
-                            console.log('Finished');
-                          },
-                        );
-                      });
-                    },
-                  );
-                });
+                const p = onlyFiles.map(
+                  async (onlyFile): Promise<void> => {
+                    await queue.add(
+                      async (): Promise<void> => {
+                        // console.log(onlyFile);
+                        // const file =
+                        const file = JSON.parse(
+                          await files
+                            .file(files.files[onlyFile].name)
+                            .async('text'),
+                        ) as {
+                          _id: string;
+                          _rev: string | undefined;
+                        }[];
+                        // console.log(file);
+                        await this.databaseService.bulkDocs(file);
+                        console.log('Finished');
+                      },
+                    );
+                    // onlyFile.map(async (key): Promise<void> => {});
+                  },
+                );
+                await Promise.all(p);
                 // const promises = onlyFiles.map(
                 //   async (onlyFile): Promise<void> => {
                 //     await queue.add(
