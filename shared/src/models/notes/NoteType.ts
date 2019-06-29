@@ -35,10 +35,11 @@ export const enum NoteCategory {
 
 export enum NoteType {
   PRINT = 0,
-  TRANSLATION = 1,
-  TEST = 2,
-  EXISTING = 3,
-  TC = 4,
+  HARMONY = 1,
+  TRANSLATION = 2,
+  TEST = 3,
+  EXISTING = 4,
+  TC = 5,
 }
 
 export class NoteTypeConvert {
@@ -54,6 +55,13 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     className: 'overlay-print',
     shortName: 'Print',
     longName: 'Print',
+    visible: true,
+  },
+  {
+    noteType: NoteType.HARMONY,
+    className: 'overlay-hmy',
+    shortName: 'Harmony',
+    longName: 'Harmony',
     visible: true,
   },
   {

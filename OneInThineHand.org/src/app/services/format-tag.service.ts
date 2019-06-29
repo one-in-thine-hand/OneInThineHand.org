@@ -96,7 +96,6 @@ export class FormatTagService {
           //     verse,
           //   );
           // });
-          console.log(chapterVerses);
         }
       },
     );

@@ -4,6 +4,7 @@ import { Note, Verse, VerseNotes } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 import { Observable } from 'rxjs';
+import { flatten } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +47,17 @@ export class ChapterService {
         }
       });
     }
+  }
+
+  public generateIDS(verseIDS: string[]): string[] {
+    return flatten(
+      verseIDS.map((verseID): string[] => {
+        return [
+          verseID.replace('verse', 'note'),
+          verseID.replace('verse', 'breaks'),
+        ];
+      }),
+    );
+    throw new Error('Method not implemented.');
   }
 }

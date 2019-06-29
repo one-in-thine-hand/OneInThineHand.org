@@ -89,11 +89,9 @@ export class DatabaseService {
         return { id: id, rev: '' };
       },
     );
-    console.log(docsIDs);
 
     if (this.db) {
       const docs = await this.db.bulkGet({ docs: docsIDs });
-      console.log(docs);
       return (docs.results
         .map((result): DatabaseItem | undefined => {
           try {

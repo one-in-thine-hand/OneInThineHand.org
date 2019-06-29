@@ -37,12 +37,15 @@ export class SaveStateService {
             if (noteTypeSetting.visible === undefined) {
               noteTypeSetting.visible = true;
             }
-            if (
-              !NoteTypeConverts.find((nTC): boolean => {
-                return nTC.className.includes(noteTypeSetting.className);
-              })
-            ) {
+            const nTC = NoteTypeConverts.find((nTC): boolean => {
+              return nTC.className.includes(noteTypeSetting.className);
+            });
+            if (!nTC) {
               return false;
+            } else {
+              noteTypeSetting.longName = nTC.longName;
+              noteTypeSetting.shortName = nTC.shortName;
+              noteTypeSetting.noteType = nTC.noteType;
             }
             return noteTypeSetting.className.startsWith('overlay');
           },
@@ -50,6 +53,7 @@ export class SaveStateService {
       } else {
         this.data.noteTypeSettings = NoteTypeConverts;
       }
+
       this.mergeNoteSettings(this.data.ReferenceLabelSetting, ReferenceLabels);
       console.log(this.data.noteTypeSettings);
 
@@ -87,11 +91,10 @@ export class SaveStateService {
   ): void {
     if (noteSettings) {
       noteSettingsMaster.map((noteTypeConvert): void => {
-        if (
-          !noteSettings.find((nT): boolean => {
-            return nT.className === noteTypeConvert.className;
-          })
-        ) {
+        const nTC = noteSettings.find((nT): boolean => {
+          return nT.className === noteTypeConvert.className;
+        });
+        if (!nTC) {
           console.log(noteTypeConvert);
           noteSettings.push(noteTypeConvert);
         }

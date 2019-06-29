@@ -196,42 +196,70 @@ export class ChapterComponent implements OnInit, OnDestroy {
             // }
           } else {
             try {
-              console.log('aiosdjfoiasjdfoiajsdfoiajsdfoijasdoifj');
-
-              this.chapter = (await this.databaseService.getDatabaseItem(
-                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
-              )) as Chapter;
               // console.log(this.chapter);
-              try {
-                const v = await this.databaseService.bulkGetByIDs<Verse>(
-                  this.chapter.verseIDS,
-                );
-                console.log(v);
+              // try {
+              //   const vIds = this.chapter.verseIDS.filter((v): boolean => {
+              //     return !v.includes('--');
+              //   });
+              //   const ids = this.chapterService
+              //     .generateIDS(vIds)
+              //     .concat(vIds)
+              //     .filter((i): boolean => {
+              //       return !i.endsWith('note');
+              //     });
 
-                this.chapterVerses = {
-                  verses: v,
-                  _id: '',
-                  _rev: '',
-                };
-              } catch (error) {
-                // console.log;
+              //   try {
+              //   } catch (error) {
+              //     console.log(error);
+              //   }
+              //   const v = await this.databaseService.bulkGetByIDs<Verse>(ids);
+              //   const breaks = v.filter((ve): boolean => {
+              //     return ve._id !== undefined && ve._id.endsWith('breaks');
+              //   });
+              //   console.log(breaks);
 
-                console.log(error);
+              //   this.chapterVerses = {
+              //     verses: v.filter((ve): boolean => {
+              //       return ve._id !== undefined && ve._id.includes('-verse');
+              //     }),
+              //     _id: '',
+              //     _rev: '',
+              //   };
+              // } catch (error) {
+              //   // console.log;
 
-                this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                  `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-                )) as ChapterVerses;
-              }
+              //   console.log(error);
 
-              this.chapterNotes = (await this.databaseService.getDatabaseItem(
+              //   this.chapterVerses = (await this.databaseService.getDatabaseItem(
+              //     `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+              //   )) as ChapterVerses;
+              // }
+              const all = await this.databaseService.bulkGetByIDs([
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
+                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
-              )) as ChapterNotes;
+              ]);
+              // console.log(all);
+
+              this.chapter = all[0] as Chapter;
+              this.chapterVerses = all[1] as ChapterVerses;
+              this.chapterNotes = all[2] as ChapterNotes;
+
+              // this.chapter = (await this.databaseService.getDatabaseItem(
+              //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
+              // )) as Chapter;
+              // this.chapterVerses = (await this.databaseService.getDatabaseItem(
+              //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+              // )) as ChapterVerses;
+
+              // this.chapterNotes = (await this.databaseService.getDatabaseItem(
+              //   `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
+              // )) as ChapterNotes;
               await this.setChapterVariables(
                 this.chapterNotes,
                 this.chapterVerses,
                 this.chapter,
               );
-              await this.testGettingIndividualVerses();
 
               if (this.chapterVerses.verses) {
                 this.setHighlighting(chapterParams, this.chapterVerses.verses);
@@ -245,25 +273,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
         this.popStateActivated = false;
       },
     );
-  }
-  private async testGettingIndividualVerses(): Promise<void> {
-    if (this.chapterVerses && this.chapterVerses.verses) {
-      const chapterVersesIds = this.chapterVerses.verses.map(
-        (verse): CouchDoc => {
-          return { id: verse._id as string, rev: '' };
-        },
-      );
-      const testVerses = await this.databaseService.bulkGet(chapterVersesIds);
-      if (testVerses) {
-        console.log(
-          testVerses.results.map(
-            (result): Verse => {
-              return (result.docs[0] as any).ok;
-            },
-          ),
-        );
-      }
-    }
   }
 
   private async setHistory(): Promise<void> {

@@ -81,9 +81,9 @@ export class NComponent implements OnInit {
 
   public getNoteRefText(noteRef: NoteRef): SafeHtml {
     return noteRef.safeHtml;
-    return this.domSanitizer.bypassSecurityTrustHtml(
-      noteRef.text ? noteRef.text : '',
-    );
+    // return this.domSanitizer.bypassSecurityTrustHtml(
+    //   noteRef.text ? noteRef.text : '',
+    // );
   }
   public highlight(note: Note): boolean {
     return note.refTag && note.refTag.highlight ? true : false;

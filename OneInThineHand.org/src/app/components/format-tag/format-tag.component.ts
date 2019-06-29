@@ -9,6 +9,7 @@ import {
   DisplayAs,
   FormatTagType,
   Verse,
+  VerseNotes,
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
@@ -190,10 +191,10 @@ export class FormatTagComponent implements OnInit {
 
           if (r) {
             r.highlight = true;
-            console.log((this.verse.note as any)._id as string);
+            console.log((this.verse.note as VerseNotes)._id as string);
 
             await asyncScrollIntoView(
-              `#${(this.verse.note as any)._id as string}`,
+              `#${(this.verse.note as VerseNotes)._id as string}`,
             );
             // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
           } else {
