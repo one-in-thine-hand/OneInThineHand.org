@@ -93,7 +93,6 @@ export const enum FormatTagType {
   selah,
   Poetry,
   Prose,
-
   clarityword,
   dominant,
   smallcaps,
@@ -121,6 +120,9 @@ export const enum FormatTagType {
   HighlightRed,
   RefSingle,
   RefMulti,
+  Paragraph,
+  Stanza,
+  Block
 }
 
 export const enum Optional {

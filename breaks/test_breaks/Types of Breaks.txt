@@ -1,0 +1,41 @@
+Here is a stab at the different kind of breaks we need in verses:
+
+There are six total kinds of breaks. The first three are as follows:
+
+Poetry
+Stanza
+Block
+
+Each can occur at the beginning or in the middle of a verse. The formatting is assumed to end at the end of the verse, so the next paragraph needs a new break if the formatting is to continue.
+
+Poetry break means poetry gets turned on (the next segment of text is a line). There is vertical space before when it occurs in the middle of a verse--otherwise there is none. 
+
+Stanza is used between poetry lines and means add vertical space before the next line.
+
+Block means block quote gets turned on. Block quotes are indented on the left, and if there is room, on the right. A second Block break means insert some vertical space (like a stanza break).
+
+The other three kinds of breaks are as follows:
+
+Line
+Prose
+Paragraph
+
+A Line break can only occur after a Poetry or Stanza break. It is never first in the verse. Lines get a hanging indent.
+
+A Prose break turns off poetry or block formatting and returns you to regular verse formatting. It can only occur in the middle of a verse, never first or last.
+
+A Paragraph break defines a paragraph, which can include more than one verse. It can occur at the beginning or middle of a verse but never at the end. Paragraphs need optional vertical space before and after. ("Optional" vertical space disappears at the tops or bottoms of pages or if there is already some other kind of space, such as margins around diagrams.) Paragraphs should also probably have a first-line indent.
+
+<chapter id="eng-heb-1-chapter">
+	<verse-breaks id="eng-heb-1-1-breaks">
+		<paragraph offset="0"></paragraph>
+		<poetry offset="0"></poetry>
+		<line offset="53"></line>
+		<stanza offset="120"></stanza>
+		<line offset="155"></line>
+		<prose offset="198"></prose>
+	</verse-breaks>
+	<verse-breaks id="eng-heb-1-2-breaks">
+		<block offset="0"></block>
+	</verse-breaks>
+</chapter>
