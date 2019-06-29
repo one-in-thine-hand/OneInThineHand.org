@@ -8,6 +8,7 @@ import { basename } from 'path';
 import { JSDOM } from 'jsdom';
 import { ChapterProcessor } from '../../chapter/src/main';
 import { NoteProcessor, ChapterNotes } from '../../notes/src/main';
+import { Verse } from '../../shared/src/shared';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -27,6 +28,15 @@ export async function getNoteFiles(): Promise<string[]> {
   return getFiles('../scripture_files/notes/**/**');
 }
 
+function sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+  const newArray: T[][] = [];
+  let x = 0;
+  while (x < array.length) {
+    newArray.push(array.slice(x, x + chunkSizes));
+    x = x + chunkSizes;
+  }
+  return newArray;
+}
 async function processScriptureFiles(
   scriptureFileNames: string[],
   formaTags: FormatTags,
@@ -34,6 +44,7 @@ async function processScriptureFiles(
 ): Promise<void> {
   const totalCount = scriptureFileNames.length;
   let count = 0;
+  let allVerses: Verse[] = [];
   const promises = scriptureFileNames.map(
     async (scriptureFileName): Promise<void> => {
       try {
@@ -64,12 +75,15 @@ async function processScriptureFiles(
         }
         // console.log(`${directory}/${basename(id)}-verses.json`);
 
-        await writeFile(
-          normalize(
-            `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
-          ),
-          JSON.stringify(verses),
-        );
+        if (verses && verses.verses) {
+          allVerses = allVerses.concat(verses.verses);
+        }
+        // await writeFile(
+        //   normalize(
+        //     `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
+        //   ),
+        //   JSON.stringify(verses),
+        // );
         await writeFile(
           normalize(
             `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
@@ -89,6 +103,29 @@ async function processScriptureFiles(
   );
 
   await Promise.all(promises);
+  console.log(allVerses.length);
+
+  try {
+    await mkdirp(`../scripture_files/scriptures/verses/`);
+  } catch (error) {}
+  let c = 1;
+  const p = sliceArray(allVerses, 100).map(
+    async (slice): Promise<void> => {
+      // console.log(slice);
+
+      try {
+        c = c + 1;
+        await writeFile(
+          normalize(`../scripture_files/scriptures/verses/verses-${c}.json`),
+          JSON.stringify(slice),
+        );
+        console.log(c);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  );
+  await Promise.all(p);
 }
 const notesMap: Map<string, ChapterNotes> = new Map();
 
