@@ -81,15 +81,29 @@ export class PreprocessorService {
                 );
                 await Promise.all(p);
                 console.log(allDocs);
-
+                const d = await this.databaseService.allDocs();
+                if (d) {
+                  d.rows.map((r): void => {
+                    const a = allDocs.find((jj): boolean => {
+                      return jj._id === r.id;
+                    });
+                    if (a) {
+                      a._rev = r.value.rev;
+                    }
+                  });
+                }
+                // await this.databaseService.bulkDocs(allDocs);
                 const t = this.sliceArray(allDocs, 1000).map(
                   async (array): Promise<void> => {
-                    await this.databaseService.bulkDocs(array);
+                    await queue.add(
+                      async (): Promise<void> => {
+                        await this.databaseService.bulkDocs(array);
+                        console.log('gongg');
+                      },
+                    );
                   },
                 );
                 await Promise.all(t);
-
-                console.log('gongg');
 
                 // const promises = onlyFiles.map(
                 //   async (onlyFile): Promise<void> => {

@@ -5,6 +5,7 @@ import { parseParagraphs } from './parseParagraphs';
 import { parseElementAttribute } from './parseElementAttribute';
 import * as he from 'he';
 import { getChapterID } from '../../shared/src/functions/getFormatTagType';
+import { verseSelectors } from '../../shared/src/shared';
 export async function parseNoteIDS(document: Document): Promise<string[]> {
   return Array.from(document.querySelectorAll('footer note')).map(
     (note): string => {
@@ -41,6 +42,18 @@ export async function parseChapter(
   // console.log(id);
 
   chapter._id = id;
+
+  chapter.verseIDS = Array.from(
+    document.querySelectorAll(verseSelectors.toString()),
+  ).map(
+    (v): string => {
+      return `${chapter._id.replace('chapter', '')}${
+        v.id.startsWith('p') ? v.id.replace('p', '') : v.id
+      }-verse`;
+    },
+  );
+  // console.log(ver);
+
   // console.log(
   //   `#/${id
   //     .replace(`${language}-`, '')

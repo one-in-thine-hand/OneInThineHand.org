@@ -124,7 +124,7 @@ export class FormatTagComponent implements OnInit {
           }
         });
 
-      console.log();
+      // console.log();
     }
     if (
       this.classList.toString().replace(/,/g, ' ') !==

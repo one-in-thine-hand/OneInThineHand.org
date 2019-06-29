@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb-browser';
-import { CouchDoc as CouchDocGet } from '../../../../shared/src/shared';
+import {
+  CouchDoc as CouchDocGet,
+  CouchDoc,
+} from '../../../../shared/src/shared';
 import { isEqual } from 'lodash';
 @Injectable({
   providedIn: 'root',
@@ -62,19 +65,47 @@ export class DatabaseService {
 
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {
     if (this.db) {
-      const docs = await this.db.allDocs();
+      // const docs = await this.db.allDocs();
 
-      docs.rows.map((doc): void => {
-        const item = items.find((item): boolean => {
-          return item._id === doc.id;
-        });
-        if (item) {
-          item._rev = doc.value.rev;
-        }
-      });
+      // docs.rows.map((doc): void => {
+      //   const item = items.find((item): boolean => {
+      //     return item._id === doc.id;
+      //   });
+      //   if (item) {
+      //     item._rev = doc.value.rev;
+      //   }
+      // });
 
       await this.db.bulkDocs(items);
     }
+  }
+
+  /**
+   * bulkGetByIDs
+   */
+  public async bulkGetByIDs<T>(ids: string[]): Promise<T[]> {
+    const docsIDs = ids.map(
+      (id): CouchDoc => {
+        return { id: id, rev: '' };
+      },
+    );
+    console.log(docsIDs);
+
+    if (this.db) {
+      const docs = await this.db.bulkGet({ docs: docsIDs });
+      console.log(docs);
+      return (docs.results
+        .map((result): DatabaseItem | undefined => {
+          try {
+            return (result.docs[0] as any).ok;
+          } catch (error) {}
+          return undefined;
+        })
+        .filter((d): boolean => {
+          return d !== undefined;
+        }) as any[]) as T[];
+    }
+    return [];
   }
 }
 

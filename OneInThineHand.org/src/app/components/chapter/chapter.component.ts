@@ -199,6 +199,18 @@ export class ChapterComponent implements OnInit, OnDestroy {
               this.chapter = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
+              // // console.log(this.chapter);
+              // const v = await this.databaseService.bulkGetByIDs<Verse>(
+              //   this.chapter.verseIDS,
+              // );
+              // console.log(v);
+
+              // this.chapterVerses = {
+              //   verses: v,
+              //   _id: '',
+              //   _rev: '',
+              // };
+
               this.chapterVerses = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
               )) as ChapterVerses;
@@ -226,23 +238,23 @@ export class ChapterComponent implements OnInit, OnDestroy {
     );
   }
   private async testGettingIndividualVerses(): Promise<void> {
-    if (this.chapterVerses && this.chapterVerses.verses) {
-      const chapterVersesIds = this.chapterVerses.verses.map(
-        (verse): CouchDoc => {
-          return { id: verse._id as string, rev: '' };
-        },
-      );
-      const testVerses = await this.databaseService.bulkGet(chapterVersesIds);
-      if (testVerses) {
-        console.log(
-          testVerses.results.map(
-            (result): Verse => {
-              return (result.docs[0] as any).ok;
-            },
-          ),
-        );
-      }
-    }
+    // if (this.chapterVerses && this.chapterVerses.verses) {
+    //   const chapterVersesIds = this.chapterVerses.verses.map(
+    //     (verse): CouchDoc => {
+    //       return { id: verse._id as string, rev: '' };
+    //     },
+    //   );
+    //   const testVerses = await this.databaseService.bulkGet(chapterVersesIds);
+    //   if (testVerses) {
+    //     console.log(
+    //       testVerses.results.map(
+    //         (result): Verse => {
+    //           return (result.docs[0] as any).ok;
+    //         },
+    //       ),
+    //     );
+    //   }
+    // }
   }
 
   private async setHistory(): Promise<void> {
