@@ -4,7 +4,7 @@ import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService, DatabaseItem } from './database.service';
 import { FormatTags, ChapterVerses } from '../../../../format-tags/src/main';
-import { VerseNotes } from '../../../../shared/src/shared';
+import { VerseNotes, CouchDoc } from '../../../../shared/src/shared';
 import PQueue from 'p-queue';
 
 @Injectable({
@@ -52,29 +52,45 @@ export class PreprocessorService {
                   },
                 );
 
+                let allDocs: DatabaseItem[] = [];
+
                 const p = onlyFiles.map(
                   async (onlyFile): Promise<void> => {
                     await queue.add(
                       async (): Promise<void> => {
+                        try {
+                          const file = JSON.parse(
+                            await files
+                              .file(files.files[onlyFile].name)
+                              .async('text'),
+                          ) as {
+                            _id: string;
+                            _rev: string | undefined;
+                          }[];
+                          // console.log(file);
+                          allDocs = allDocs.concat(file);
+                          // await this.databaseService.bulkDocs(file);
+                          console.log('Finished');
+                        } catch (error) {}
                         // console.log(onlyFile);
                         // const file =
-                        const file = JSON.parse(
-                          await files
-                            .file(files.files[onlyFile].name)
-                            .async('text'),
-                        ) as {
-                          _id: string;
-                          _rev: string | undefined;
-                        }[];
-                        // console.log(file);
-                        await this.databaseService.bulkDocs(file);
-                        console.log('Finished');
                       },
                     );
                     // onlyFile.map(async (key): Promise<void> => {});
                   },
                 );
                 await Promise.all(p);
+                console.log(allDocs);
+
+                const t = this.sliceArray(allDocs, 1000).map(
+                  async (array): Promise<void> => {
+                    await this.databaseService.bulkDocs(array);
+                  },
+                );
+                await Promise.all(t);
+
+                console.log('gongg');
+
                 // const promises = onlyFiles.map(
                 //   async (onlyFile): Promise<void> => {
                 //     await queue.add(
