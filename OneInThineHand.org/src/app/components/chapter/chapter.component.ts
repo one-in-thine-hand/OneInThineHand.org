@@ -196,24 +196,33 @@ export class ChapterComponent implements OnInit, OnDestroy {
             // }
           } else {
             try {
+              console.log('aiosdjfoiasjdfoiajsdfoiajsdfoijasdoifj');
+
               this.chapter = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
               )) as Chapter;
               // console.log(this.chapter);
-              const v = await this.databaseService.bulkGetByIDs<Verse>(
-                this.chapter.verseIDS,
-              );
-              console.log(v);
+              try {
+                const v = await this.databaseService.bulkGetByIDs<Verse>(
+                  this.chapter.verseIDS,
+                );
+                console.log(v);
 
-              this.chapterVerses = {
-                verses: v,
-                _id: '',
-                _rev: '',
-              };
+                this.chapterVerses = {
+                  verses: v,
+                  _id: '',
+                  _rev: '',
+                };
+              } catch (error) {
+                // console.log;
 
-              // this.chapterVerses = (await this.databaseService.getDatabaseItem(
-              //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-              // )) as ChapterVerses;
+                console.log(error);
+
+                this.chapterVerses = (await this.databaseService.getDatabaseItem(
+                  `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                )) as ChapterVerses;
+              }
+
               this.chapterNotes = (await this.databaseService.getDatabaseItem(
                 `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
               )) as ChapterNotes;

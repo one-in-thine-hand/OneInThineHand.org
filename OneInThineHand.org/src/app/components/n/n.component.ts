@@ -36,7 +36,17 @@ export class NComponent implements OnInit {
     public saveService: SaveService,
   ) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    if (this.note && this.note.noteRefs) {
+      this.note.noteRefs.map((noteRef): void => {
+        if (noteRef.text) {
+          noteRef.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
+            noteRef.text,
+          );
+        }
+      });
+    }
+  }
 
   /**
    * convertNoteCategory
@@ -70,6 +80,7 @@ export class NComponent implements OnInit {
   }
 
   public getNoteRefText(noteRef: NoteRef): SafeHtml {
+    return noteRef.safeHtml;
     return this.domSanitizer.bypassSecurityTrustHtml(
       noteRef.text ? noteRef.text : '',
     );

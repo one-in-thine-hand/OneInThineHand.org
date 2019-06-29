@@ -27,6 +27,7 @@ export class NoteRef implements Visibility {
   public text: string | undefined;
   // public type: NoteType | undefined;
   public visible: boolean | undefined;
+  public safeHtml: any | undefined;
 }
 
 export class NotePhrase implements Visibility {

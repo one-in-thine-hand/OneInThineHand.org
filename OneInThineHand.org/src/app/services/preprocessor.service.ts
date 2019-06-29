@@ -70,7 +70,7 @@ export class PreprocessorService {
                           // console.log(file);
                           allDocs = allDocs.concat(file);
                           // await this.databaseService.bulkDocs(file);
-                          console.log('Finished');
+                          // console.log('Finished');
                         } catch (error) {}
                         // console.log(onlyFile);
                         // const file =
@@ -93,7 +93,7 @@ export class PreprocessorService {
                   });
                 }
                 // await this.databaseService.bulkDocs(allDocs);
-                const t = this.sliceArray(allDocs, 1000).map(
+                const t = this.sliceArray(allDocs, 100).map(
                   async (array): Promise<void> => {
                     await queue.add(
                       async (): Promise<void> => {

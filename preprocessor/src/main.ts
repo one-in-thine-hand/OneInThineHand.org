@@ -28,15 +28,15 @@ export async function getNoteFiles(): Promise<string[]> {
   return getFiles('../scripture_files/notes/**/**');
 }
 
-// function sliceArray<T>(array: T[], chunkSizes: number): T[][] {
-//   const newArray: T[][] = [];
-//   let x = 0;
-//   while (x < array.length) {
-//     newArray.push(array.slice(x, x + chunkSizes));
-//     x = x + chunkSizes;
-//   }
-//   return newArray;
-// }
+function sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+  const newArray: T[][] = [];
+  let x = 0;
+  while (x < array.length) {
+    newArray.push(array.slice(x, x + chunkSizes));
+    x = x + chunkSizes;
+  }
+  return newArray;
+}
 async function processScriptureFiles(
   scriptureFileNames: string[],
   formaTags: FormatTags,
@@ -105,27 +105,27 @@ async function processScriptureFiles(
   await Promise.all(promises);
   console.log(allVerses.length);
 
-  // try {
-  //   await mkdirp(`../scripture_files/scriptures/verses/`);
-  // } catch (error) {}
-  // let c = 1;
-  // const p = sliceArray(allVerses, 100).map(
-  //   async (slice): Promise<void> => {
-  //     // console.log(slice);
+  try {
+    await mkdirp(`../scripture_files/scriptures/verses/`);
+  } catch (error) {}
+  let c = 1;
+  const p = sliceArray(allVerses, 100).map(
+    async (slice): Promise<void> => {
+      // console.log(slice);
 
-  //     try {
-  //       c = c + 1;
-  //       await writeFile(
-  //         normalize(`../scripture_files/scriptures/verses/verses-${c}.json`),
-  //         JSON.stringify(slice),
-  //       );
-  //       console.log(c);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   },
-  // );
-  // await Promise.all(p);
+      try {
+        c = c + 1;
+        await writeFile(
+          normalize(`../scripture_files/scriptures/verses/verses-${c}.json`),
+          JSON.stringify(slice),
+        );
+        console.log(c);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  );
+  await Promise.all(p);
 }
 const notesMap: Map<string, ChapterNotes> = new Map();
 

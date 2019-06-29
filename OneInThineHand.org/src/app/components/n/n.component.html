@@ -14,13 +14,7 @@
     <ng-container *ngFor="let noteRef of getNoteRefs(note)">
       <li [class]="getRefClass(noteRef)">
         <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
-        <span
-          [innerHTML]="
-            this.domSanitizer.bypassSecurityTrustHtml(
-              noteRef.text ? noteRef.text : ''
-            )
-          "
-        ></span>
+        <span [innerHTML]="noteRef.safeHtml"></span>
       </li>
       <!-- <li>
         <textarea *ngIf="edit" name="note-ref" id="">{{
