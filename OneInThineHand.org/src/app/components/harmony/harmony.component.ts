@@ -109,7 +109,7 @@ export class HarmonyComponent implements OnInit {
                 },
               ),
             );
-            console.log(verseIDS.length);
+            console.log(verseIDS);
 
             try {
               const promises = this.sliceArray(verseIDS, 100).map(
