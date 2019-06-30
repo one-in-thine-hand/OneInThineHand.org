@@ -1,3 +1,8 @@
+## <small>5.0.42 (2019-06-30)</small>
+
+
+
+
 ## <small>5.0.41 (2019-06-30)</small>
 
 * Adding breaks ([77f197e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/77f197e))
@@ -14,6 +19,7 @@
 * revert to fewer db calls ([f6e5957](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f6e5957))
 * Testing new 7mport ([3fbebcb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3fbebcb))
 * upload ([f277a80](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f277a80))
+* v5.0.41 ([d4e4d1a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d4e4d1a))
 * working on uploading ([abcd64f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/abcd64f))
 
 
