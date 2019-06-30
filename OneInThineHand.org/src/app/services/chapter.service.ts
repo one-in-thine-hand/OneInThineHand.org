@@ -53,7 +53,7 @@ export class ChapterService {
     return flatten(
       verseIDS.map((verseID): string[] => {
         return [
-          verseID.replace('verse', 'note'),
+          // verseID.replace('verse', 'note'),
           verseID.replace('verse', 'breaks'),
         ];
       }),

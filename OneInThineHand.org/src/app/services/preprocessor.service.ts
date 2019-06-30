@@ -39,7 +39,7 @@ export class PreprocessorService {
 
       //
       if (zipFiles) {
-        const queue = new PQueue({ concurrency: 5 });
+        const queue = new PQueue({ concurrency: 100 });
         const promises = Array.from(zipFiles).map(
           async (zipFile): Promise<void> => {
             if (this.zipMimeTypes.includes(zipFile.type)) {
@@ -53,10 +53,11 @@ export class PreprocessorService {
                 );
 
                 let allDocs: DatabaseItem[] = [];
+                const jjj: (() => Promise<void>)[] = [];
 
-                const p = onlyFiles.map(
+                const jt = onlyFiles.map(
                   async (onlyFile): Promise<void> => {
-                    await queue.add(
+                    jjj.push(
                       async (): Promise<void> => {
                         try {
                           const file = JSON.parse(
@@ -72,14 +73,15 @@ export class PreprocessorService {
                           // await this.databaseService.bulkDocs(file);
                           // console.log('Finished');
                         } catch (error) {}
-                        // console.log(onlyFile);
-                        // const file =
                       },
                     );
-                    // onlyFile.map(async (key): Promise<void> => {});
                   },
                 );
-                await Promise.all(p);
+                // queue.addAll(jt);
+                // queue.addAll(() => {});
+                // queue.start();
+                await queue.addAll(jjj);
+                // await Promise.all(jt);
                 console.log(allDocs);
                 const d = await this.databaseService.allDocs();
                 if (d) {
@@ -93,14 +95,14 @@ export class PreprocessorService {
                   });
                 }
                 // await this.databaseService.bulkDocs(allDocs);
-                const t = this.sliceArray(allDocs, 100).map(
+                const t = this.sliceArray(allDocs, 1000).map(
                   async (array): Promise<void> => {
-                    await queue.add(
-                      async (): Promise<void> => {
-                        await this.databaseService.bulkDocs(array);
-                        console.log('gongg');
-                      },
-                    );
+                    await this.databaseService.bulkDocs(array);
+                    // await queue.add(
+                    //   async (): Promise<void> => {
+                    //     console.log('gongg');
+                    //   },
+                    // );
                   },
                 );
                 await Promise.all(t);

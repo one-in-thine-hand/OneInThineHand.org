@@ -21,6 +21,7 @@ import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
+import { VerseBreaks } from '../../../../../shared/src/models/Verse';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -244,6 +245,31 @@ export class ChapterComponent implements OnInit, OnDestroy {
               this.chapter = all[0] as Chapter;
               this.chapterVerses = all[1] as ChapterVerses;
               this.chapterNotes = all[2] as ChapterNotes;
+
+              const vIds = this.chapter.verseIDS.filter((v): boolean => {
+                return !v.includes('--');
+              });
+              const ids = this.chapterService.generateIDS(vIds);
+              const breaks = (await this.databaseService.bulkGetByIDs(
+                ids,
+              )) as VerseBreaks[];
+              console.log(breaks);
+
+              breaks.map((b): void => {
+                const v =
+                  this.chapterVerses && this.chapterVerses.verses
+                    ? this.chapterVerses.verses.find((v2): boolean => {
+                        return (
+                          v2._id !== undefined &&
+                          b._id === v2._id.replace('verse', 'breaks')
+                        );
+                      })
+                    : undefined;
+                console.log(v);
+                if (v) {
+                  v.verseBreaks = b;
+                }
+              });
 
               // this.chapter = (await this.databaseService.getDatabaseItem(
               //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,

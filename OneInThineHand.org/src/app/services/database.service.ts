@@ -64,6 +64,9 @@ export class DatabaseService {
   }
 
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {
+    if (!this.db) {
+      this.initReadingMode();
+    }
     if (this.db) {
       // const docs = await this.db.allDocs();
 
@@ -84,6 +87,9 @@ export class DatabaseService {
    * bulkGetByIDs
    */
   public async bulkGetByIDs<T>(ids: string[]): Promise<T[]> {
+    if (!this.db) {
+      this.initReadingMode();
+    }
     const docsIDs = ids.map(
       (id): CouchDoc => {
         return { id: id, rev: '' };
