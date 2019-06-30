@@ -122,7 +122,8 @@ export const enum FormatTagType {
   RefMulti,
   Paragraph,
   Stanza,
-  Block
+  Block,
+  Gap
 }
 
 export const enum Optional {

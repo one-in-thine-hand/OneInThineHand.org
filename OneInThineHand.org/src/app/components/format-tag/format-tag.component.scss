@@ -72,3 +72,55 @@ f {
 :host-context(.edit-mode) f {
   // pointer-events: none;
 }
+:host-context(.paragraph-mode) {
+  f.f-paragraph {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+  f.block {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+  f.stanza {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+  f.prose {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+  f.poetry {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+  f.gap {
+    background-color: green !important;
+    &::before {
+      content: '\A';
+      white-space: pre;
+    }
+    // pointer-events: none;
+  }
+
+  // gap,.block,.stanza,.f-paragraph,.prose,.poetry
+}

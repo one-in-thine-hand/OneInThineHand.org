@@ -28,8 +28,11 @@ function nodeNameToFornatTag(nodeName: string): FormatTagType {
     case 'block': {
       return FormatTagType.Block;
     }
+    case 'gap': {
+      return FormatTagType.Gap;
+    }
   }
-  throw 'hhh';
+  throw new Error(nodeName);
 }
 async function processFiles(
   fileNames: string[],
@@ -41,7 +44,7 @@ async function processFiles(
       pQueue.add(
         (): void => {
           const document = new JSDOM(file).window.document;
-          console.log(document);
+          // console.log(document);
           Array.from(document.querySelectorAll('verse-breaks')).map(
             (verseBreakElement): void => {
               const verseBreak: {
@@ -72,7 +75,9 @@ async function processFiles(
                         throw '';
                       }
                       verseBreak.breaks.push(formatTag);
-                    } catch (error) {}
+                    } catch (error) {
+                      console.log(error);
+                    }
                   },
                 );
               verseBreaks.push(verseBreak);
@@ -118,7 +123,7 @@ async function main(): Promise<void> {
     100,
   ).map(
     (slice): void => {
-      console.log(slice);
+      // console.log(slice);
 
       writeFile(
         normalize(`../scripture_files/scriptures/breaks/${cuid()}.json`),
@@ -126,7 +131,7 @@ async function main(): Promise<void> {
       );
     },
   );
-  console.log(verseBreaks);
+  // console.log(verseBreaks);
 }
 
 main();

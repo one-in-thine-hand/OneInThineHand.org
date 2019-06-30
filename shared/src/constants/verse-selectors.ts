@@ -331,9 +331,37 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'uppercasedeity-name',
+    className: 'f-paragraph',
+    formatTagType: FormatTagType.Paragraph,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'stanza',
+    formatTagType: FormatTagType.Stanza,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'block',
+    formatTagType: FormatTagType.Block,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'uppercase-deityname',
     formatTagType: FormatTagType.uppercasedeityname,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },
+  {
+    className: 'gap',
+    formatTagType: FormatTagType.Gap,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
 ];
+
+// Paragraph,
+// Stanza,
+// Block

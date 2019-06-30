@@ -49,6 +49,31 @@ export class DatabaseService {
       // console.log(this.db);
     }
   }
+  public async updateDatabaseItems(
+    items: {
+      _id?: string;
+      _rev?: string;
+    }[],
+  ): Promise<void> {
+    if (this.db) {
+      try {
+        const docs = await this.db.allDocs();
+
+        items.map((item): void => {
+          const r = docs.rows.find((row): boolean => {
+            return row.id === item._id;
+          });
+          item._rev = r ? r.value.rev : '';
+        });
+        await this.db.bulkDocs(items);
+      } catch (error) {
+        console.log(error);
+      }
+      // console.log(item);
+
+      // console.log(this.db);
+    }
+  }
   /**
    * allDocs
    */

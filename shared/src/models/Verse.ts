@@ -15,6 +15,7 @@ export const enum NodeName {
 
 export class VerseBreaks {
   public _id?: string;
+  public _rev?: string;
   public breaks?: FormatTag[];
 }
 

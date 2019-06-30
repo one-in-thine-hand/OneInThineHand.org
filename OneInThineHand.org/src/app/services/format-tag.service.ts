@@ -150,6 +150,8 @@ export class FormatTagService {
         fMerged.offsets = [o];
         fMerged.formatTags = this.getFormatTags(o, fTags);
         fMerged.refTags = this.getRefTags(o, note);
+        fMerged.breaks = this.getVerseBreaks(o, verse);
+
         if (!lastMerged) {
           lastMerged = fMerged;
         } else {
@@ -192,6 +194,7 @@ export class FormatTagService {
     // );
     return (
       isEqual(lastMerged.formatTags, fMerged.formatTags) &&
+      isEqual(lastMerged.breaks, fMerged.breaks) &&
       isEqual(lastMerged.refTags, fMerged.refTags)
     );
   }
@@ -235,6 +238,15 @@ export class FormatTagService {
         );
 
       return oFtags.length > 0 ? oFtags : undefined;
+    }
+    return undefined;
+  }
+  public getVerseBreaks(o: number, verse: Verse): FormatTag[] | undefined {
+    if (verse.verseBreaks && verse.verseBreaks.breaks) {
+      const vb = verse.verseBreaks.breaks.filter((b): boolean => {
+        return o.toString() === b.offsets;
+      });
+      return vb.length > 0 ? vb : undefined;
     }
     return undefined;
   }

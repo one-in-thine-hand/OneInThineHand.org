@@ -20,7 +20,13 @@
     />
   </div>
   <ul *ngIf="tempSettingsService.editMode">
-    <li></li>
+    <li>Breaks</li>
+    <li style="user-select: none" (click)="addPoetry()">Poetry</li>
+    <li style="user-select: none" (click)="addBlock()">Block</li>
+    <li style="user-select: none" (click)="addLine()">Line</li>
+    <li style="user-select: none" (click)="addProse()">Prose</li>
+    <li style="user-select: none" (click)="addGap()">Gap</li>
+    <li style="user-select: none" (click)="addParagraph()">Paragraph</li>
   </ul>
   <ul *ngIf="!tempSettingsService.editMode" class="navigation">
     <li (click)="goHome()"><span>Scriptures</span></li>

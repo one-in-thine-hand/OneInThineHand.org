@@ -50,11 +50,8 @@ export class FormatTagComponent implements OnInit {
       });
       // .map(
       //   (f): void => {
-      //     console.log(f);
       //   },
       // );
-      // console.log('oiasjdfoiajsdfoiasjdfoi');
-      // console.log('richtest');
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
@@ -85,6 +82,16 @@ export class FormatTagComponent implements OnInit {
     this.getVisibleRefTags();
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags();
+    if (this.fMerged.breaks) {
+      this.fMerged.breaks.map((brk): void => {
+        const fto = formatTagTypeOptions.find((f): boolean => {
+          return f.formatTagType === brk.formatType;
+        });
+        if (fto && fto.className) {
+          classList.push(fto.className);
+        }
+      });
+    }
     if (visibleRefTags && visibleRefTags.length !== 0) {
       visibleRefTags.length > 1
         ? classList.push('oith-ref-double')
@@ -104,7 +111,6 @@ export class FormatTagComponent implements OnInit {
       //     // if(f)
       //   },
       // );
-      // console.log(this.fMerged.refTags);
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
@@ -119,13 +125,10 @@ export class FormatTagComponent implements OnInit {
           const fTO = formatTagTypeOptions.find((formatTagOption): boolean => {
             return formatTagOption.formatTagType === f.formatType;
           });
-          // console.log(fTO ? fTO.className : 'Nothing');
           if (fTO && fTO.className) {
             classList.push(fTO.className);
           }
         });
-
-      // console.log();
     }
     if (
       this.classList.toString().replace(/,/g, ' ') !==
@@ -137,8 +140,6 @@ export class FormatTagComponent implements OnInit {
   }
 
   public getOffSets(): string {
-    // console.log(f);
-
     if (this.fMerged.offsets) {
       return `${this.fMerged.offsets[0]}-${last(this.fMerged.offsets)}`;
     }
@@ -158,10 +159,7 @@ export class FormatTagComponent implements OnInit {
 
   public async formatTagClick(event: Event): Promise<void> {
     // const selection = window.getSelection();
-    // console.log('hhgg');
-    // console.log(event);
     // this.visibilityService.resetHighlight();
-    // console.log(event);
     if (this.checkNoTextIsSelected()) {
       this.chapterService.resetNoteVis();
 
@@ -179,19 +177,15 @@ export class FormatTagComponent implements OnInit {
           }
         }
         if (this.refList) {
-          console.log(this.getVisibleRefTags());
-
           const id = this.refList.pop();
           const r = findByAttribute(
             'secondaryNoteID',
             id,
             this.fMerged.refTags,
           );
-          console.log(r);
 
           if (r) {
             r.highlight = true;
-            console.log((this.verse.note as VerseNotes)._id as string);
 
             await asyncScrollIntoView(
               `#${(this.verse.note as VerseNotes)._id as string}`,

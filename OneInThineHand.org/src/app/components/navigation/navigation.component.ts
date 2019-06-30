@@ -3,10 +3,20 @@ import { NavigationService } from '../../services/navigation.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
 import { SaveStateService } from '../../services/save-state.service';
 import * as navigation from '../../../assets/manifests.json';
-import { NavigationItem } from '../../../../../shared/src/shared';
+import {
+  NavigationItem,
+  Verse,
+  FormatTag,
+  FormatTagType,
+} from '../../../../../shared/src/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ParamService } from '../../services/param.service';
 import { flattenNavigationItem } from '../../../../../shared/src/models/NavigationItem';
+import { ChapterService } from '../../services/chapter.service';
+import { VerseBreaks } from '../../../../../shared/src/models/Verse';
+import { SaveService } from '../../services/save.service';
+import { OffsetService } from '../../services/offset.service';
+import { FormatTagService } from '../../services/format-tag.service';
 
 @Component({
   selector: 'app-navigation',
@@ -21,6 +31,9 @@ export class NavigationComponent implements OnInit {
     public activatedRouter: ActivatedRoute,
     public router: Router,
     public paramService: ParamService,
+    public chapterService: ChapterService,
+    public saveService: SaveService,
+    public formatTagService: FormatTagService,
   ) {}
 
   public currentNavItems: NavigationItem[] = [];
@@ -206,5 +219,169 @@ nI:NavigationItem   */
         this.currentNavItems = this.navigationItems;
       }
     }
+  }
+
+  private validateSelectedNodes(node: Node): Element | undefined {
+    if (
+      (node as HTMLElement).getAttribute !== undefined &&
+      (node as HTMLElement).getAttribute('offsets') !== null
+    ) {
+      return node as Element;
+    } else {
+      let parentElement: Element | undefined | null = node.parentElement;
+
+      while (
+        parentElement &&
+        parentElement.getAttribute !== null &&
+        parentElement.getAttribute('offsets') === null
+      ) {
+        parentElement = parentElement.parentElement;
+      }
+      if (parentElement) {
+        return parentElement;
+      }
+    }
+    return undefined;
+  }
+  private calcOffset(): { offsets: string; verse: Verse } | undefined {
+    const selection = window.getSelection();
+    if (selection) {
+      const range = selection.getRangeAt(0);
+      if (range.toString().length === 0) {
+        throw new Error('No selection');
+      }
+      const elements = {
+        startElememt: this.validateSelectedNodes(range.startContainer),
+        endElememt: this.validateSelectedNodes(range.endContainer),
+      };
+      if (elements.endElememt && elements.startElememt) {
+        const offsets1 = (elements.startElememt.getAttribute(
+          'offsets',
+        ) as string).split('-');
+        const offsets2 = (elements.endElememt.getAttribute(
+          'offsets',
+        ) as string).split('-');
+        const verseid = elements.endElememt.getAttribute('verse-id') as string;
+        const verse =
+          this.chapterService.chapterVerses &&
+          this.chapterService.chapterVerses.verses
+            ? this.chapterService.chapterVerses.verses.find((v): boolean => {
+                return v._id !== undefined && v._id === verseid;
+              })
+            : undefined;
+        console.log(verse);
+        if (verse) {
+          if (!verse.verseBreaks) {
+            verse.verseBreaks = new VerseBreaks();
+            verse.verseBreaks._id = verse._id
+              ? verse._id.replace('verse', 'breaks')
+              : undefined;
+            if (!verse.verseBreaks._id) {
+              throw '';
+            }
+            verse.verseBreaks.breaks = [];
+          }
+
+          return {
+            offsets: `${`${parseInt(offsets1[0], 10) +
+              range.startOffset}-${parseInt(offsets2[0], 10) +
+              range.endOffset -
+              1}`}`,
+            verse: verse,
+          };
+        }
+      }
+    }
+    return undefined;
+  }
+
+  private async addBreak(
+    callback: (
+      offsets: { offset: number; verse: Verse },
+      formatTag: FormatTag,
+    ) => void,
+  ): Promise<void> {
+    const offsets = this.calcOffset();
+    const formatTag = new FormatTag();
+    if (offsets) {
+      callback(
+        {
+          offset: parseInt(offsets.offsets.split('-')[0], 10),
+          verse: offsets.verse,
+        },
+        formatTag,
+      );
+      await this.formatTagService.resetFormatTags(
+        this.chapterService.chapterVerses,
+        this.chapterService.chapterNotes,
+      );
+      await this.saveService.saveOffsets();
+    }
+  }
+
+  public async addPoetry(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.Poetry;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+    // const offsets = this.calcOffset();
+
+    // console.log(offsets);
+  }
+  public async addBlock(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.Block;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+  }
+  public async addLine(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.line;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+  }
+  public async addProse(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.Prose;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+  }
+  public async addGap(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.Gap;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+  }
+  public async addParagraph(): Promise<void> {
+    await this.addBreak((offset, formatTag): void => {
+      console.log(offset);
+      formatTag.offsets = `${offset.offset}`;
+      formatTag.formatType = FormatTagType.Gap;
+      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
+        offset.verse.verseBreaks.breaks.push(formatTag);
+      }
+    });
+    const offsets = this.calcOffset();
+    console.log(offsets);
   }
 }
