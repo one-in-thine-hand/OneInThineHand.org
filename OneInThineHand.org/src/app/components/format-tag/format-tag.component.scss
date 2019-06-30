@@ -74,7 +74,9 @@ f {
 }
 :host-context(.paragraph-mode) {
   f.f-paragraph {
-    background-color: green !important;
+    :host-context(.edit-mode) {
+      background-color: green !important;
+    }
     &::before {
       content: '\A';
       white-space: pre;
@@ -114,9 +116,9 @@ f {
     // pointer-events: none;
   }
   f.gap {
-    background-color: green !important;
+    // background-color: green !important;
     &::before {
-      content: '\A';
+      content: '\000a';
       white-space: pre;
     }
     // pointer-events: none;

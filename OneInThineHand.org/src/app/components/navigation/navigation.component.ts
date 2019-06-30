@@ -296,21 +296,17 @@ nI:NavigationItem   */
   }
 
   private async addBreak(
-    callback: (
-      offsets: { offset: number; verse: Verse },
-      formatTag: FormatTag,
-    ) => void,
+    formatTagType: FormatTagType,
+    offset?: string,
   ): Promise<void> {
     const offsets = this.calcOffset();
     const formatTag = new FormatTag();
     if (offsets) {
-      callback(
-        {
-          offset: parseInt(offsets.offsets.split('-')[0], 10),
-          verse: offsets.verse,
-        },
-        formatTag,
-      );
+      formatTag.offsets = offset ? offset : `${offsets.offsets.split('-')[0]}`;
+      formatTag.formatType = formatTagType;
+      if (offsets.verse.verseBreaks && offsets.verse.verseBreaks.breaks) {
+        offsets.verse.verseBreaks.breaks.push(formatTag);
+      }
       await this.formatTagService.resetFormatTags(
         this.chapterService.chapterVerses,
         this.chapterService.chapterNotes,
@@ -319,69 +315,22 @@ nI:NavigationItem   */
     }
   }
 
-  public async addPoetry(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.Poetry;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
-    // const offsets = this.calcOffset();
-
-    // console.log(offsets);
-  }
   public async addBlock(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.Block;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
+    await this.addBreak(FormatTagType.Block);
   }
   public async addLine(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.line;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
+    await this.addBreak(FormatTagType.line);
   }
   public async addProse(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.Prose;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
+    await this.addBreak(FormatTagType.Prose);
   }
   public async addGap(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.Gap;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
+    await this.addBreak(FormatTagType.Gap);
   }
   public async addParagraph(): Promise<void> {
-    await this.addBreak((offset, formatTag): void => {
-      console.log(offset);
-      formatTag.offsets = `${offset.offset}`;
-      formatTag.formatType = FormatTagType.Gap;
-      if (offset.verse.verseBreaks && offset.verse.verseBreaks.breaks) {
-        offset.verse.verseBreaks.breaks.push(formatTag);
-      }
-    });
-    const offsets = this.calcOffset();
-    console.log(offsets);
+    await this.addBreak(FormatTagType.Paragraph);
+  }
+  public async addPoetry(): Promise<void> {
+    await this.addBreak(FormatTagType.Poetry);
   }
 }
