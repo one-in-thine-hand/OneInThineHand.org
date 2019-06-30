@@ -1,6 +1,27 @@
+## <small>5.0.41 (2019-06-30)</small>
+
+* Adding breaks ([77f197e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/77f197e))
+* Adding breaks to verses ([e459cdf](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e459cdf))
+* break editing added ([921042e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/921042e))
+* Break processor finished ([1fbe377](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1fbe377))
+* Bug fixes ([0573117](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0573117))
+* Fix for words of mromon ([3986183](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3986183))
+* Loading with only single files for now ([c876662](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c876662))
+* nav fixes ([860e10c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/860e10c))
+* Notes are causing problems ([7e0eccb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7e0eccb))
+* Possibly fixed note bug ([38c2a0d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/38c2a0d))
+* refactoring ([c929d71](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c929d71))
+* revert to fewer db calls ([f6e5957](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f6e5957))
+* Testing new 7mport ([3fbebcb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3fbebcb))
+* upload ([f277a80](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f277a80))
+* working on uploading ([abcd64f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/abcd64f))
+
+
+
 ## <small>5.0.40 (2019-06-27)</small>
 
 * Fixed underlining ([93cec44](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/93cec44))
+* v5.0.40 ([87097bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/87097bb))
 
 
 
