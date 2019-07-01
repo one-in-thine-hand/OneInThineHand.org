@@ -9,6 +9,10 @@ import {
 } from '../../../shared/src/shared';
 import formatGroupSelectors from './formatGroupSelectors';
 import { queryChildNodes } from './queryChildNodes';
+import {
+  FormatGroupSegment,
+  FormatGroupPart,
+} from '../../../shared/src/models/format_groups/FormatGroup';
 
 function nodesToTextGroup(
   nodes: Node[],
@@ -61,6 +65,18 @@ function nodeToFormatGroup(
       (formatGroup as FormatGroupA).href = (node as HTMLLinkElement).href;
       break;
     }
+    case 'segment': {
+      formatGroup = new FormatGroupSegment();
+      formatGroups.push(formatGroup);
+
+      break;
+    }
+    case 'part': {
+      formatGroup = new FormatGroupPart();
+      formatGroups.push(formatGroup);
+
+      break;
+    }
     default: {
       if (
         (node as Element).classList &&
@@ -82,7 +98,17 @@ function nodeToFormatGroup(
   let endCount = count + textContent.length;
   formatGroup.offsets = `${count}-${endCount}`;
 
-  formatGroups.push(formatGroup);
+  if (
+    !formatGroups.find(
+      (fGroup): boolean => {
+        return (
+          fGroup.offsets !== undefined && fGroup.offsets === formatGroup.offsets
+        );
+      },
+    )
+  ) {
+    formatGroups.push(formatGroup);
+  }
   return endCount;
 }
 

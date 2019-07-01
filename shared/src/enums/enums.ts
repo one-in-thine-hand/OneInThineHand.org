@@ -16,6 +16,9 @@ export const enum Environment {
   node,
 }
 // export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
 export const enum FormatGroupType {
   A = 0,
   Text = 1,
@@ -26,6 +29,8 @@ export const enum FormatGroupType {
   SPAN = 6,
   BR = 7,
   PAGE_BREAK = 8,
+  Part,
+  Segment,
 }
 // export const enum FormatType {
 //   Base = 0,
@@ -123,7 +128,7 @@ export const enum FormatTagType {
   Paragraph,
   Stanza,
   Block,
-  Gap
+  Gap,
 }
 
 export const enum Optional {

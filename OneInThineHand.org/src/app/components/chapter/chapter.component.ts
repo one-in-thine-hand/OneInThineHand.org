@@ -149,154 +149,173 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.databaseService.initReadingMode();
     this.activatedRouter.params.subscribe(
       async (params): Promise<void> => {
-        await this.setHistory();
-        await asyncScrollTop('.chapter-grid');
-
-        const chapterParams = this.paramService.parseChapterParams(params);
-        if (
-          this.chapter &&
-          this.chapterVerses &&
-          this.chapterVerses.verses &&
-          this.chapter._id ===
-            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`
-        ) {
-          this.setHighlighting(chapterParams, this.chapterVerses.verses);
-        } else {
-          const pageState = this.pageStateService.pageStateMap.get(
-            `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
-          );
-
-          if (this.popStateActivated && pageState) {
-            console.log('Page State Activated');
-
-            this.chapter = pageState.chapter;
-            this.chapterVerses = pageState.chapterVerses;
-
-            this.chapterNotes = pageState.chapterNotes;
-            await this.setChapterVariables(
-              this.chapterNotes,
-              this.chapterVerses,
-              this.chapter,
-              false,
-              true,
-            );
-            const chapterGrid = document.querySelector('.chapter-grid');
-            const notesGrid = document.querySelector('#notes');
-
-            if (chapterGrid) {
-              console.log(pageState.chapterGridScrollTop);
-
-              chapterGrid.scrollTop = pageState.chapterGridScrollTop;
+        this.activatedRouter.queryParams.subscribe(
+          async (queryParam): Promise<void> => {
+            let language = queryParam['lang'] as string | undefined;
+            if (!language) {
+              language = 'eng';
             }
-            if (notesGrid) {
-              console.log(pageState.notesScrollTop);
-              notesGrid.scrollTop = pageState.notesScrollTop;
-            }
-            this.popStateActivated = false;
-            // if (this.pageStateService.currentPageState) {
-            // }
-          } else {
-            try {
-              // console.log(this.chapter);
-              // try {
-              //   const vIds = this.chapter.verseIDS.filter((v): boolean => {
-              //     return !v.includes('--');
-              //   });
-              //   const ids = this.chapterService
-              //     .generateIDS(vIds)
-              //     .concat(vIds)
-              //     .filter((i): boolean => {
-              //       return !i.endsWith('note');
-              //     });
 
-              //   try {
-              //   } catch (error) {
-              //     console.log(error);
-              //   }
-              //   const v = await this.databaseService.bulkGetByIDs<Verse>(ids);
-              //   const breaks = v.filter((ve): boolean => {
-              //     return ve._id !== undefined && ve._id.endsWith('breaks');
-              //   });
-              //   console.log(breaks);
+            await this.setHistory();
+            await asyncScrollTop('.chapter-grid');
 
-              //   this.chapterVerses = {
-              //     verses: v.filter((ve): boolean => {
-              //       return ve._id !== undefined && ve._id.includes('-verse');
-              //     }),
-              //     _id: '',
-              //     _rev: '',
-              //   };
-              // } catch (error) {
-              //   // console.log;
-
-              //   console.log(error);
-
-              //   this.chapterVerses = (await this.databaseService.getDatabaseItem(
-              //     `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-              //   )) as ChapterVerses;
-              // }
-              const all = await this.databaseService.bulkGetByIDs([
-                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
-                `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-                `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
-              ]);
-              // console.log(all);
-
-              this.chapter = all[0] as Chapter;
-              this.chapterVerses = all[1] as ChapterVerses;
-              this.chapterNotes = all[2] as ChapterNotes;
-
-              const vIds = this.chapter.verseIDS.filter((v): boolean => {
-                return !v.includes('--');
-              });
-              const ids = this.chapterService.generateIDS(vIds);
-              const breaks = (await this.databaseService.bulkGetByIDs(
-                ids,
-              )) as VerseBreaks[];
-              console.log(breaks);
-
-              breaks.map((b): void => {
-                const v =
-                  this.chapterVerses && this.chapterVerses.verses
-                    ? this.chapterVerses.verses.find((v2): boolean => {
-                        return (
-                          v2._id !== undefined &&
-                          b._id === v2._id.replace('verse', 'breaks')
-                        );
-                      })
-                    : undefined;
-                console.log(v);
-                if (v) {
-                  v.verseBreaks = b;
-                }
-              });
-
-              // this.chapter = (await this.databaseService.getDatabaseItem(
-              //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter`,
-              // )) as Chapter;
-              // this.chapterVerses = (await this.databaseService.getDatabaseItem(
-              //   `eng-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-              // )) as ChapterVerses;
-
-              // this.chapterNotes = (await this.databaseService.getDatabaseItem(
-              //   `eng-${chapterParams.book}-${chapterParams.chapter}-notes`,
-              // )) as ChapterNotes;
-              await this.setChapterVariables(
-                this.chapterNotes,
-                this.chapterVerses,
-                this.chapter,
+            const chapterParams = this.paramService.parseChapterParams(params);
+            if (
+              this.chapter &&
+              this.chapterVerses &&
+              this.chapterVerses.verses &&
+              this.chapter._id ===
+                `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`
+            ) {
+              this.setHighlighting(
+                chapterParams,
+                this.chapterVerses.verses,
+                language,
+              );
+            } else {
+              const pageState = this.pageStateService.pageStateMap.get(
+                `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-page-state`,
               );
 
-              if (this.chapterVerses.verses) {
-                this.setHighlighting(chapterParams, this.chapterVerses.verses);
+              if (this.popStateActivated && pageState) {
+                console.log('Page State Activated');
+
+                this.chapter = pageState.chapter;
+                this.chapterVerses = pageState.chapterVerses;
+
+                this.chapterNotes = pageState.chapterNotes;
+                await this.setChapterVariables(
+                  this.chapterNotes,
+                  this.chapterVerses,
+                  this.chapter,
+                  false,
+                  true,
+                );
+                const chapterGrid = document.querySelector('.chapter-grid');
+                const notesGrid = document.querySelector('#notes');
+
+                if (chapterGrid) {
+                  console.log(pageState.chapterGridScrollTop);
+
+                  chapterGrid.scrollTop = pageState.chapterGridScrollTop;
+                }
+                if (notesGrid) {
+                  console.log(pageState.notesScrollTop);
+                  notesGrid.scrollTop = pageState.notesScrollTop;
+                }
+                this.popStateActivated = false;
+                // if (this.pageStateService.currentPageState) {
+                // }
+              } else {
+                try {
+                  // console.log(this.chapter);
+                  // try {
+                  //   const vIds = this.chapter.verseIDS.filter((v): boolean => {
+                  //     return !v.includes('--');
+                  //   });
+                  //   const ids = this.chapterService
+                  //     .generateIDS(vIds)
+                  //     .concat(vIds)
+                  //     .filter((i): boolean => {
+                  //       return !i.endsWith('note');
+                  //     });
+
+                  //   try {
+                  //   } catch (error) {
+                  //     console.log(error);
+                  //   }
+                  //   const v = await this.databaseService.bulkGetByIDs<Verse>(ids);
+                  //   const breaks = v.filter((ve): boolean => {
+                  //     return ve._id !== undefined && ve._id.endsWith('breaks');
+                  //   });
+                  //   console.log(breaks);
+
+                  //   this.chapterVerses = {
+                  //     verses: v.filter((ve): boolean => {
+                  //       return ve._id !== undefined && ve._id.includes('-verse');
+                  //     }),
+                  //     _id: '',
+                  //     _rev: '',
+                  //   };
+                  // } catch (error) {
+                  //   // console.log;
+
+                  //   console.log(error);
+
+                  //   this.chapterVerses = (await this.databaseService.getDatabaseItem(
+                  //     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                  //   )) as ChapterVerses;
+                  // }
+                  const all = await this.databaseService.bulkGetByIDs([
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
+                  ]);
+                  // console.log(all);
+
+                  console.log(all);
+
+                  this.chapter = all[0] as Chapter;
+                  this.chapterVerses = all[1] as ChapterVerses;
+                  this.chapterNotes = all[2] as ChapterNotes;
+
+                  const vIds = this.chapter.verseIDS.filter((v): boolean => {
+                    return !v.includes('--');
+                  });
+                  const ids = this.chapterService.generateIDS(vIds);
+                  const breaks = (await this.databaseService.bulkGetByIDs(
+                    ids,
+                  )) as VerseBreaks[];
+                  console.log(breaks);
+
+                  breaks.map((b): void => {
+                    const v =
+                      this.chapterVerses && this.chapterVerses.verses
+                        ? this.chapterVerses.verses.find((v2): boolean => {
+                            return (
+                              v2._id !== undefined &&
+                              b._id === v2._id.replace('verse', 'breaks')
+                            );
+                          })
+                        : undefined;
+                    console.log(v);
+                    if (v) {
+                      v.verseBreaks = b;
+                    }
+                  });
+
+                  // this.chapter = (await this.databaseService.getDatabaseItem(
+                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
+                  // )) as Chapter;
+                  // this.chapterVerses = (await this.databaseService.getDatabaseItem(
+                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                  // )) as ChapterVerses;
+
+                  // this.chapterNotes = (await this.databaseService.getDatabaseItem(
+                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
+                  // )) as ChapterNotes;
+                  await this.setChapterVariables(
+                    this.chapterNotes,
+                    this.chapterVerses,
+                    this.chapter,
+                  );
+
+                  if (this.chapterVerses.verses) {
+                    this.setHighlighting(
+                      chapterParams,
+                      this.chapterVerses.verses,
+                      language,
+                    );
+                  }
+                } catch (error) {
+                  // console.log(error);
+                }
               }
-            } catch (error) {
-              // console.log(error);
             }
-          }
-        }
-        // this.historyService.init();
-        this.popStateActivated = false;
+            // this.historyService.init();
+            this.popStateActivated = false;
+          },
+        );
       },
     );
   }
@@ -326,23 +345,28 @@ export class ChapterComponent implements OnInit, OnDestroy {
     highlightOffSets: number[] | undefined,
     item: Verse[],
     attrName: string,
+    language: string,
   ): void {
     // console.log(highlightOffSets);
-    this.getHighlightVerses(chapterParams, highlightOffSets, item);
+    this.getHighlightVerses(chapterParams, highlightOffSets, item, language);
     // console.log(asdf);
 
-    this.getHighlightVerses(chapterParams, highlightOffSets, item).map(
-      (v): void => {
-        // console.log(v);
+    this.getHighlightVerses(
+      chapterParams,
+      highlightOffSets,
+      item,
+      language,
+    ).map((v): void => {
+      // console.log(v);
 
-        v[attrName] = true;
-      },
-    );
+      v[attrName] = true;
+    });
   }
 
   private async setHighlighting(
     chapterParams: ChapterParams,
     verses: Verse[],
+    language: string,
   ): Promise<void> {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
@@ -352,8 +376,20 @@ export class ChapterComponent implements OnInit, OnDestroy {
       verse.context = false;
     });
 
-    this.highlightVerses(chapterParams, highlightOffSets, verses, 'highlight');
-    this.highlightVerses(chapterParams, contextOffsets, verses, 'context');
+    this.highlightVerses(
+      chapterParams,
+      highlightOffSets,
+      verses,
+      'highlight',
+      language,
+    );
+    this.highlightVerses(
+      chapterParams,
+      contextOffsets,
+      verses,
+      'context',
+      language,
+    );
 
     if (highlightOffSets) {
       let highlighting: number[] = [];
@@ -363,7 +399,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
       }
 
       await asyncScrollIntoView(
-        `#eng-${chapterParams.book}-${chapterParams.chapter}-${
+        `#${language}-${chapterParams.book}-${chapterParams.chapter}-${
           sortBy(highlighting)[0]
         }-verse`,
         { timeout: 100 },
@@ -380,13 +416,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
     chapterParams: ChapterParams,
     context: number[] | undefined,
     verses: Verse[],
+    language: string,
   ): Verse[] {
     if (context) {
       const filteredVerses = context.map((c): Verse | undefined => {
         return verses.find((verse): boolean => {
           return (
             verse._id ===
-            `eng-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
+            `${language}-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
           );
         });
       });
@@ -408,12 +445,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
     pageStateActive: boolean = false,
   ): Promise<void> {
     if (!pageStateActive) {
-      await this.offsetService.expandNotes(chapterNotes.notes);
-      if (chapterVerses && chapterVerses.verses) {
-        this.chapterService.mergeVersesNotes(
-          chapterVerses.verses,
-          chapterNotes.notes,
-        );
+      if (chapterNotes) {
+        await this.offsetService.expandNotes(chapterNotes.notes);
+        if (chapterVerses && chapterVerses.verses) {
+          this.chapterService.mergeVersesNotes(
+            chapterVerses.verses,
+            chapterNotes.notes,
+          );
+        }
       }
       await this.formatTagService.resetFormatTags(
         this.chapterVerses,
@@ -421,11 +460,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
       );
     }
     this.chapterService.chapter = chapter;
+
     this.chapterService.chapterNotes = chapterNotes;
     this.chapterService.verses = chapterVerses
       ? chapterVerses.verses
       : undefined;
-    this.chapterService.notes = this.chapterNotes.notes;
+    if (this.chapterNotes) {
+      this.chapterService.notes = this.chapterNotes.notes;
+    }
     this.chapterService.chapterVerses = this.chapterVerses;
     if (newPage) {
       await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);

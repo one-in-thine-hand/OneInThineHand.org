@@ -262,13 +262,13 @@ nI:NavigationItem   */
           'offsets',
         ) as string).split('-');
         const verseid = elements.endElememt.getAttribute('verse-id') as string;
-        const verse =
-          this.chapterService.chapterVerses &&
-          this.chapterService.chapterVerses.verses
-            ? this.chapterService.chapterVerses.verses.find((v): boolean => {
-                return v._id !== undefined && v._id === verseid;
-              })
-            : undefined;
+        console.log(this.chapterService.verses);
+
+        const verse = this.chapterService.verses
+          ? this.chapterService.verses.find((v): boolean => {
+              return v._id !== undefined && v._id === verseid;
+            })
+          : undefined;
         console.log(verse);
         if (verse) {
           if (!verse.verseBreaks) {

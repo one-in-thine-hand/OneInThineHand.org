@@ -7,11 +7,11 @@ import {
 import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, last, first } from 'lodash';
 @Component({
-  selector: 'app-format-group',
-  templateUrl: './format-group.component.html',
-  styleUrls: ['./format-group.component.scss'],
+  selector: 'app-format-group-part',
+  templateUrl: './format-group-part.component.html',
+  styleUrls: ['./format-group-part.component.scss'],
 })
-export class FormatGroupComponent implements OnInit {
+export class FormatGroupPartComponent implements OnInit {
   @Input() public verse: Verse;
   @Input() public formatGroup: FormatGroup;
   @Input() public formatTags: FormatTag[];

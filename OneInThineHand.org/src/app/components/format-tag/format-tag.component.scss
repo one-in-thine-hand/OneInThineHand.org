@@ -86,7 +86,7 @@ f {
   f.block {
     background-color: green !important;
     &::before {
-      content: '\A';
+      content: '<div>';
       white-space: pre;
     }
     // pointer-events: none;

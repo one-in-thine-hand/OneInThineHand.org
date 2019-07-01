@@ -3,10 +3,26 @@
   class="{{ this.getClassList() }}"
   [attr.offsets]="this.getOffSets()"
 >
-  <app-format-group
-    *ngFor="let formatGroup of this.getFormatGroups()"
-    [verse]="verse"
-    [formatGroup]="formatGroup"
-    [formatTags]="verse.formatTags"
-  ></app-format-group>
+  <ng-container *ngFor="let formatGroup of this.getFormatGroups()">
+    <span [ngSwitch]="formatGroup.formatGroupType">
+      <app-format-group-segment
+        *ngSwitchCase="10"
+        [verse]="verse"
+        [formatGroup]="formatGroup"
+        [formatTags]="verse.formatTags"
+      ></app-format-group-segment>
+      <app-format-group-part
+        *ngSwitchCase="9"
+        [verse]="verse"
+        [formatGroup]="formatGroup"
+        [formatTags]="verse.formatTags"
+      ></app-format-group-part>
+      <app-format-group
+        [verse]="verse"
+        [formatGroup]="formatGroup"
+        [formatTags]="verse.formatTags"
+        *ngSwitchDefault
+      ></app-format-group>
+    </span>
+  </ng-container>
 </verse>

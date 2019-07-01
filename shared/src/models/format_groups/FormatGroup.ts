@@ -41,6 +41,12 @@ export class FormatGroupBR extends FormatGroup {
   public offsets = undefined;
   public classList = undefined;
 }
+export class FormatGroupSegment extends FormatGroup {
+  public formatGroupType = FormatGroupType.Segment;
+}
+export class FormatGroupPart extends FormatGroup {
+  public formatGroupType = FormatGroupType.Part;
+}
 export class FormatGroupPageBreak extends FormatGroup {
   public formatGroupType = FormatGroupType.BR;
   public offsets = undefined;
