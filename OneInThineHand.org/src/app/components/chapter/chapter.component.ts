@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash';
+import { sortBy, uniq, flatten } from 'lodash';
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
@@ -22,6 +22,7 @@ import { FormatTagService } from '../../services/format-tag.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
 import { VerseBreaks } from '../../../../../shared/src/models/Verse';
+import { FormatGroupPart } from '../../../../../shared/src/models/format_groups/FormatGroup';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -188,6 +189,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapterNotes,
                   this.chapterVerses,
                   this.chapter,
+                  language,
                   false,
                   true,
                 );
@@ -298,6 +300,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     this.chapterNotes,
                     this.chapterVerses,
                     this.chapter,
+                    language,
                   );
 
                   if (this.chapterVerses.verses) {
@@ -441,6 +444,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     chapterNotes: ChapterNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
+    language: string,
     newPage: boolean = true,
     pageStateActive: boolean = false,
   ): Promise<void> {
@@ -469,12 +473,71 @@ export class ChapterComponent implements OnInit, OnDestroy {
       this.chapterService.notes = this.chapterNotes.notes;
     }
     this.chapterService.chapterVerses = this.chapterVerses;
+
+    await this.getKJVRef(this.chapterVerses);
     if (newPage) {
       await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(chapterNotes.notes);
+  }
+  public async getKJVRef(
+    chapterVerses: ChapterVerses | undefined,
+  ): Promise<void> {
+    if (chapterVerses && chapterVerses.verses) {
+      const asdf = uniq(
+        flatten(
+          chapterVerses.verses.map((verse): string[] => {
+            let kjvRefs: string[] = [];
+            if (verse.kjvRef) {
+              const kjvRef = verse.kjvRef.split('-');
+
+              try {
+                kjvRefs.push(`${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-verses`);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+
+            if (verse.formatGroups) {
+              const asdf = verse.formatGroups.map((formatGroup):
+                | string
+                | undefined => {
+                if ((formatGroup as FormatGroupPart).kjvRef !== undefined) {
+                  const kjvRef = ((formatGroup as FormatGroupPart)
+                    .kjvRef as string).split('-');
+
+                  try {
+                    return `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-verses`;
+                  } catch (error) {
+                    return undefined;
+                  }
+                  // return (formatGroup as FormatGroupPart).kjvRef as string;
+                }
+              });
+              kjvRefs = kjvRefs.concat(asdf.filter((a): boolean => {
+                return a !== undefined;
+              }) as string[]);
+            }
+
+            return uniq(kjvRefs);
+          }),
+        ),
+      );
+      if (asdf.length === 1) {
+        this.chapterService.kjvChapterVerse = await this.databaseService.getDatabaseItem(
+          asdf[0],
+        );
+        this.chapterService.kjvChapterNotes = await this.databaseService.getDatabaseItem(
+          asdf[0].replace('verses', 'notes'),
+        );
+        console.log(this.chapterService.kjvChapterNotes);
+        console.log(this.chapterService.kjvChapterVerse);
+      } else if (asdf.length > 1) {
+        console.log(asdf);
+      }
+    }
   }
 
   public async onScroll(): Promise<void> {
