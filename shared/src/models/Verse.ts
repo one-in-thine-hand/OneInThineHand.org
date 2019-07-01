@@ -34,4 +34,5 @@ export class Verse {
   public highlight?: boolean;
   // public verseBreaks?:
   public verseBreaks?: VerseBreaks;
+  public kjvRef: string | undefined;
 }

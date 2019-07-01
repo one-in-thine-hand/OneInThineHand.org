@@ -6,6 +6,7 @@ import {
   FormatGroupRubyA,
   FormatGroupA,
   FormatGroupPageBreak,
+  Verse,
 } from '../../../shared/src/shared';
 import formatGroupSelectors from './formatGroupSelectors';
 import { queryChildNodes } from './queryChildNodes';
@@ -37,10 +38,19 @@ function nodesToTextGroup(
   return endCount;
 }
 
+export function getKJVRef(node: Node, verseID?: string): string | undefined {
+  const kjvRef = (node as Element).getAttribute('kjvRef');
+  if (!kjvRef && verseID) {
+    return verseID.replace('fra', 'eng');
+  }
+  return kjvRef && verseID ? verseID.replace('fra', 'eng') : undefined;
+}
+
 function nodeToFormatGroup(
   node: Node,
   formatGroups: FormatGroup[],
   count: number,
+  verseID?: string,
 ): number {
   let formatGroup: FormatGroup;
   switch (node.nodeName.toLowerCase()) {
@@ -67,14 +77,15 @@ function nodeToFormatGroup(
     }
     case 'segment': {
       formatGroup = new FormatGroupSegment();
+      (formatGroup as FormatGroupSegment).kjvRef = getKJVRef(node, verseID);
       formatGroups.push(formatGroup);
 
       break;
     }
     case 'part': {
       formatGroup = new FormatGroupPart();
+      (formatGroup as FormatGroupPart).kjvRef = getKJVRef(node, verseID);
       formatGroups.push(formatGroup);
-
       break;
     }
     default: {
@@ -116,6 +127,7 @@ function nodeToFormatGroup(
 export async function parseFormatGroups(
   verseElement: Element,
   formatGroups: FormatGroup[],
+  verse: Verse,
 ): Promise<void> {
   const breakPoints = Array.from(
     verseElement.querySelectorAll(formatGroupSelectors),
@@ -134,7 +146,7 @@ export async function parseFormatGroups(
           formatTextGroup = undefined;
         }
 
-        count = nodeToFormatGroup(childNode, formatGroups, count);
+        count = nodeToFormatGroup(childNode, formatGroups, count, verse._id);
       } else {
         if (formatTextGroup === undefined) {
           formatTextGroup = [];
