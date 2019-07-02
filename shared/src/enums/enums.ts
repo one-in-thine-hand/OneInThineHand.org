@@ -104,7 +104,7 @@ export const enum FormatTagType {
   addressee,
   answer,
   question,
-  line,
+  Line,
   paraMark,
   selah,
   Poetry,
@@ -142,6 +142,9 @@ export const enum FormatTagType {
   Gap,
   ParaGap,
   LineGap,
+  Plain,
+  BlockGap,
+  Para,
 }
 
 export const enum Optional {

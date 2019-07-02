@@ -138,7 +138,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
   },
   {
     className: 'line',
-    formatTagType: FormatTagType.line,
+    formatTagType: FormatTagType.Line,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'line-gap',
+    formatTagType: FormatTagType.LineGap,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },
@@ -331,7 +337,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'f-paragraph',
+    className: 'para',
+    formatTagType: FormatTagType.Para,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'para-gap',
     formatTagType: FormatTagType.Paragraph,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
@@ -349,14 +361,20 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
   {
+    className: 'block-gap',
+    formatTagType: FormatTagType.BlockGap,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
     className: 'uppercase-deityname',
     formatTagType: FormatTagType.uppercasedeityname,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'gap',
-    formatTagType: FormatTagType.Gap,
+    className: 'plain',
+    formatTagType: FormatTagType.Plain,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },

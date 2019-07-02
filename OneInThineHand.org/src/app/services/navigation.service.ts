@@ -180,10 +180,10 @@ export class NavigationService {
 
         this.router.navigateByUrl(`${bookName}/${chapterName}`);
       } else {
-        throw '';
+        throw new Error('');
       }
     } catch (error) {
-      throw 'No valid bookname found';
+      throw new Error('No valid bookname found');
     }
   }
 

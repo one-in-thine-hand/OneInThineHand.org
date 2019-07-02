@@ -32,13 +32,15 @@ export class SaveService {
   /**
    * saveOffsets
    */
-  public async saveOffsets(): Promise<void> {
+  public async saveFakeVerseBreaks(): Promise<void> {
     if (
       this.chaterService.chapterVerses &&
       this.chaterService.chapterVerses.verses
     ) {
       const fakeVerseBreaks = this.chaterService.chapterVerses.verses
         .map((verse): FakeVerseBreaks | undefined => {
+          // console.log(verse.fakeVerseBreak);
+
           return verse.fakeVerseBreak;
         })
         .filter((v): boolean => {
@@ -47,6 +49,7 @@ export class SaveService {
 
       if (fakeVerseBreaks.length > 0) {
         await this.databaseService.updateDatabaseItems(fakeVerseBreaks);
+        // console.log(fakeVerseBreaks);
       }
     }
   }

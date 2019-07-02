@@ -8,6 +8,7 @@ import {
   Verse,
   FormatTag,
   FormatTagType,
+  filterUndefined,
 } from '../../../../../shared/src/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ParamService } from '../../services/param.service';
@@ -17,6 +18,8 @@ import { VerseBreaks } from '../../../../../shared/src/models/Verse';
 import { SaveService } from '../../services/save.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
+import { last } from 'lodash';
+import PQueue from 'p-queue/dist';
 
 @Component({
   selector: 'app-navigation',
@@ -41,6 +44,8 @@ export class NavigationComponent implements OnInit {
   public navigationItems = navigation.navigation.filter((navItem): boolean => {
     return navItem.title !== '';
   }) as NavigationItem[];
+
+  public saveQueue = new PQueue({ concurrency: 1 });
   public ngOnInit(): void {
     this.router.events.subscribe(
       async (value): Promise<void> => {
@@ -304,41 +309,86 @@ nI:NavigationItem   */
     if (offsets) {
       formatTag.offsets = offset ? offset : offsets ? offsets.offsets : '';
       formatTag.formatType = formatTagType;
-      if (offsets.verse.fakeVerseBreak && offsets.verse.fakeVerseBreak.breaks) {
+      if (offsets.verse.fakeVerseBreak) {
+        if (!offsets.verse.fakeVerseBreak.breaks) {
+          offsets.verse.fakeVerseBreak.breaks = [];
+        }
         console.log(formatTag);
+
+        console.log(offsets.verse.fakeVerseBreak.breaks);
 
         offsets.verse.fakeVerseBreak.breaks.push(formatTag);
       }
-      await this.formatTagService.resetFormatTags(
-        this.chapterService.chapterVerses,
-        this.chapterService.chapterNotes,
+      await this.saveQueue.add(
+        async (): Promise<void> => {
+          await this.saveService.saveFakeVerseBreaks();
+        },
       );
-      await this.saveService.saveOffsets();
     }
+  }
+
+  public async addPara(): Promise<void> {
+    await this.addBreak(FormatTagType.Para);
+  }
+  public async addParaGap(): Promise<void> {
+    await this.addBreak(FormatTagType.ParaGap);
+  }
+  public async addLine(): Promise<void> {
+    await this.addBreak(FormatTagType.Line);
+  }
+  public async addLineGap(): Promise<void> {
+    await this.addBreak(FormatTagType.LineGap);
   }
 
   public async addBlock(): Promise<void> {
     await this.addBreak(FormatTagType.Block);
   }
-  public async addLine(): Promise<void> {
-    await this.addBreak(FormatTagType.line);
+  public async addBlockGap(): Promise<void> {
+    await this.addBreak(FormatTagType.BlockGap);
   }
-  public async addProse(): Promise<void> {
-    await this.addBreak(FormatTagType.Prose);
+
+  public async addPlain(): Promise<void> {
+    await this.addBreak(FormatTagType.Plain);
   }
-  public async addGap(): Promise<void> {
-    await this.addBreak(FormatTagType.Gap);
+
+  public getVerseNumbers(): { verseNumber: string; verse: Verse }[] {
+    if (this.chapterService.verses) {
+      return filterUndefined(
+        this.chapterService.verses.map((verse):
+          | { verseNumber: string; verse: Verse }
+          | undefined => {
+          if (verse._id) {
+            console.log();
+
+            return { verseNumber: verse._id.split('-')[3], verse: verse };
+          }
+        }),
+      );
+    }
+    return [];
   }
-  public async addParaGap(): Promise<void> {
-    await this.addBreak(FormatTagType.ParaGap);
+
+  public async refreshBreaks(): Promise<void> {
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
   }
-  public async addLineGap(): Promise<void> {
-    await this.addBreak(FormatTagType.LineGap);
+  public async resetVerseBreaks(verse: Verse): Promise<void> {
+    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
+      verse.fakeVerseBreak.breaks = undefined;
+    }
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+    await this.saveQueue.add(
+      async (): Promise<void> => {
+        await this.saveService.saveFakeVerseBreaks();
+      },
+    );
   }
-  public async addParagraph(): Promise<void> {
-    await this.addBreak(FormatTagType.Paragraph);
-  }
-  public async addPoetry(): Promise<void> {
-    await this.addBreak(FormatTagType.Poetry);
-  }
+  // public async addPoetry(): Promise<void> {
+  //   await this.addBreak(FormatTagType.Poetry);
+  // }
 }

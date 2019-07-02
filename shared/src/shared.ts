@@ -75,3 +75,5 @@ export {
   NavigationItem,
   flattenNavigationItems,
 } from './models/NavigationItem';
+
+export { filterUndefined } from './functions/filterUndefined';

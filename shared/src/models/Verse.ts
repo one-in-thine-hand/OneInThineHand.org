@@ -40,5 +40,5 @@ export class Verse {
   // public verseBreaks?:
   public verseBreaks?: VerseBreaks;
   public kjvRef: string | undefined;
-  public fakeVerseBreak: FakeVerseBreaks;
+  public fakeVerseBreak: FakeVerseBreaks | undefined;
 }

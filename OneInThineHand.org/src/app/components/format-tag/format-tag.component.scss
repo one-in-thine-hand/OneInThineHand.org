@@ -75,23 +75,42 @@ f {
   // pointer-events: none;
 }
 :host-context(.paragraph-mode) {
-  f.f-paragraph {
+  f.para {
     border-bottom-color: red;
-    border-bottom-width: 10px;
-    border-bottom-style: dashed;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
   }
-  f.block {
-  }
-  f.stanza {
-  }
-  f.prose {
-  }
-  f.poetry {
-  }
-  f.gap {
+  f.para-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
   }
   f.line {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
   }
+  f.line-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.block {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.block-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.plain {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+
   // f.f-paragraph {
   //   :host-context(.edit-mode) {
   //     background-color: green !important;
