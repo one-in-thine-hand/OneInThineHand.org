@@ -1,5 +1,19 @@
+## <small>5.0.43 (2019-07-02)</small>
+
+* Added fake verse breaks ([d369a51](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d369a51))
+* Added KJV refs to french files ([fe64139](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fe64139))
+* Added new break adder ([58c4b71](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/58c4b71))
+* Added support for french ([3aead5d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3aead5d))
+* adding new format groups ([a78858d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a78858d))
+* Note and break fixes ([ac15e13](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ac15e13))
+* Old formating ([bc54e2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bc54e2a))
+* Working on KJV ([723998f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/723998f))
+
+
+
 ## <small>5.0.42 (2019-06-30)</small>
 
+* v5.0.42 ([9f1cd38](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9f1cd38))
 
 
 
