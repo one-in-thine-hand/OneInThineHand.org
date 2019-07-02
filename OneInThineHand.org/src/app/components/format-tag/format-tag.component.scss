@@ -78,7 +78,7 @@ f {
       background-color: green !important;
     }
     &::before {
-      content: '\A';
+      content: '\A\2003   ';
       white-space: pre;
     }
     // pointer-events: none;
@@ -86,7 +86,7 @@ f {
   f.block {
     background-color: green !important;
     &::before {
-      content: '<div>';
+      content: '';
       white-space: pre;
     }
     // pointer-events: none;
@@ -117,9 +117,39 @@ f {
   }
   f.gap {
     // background-color: green !important;
-    &::before {
-      content: '\000a';
+    &::after {
+      content: '';
       white-space: pre;
+      display: block;
+      margin: -16px;
+    }
+    // pointer-events: none;
+  }
+  f.line {
+    // background-color: green !important;
+    &::before {
+      content: '\000a\2003';
+      white-space: pre;
+    }
+    &.f-paragraph {
+      &::before {
+        content: '\000a' !important;
+        white-space: pre;
+      }
+    }
+    // pointer-events: none;
+  }
+  f.line.verse-number {
+    // background-color: green !important;
+    &::before {
+      content: '\000a\2003   ' !important;
+      white-space: pre;
+    }
+    &.f-paragraph {
+      &::before {
+        content: '\000a\2003  ' !important;
+        white-space: pre;
+      }
     }
     // pointer-events: none;
   }
