@@ -74,85 +74,102 @@ f {
 }
 :host-context(.paragraph-mode) {
   f.f-paragraph {
-    :host-context(.edit-mode) {
-      background-color: green !important;
-    }
-    &::before {
-      content: '\A\2003   ';
-      white-space: pre;
-    }
-    // pointer-events: none;
+    border-bottom-color: red;
+    border-bottom-width: 10px;
+    border-bottom-style: dashed;
   }
   f.block {
-    background-color: green !important;
-    &::before {
-      content: '';
-      white-space: pre;
-    }
-    // pointer-events: none;
   }
   f.stanza {
-    background-color: green !important;
-    &::before {
-      content: '\A';
-      white-space: pre;
-    }
-    // pointer-events: none;
   }
   f.prose {
-    background-color: green !important;
-    &::before {
-      content: '\A';
-      white-space: pre;
-    }
-    // pointer-events: none;
   }
   f.poetry {
-    background-color: green !important;
-    &::before {
-      content: '\A';
-      white-space: pre;
-    }
-    // pointer-events: none;
   }
   f.gap {
-    // background-color: green !important;
-    &::after {
-      content: '';
-      white-space: pre;
-      display: block;
-      margin: -16px;
-    }
-    // pointer-events: none;
   }
   f.line {
-    // background-color: green !important;
-    &::before {
-      content: '\000a\2003';
-      white-space: pre;
-    }
-    &.f-paragraph {
-      &::before {
-        content: '\000a' !important;
-        white-space: pre;
-      }
-    }
-    // pointer-events: none;
   }
-  f.line.verse-number {
-    // background-color: green !important;
-    &::before {
-      content: '\000a\2003   ' !important;
-      white-space: pre;
-    }
-    &.f-paragraph {
-      &::before {
-        content: '\000a\2003  ' !important;
-        white-space: pre;
-      }
-    }
-    // pointer-events: none;
-  }
+  // f.f-paragraph {
+  //   :host-context(.edit-mode) {
+  //     background-color: green !important;
+  //   }
+  //   &::before {
+  //     content: '\A\2003   ';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.block {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.stanza {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.prose {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.poetry {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.gap {
+  //   // background-color: green !important;
+  //   &::after {
+  //     content: '';
+  //     white-space: pre;
+  //     display: block;
+  //     margin: -16px;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.line {
+  //   // background-color: green !important;
+  //   &::before {
+  //     content: '\000a\2003';
+  //     white-space: pre;
+  //   }
+  //   &.f-paragraph {
+  //     &::before {
+  //       content: '\000a' !important;
+  //       white-space: pre;
+  //     }
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.line.verse-number {
+  //   // background-color: green !important;
+  //   &::before {
+  //     content: '\000a\2003   ' !important;
+  //     white-space: pre;
+  //   }
+  //   &.f-paragraph {
+  //     &::before {
+  //       content: '\000a\2003  ' !important;
+  //       white-space: pre;
+  //     }
+  //   }
+  //   // pointer-events: none;
+  // }
 
   // gap,.block,.stanza,.f-paragraph,.prose,.poetry
 }

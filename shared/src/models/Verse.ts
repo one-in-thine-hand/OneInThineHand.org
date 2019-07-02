@@ -16,6 +16,11 @@ export const enum NodeName {
 export class VerseBreaks {
   public _id?: string;
   public _rev?: string;
+  public breaks?: FormatGroup[];
+}
+export class FakeVerseBreaks {
+  public _id?: string;
+  public _rev?: string;
   public breaks?: FormatTag[];
 }
 
@@ -35,4 +40,5 @@ export class Verse {
   // public verseBreaks?:
   public verseBreaks?: VerseBreaks;
   public kjvRef: string | undefined;
+  public fakeVerseBreak: FakeVerseBreaks;
 }

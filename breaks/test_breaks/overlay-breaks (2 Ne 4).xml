@@ -1,101 +1,206 @@
-<chapter id="eng-2-ne-4-chapter">
-	<verse-breaks id="eng-2-ne-4-1-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-2-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-3-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-4-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-5-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-6-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-7-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-8-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-9-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-10-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-11-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-12-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-13-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-14-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-15-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-16-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-17-breaks">
-		<paragraph offset="0"></paragraph>
-		<gap offset="131"></gap>
-		<poetry offset="131"></poetry>
-		<line offset="157"></line>
-		<line offset="202"></line>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-18-breaks">
-		<paragraph offset="0"></paragraph>
-		<poetry offset="3"></poetry>
-		<line offset="27"></line>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-19-breaks">
-		<poetry offset="3"></poetry>
-		<line offset="33"></line>
-		<line offset="71"></line>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-20-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-21-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-22-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-23-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-24-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-25-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-26-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-27-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-28-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-29-breaks"></verse-breaks>
-	<verse-breaks id="eng-2-ne-4-30-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-31-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-32-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-33-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-34-breaks">
-		<paragraph offset="0"></paragraph>
-	</verse-breaks>
-	<verse-breaks id="eng-2-ne-4-35-breaks">
-		<paragraph offset="0"></paragraph>
-		<poetry offset="3"></poetry>
-		<line offset="64"></line>
-		<line offset="110"></line>
-		<line offset="155"></line>
-		<line offset="182"></line>
-		<gap offset="220"></gap>
-		<line offset="271"></line>
-		<gap offset="306"></gap>
-	</verse-breaks>
-</chapter>
+<?xml version="1.0" encoding="UTF-8"?>
+<testament>
+	<chapter id="eng-2_ne-4-chapter">
+		<verse-breaks id="eng-2_ne-4-1-verse-breaks">
+			<para offsets="0-130"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-2-verse-breaks">
+			<prose offsets="0-248"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-3-verse-breaks">
+			<para offsets="0-308"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-4-verse-breaks">
+			<prose offsets="0-192"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-5-verse-breaks">
+			<para offsets="0-205"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-7-verse-breaks">
+			<prose offsets="0-153"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-8-verse-breaks">
+			<para offsets="0-174"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-9-verse-breaks">
+			<prose offsets="0-302"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-10-verse-breaks">
+			<para offsets="0-156"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-11-verse-breaks">
+			<prose offsets="0-341"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-12-verse-breaks">
+			<para offsets="0-227"></para>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-13-verse-breaks">
+			<para offsets="0-157"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-14-verse-breaks">
+			<prose offsets="0-270"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-15-verse-breaks">
+			<para offsets="0-255"></para>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-16-verse-breaks">
+			<prose offsets="0-135"></prose>
+			<para-gap></para-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-17-verse-breaks">
+			<para offsets="0-130"></para>
+			<line-gap></line-gap>
+			<line offsets="131-156"></line>
+			<line offsets="157-201"></line>
+			<line offsets="202-245"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-18-verse-breaks">
+			<para offsets="0-26"></para>
+			<line offsets="0-26"></line>
+			<line offsets="27-94"></line>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-19-verse-breaks">
+			<line offsets="0-32"></line>
+			<line offsets="33-70"></line>
+			<line offsets="71-114"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-20-verse-breaks">
+			<para offsets="0-31"></para>
+			<line offsets="0-31"></line>
+			<line offsets="32-90"></line>
+			<line offsets="91-149"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-21-verse-breaks">
+			<para offsets="0-35"></para>
+			<line offsets="0-35"></line>
+			<line offsets="36-71"></line>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-22-verse-breaks">
+			<note offsets="0-35"></note>
+			<note offsets="36-79"></note>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-23-verse-breaks">
+			<note offsets="0-39"></note>
+			<note offsets="40-99"></note>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-24-verse-breaks">
+			<note offsets="0-60"></note>
+			<note offsets="61-98"></note>
+			<note offsets="99-142"></note>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-25-verse-breaks">
+			<para offsets="0-99"></para>
+			<line offsets="0-99"></line>
+			<line offsets="100-139"></line>
+			<line offsets="140-168"></line>
+			<line offsets="169-220"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-26-verse-breaks">
+			<para offsets="0-42"></para>
+			<line offsets="0-42"></line>
+			<line offsets="43-99"></line>
+			<line offsets="100-135"></line>
+			<line offsets="136-229"></line>
+			<line offsets="230-282"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-27-verse-breaks">
+			<para offsets="0-54"></para>
+			<line offsets="0-54"></line>
+			<line offsets="55-97"></line>
+			<line offsets="98-179"></line>
+			<line offsets="180-216"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-28-verse-breaks">
+			<para offsets="0-42"></para>
+			<line offsets="0-42"></line>
+			<line offsets="43-111"></line>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-29-verse-breaks">
+			<line offsets="0-46"></line>
+			<line offsets="47-101"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-30-verse-breaks">
+			<para offsets="0-46"></para>
+			<line offsets="0-46"></line>
+			<line offsets="47-91"></line>
+			<line offsets="92-126"></line>
+			<line offsets="127-163"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-31-verse-breaks">
+			<para offsets="0-36"></para>
+			<line offsets="0-36"></line>
+			<line offsets="37-91"></line>
+			<line offsets="92-151"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-32-verse-breaks">
+			<para offsets="0-55"></para>
+			<line offsets="0-55"></line>
+			<line offsets="56-114"></line>
+			<line offsets="115-183"></line>
+			<line offsets="184-230"></line>
+			<line offsets="231-269"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-33-verse-breaks">
+			<para offsets="0-73"></para>
+			<line offsets="0-73"></line>
+			<line offsets="74-139"></line>
+			<line offsets="140-182"></line>
+			<line offsets="183-230"></line>
+			<line offsets="231-276"></line>
+			<line offsets="277-328"></line>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-34-verse-breaks">
+			<line offsets="0-34"></line>
+			<line offsets="35-68"></line>
+			<line offsets="69-113"></line>
+			<line offsets="114-186"></line>
+			<line offsets="187-258"></line>
+			<para-gap></para-gap>
+			<line-gap></line-gap>
+		</verse-breaks>
+		<verse-breaks id="eng-2_ne-4-35-verse-breaks">
+			<para offsets="0-63"></para>
+			<line offsets="0-63"></line>
+			<line offsets="64-109"></line>
+			<line offsets="110-154"></line>
+			<line offsets="155-181"></line>
+			<line offsets="182-219"></line>
+			<line-gap></line-gap>
+			<line offsets="220-271"></line>
+			<line offsets="272-305"></line>
+			<line-gap></line-gap>
+			<line offsets="306-310"></line>
+		</verse-breaks>
+	</chapter>
+</testament>

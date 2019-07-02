@@ -21,7 +21,10 @@ import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
-import { VerseBreaks } from '../../../../../shared/src/models/Verse';
+import {
+  VerseBreaks,
+  FakeVerseBreaks,
+} from '../../../../../shared/src/models/Verse';
 import { FormatGroupPart } from '../../../../../shared/src/models/format_groups/FormatGroup';
 @Component({
   selector: 'app-chapter',
@@ -267,7 +270,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   const ids = this.chapterService.generateIDS(vIds);
                   const breaks = (await this.databaseService.bulkGetByIDs(
                     ids,
-                  )) as VerseBreaks[];
+                  )) as FakeVerseBreaks[];
                   console.log(breaks);
 
                   breaks.map((b): void => {
@@ -282,7 +285,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                         : undefined;
                     console.log(v);
                     if (v) {
-                      v.verseBreaks = b;
+                      v.fakeVerseBreak = b;
                     }
                   });
 

@@ -7,6 +7,7 @@ import {
   parseOffsets,
   DisplayAs,
   VerseNotes,
+  expandOffsets,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
@@ -27,15 +28,15 @@ export class FormatTagService {
     private saveStateService: SaveStateService,
   ) {}
 
+  public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
+  public resetVerseQueue = new PQueue({ concurrency: 1 });
+
   private buildOffset(item: {
     offsets: string | undefined;
     uncompressedOffsets: number[] | undefined;
   }): void {
     item.uncompressedOffsets = parseOffsets(item.offsets);
   }
-
-  public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
-  public resetVerseQueue = new PQueue({ concurrency: 1 });
 
   public async resetVerses(verses: Verse[]): Promise<void> {
     // const promises = this.sliceArray(verses, 4000).map(
@@ -150,6 +151,7 @@ export class FormatTagService {
         fMerged.offsets = [o];
         fMerged.formatTags = this.getFormatTags(o, fTags);
         fMerged.refTags = this.getRefTags(o, note);
+        this.expandFakeVerseBreaks(verse);
         fMerged.breaks = this.getVerseBreaks(o, verse);
 
         if (!lastMerged) {
@@ -241,10 +243,21 @@ export class FormatTagService {
     }
     return undefined;
   }
+
+  public expandFakeVerseBreaks(verse: Verse) {
+    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
+      verse.fakeVerseBreak.breaks.map(brk => {
+        brk.uncompressedOffsets = parseOffsets(brk.offsets);
+      });
+    }
+  }
   public getVerseBreaks(o: number, verse: Verse): FormatTag[] | undefined {
-    if (verse.verseBreaks && verse.verseBreaks.breaks) {
-      const vb = verse.verseBreaks.breaks.filter((b): boolean => {
-        return o.toString() === b.offsets;
+    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
+      const vb = verse.fakeVerseBreak.breaks.filter((b): boolean => {
+        return (
+          b.uncompressedOffsets !== undefined &&
+          b.uncompressedOffsets.includes(o)
+        );
       });
       return vb.length > 0 ? vb : undefined;
     }

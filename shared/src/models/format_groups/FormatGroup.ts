@@ -49,6 +49,24 @@ export class FormatGroupPart extends FormatGroup {
   public formatGroupType = FormatGroupType.Part;
   public kjvRef: string | undefined;
 }
+export class FormatGroupPara extends FormatGroup {
+  public formatGroupType = FormatGroupType.Para;
+}
+export class FormatGroupLine extends FormatGroup {
+  public formatGroupType = FormatGroupType.Line;
+}
+export class FormatGroupLineGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.Gap;
+}
+export class FormatGroupParaGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.ParaGap;
+}
+export class FormatGroupProse extends FormatGroup {
+  public formatGroupType = FormatGroupType.Prose;
+}
+export class FormatGroupNote extends FormatGroup {
+  public formatGroupType = FormatGroupType.Note;
+}
 export class FormatGroupPageBreak extends FormatGroup {
   public formatGroupType = FormatGroupType.BR;
   public offsets = undefined;

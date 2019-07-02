@@ -34,16 +34,16 @@ export class SaveService {
       this.chaterService.chapterVerses &&
       this.chaterService.chapterVerses.verses
     ) {
-      const verseBreaks = this.chaterService.chapterVerses.verses
-        .map((verse): VerseBreaks | undefined => {
-          return verse.verseBreaks;
+      const fakeVerseBreaks = this.chaterService.chapterVerses.verses
+        .map((verse): FakeVerseBreaks | undefined => {
+          return verse.fakeVerseBreak;
         })
         .filter((v): boolean => {
           return v !== undefined;
         }) as VerseBreaks[];
 
-      if (verseBreaks.length > 0) {
-        await this.databaseService.updateDatabaseItems(verseBreaks);
+      if (fakeVerseBreaks.length > 0) {
+        await this.databaseService.updateDatabaseItems(fakeVerseBreaks);
       }
     }
   }

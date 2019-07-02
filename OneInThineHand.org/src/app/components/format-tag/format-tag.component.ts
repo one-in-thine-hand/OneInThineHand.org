@@ -26,7 +26,7 @@ import { asyncScrollIntoView } from '../../scroll-into-view';
 export class FormatTagComponent implements OnInit {
   @Input() public fMerged: FMerged;
   @Input() public verse: Verse;
-  public text: string = '';
+  public text = '';
   public classList: string[] = [];
   public offsets = '';
   public refList: string[] | undefined;
@@ -88,6 +88,7 @@ export class FormatTagComponent implements OnInit {
           return f.formatTagType === brk.formatType;
         });
         if (fto && fto.className) {
+          // console.log(fto.className);
           classList.push(fto.className);
         }
       });
