@@ -4,7 +4,10 @@ import PQueue from 'p-queue';
 import { DatabaseService } from './database.service';
 import { cloneDeep } from 'lodash';
 import { Note, VerseNotes } from '../../../../shared/src/shared';
-import { VerseBreaks } from '../../../../shared/src/models/Verse';
+import {
+  FakeVerseBreaks,
+  VerseBreaks,
+} from '../../../../shared/src/models/Verse';
 
 @Injectable({
   providedIn: 'root',

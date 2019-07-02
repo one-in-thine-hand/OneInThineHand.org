@@ -28,16 +28,18 @@ f {
     text-decoration-skip-ink: none;
     text-decoration-color: grey;
     &.ref-selected {
-      text-decoration: none;
+      text-decoration: underline;
+
       // text-decoration-skip-ink: none;
       // text-decoration-color: grey;
-      border-bottom: 3px solid #dc143c;
+      border-bottom: 1px solid #f68d2e;
+      text-decoration-color: #f68d2e;
     }
   }
   &.oith-ref-single {
     border-bottom: 1px solid grey;
     &.ref-selected {
-      border-bottom: 3px solid #f68d2e;
+      border-bottom: 1px solid #f68d2e;
     }
   }
 }

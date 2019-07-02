@@ -141,7 +141,6 @@ export const enum FormatTagType {
   Block,
   Gap,
   ParaGap,
-  ParaGap,
   LineGap,
 }
 

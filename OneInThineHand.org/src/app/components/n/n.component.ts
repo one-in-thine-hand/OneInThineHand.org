@@ -98,9 +98,7 @@ export class NComponent implements OnInit {
   public getNoteRefs(secondaryNote: Note): NoteRef[] {
     // return getVisible(secondaryNote.noteRefs)
     // return secondaryNote.noteRefs.reverse();
-    return sortBy(getVisible(secondaryNote.noteRefs), nr => {
-      return nr.noteCategory;
-    }).reverse();
+    return getVisible(secondaryNote.noteRefs);
   }
   public async offsetsInput(event: Event, note: Note): Promise<void> {
     if (event.type === 'input' && event.target) {
