@@ -39,7 +39,7 @@ export class Verse {
   public highlight?: boolean;
   // public verseBreaks?:
   public verseBreaks?: VerseBreaks;
-  public kjvRef: string | undefined;
+  public kjvRef: string[] | undefined;
   public fakeVerseBreak: FakeVerseBreaks | undefined;
-  public kjvVerse: Verse | undefined;
+  public kjvVerse: Verse[] | undefined;
 }

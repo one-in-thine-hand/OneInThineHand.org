@@ -16,6 +16,8 @@ import {
   parseOffsets,
   Verse,
   CouchDoc,
+  Note,
+  VerseNotes,
 } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
@@ -25,7 +27,10 @@ import {
   VerseBreaks,
   FakeVerseBreaks,
 } from '../../../../../shared/src/models/Verse';
-import { FormatGroupPart } from '../../../../../shared/src/models/format_groups/FormatGroup';
+import {
+  FormatGroupPart,
+  FormatGroupSegment,
+} from '../../../../../shared/src/models/format_groups/FormatGroup';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -448,85 +453,193 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public async getKJVRef(
     chapterVerses: ChapterVerses | undefined,
   ): Promise<void> {
-    if (chapterVerses && chapterVerses.verses) {
-      const asdf = uniq(
-        flatten(
-          chapterVerses.verses.map((verse): string[] => {
-            let kjvRefs: string[] = [];
-            if (verse.kjvRef) {
-              const kjvRef = verse.kjvRef.split('-');
-
-              try {
-                kjvRefs.push(
-                  `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`,
-                );
-              } catch (error) {
-                console.log(error);
-              }
-            }
-
-            if (verse.formatGroups) {
-              const moreKJVRefs = verse.formatGroups.map((formatGroup):
-                | string
-                | undefined => {
-                if ((formatGroup as FormatGroupPart).kjvRef !== undefined) {
-                  const kjvRef = ((formatGroup as FormatGroupPart)
-                    .kjvRef as string).split('-');
-
-                  try {
-                    return `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`;
-                  } catch (error) {
-                    return undefined;
-                  }
-                  // return (formatGroup as FormatGroupPart).kjvRef as string;
-                }
-              });
-              kjvRefs = kjvRefs.concat(moreKJVRefs.filter((a): boolean => {
-                return a !== undefined;
-              }) as string[]);
-            }
-
-            return uniq(kjvRefs);
-          }),
-        ),
-      );
-      if (asdf.length === 1) {
-        try {
-          this.chapterService.kjvChapterVerse = (await this.databaseService.getDatabaseItem(
-            asdf[0],
-          )) as ChapterVerses;
-          console.log(asdf);
-          this.chapterService.kjvChapterNotes = (await this.databaseService.getDatabaseItem(
-            asdf[0].replace('-chapter-verses', '-notes'),
-          )) as ChapterNotes;
-
-          await this.formatTagService.resetFormatTags(
-            this.chapterService.kjvChapterVerse,
-            this.chapterService.kjvChapterNotes,
-          );
-          console.log(this.chapterService.kjvChapterVerse);
-          if (this.chapterService.kjvChapterVerse.verses) {
-            this.chapterService.kjvChapterVerse.verses.map((kjvVerse): void => {
-              const verse =
-                this.chapterVerses && this.chapterVerses.verses
-                  ? this.chapterVerses.verses.find((v): boolean => {
-                      return (
-                        v._id !== undefined &&
-                        v._id.replace('fra', 'eng') === kjvVerse._id
-                      );
-                    })
-                  : undefined;
-              if (verse) {
-                verse.kjvVerse = kjvVerse;
+    try {
+      if (chapterVerses && chapterVerses.verses) {
+        const kjvRefs: string[] = [];
+        chapterVerses.verses.map((verse): void => {
+          if (verse.kjvRef) {
+            verse.kjvRef.map((k): void => {
+              kjvRefs.push(k);
+            });
+            verse.formatGroups.map((formatGroup): void => {
+              const fGroup: FormatGroupSegment = formatGroup as never;
+              if (fGroup.kjvRef) {
+                fGroup.kjvRef.map((k): void => {
+                  kjvRefs.push(k);
+                });
               }
             });
           }
-        } catch (error) {
-          console.log(error);
+        });
+        this.chapterService.kjvChapterVerse = new ChapterVerses();
+        this.chapterService.kjvChapterVerse.verses = [];
+        this.chapterService.kjvChapterNotes = new ChapterNotes();
+        this.chapterService.kjvChapterNotes.notes = [];
+        const promises = uniq(
+          kjvRefs.map((k): string => {
+            const kSplit = k.split('-');
+            return `${kSplit[0]}-${kSplit[1]}-${kSplit[2]}-chapter-verses`;
+          }),
+        ).map(
+          async (chapterID): Promise<void> => {
+            const verse = (await this.databaseService.getDatabaseItem(
+              chapterID,
+            )) as ChapterVerses;
+            const notes = (await this.databaseService.getDatabaseItem(
+              chapterID.replace('-chapter-verses', '-notes'),
+            )) as ChapterNotes;
+            if (
+              this.chapterService.kjvChapterVerse &&
+              this.chapterService.kjvChapterVerse.verses &&
+              verse.verses
+            ) {
+              this.chapterService.kjvChapterVerse.verses = this.chapterService.kjvChapterVerse.verses.concat(
+                verse.verses,
+              );
+            }
+            if (
+              this.chapterService.chapterNotes &&
+              this.chapterService.chapterNotes.notes &&
+              notes.notes
+            ) {
+              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
+                notes.notes,
+              );
+            }
+
+            await this.formatTagService.resetFormatTags(
+              this.chapterService.kjvChapterVerse,
+              this.chapterService.kjvChapterNotes,
+            );
+          },
+        );
+        await Promise.all(promises);
+        console.log(this.chapterService.kjvChapterVerse);
+        if (
+          this.chapterService.kjvChapterVerse.verses &&
+          this.chapterVerses &&
+          this.chapterVerses.verses
+        ) {
+          this.chapterVerses.verses.map((verse): void => {
+            if (verse.kjvRef) {
+              verse.kjvRef.map((k): void => {
+                if (
+                  this.chapterService.kjvChapterVerse &&
+                  this.chapterService.kjvChapterVerse.verses
+                ) {
+                  const v = this.chapterService.kjvChapterVerse.verses.find(
+                    (ver): boolean => {
+                      return ver._id === k;
+                    },
+                  );
+                  if (v) {
+                    if (!verse.kjvVerse) {
+                      verse.kjvVerse = [];
+                    }
+                    verse.kjvVerse.push(v);
+                  }
+                }
+              });
+            }
+          });
         }
-      } else if (asdf.length > 1) {
-        console.log(asdf);
+        // const asdf = uniq(
+        //   flatten(
+        //     chapterVerses.verses.map((verse): string[] => {
+        //       let kjvRefs: string[] = [];
+        //       if (verse.kjvRef) {
+        //         console.log(verse.kjvRef);
+        //         const kjvRefSubg = verse.kjvRef.map((k): string[] => {
+        //           return k.split('-');
+        //         });
+        //         kjvRefSubg.map((kjvRef): void => {
+        //           try {
+        //             kjvRefs.push(
+        //               `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`,
+        //             );
+        //           } catch (error) {
+        //             console.log(error);
+        //           }
+        //         });
+        //       }
+        //       if (verse.formatGroups) {
+        //         const moreKJVRefs = verse.formatGroups.map((formatGroup):
+        //           | string[]
+        //           | undefined => {
+        //           if ((formatGroup as FormatGroupPart).kjvRef !== undefined) {
+        //             const subKJVRefs = (formatGroup as FormatGroupPart).kjvRef;
+        //             if (subKJVRefs) {
+        //               return subKJVRefs
+        //                 .map((kjvRef): string | undefined => {
+        //                   try {
+        //                     return `${subKJVRefs[0]}-${subKJVRefs[1]}-${subKJVRefs[2]}-chapter-verses`;
+        //                   } catch (error) {
+        //                     return undefined;
+        //                   }
+        //                   // return (formatGroup as FormatGroupPart).kjvRef as string;
+        //                 })
+        //                 .filter((a): boolean => {
+        //                   return a !== undefined;
+        //                 }) as string[];
+        //             }
+        //           }
+        //         });
+        //         console.log(moreKJVRefs);
+        //         kjvRefs = kjvRefs.concat(
+        //           flatten((moreKJVRefs.filter((a): boolean => {
+        //             return a !== undefined;
+        //           }) as never) as string[]),
+        //         );
+        //       }
+        //       console.log(kjvRefs);
+        //       return uniq(kjvRefs);
+        //     }),
+        //   ),
+        // );
+        // if (asdf.length === 1) {
+        //   try {
+        //     this.chapterService.kjvChapterVerse = (await this.databaseService.getDatabaseItem(
+        //       asdf[0],
+        //     )) as ChapterVerses;
+        //     console.log(asdf);
+        //     this.chapterService.kjvChapterNotes = (await this.databaseService.getDatabaseItem(
+        //       asdf[0].replace('-chapter-verses', '-notes'),
+        //     )) as ChapterNotes;
+        //     await this.formatTagService.resetFormatTags(
+        //       this.chapterService.kjvChapterVerse,
+        //       this.chapterService.kjvChapterNotes,
+        //     );
+        //     console.log(this.chapterService.kjvChapterVerse);
+        //     if (this.chapterService.kjvChapterVerse.verses) {
+        //       this.chapterService.kjvChapterVerse.verses.map(
+        //         (kjvVerse): void => {
+        //           const verse =
+        //             this.chapterVerses && this.chapterVerses.verses
+        //               ? this.chapterVerses.verses.find((v): boolean => {
+        //                   return (
+        //                     v._id !== undefined &&
+        //                     v._id.replace('fra', 'eng') === kjvVerse._id
+        //                   );
+        //                 })
+        //               : undefined;
+        //           if (verse) {
+        //             if (!verse.kjvVerse) {
+        //               verse.kjvVerse = [];
+        //             }
+        //             verse.kjvVerse.push(kjvVerse);
+        //           }
+        //         },
+        //       );
+        //     }
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        // } else if (asdf.length > 1) {
+        //   console.log(asdf);
+        // }
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 

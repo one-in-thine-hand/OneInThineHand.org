@@ -25,7 +25,7 @@ import { sortBy } from 'lodash';
 export class NComponent implements OnInit {
   @Input() public note: Note;
   @Input() public verseNotes: VerseNotes;
-  public edit: boolean = false;
+  public edit = false;
 
   public constructor(
     public domSanitizer: DomSanitizer,

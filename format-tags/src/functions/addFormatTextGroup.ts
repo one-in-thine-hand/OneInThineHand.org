@@ -38,12 +38,24 @@ function nodesToTextGroup(
   return endCount;
 }
 
-export function getKJVRef(node: Node, verseID?: string): string | undefined {
+export function getKJVRef(node: Node, verseID?: string): string[] | undefined {
   const kjvRef = (node as Element).getAttribute('kjvRef');
   if (!kjvRef && verseID) {
-    return verseID.replace('fra', 'eng');
+    return [verseID.replace('fra', 'eng')];
+  } else if (kjvRef && verseID) {
+    const temp = verseID.split('-');
+    return kjvRef.split('-').map(
+      (kjv): string => {
+        const splitKJVRef = kjv.split(':');
+        const newID = `eng-${temp[1]}-${splitKJVRef[0]}-${
+          splitKJVRef[1]
+        }-verse`;
+        return newID;
+      },
+    );
   }
-  return kjvRef && verseID ? verseID.replace('fra', 'eng') : undefined;
+  return undefined;
+  // return kjvRef && verseID ? verseID.replace('fra', 'eng') : undefined;
 }
 
 function nodeToFormatGroup(

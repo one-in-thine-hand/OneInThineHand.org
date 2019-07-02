@@ -1,5 +1,11 @@
 <kjv-container *ngIf="verse" [ngClass]="{ 'kjv-container': verse.kjvVerse }">
-  <verse
+  <kjv-verses *ngIf="verse.kjvVerse">
+    <app-verse
+      class="kjv-verse"
+      *ngFor="let kjvVerse of verse.kjvVerse"
+      [verse]="kjvVerse"
+    ></app-verse> </kjv-verses
+  ><verse
     [id]="getID()"
     class="{{ this.getClassList() }}"
     [attr.offsets]="this.getOffSets()"
@@ -30,9 +36,4 @@
       </span>
     </ng-container>
   </verse>
-  <app-verse
-    class="kjv-verse"
-    *ngIf="verse.kjvVerse"
-    [verse]="verse.kjvVerse"
-  ></app-verse>
 </kjv-container>

@@ -26,14 +26,18 @@ export class FormatGroupPartComponent implements OnInit {
     console.log(this.formatGroup.kjvRef);
   }
 
-  public getKJVPartVerse(): Verse | undefined {
+  public getKJVPartVerse(): Verse[] | undefined {
     if (
       this.chapterService.kjvChapterVerse &&
       this.chapterService.kjvChapterVerse.verses
     ) {
-      const kjvVerse = this.chapterService.kjvChapterVerse.verses.find(
+      const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
         (v): boolean => {
-          return v._id !== undefined && v._id === this.formatGroup.kjvRef;
+          return (
+            v._id !== undefined &&
+            this.formatGroup.kjvRef !== undefined &&
+            this.formatGroup.kjvRef.includes(v._id)
+          );
         },
       );
       this.hasKJVVerse = kjvVerse !== undefined;

@@ -43,11 +43,11 @@ export class FormatGroupBR extends FormatGroup {
 }
 export class FormatGroupSegment extends FormatGroup {
   public formatGroupType = FormatGroupType.Segment;
-  public kjvRef: string | undefined;
+  public kjvRef: string[] | undefined;
 }
 export class FormatGroupPart extends FormatGroup {
   public formatGroupType = FormatGroupType.Part;
-  public kjvRef: string | undefined;
+  public kjvRef: string[] | undefined;
 }
 export class FormatGroupPara extends FormatGroup {
   public formatGroupType = FormatGroupType.Para;

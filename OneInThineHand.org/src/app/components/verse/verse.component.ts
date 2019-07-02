@@ -24,9 +24,9 @@ export class VerseComponent implements OnInit {
   //   // console.log(event);
   // }
   public getID(): string {
-    if (this.verse === undefined || this.verse._id === undefined) {
-      console.log(this.verse);
-    }
+    // if (this.verse === undefined || this.verse._id === undefined) {
+    //   console.log(this.verse);
+    // }
     return this.verse !== undefined && this.verse._id !== undefined
       ? this.verse._id
       : '';
@@ -51,7 +51,7 @@ export class VerseComponent implements OnInit {
         );
       }); // this.verse.formatTags.map((f): void => {});
     } else {
-      console.log(this.verse);
+      // console.log(this.verse);
     }
     return [];
   }
