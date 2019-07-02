@@ -34,7 +34,7 @@ export class NavigationComponent implements OnInit {
     public chapterService: ChapterService,
     public saveService: SaveService,
     public formatTagService: FormatTagService,
-  ) {}
+  ) { }
 
   public currentNavItems: NavigationItem[] = [];
 
@@ -71,7 +71,7 @@ export class NavigationComponent implements OnInit {
         }
       },
     );
-    this.activatedRouter.params.subscribe((): void => {});
+    this.activatedRouter.params.subscribe((): void => { });
   }
   /**
    * isSingleChapter
@@ -266,8 +266,8 @@ nI:NavigationItem   */
 
         const verse = this.chapterService.verses
           ? this.chapterService.verses.find((v): boolean => {
-              return v._id !== undefined && v._id === verseid;
-            })
+            return v._id !== undefined && v._id === verseid;
+          })
           : undefined;
         console.log(verse);
         if (verse) {
@@ -295,42 +295,42 @@ nI:NavigationItem   */
     return undefined;
   }
 
-  private async addBreak(
-    formatTagType: FormatTagType,
-    offset?: string,
-  ): Promise<void> {
-    const offsets = this.calcOffset();
-    const formatTag = new FormatTag();
-    if (offsets) {
-      formatTag.offsets = offset ? offset : `${offsets.offsets.split('-')[0]}`;
-      formatTag.formatType = formatTagType;
-      if (offsets.verse.verseBreaks && offsets.verse.verseBreaks.breaks) {
-        offsets.verse.verseBreaks.breaks.push(formatTag);
-      }
-      await this.formatTagService.resetFormatTags(
-        this.chapterService.chapterVerses,
-        this.chapterService.chapterNotes,
-      );
-      await this.saveService.saveOffsets();
-    }
-  }
+  // private async addBreak(
+  //   formatTagType: FormatTagType,
+  //   offset?: string,
+  // ): Promise<void> {
+  //   const offsets = this.calcOffset();
+  //   const formatTag = new FormatTag();
+  //   if (offsets) {
+  //     formatTag.offsets = offset ? offset : `${offsets.offsets.split('-')[0]}`;
+  //     formatTag.formatType = formatTagType;
+  //     if (offsets.verse.verseBreaks && offsets.verse.verseBreaks.breaks) {
+  //       offsets.verse.verseBreaks.breaks.push(formatTag);
+  //     }
+  //     await this.formatTagService.resetFormatTags(
+  //       this.chapterService.chapterVerses,
+  //       this.chapterService.chapterNotes,
+  //     );
+  //     await this.saveService.saveOffsets();
+  //   }
+  // }
 
   public async addBlock(): Promise<void> {
-    await this.addBreak(FormatTagType.Block);
+    // await this.addBreak(FormatTagType.Block);
   }
   public async addLine(): Promise<void> {
-    await this.addBreak(FormatTagType.line);
+    // await this.addBreak(FormatTagType.line);
   }
   public async addProse(): Promise<void> {
-    await this.addBreak(FormatTagType.Prose);
+    // await this.addBreak(FormatTagType.Prose);
   }
   public async addGap(): Promise<void> {
-    await this.addBreak(FormatTagType.Gap);
+    // await this.addBreak(FormatTagType.Gap);
   }
   public async addParagraph(): Promise<void> {
-    await this.addBreak(FormatTagType.Paragraph);
+    // await this.addBreak(FormatTagType.Paragraph);
   }
   public async addPoetry(): Promise<void> {
-    await this.addBreak(FormatTagType.Poetry);
+    // await this.addBreak(FormatTagType.Poetry);
   }
 }
