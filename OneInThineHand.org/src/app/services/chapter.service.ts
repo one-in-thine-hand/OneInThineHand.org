@@ -15,8 +15,8 @@ export class ChapterService {
   public notes: VerseNotes[] | undefined;
   public chapterNotes: ChapterNotes | undefined;
   public chapterVerses: ChapterVerses | undefined;
-  kjvChapterVerse: { _id: string; _rev: string } | undefined;
-  kjvChapterNotes: { _id: string; _rev: string } | undefined;
+  public kjvChapterVerse: ChapterVerses | undefined;
+  public kjvChapterNotes: ChapterNotes | undefined;
 
   public constructor() {}
 

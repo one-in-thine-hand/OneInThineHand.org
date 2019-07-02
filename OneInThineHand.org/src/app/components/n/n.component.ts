@@ -130,6 +130,10 @@ export class NComponent implements OnInit {
         this.chapterService.chapterNotes,
       );
 
+      await this.formatTagService.resetFormatTags(
+        this.chapterService.kjvChapterVerse,
+        this.chapterService.kjvChapterNotes,
+      );
       if (note.uncompressedOffsets) {
         note.offsets = getRanges(note.uncompressedOffsets)
           .map((offsets): string => {

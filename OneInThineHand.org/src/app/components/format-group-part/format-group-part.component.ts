@@ -6,6 +6,8 @@ import {
 } from '../../../../../shared/src/shared';
 import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, last, first } from 'lodash';
+import { FormatGroupPart } from '../../../../../shared/src/models/format_groups/FormatGroup';
+import { ChapterService } from '../../services/chapter.service';
 @Component({
   selector: 'app-format-group-part',
   templateUrl: './format-group-part.component.html',
@@ -13,14 +15,31 @@ import { isEqual, last, first } from 'lodash';
 })
 export class FormatGroupPartComponent implements OnInit {
   @Input() public verse: Verse;
-  @Input() public formatGroup: FormatGroup;
+  @Input() public formatGroup: FormatGroupPart;
   @Input() public formatTags: FormatTag[];
+  public hasKJVVerse = false;
 
   public fMerged: FMerged[] = [];
-  public constructor() {}
+  public constructor(public chapterService: ChapterService) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    console.log(this.formatGroup.kjvRef);
+  }
 
+  public getKJVPartVerse(): Verse | undefined {
+    if (
+      this.chapterService.kjvChapterVerse &&
+      this.chapterService.kjvChapterVerse.verses
+    ) {
+      const kjvVerse = this.chapterService.kjvChapterVerse.verses.find(
+        (v): boolean => {
+          return v._id !== undefined && v._id === this.formatGroup.kjvRef;
+        },
+      );
+      this.hasKJVVerse = kjvVerse !== undefined;
+      return kjvVerse;
+    }
+  }
   /**
    * getFormatTags
    */

@@ -31,13 +31,13 @@
     <li style="user-select: none" (click)="addPlain()">Plain</li>
     <li style="user-select: none" (click)="refreshBreaks()">Refresh Breaks</li>
     <li style="user-select: none; font-weight: 700">
-      Delete All Breaks
+      Delete Breaks
     </li>
     <li
       *ngFor="let verseNumber of getVerseNumbers()"
       (click)="resetVerseBreaks(verseNumber.verse)"
     >
-      Del Verse {{ verseNumber.verseNumber }} Breaks
+      Delete Verse {{ verseNumber.verseNumber }} Breaks
     </li>
   </ul>
   <ul *ngIf="!tempSettingsService.editMode" class="navigation">

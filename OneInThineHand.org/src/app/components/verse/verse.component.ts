@@ -5,6 +5,7 @@ import {
   FormatGroup,
   FormatGroupType,
 } from '../../../../../shared/src/shared';
+import { ChapterService } from '../../services/chapter.service';
 
 @Component({
   selector: 'app-verse',
@@ -13,7 +14,8 @@ import {
 })
 export class VerseComponent implements OnInit {
   @Input() public verse: Verse;
-  public constructor() {}
+  public kjvRefVerse: Verse | undefined;
+  public constructor(public chapterService: ChapterService) {}
 
   public ngOnInit(): void {}
 

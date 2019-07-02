@@ -1,7 +1,11 @@
-<app-format-tag-part
-  *ngFor="let f of getFormatTags()"
-  [attr.offsets]="this.getOffSets(f)"
-  [attr.verse-id]="this.verse._id"
-  [verse]="this.verse"
-  [fMerged]="f"
-></app-format-tag-part>
+<kjv-container [ngClass]="{ 'kjv-container': formatGroup.kjvRef }">
+  <app-format-tag
+    *ngFor="let f of getFormatTags()"
+    [attr.offsets]="this.getOffSets(f)"
+    [attr.verse-id]="this.verse._id"
+    [verse]="this.verse"
+    [fMerged]="f"
+  ></app-format-tag>
+
+  <app-verse class="kjv-verse" [verse]="getKJVPartVerse()"></app-verse>
+</kjv-container>

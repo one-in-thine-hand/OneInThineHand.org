@@ -15,7 +15,7 @@ import { sortBy } from 'lodash';
 })
 export class NoteComponent implements OnInit {
   @Input() public verseNotes: VerseNotes;
-  public edit: boolean = false;
+  public edit = false;
   public tempNote: Note | undefined;
   public constructor(
     public chapterService: ChapterService,
@@ -134,6 +134,10 @@ export class NoteComponent implements OnInit {
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
+            );
+            await this.formatTagService.resetFormatTags(
+              this.chapterService.kjvChapterVerse,
+              this.chapterService.kjvChapterNotes,
             );
           }
         }

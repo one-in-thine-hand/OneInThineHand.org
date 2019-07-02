@@ -80,12 +80,16 @@ export class DatabaseService {
   public async allDocs(): Promise<
     PouchDB.Core.AllDocsResponse<{}> | undefined
   > {
-    if (this.db) return await this.db.allDocs();
+    if (this.db) {
+      return await this.db.allDocs();
+    }
   }
   public async getDatabaseItem(
     _id: string,
   ): Promise<{ _id: string; _rev: string } | undefined> {
-    if (this.db) return await this.db.get(_id);
+    if (this.db) {
+      return await this.db.get(_id);
+    }
   }
 
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {

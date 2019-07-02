@@ -116,6 +116,10 @@ export class NotePhraseComponent implements OnInit {
           this.chapterService.chapterVerses,
           this.chapterService.chapterNotes,
         );
+        await this.formatTagService.resetFormatTags(
+          this.chapterService.kjvChapterVerse,
+          this.chapterService.kjvChapterNotes,
+        );
         if (this.chapterService.chapterNotes) {
           this.chapterService.chapterNotes.save = true;
         }
@@ -126,7 +130,7 @@ export class NotePhraseComponent implements OnInit {
           secondaryNote.refTag.highlight = false;
         }
       } else {
-        throw 'No valid selection';
+        throw new Error('No valid selection');
       }
     }
   }

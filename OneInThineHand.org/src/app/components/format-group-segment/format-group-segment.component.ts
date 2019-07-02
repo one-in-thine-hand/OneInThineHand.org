@@ -6,6 +6,7 @@ import {
 } from '../../../../../shared/src/shared';
 import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, last, first } from 'lodash';
+import { FormatGroupSegment } from '../../../../../shared/src/models/format_groups/FormatGroup';
 @Component({
   selector: 'app-format-group-segment',
   templateUrl: './format-group-segment.component.html',
@@ -13,7 +14,7 @@ import { isEqual, last, first } from 'lodash';
 })
 export class FormatGroupSegmentComponent implements OnInit {
   @Input() public verse: Verse;
-  @Input() public formatGroup: FormatGroup;
+  @Input() public formatGroup: FormatGroupSegment;
   @Input() public formatTags: FormatTag[];
 
   public fMerged: FMerged[] = [];

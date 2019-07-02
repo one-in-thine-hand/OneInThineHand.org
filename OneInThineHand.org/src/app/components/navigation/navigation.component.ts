@@ -282,7 +282,7 @@ nI:NavigationItem   */
               ? verse._id.replace('verse', 'breaks')
               : undefined;
             if (!verse.verseBreaks._id) {
-              throw '';
+              throw new Error('');
             }
             verse.verseBreaks.breaks = [];
           }

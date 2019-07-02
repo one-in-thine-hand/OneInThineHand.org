@@ -213,44 +213,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 // }
               } else {
                 try {
-                  // console.log(this.chapter);
-                  // try {
-                  //   const vIds = this.chapter.verseIDS.filter((v): boolean => {
-                  //     return !v.includes('--');
-                  //   });
-                  //   const ids = this.chapterService
-                  //     .generateIDS(vIds)
-                  //     .concat(vIds)
-                  //     .filter((i): boolean => {
-                  //       return !i.endsWith('note');
-                  //     });
-
-                  //   try {
-                  //   } catch (error) {
-                  //     console.log(error);
-                  //   }
-                  //   const v = await this.databaseService.bulkGetByIDs<Verse>(ids);
-                  //   const breaks = v.filter((ve): boolean => {
-                  //     return ve._id !== undefined && ve._id.endsWith('breaks');
-                  //   });
-                  //   console.log(breaks);
-
-                  //   this.chapterVerses = {
-                  //     verses: v.filter((ve): boolean => {
-                  //       return ve._id !== undefined && ve._id.includes('-verse');
-                  //     }),
-                  //     _id: '',
-                  //     _rev: '',
-                  //   };
-                  // } catch (error) {
-                  //   // console.log;
-
-                  //   console.log(error);
-
-                  //   this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                  //     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-                  //   )) as ChapterVerses;
-                  // }
                   const all = await this.databaseService.bulkGetByIDs([
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
@@ -289,16 +251,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     }
                   });
 
-                  // this.chapter = (await this.databaseService.getDatabaseItem(
-                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
-                  // )) as Chapter;
-                  // this.chapterVerses = (await this.databaseService.getDatabaseItem(
-                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-                  // )) as ChapterVerses;
-
-                  // this.chapterNotes = (await this.databaseService.getDatabaseItem(
-                  //   `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
-                  // )) as ChapterNotes;
                   await this.setChapterVariables(
                     this.chapterNotes,
                     this.chapterVerses,
@@ -465,6 +417,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
         this.chapterVerses,
         this.chapterNotes,
       );
+
+      // if (
+      //   this.chapterService.kjvChapterVerse &&
+      //   this.chapterService.kjvChapterVerse.verses &&
+      //   this.chapterService.kjvChapterNotes &&
+      //   this.chapterService.kjvChapterNotes.notes
+      // ) {
+      // }
     }
     this.chapterService.chapter = chapter;
 
@@ -497,14 +457,16 @@ export class ChapterComponent implements OnInit, OnDestroy {
               const kjvRef = verse.kjvRef.split('-');
 
               try {
-                kjvRefs.push(`${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-verses`);
+                kjvRefs.push(
+                  `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`,
+                );
               } catch (error) {
                 console.log(error);
               }
             }
 
             if (verse.formatGroups) {
-              const asdf = verse.formatGroups.map((formatGroup):
+              const moreKJVRefs = verse.formatGroups.map((formatGroup):
                 | string
                 | undefined => {
                 if ((formatGroup as FormatGroupPart).kjvRef !== undefined) {
@@ -512,14 +474,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     .kjvRef as string).split('-');
 
                   try {
-                    return `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-verses`;
+                    return `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`;
                   } catch (error) {
                     return undefined;
                   }
                   // return (formatGroup as FormatGroupPart).kjvRef as string;
                 }
               });
-              kjvRefs = kjvRefs.concat(asdf.filter((a): boolean => {
+              kjvRefs = kjvRefs.concat(moreKJVRefs.filter((a): boolean => {
                 return a !== undefined;
               }) as string[]);
             }
@@ -529,14 +491,39 @@ export class ChapterComponent implements OnInit, OnDestroy {
         ),
       );
       if (asdf.length === 1) {
-        this.chapterService.kjvChapterVerse = await this.databaseService.getDatabaseItem(
-          asdf[0],
-        );
-        this.chapterService.kjvChapterNotes = await this.databaseService.getDatabaseItem(
-          asdf[0].replace('verses', 'notes'),
-        );
-        console.log(this.chapterService.kjvChapterNotes);
-        console.log(this.chapterService.kjvChapterVerse);
+        try {
+          this.chapterService.kjvChapterVerse = (await this.databaseService.getDatabaseItem(
+            asdf[0],
+          )) as ChapterVerses;
+          console.log(asdf);
+          this.chapterService.kjvChapterNotes = (await this.databaseService.getDatabaseItem(
+            asdf[0].replace('-chapter-verses', '-notes'),
+          )) as ChapterNotes;
+
+          await this.formatTagService.resetFormatTags(
+            this.chapterService.kjvChapterVerse,
+            this.chapterService.kjvChapterNotes,
+          );
+          console.log(this.chapterService.kjvChapterVerse);
+          if (this.chapterService.kjvChapterVerse.verses) {
+            this.chapterService.kjvChapterVerse.verses.map((kjvVerse): void => {
+              const verse =
+                this.chapterVerses && this.chapterVerses.verses
+                  ? this.chapterVerses.verses.find((v): boolean => {
+                      return (
+                        v._id !== undefined &&
+                        v._id.replace('fra', 'eng') === kjvVerse._id
+                      );
+                    })
+                  : undefined;
+              if (verse) {
+                verse.kjvVerse = kjvVerse;
+              }
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
       } else if (asdf.length > 1) {
         console.log(asdf);
       }

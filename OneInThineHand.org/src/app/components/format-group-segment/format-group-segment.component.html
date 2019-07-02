@@ -1,7 +1,7 @@
-<app-format-tag-segment
+<app-format-tag
   *ngFor="let f of getFormatTags()"
   [attr.offsets]="this.getOffSets(f)"
   [attr.verse-id]="this.verse._id"
   [verse]="this.verse"
   [fMerged]="f"
-></app-format-tag-segment>
+></app-format-tag>

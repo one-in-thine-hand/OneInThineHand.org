@@ -1,28 +1,38 @@
-<verse
-  [id]="getID()"
-  class="{{ this.getClassList() }}"
-  [attr.offsets]="this.getOffSets()"
->
-  <ng-container *ngFor="let formatGroup of this.getFormatGroups()">
-    <span [ngSwitch]="formatGroup.formatGroupType">
-      <app-format-group-segment
-        *ngSwitchCase="10"
-        [verse]="verse"
-        [formatGroup]="formatGroup"
-        [formatTags]="verse.formatTags"
-      ></app-format-group-segment>
-      <app-format-group-part
-        *ngSwitchCase="9"
-        [verse]="verse"
-        [formatGroup]="formatGroup"
-        [formatTags]="verse.formatTags"
-      ></app-format-group-part>
-      <app-format-group
-        [verse]="verse"
-        [formatGroup]="formatGroup"
-        [formatTags]="verse.formatTags"
-        *ngSwitchDefault
-      ></app-format-group>
-    </span>
-  </ng-container>
-</verse>
+<kjv-container *ngIf="verse" [ngClass]="{ 'kjv-container': verse.kjvVerse }">
+  <verse
+    [id]="getID()"
+    class="{{ this.getClassList() }}"
+    [attr.offsets]="this.getOffSets()"
+    [ngClass]="{ 'kjv-verse': verse.kjvVerse }"
+  >
+    <ng-container *ngFor="let formatGroup of this.getFormatGroups()">
+      <span [ngSwitch]="formatGroup.formatGroupType">
+        <app-format-group-segment
+          class="format-group-segment"
+          *ngSwitchCase="10"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+        ></app-format-group-segment>
+        <app-format-group-part
+          class="format-group-part"
+          *ngSwitchCase="9"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+        ></app-format-group-part>
+        <app-format-group
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          *ngSwitchDefault
+        ></app-format-group>
+      </span>
+    </ng-container>
+  </verse>
+  <app-verse
+    class="kjv-verse"
+    *ngIf="verse.kjvVerse"
+    [verse]="verse.kjvVerse"
+  ></app-verse>
+</kjv-container>

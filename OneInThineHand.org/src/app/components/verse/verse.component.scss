@@ -51,3 +51,11 @@ verse {
     background-color: #cfe8eb;
   }
 }
+
+kjv-container {
+  &.kjv-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 5px;
+  }
+}
