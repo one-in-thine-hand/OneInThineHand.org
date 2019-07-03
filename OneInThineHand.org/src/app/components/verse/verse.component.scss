@@ -1,9 +1,10 @@
 verse {
+  margin-bottom: 7px;
   &.highlight {
     padding: 0 0 6pt 5px;
     border-left: 3px solid #f68d2e;
   }
-  &.context {
+  &.context:not(.highlight) {
     padding: 0 0 6pt 5px;
     border-left: 3px solid #2ca1a5;
   }
@@ -48,5 +49,13 @@ verse {
     padding: 0;
     border-left: none !important;
     background-color: #cfe8eb;
+  }
+}
+
+kjv-container {
+  &.kjv-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 5px;
   }
 }

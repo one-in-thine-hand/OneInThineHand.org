@@ -9,7 +9,6 @@ import { Note } from '../../../../../shared/src/shared';
 export class AddNoteComponent implements OnInit {
   @Input() public note: Note;
 
-  constructor() {}
-
-  ngOnInit() {}
+  public constructor() {}
+  public ngOnInit() {}
 }

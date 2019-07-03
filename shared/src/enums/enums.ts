@@ -16,6 +16,13 @@ export const enum Environment {
   node,
 }
 // export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
 export const enum FormatGroupType {
   A = 0,
   Text = 1,
@@ -26,6 +33,15 @@ export const enum FormatGroupType {
   SPAN = 6,
   BR = 7,
   PAGE_BREAK = 8,
+  Part,
+  Segment,
+  Line,
+  Gap,
+  Prose,
+  Note,
+  Para,
+  LineGap,
+  ParaGap,
 }
 // export const enum FormatType {
 //   Base = 0,
@@ -88,12 +104,11 @@ export const enum FormatTagType {
   addressee,
   answer,
   question,
-  line,
+  Line,
   paraMark,
   selah,
   Poetry,
   Prose,
-
   clarityword,
   dominant,
   smallcaps,
@@ -121,6 +136,15 @@ export const enum FormatTagType {
   HighlightRed,
   RefSingle,
   RefMulti,
+  Paragraph,
+  Stanza,
+  Block,
+  Gap,
+  ParaGap,
+  LineGap,
+  Plain,
+  BlockGap,
+  Para,
 }
 
 export const enum Optional {

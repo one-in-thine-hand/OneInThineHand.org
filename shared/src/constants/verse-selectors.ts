@@ -53,13 +53,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.NEVER,
   },
   {
-    className: 'deityName',
+    className: 'deity-name',
     formatTagType: FormatTagType.deityName,
-    optional: Optional.NEVER,
-    displayAs: DisplayAs.NEVER,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'smallcaps',
+    className: 'small-caps',
     formatTagType: FormatTagType.smallCaps,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
@@ -89,7 +89,7 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.NEVER,
   },
   {
-    className: 'shortTitle',
+    className: 'short-title',
     formatTagType: FormatTagType.shortTitle,
     optional: Optional.NEVER,
     displayAs: DisplayAs.NEVER,
@@ -138,7 +138,13 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
   },
   {
     className: 'line',
-    formatTagType: FormatTagType.line,
+    formatTagType: FormatTagType.Line,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'line-gap',
+    formatTagType: FormatTagType.LineGap,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },
@@ -331,9 +337,49 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
   {
-    className: 'uppercasedeity-name',
+    className: 'para',
+    formatTagType: FormatTagType.Para,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'para-gap',
+    formatTagType: FormatTagType.Paragraph,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'stanza',
+    formatTagType: FormatTagType.Stanza,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'block',
+    formatTagType: FormatTagType.Block,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'block-gap',
+    formatTagType: FormatTagType.BlockGap,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'uppercase-deityname',
     formatTagType: FormatTagType.uppercasedeityname,
     optional: Optional.SOMETIMES,
     displayAs: DisplayAs.CLASS,
   },
+  {
+    className: 'plain',
+    formatTagType: FormatTagType.Plain,
+    optional: Optional.SOMETIMES,
+    displayAs: DisplayAs.CLASS,
+  },
 ];
+
+// Paragraph,
+// Stanza,
+// Block

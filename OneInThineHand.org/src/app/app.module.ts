@@ -43,6 +43,14 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { PreprocessorService } from './services/preprocessor.service';
 import { PageStateService } from './services/page-state.service';
 import { AddNoteComponent } from './components/add-note/add-note.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppConfig } from '../environments/environment';
+import { ToastComponent } from './components/toast/toast.component';
+import { TitleHeaderComponent } from './components/title-header/title-header.component';
+import { NComponent } from './components/n/n.component';
+import { HarmonyComponent } from './components/harmony/harmony.component';
+import { FormatGroupSegmentComponent } from './components/format-group-segment/format-group-segment.component';
+import { FormatGroupPartComponent } from './components/format-group-part/format-group-part.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -76,6 +84,12 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     HeaderDropdownComponent,
     LandingPageComponent,
     AddNoteComponent,
+    ToastComponent,
+    TitleHeaderComponent,
+    NComponent,
+    HarmonyComponent,
+    FormatGroupSegmentComponent,
+    FormatGroupPartComponent,
   ],
   imports: [
     NgbModule,
@@ -89,6 +103,9 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: AppConfig.production,
     }),
   ],
   providers: [

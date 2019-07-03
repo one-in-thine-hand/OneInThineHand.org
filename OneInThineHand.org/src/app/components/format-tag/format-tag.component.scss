@@ -6,6 +6,14 @@ f {
   &.subordinate {
     display: block;
   }
+  &.small-caps {
+    font-variant: small-caps;
+  }
+
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
   &.dominant {
     display: block;
     line-height: 1;
@@ -20,16 +28,18 @@ f {
     text-decoration-skip-ink: none;
     text-decoration-color: grey;
     &.ref-selected {
-      text-decoration: none;
+      text-decoration: underline;
+
       // text-decoration-skip-ink: none;
       // text-decoration-color: grey;
-      border-bottom: 3px solid #dc143c;
+      border-bottom: 1px solid #f68d2e;
+      text-decoration-color: #f68d2e;
     }
   }
   &.oith-ref-single {
     border-bottom: 1px solid grey;
     &.ref-selected {
-      border-bottom: 3px solid #f68d2e;
+      border-bottom: 1px solid #f68d2e;
     }
   }
 }
@@ -63,4 +73,124 @@ f {
 
 :host-context(.edit-mode) f {
   // pointer-events: none;
+}
+:host-context(.paragraph-mode) {
+  f.para {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.para-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.line {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.line-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.block {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.block-gap {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+  f.plain {
+    border-bottom-color: red;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+  }
+
+  // f.f-paragraph {
+  //   :host-context(.edit-mode) {
+  //     background-color: green !important;
+  //   }
+  //   &::before {
+  //     content: '\A\2003   ';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.block {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.stanza {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.prose {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.poetry {
+  //   background-color: green !important;
+  //   &::before {
+  //     content: '\A';
+  //     white-space: pre;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.gap {
+  //   // background-color: green !important;
+  //   &::after {
+  //     content: '';
+  //     white-space: pre;
+  //     display: block;
+  //     margin: -16px;
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.line {
+  //   // background-color: green !important;
+  //   &::before {
+  //     content: '\000a\2003';
+  //     white-space: pre;
+  //   }
+  //   &.f-paragraph {
+  //     &::before {
+  //       content: '\000a' !important;
+  //       white-space: pre;
+  //     }
+  //   }
+  //   // pointer-events: none;
+  // }
+  // f.line.verse-number {
+  //   // background-color: green !important;
+  //   &::before {
+  //     content: '\000a\2003   ' !important;
+  //     white-space: pre;
+  //   }
+  //   &.f-paragraph {
+  //     &::before {
+  //       content: '\000a\2003  ' !important;
+  //       white-space: pre;
+  //     }
+  //   }
+  //   // pointer-events: none;
+  // }
+
+  // gap,.block,.stanza,.f-paragraph,.prose,.poetry
 }

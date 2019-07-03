@@ -1,8 +1,22 @@
 .navigation-parent {
   display: grid;
+  grid-template-rows: 48px auto 48px;
+  ul {
+    // display: grid;
+    grid-auto-flow: row;
+    // grid-auto-rows: auto;
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+    &.navigation {
+      overflow-y: scroll;
+    }
+  }
   list-style: none;
   background-color: whitesmoke;
   height: 100%;
+  // background-color: black;
   #addressBar {
     background-color: inherit;
 
@@ -11,5 +25,61 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
     height: 48px;
+  }
+  li {
+    // display: grid;
+    font-size: 18px;
+    grid-template-columns: auto;
+    margin-bottom: 8px;
+    // height: 36px;
+    > * {
+      display: flex;
+      align-self: center;
+    }
+    margin-left: 20px; // justify-content: center;
+    &.with-symbol {
+      grid-template-columns: 48px auto;
+      justify-content: left;
+      .symbol {
+        justify-content: center;
+      }
+    }
+
+    &.chapter-link {
+      margin-left: 35px !important;
+      &.s-c {
+        margin-left: 20px !important;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 991.98px) {
+  .backdrop.navigation-mobile-show {
+    z-index: 950;
+    position: fixed;
+    top: 96px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .navigation-parent.navigation-mobile-show {
+    float: left;
+    z-index: 1050;
+    position: fixed;
+  }
+  .navigation-parent.navigation-mobile-hide {
+    display: none;
+  }
+  .backdrop.navigation-mobile-hide {
+    display: none;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .navigation-parent.navigation-hide {
+    display: none;
+  }
+  .backdrop {
+    display: none;
   }
 }

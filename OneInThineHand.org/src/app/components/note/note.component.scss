@@ -1,29 +1,46 @@
-ul {
+verse-notes {
+  display: block;
   list-style: none;
-}
-.note-phrase {
-  user-select: none;
+  .note-short-title {
+    display: block;
+    margin-left: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  // > * {
+  // }
+  // note {
+  //   list-style: none;
+  //   display: block;
+  //   li {
+  //     list-style: none;
+  //   }
+  // }
+  // .note-phrase {
+  //   user-select: none;
+  // }
+  // .highlight {
+  //   padding-left: 5px;
+  //   border-left: 3.5px solid #f68d2e;
+  // }
+  // .add-note-btn {
+  //   height: 16px;
+  //   position: relative;
+  //   float: right;
+  //   top: 5px;
+  //   right: 5px;
+  // }
+  .note-short-title {
+    font-family: serif;
+    font-weight: 700;
+  }
 }
 
 :host-context(.app-note) > ul {
-  background-color: gainsboro;
+  background-color: #f7f8f8;
   margin: 0;
   padding: 0;
   ul {
     margin-right: 20px;
   }
-}
-.highlight {
-  background: green;
-}
-.add-note-btn {
-  height: 16px;
-  position: relative;
-  float: right;
-  top: 5px;
-  right: 5px;
-}
-.note-short-title {
-  font-family: serif;
-  font-weight: 700;
 }

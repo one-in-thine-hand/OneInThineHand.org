@@ -1,46 +1,36 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  NotePhrase,
-  Note,
-  SecondaryNote,
-  getVisible,
-  NoteRef,
-} from '../../../../../shared/src/shared';
-import { ReferenceLabels } from '../../../../../shared/src/models/notes/Note';
+import { NotePhrase, getVisible } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-
+import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
+import { DomSanitizer } from '@angular/platform-browser';
+import { sortBy } from 'lodash';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-  @Input() public note: Note;
-
-  public tempNote: SecondaryNote | undefined;
+  @Input() public verseNotes: VerseNotes;
+  public edit = false;
+  public tempNote: Note | undefined;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
     public formatTagService: FormatTagService,
     public modalService: NgbModal,
+    public domSanitizer: DomSanitizer,
   ) {}
 
-  public ngOnInit() {}
+  public ngOnInit(): void {}
 
-  public getNotePhrase(notePhrase: NotePhrase | undefined): string {
-    return notePhrase && notePhrase.text
-      ? notePhrase.text
-      : 'Note Phrase Missing';
-  }
-
-  public getSecondaryNotes(): SecondaryNote[] {
-    let secondaryNotes: SecondaryNote[] = [];
-    if (this.note && this.note.secondaryNotes) {
-      secondaryNotes = this.note.secondaryNotes.filter(
+  public getSecondaryNotes(): Note[] {
+    let secondaryNotes: Note[] = [];
+    if (this.verseNotes && this.verseNotes.notes) {
+      secondaryNotes = this.verseNotes.notes.filter(
         (secondaryNote): boolean => {
           if (
             secondaryNote.visible &&
@@ -53,25 +43,22 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    return secondaryNotes;
+    return sortBy(secondaryNotes, n => {
+      return n.noteType;
+    }).reverse();
   }
 
-  public getNoteRefs(secondaryNote: SecondaryNote): NoteRef[] {
-    return getVisible(secondaryNote.noteRefs);
+  public noteRefClick(): void {
+    // try {
+    //   if (
+    //     event.target !== null &&
+    //     (event.target as Element).nodeName.toLowerCase() === 'a'
+    //   ) {
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
-  /**
-   * convertNoteCategory
-   */
-  public convertNoteCategory(noteRef: NoteRef): string {
-    const nc = ReferenceLabels.find(
-      (rl): boolean => {
-        return rl.noteCategory === noteRef.noteCategory;
-      },
-    );
-    return nc ? nc.referenceLabelShortName : 'extERR';
-  }
-
-  private getContainerOffsets(container: HTMLElement): void {}
 
   private validateSelectedNodes(node: Node): Element | undefined {
     if (
@@ -96,7 +83,7 @@ export class NoteComponent implements OnInit {
     return undefined;
   }
 
-  public async notePhraseClick(secondaryNote: SecondaryNote): Promise<void> {
+  public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();
 
     if (selection) {
@@ -114,13 +101,13 @@ export class NoteComponent implements OnInit {
             'verse-id',
           );
           console.log(element1VerseID);
-          console.log(this.note._id);
+          console.log(this.verseNotes._id);
 
           if (
             element1VerseID &&
-            element1VerseID.replace('verse', 'note') === this.note._id &&
+            element1VerseID.replace('verse', 'note') === this.verseNotes._id &&
             element2VerseID &&
-            element2VerseID.replace('verse', 'note') === this.note._id
+            element2VerseID.replace('verse', 'note') === this.verseNotes._id
           ) {
             const offsets1 = ((elements[0] as HTMLElement).getAttribute(
               'offsets',
@@ -143,10 +130,14 @@ export class NoteComponent implements OnInit {
               range.startOffset}-${parseInt(offsets2[0], 10) +
               range.endOffset -
               1}`},${secondaryNote.offsets}`;
-            this.offsetService.expandNotes(this.chapterService.notes);
+            await this.offsetService.expandNotes(this.chapterService.notes);
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
+            );
+            await this.formatTagService.resetFormatTags(
+              this.chapterService.kjvChapterVerse,
+              this.chapterService.kjvChapterNotes,
             );
           }
         }
@@ -187,7 +178,7 @@ export class NoteComponent implements OnInit {
   }
 
   public saveNote(modal): void {
-    this.tempNote = new SecondaryNote();
+    this.tempNote = new Note();
     this.tempNote.notePhrase = new NotePhrase();
     this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
 
