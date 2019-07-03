@@ -1,3 +1,12 @@
+## <small>5.0.44 (2019-07-03)</small>
+
+* Fixes for KJVRefs ([abaab52](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/abaab52))
+* jst harmony displaying ([2449548](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2449548))
+* More KJVRef work ([206f7db](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/206f7db))
+* New harmony format ([332dae1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/332dae1))
+
+
+
 ## <small>5.0.43 (2019-07-02)</small>
 
 * Added fake verse breaks ([d369a51](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d369a51))
@@ -7,6 +16,7 @@
 * adding new format groups ([a78858d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a78858d))
 * Note and break fixes ([ac15e13](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ac15e13))
 * Old formating ([bc54e2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bc54e2a))
+* v5.0.43 ([088b246](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/088b246))
 * Working on KJV ([723998f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/723998f))
 
 
