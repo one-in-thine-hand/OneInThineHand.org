@@ -40,6 +40,7 @@ export enum NoteType {
   TEST = 3,
   EXISTING = 4,
   TC = 5,
+  QUO,
 }
 
 export class NoteTypeConvert {
@@ -62,6 +63,13 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     className: 'overlay-hmy',
     shortName: 'Harmony',
     longName: 'Harmony',
+    visible: true,
+  },
+  {
+    noteType: NoteType.QUO,
+    className: 'overlay-quo',
+    shortName: 'QUO',
+    longName: 'Quotation',
     visible: true,
   },
   {
