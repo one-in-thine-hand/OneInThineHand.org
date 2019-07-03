@@ -1,12 +1,39 @@
-<verse
-  [id]="verse._id"
-  class="{{ this.getClassList() }}"
-  [attr.offsets]="this.getOffSets()"
->
-  <app-format-group
-    *ngFor="let formatGroup of this.getFormatGroups()"
-    [verse]="verse"
-    [formatGroup]="formatGroup"
-    [formatTags]="verse.formatTags"
-  ></app-format-group>
-</verse>
+<kjv-container *ngIf="verse" [ngClass]="{ 'kjv-container': verse.kjvVerse }">
+  <kjv-verses *ngIf="verse.kjvVerse">
+    <app-verse
+      class="kjv-verse"
+      *ngFor="let kjvVerse of verse.kjvVerse"
+      [verse]="kjvVerse"
+    ></app-verse> </kjv-verses
+  ><verse
+    [id]="getID()"
+    class="{{ this.getClassList() }}"
+    [attr.offsets]="this.getOffSets()"
+    [ngClass]="{ 'kjv-verse': verse.kjvVerse }"
+  >
+    <ng-container *ngFor="let formatGroup of this.getFormatGroups()">
+      <span [ngSwitch]="formatGroup.formatGroupType">
+        <app-format-group-segment
+          class="format-group-segment"
+          *ngSwitchCase="10"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+        ></app-format-group-segment>
+        <app-format-group-part
+          class="format-group-part"
+          *ngSwitchCase="9"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+        ></app-format-group-part>
+        <app-format-group
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          *ngSwitchDefault
+        ></app-format-group>
+      </span>
+    </ng-container>
+  </verse>
+</kjv-container>

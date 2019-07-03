@@ -26,6 +26,7 @@ import {
   getChapterID,
   getLanguage,
 } from '../../../shared/src/functions/getFormatTagType';
+import { getKJVRef } from './addFormatTextGroup';
 
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
 
@@ -434,10 +435,21 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   const lang = await getLanguage(verseElement.ownerDocument as Document);
 
   verse.verseID = verseElement.id;
+
   let chapterID = await getChapterID(
     verseElement.ownerDocument as Document,
     lang,
   );
+  console.log(chapterID);
+
+  verse._id = `${chapterID.replace('chapter', '')}${
+    verse.verseID.startsWith('p')
+      ? verse.verseID.replace('p', '')
+      : verse.verseID
+  }-verse`;
+  if (lang === 'fra') {
+    verse.kjvRef = getKJVRef(verseElement, verse._id);
+  }
   verse.noteID = `${chapterID.replace('chapter', '')}${
     verse.verseID.startsWith('p')
       ? verse.verseID.replace('p', '')
@@ -445,7 +457,7 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   }-verse-notes`;
   // console.log(id);
 
-  const formatGroups = await queryFormatGroups(verseElement);
+  const formatGroups = await queryFormatGroups(verseElement, verse);
 
   verse.formatGroups = formatGroups ? formatGroups : [];
   // const book = bookNames.find(
@@ -461,11 +473,6 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   // } else {
   //   return undefined;
   // }
-  verse._id = `${chapterID.replace('chapter', '')}${
-    verse.verseID.startsWith('p')
-      ? verse.verseID.replace('p', '')
-      : verse.verseID
-  }-verse`;
   verse.formatTags = buildFormatTags(verseElement);
   verse.classList = verseElement.className;
   verse.text = verseElement.textContent ? verseElement.textContent : '';

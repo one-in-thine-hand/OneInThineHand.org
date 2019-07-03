@@ -27,7 +27,12 @@ export class FormatTags {
       const chapterVerses = new ChapterVerses();
       chapterVerses.verses = verses;
       const language = await getLanguage(document);
+      // console.log(language);
+
       chapterVerses._id = `${await getChapterID(document, language)}-verses`;
+
+      // console.log(chapterVerses._id);
+
       // console.log(chapterVerses);
       return chapterVerses;
       // return await parseVerses(document);

@@ -5,7 +5,7 @@
 >
   <app-note-phrase
     [note]="note"
-    [verseNotes]="this.verseNotes"
+    [verseNotes]="this.getVerseNotes()"
   ></app-note-phrase>
   <!-- <li (click)="this.notePhraseClick(note)" class="note-phrase">
         {{ getNotePhrase(note.notePhrase) }}
@@ -14,7 +14,7 @@
     <ng-container *ngFor="let noteRef of getNoteRefs(note)">
       <li [class]="getRefClass(noteRef)">
         <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
-        <span [innerHTML]="getNoteRefText(noteRef)"></span>
+        <span [innerHTML]="noteRef.safeHtml"></span>
       </li>
       <!-- <li>
         <textarea *ngIf="edit" name="note-ref" id="">{{

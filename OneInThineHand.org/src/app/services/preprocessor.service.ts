@@ -3,8 +3,8 @@ import { NoteProcessor, ChapterNotes } from '../../../../notes/src/main';
 import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService, DatabaseItem } from './database.service';
-import { FormatTags } from '../../../../format-tags/src/main';
-import { VerseNotes } from '../../../../shared/src/shared';
+import { FormatTags, ChapterVerses } from '../../../../format-tags/src/main';
+import { VerseNotes, CouchDoc } from '../../../../shared/src/shared';
 import PQueue from 'p-queue';
 
 @Injectable({
@@ -39,51 +39,108 @@ export class PreprocessorService {
 
       //
       if (zipFiles) {
-        const queue = new PQueue({ concurrency: 1 });
+        const queue = new PQueue({ concurrency: 100 });
         const promises = Array.from(zipFiles).map(
           async (zipFile): Promise<void> => {
             if (this.zipMimeTypes.includes(zipFile.type)) {
               try {
                 const data = await new Response(zipFile).arrayBuffer();
                 const files = await JSZip.loadAsync(data);
-                const onlyFiles = this.sliceArray(
-                  Object.keys(files.files).filter((key): boolean => {
+                const onlyFiles = Object.keys(files.files).filter(
+                  (key): boolean => {
                     return files.files[key].dir === false;
-                  }),
-                  100,
+                  },
                 );
 
-                const promises = onlyFiles.map(
+                let allDocs: DatabaseItem[] = [];
+                const jjj: (() => Promise<void>)[] = [];
+
+                const jt = onlyFiles.map(
                   async (onlyFile): Promise<void> => {
-                    await queue.add(
+                    jjj.push(
                       async (): Promise<void> => {
-                        const items: DatabaseItem[] = [];
-                        const promises = onlyFile.map(
-                          async (key): Promise<void> => {
-                            try {
-                              // console.log(files.files[key]);
-                              const file = JSON.parse(
-                                await files
-                                  .file(files.files[key].name)
-                                  .async('text'),
-                              ) as { _id: string; _rev: string | undefined };
-                              // console.log(file);
-                              // console.log(file);
-                              items.push(file);
-                              // await this.databaseSerQvice.updateDatabaseItem(file);
-                            } catch (error) {
-                              console.log(error);
-                            }
-                          },
-                        );
-                        await Promise.all(promises);
-                        console.log(items);
-                        await this.databaseService.bulkDocs(items);
+                        try {
+                          const file = JSON.parse(
+                            await files
+                              .file(files.files[onlyFile].name)
+                              .async('text'),
+                          ) as {
+                            _id: string;
+                            _rev: string | undefined;
+                          }[];
+                          // console.log(file);
+                          allDocs = allDocs.concat(file);
+                          // await this.databaseService.bulkDocs(file);
+                          // console.log('Finished');
+                        } catch (error) {}
                       },
                     );
                   },
                 );
-                await Promise.all(promises);
+                // queue.addAll(jt);
+                // queue.addAll(() => {});
+                // queue.start();
+                await queue.addAll(jjj);
+                // await Promise.all(jt);
+                console.log(allDocs);
+                const d = await this.databaseService.allDocs();
+                if (d) {
+                  d.rows.map((r): void => {
+                    const a = allDocs.find((jj): boolean => {
+                      return jj._id === r.id;
+                    });
+                    if (a) {
+                      a._rev = r.value.rev;
+                    }
+                  });
+                }
+                // await this.databaseService.bulkDocs(allDocs);
+                const t = this.sliceArray(allDocs, 1000).map(
+                  async (array): Promise<void> => {
+                    await this.databaseService.bulkDocs(array);
+                    // await queue.add(
+                    //   async (): Promise<void> => {
+                    //     console.log('gongg');
+                    //   },
+                    // );
+                  },
+                );
+                await Promise.all(t);
+
+                // const promises = onlyFiles.map(
+                //   async (onlyFile): Promise<void> => {
+                //     await queue.add(
+                //       async (): Promise<void> => {
+                //         let items: DatabaseItem[] = [];
+
+                //         const promises = onlyFile.map(
+                //           async (key): Promise<void> => {
+                //             try {
+                //               // console.log(files.files[key]);
+                //               const file = JSON.parse(
+                //                 await files
+                //                   .file(files.files[key].name)
+                //                   .async('text'),
+                //               ) as { _id: string; _rev: string | undefined };
+                //               // console.log(file);
+                //               // console.log(file);
+                //               console.log(typeof file);
+                //               items = items.concat(file);
+
+                //               // await this.databaseSerQvice.updateDatabaseItem(file);
+                //             } catch (error) {
+                //               console.log(error);
+                //             }
+                //           },
+                //         );
+                //         await Promise.all(promises);
+                //         console.log(items);
+                //         await this.databaseService.bulkDocs(items);
+                //       },
+                //     );
+                //   },
+                // );
+                // await Promise.all(promises);
 
                 // const promises = Object.keys(files.files)
                 //   .filter((key): boolean => {

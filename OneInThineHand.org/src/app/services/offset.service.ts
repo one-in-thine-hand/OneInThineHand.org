@@ -23,7 +23,7 @@ export class OffsetService {
     await this.expandNotesQueue.add(
       async (): Promise<void> => {
         if (notes) {
-          await sortNotes(notes);
+          // await sortNotes(notes);
           notes.map((note): void => {
             if (note.notes) {
               note.notes.map((secondaryNote): void => {

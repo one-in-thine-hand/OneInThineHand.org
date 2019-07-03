@@ -3,6 +3,14 @@ import { NoteCategory } from './NoteType';
 export const ReferenceLabels: ReferenceLabel[] = [
   {
     sortOrder: 0,
+    className: 'reference-label-doctrine',
+    noteCategory: NoteCategory.DOCT,
+    referenceLabelName: 'Doctrine',
+    visible: true,
+    referenceLabelShortName: 'DOCT',
+  },
+  {
+    sortOrder: 0,
     className: 'reference-label-alt',
     noteCategory: NoteCategory.ALT,
     referenceLabelName: 'Alternative Reading',
@@ -99,6 +107,22 @@ export const ReferenceLabels: ReferenceLabel[] = [
   },
   {
     sortOrder: 0,
+    className: 'reference-label-or-1',
+    noteCategory: NoteCategory.OR1,
+    referenceLabelName: 'OR-1',
+    visible: true,
+    referenceLabelShortName: 'OR-1',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-or-2',
+    noteCategory: NoteCategory.OR2,
+    referenceLabelName: 'OR-2',
+    visible: true,
+    referenceLabelShortName: 'OR-2',
+  },
+  {
+    sortOrder: 0,
     className: 'reference-label-phrasing',
     noteCategory: NoteCategory.PHR,
     referenceLabelName: 'Phrase',
@@ -112,6 +136,22 @@ export const ReferenceLabels: ReferenceLabel[] = [
     referenceLabelName: 'Quotation',
     visible: true,
     referenceLabelShortName: 'QUO',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-quotation-1',
+    noteCategory: NoteCategory.QUO1,
+    referenceLabelName: 'Quotation',
+    visible: true,
+    referenceLabelShortName: 'QUO-1',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-quotation-2',
+    noteCategory: NoteCategory.QUO2,
+    referenceLabelName: 'Quotation',
+    visible: true,
+    referenceLabelShortName: 'QUO-2',
   },
   {
     sortOrder: 0,

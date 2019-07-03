@@ -1,0 +1,7 @@
+<ng-container *ngIf="harmony && this.harmony.harmonyRows">
+  <harmony-row *ngFor="let row of this.harmony.harmonyRows">
+    <harmony-cell *ngFor="let col of row.harmonyCells"
+      ><app-verse [verse]="col.verse"></app-verse
+    ></harmony-cell>
+  </harmony-row>
+</ng-container>

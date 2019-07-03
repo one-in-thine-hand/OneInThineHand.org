@@ -9,6 +9,7 @@ import {
   DisplayAs,
   FormatTagType,
   Verse,
+  VerseNotes,
 } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
@@ -25,7 +26,7 @@ import { asyncScrollIntoView } from '../../scroll-into-view';
 export class FormatTagComponent implements OnInit {
   @Input() public fMerged: FMerged;
   @Input() public verse: Verse;
-  public text: string = '';
+  public text = '';
   public classList: string[] = [];
   public offsets = '';
   public refList: string[] | undefined;
@@ -42,20 +43,15 @@ export class FormatTagComponent implements OnInit {
   public getText(): string {
     const text = this.fMerged.text;
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
-      const richFormatTags = this.fMerged.formatTags.filter(
-        (f): boolean => {
-          return (
-            f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
-          );
-        },
-      );
+      const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
+        return (
+          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+        );
+      });
       // .map(
       //   (f): void => {
-      //     console.log(f);
       //   },
       // );
-      // console.log('oiasjdfoiajsdfoiasjdfoi');
-      // console.log('richtest');
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
@@ -72,15 +68,13 @@ export class FormatTagComponent implements OnInit {
   }
   private getVisibleRefTags(): RefTag[] | undefined {
     if (this.fMerged.refTags) {
-      return this.fMerged.refTags.filter(
-        (refTag): boolean => {
-          return (
-            this.visibilityService.secondaryNotesVisibility.get(
-              refTag.secondaryNoteID,
-            ) === true
-          );
-        },
-      );
+      return this.fMerged.refTags.filter((refTag): boolean => {
+        return (
+          this.visibilityService.secondaryNotesVisibility.get(
+            refTag.secondaryNoteID,
+          ) === true
+        );
+      });
     }
   }
 
@@ -88,17 +82,26 @@ export class FormatTagComponent implements OnInit {
     this.getVisibleRefTags();
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags();
+    if (this.fMerged.breaks) {
+      this.fMerged.breaks.map((brk): void => {
+        const fto = formatTagTypeOptions.find((f): boolean => {
+          return f.formatTagType === brk.formatType;
+        });
+        if (fto && fto.className) {
+          // console.log(fto.className);
+          classList.push(fto.className);
+        }
+      });
+    }
     if (visibleRefTags && visibleRefTags.length !== 0) {
       visibleRefTags.length > 1
         ? classList.push('oith-ref-double')
         : classList.push('oith-ref-single');
 
       if (
-        visibleRefTags.filter(
-          (f): boolean => {
-            return f.highlight === true;
-          },
-        ).length > 0
+        visibleRefTags.filter((f): boolean => {
+          return f.highlight === true;
+        }).length > 0
       ) {
         classList.push('ref-selected');
       } else {
@@ -109,34 +112,24 @@ export class FormatTagComponent implements OnInit {
       //     // if(f)
       //   },
       // );
-      // console.log(this.fMerged.refTags);
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
-        .filter(
-          (f): boolean => {
-            return (
-              (f.displayAs === DisplayAs.CLASS &&
-                f.optional !== Optional.NEVER) ||
-              f.formatType === FormatTagType.verseNumber
-            );
-          },
-        )
-        .map(
-          (f): void => {
-            const fTO = formatTagTypeOptions.find(
-              (formatTagOption): boolean => {
-                return formatTagOption.formatTagType === f.formatType;
-              },
-            );
-            // console.log(fTO ? fTO.className : 'Nothing');
-            if (fTO && fTO.className) {
-              classList.push(fTO.className);
-            }
-          },
-        );
-
-      console.log();
+        .filter((f): boolean => {
+          return (
+            (f.displayAs === DisplayAs.CLASS &&
+              f.optional !== Optional.NEVER) ||
+            f.formatType === FormatTagType.verseNumber
+          );
+        })
+        .map((f): void => {
+          const fTO = formatTagTypeOptions.find((formatTagOption): boolean => {
+            return formatTagOption.formatTagType === f.formatType;
+          });
+          if (fTO && fTO.className) {
+            classList.push(fTO.className);
+          }
+        });
     }
     if (
       this.classList.toString().replace(/,/g, ' ') !==
@@ -148,8 +141,6 @@ export class FormatTagComponent implements OnInit {
   }
 
   public getOffSets(): string {
-    // console.log(f);
-
     if (this.fMerged.offsets) {
       return `${this.fMerged.offsets[0]}-${last(this.fMerged.offsets)}`;
     }
@@ -169,30 +160,41 @@ export class FormatTagComponent implements OnInit {
 
   public async formatTagClick(event: Event): Promise<void> {
     // const selection = window.getSelection();
-    // console.log('hhgg');
-    // console.log(event);
     // this.visibilityService.resetHighlight();
-    console.log(event);
     if (this.checkNoTextIsSelected()) {
       this.chapterService.resetNoteVis();
 
       if (this.fMerged.refTags) {
         if (this.refList === undefined) {
-          this.refList = this.fMerged.refTags.map(
-            (refT): string => {
-              return refT.secondaryNoteID;
-            },
-          );
-        }
-        const id = this.refList.pop();
-        const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
-        console.log(r);
+          // this.refList = this.fMerged.refTags.map((refT): string => {
+          //   return refT.secondaryNoteID;
+          // });
+          const tempRefList = this.getVisibleRefTags();
 
-        if (r) {
-          r.highlight = true;
-          await asyncScrollIntoView(`#${r.secondaryNoteID}`);
-        } else {
-          this.refList = undefined;
+          if (tempRefList) {
+            this.refList = tempRefList.map((refTag): string => {
+              return refTag.secondaryNoteID;
+            });
+          }
+        }
+        if (this.refList) {
+          const id = this.refList.pop();
+          const r = findByAttribute(
+            'secondaryNoteID',
+            id,
+            this.fMerged.refTags,
+          );
+
+          if (r) {
+            r.highlight = true;
+
+            await asyncScrollIntoView(
+              `#${(this.verse.note as VerseNotes)._id as string}`,
+            );
+            // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
+          } else {
+            this.refList = undefined;
+          }
         }
         // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
       }

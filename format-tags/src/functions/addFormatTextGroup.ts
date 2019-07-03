@@ -6,9 +6,14 @@ import {
   FormatGroupRubyA,
   FormatGroupA,
   FormatGroupPageBreak,
+  Verse,
 } from '../../../shared/src/shared';
 import formatGroupSelectors from './formatGroupSelectors';
 import { queryChildNodes } from './queryChildNodes';
+import {
+  FormatGroupSegment,
+  FormatGroupPart,
+} from '../../../shared/src/models/format_groups/FormatGroup';
 
 function nodesToTextGroup(
   nodes: Node[],
@@ -33,10 +38,31 @@ function nodesToTextGroup(
   return endCount;
 }
 
+export function getKJVRef(node: Node, verseID?: string): string[] | undefined {
+  const kjvRef = (node as Element).getAttribute('kjvRef');
+  if (!kjvRef && verseID) {
+    return [verseID.replace('fra', 'eng')];
+  } else if (kjvRef && verseID) {
+    const temp = verseID.split('-');
+    return kjvRef.split('-').map(
+      (kjv): string => {
+        const splitKJVRef = kjv.split(':');
+        const newID = `eng-${temp[1]}-${splitKJVRef[0]}-${
+          splitKJVRef[1]
+        }-verse`;
+        return newID;
+      },
+    );
+  }
+  return undefined;
+  // return kjvRef && verseID ? verseID.replace('fra', 'eng') : undefined;
+}
+
 function nodeToFormatGroup(
   node: Node,
   formatGroups: FormatGroup[],
   count: number,
+  verseID?: string,
 ): number {
   let formatGroup: FormatGroup;
   switch (node.nodeName.toLowerCase()) {
@@ -61,6 +87,19 @@ function nodeToFormatGroup(
       (formatGroup as FormatGroupA).href = (node as HTMLLinkElement).href;
       break;
     }
+    case 'segment': {
+      formatGroup = new FormatGroupSegment();
+      (formatGroup as FormatGroupSegment).kjvRef = getKJVRef(node, verseID);
+      formatGroups.push(formatGroup);
+
+      break;
+    }
+    case 'part': {
+      formatGroup = new FormatGroupPart();
+      (formatGroup as FormatGroupPart).kjvRef = getKJVRef(node, verseID);
+      formatGroups.push(formatGroup);
+      break;
+    }
     default: {
       if (
         (node as Element).classList &&
@@ -82,7 +121,17 @@ function nodeToFormatGroup(
   let endCount = count + textContent.length;
   formatGroup.offsets = `${count}-${endCount}`;
 
-  formatGroups.push(formatGroup);
+  if (
+    !formatGroups.find(
+      (fGroup): boolean => {
+        return (
+          fGroup.offsets !== undefined && fGroup.offsets === formatGroup.offsets
+        );
+      },
+    )
+  ) {
+    formatGroups.push(formatGroup);
+  }
   return endCount;
 }
 
@@ -90,6 +139,7 @@ function nodeToFormatGroup(
 export async function parseFormatGroups(
   verseElement: Element,
   formatGroups: FormatGroup[],
+  verse: Verse,
 ): Promise<void> {
   const breakPoints = Array.from(
     verseElement.querySelectorAll(formatGroupSelectors),
@@ -108,7 +158,7 @@ export async function parseFormatGroups(
           formatTextGroup = undefined;
         }
 
-        count = nodeToFormatGroup(childNode, formatGroups, count);
+        count = nodeToFormatGroup(childNode, formatGroups, count, verse._id);
       } else {
         if (formatTextGroup === undefined) {
           formatTextGroup = [];

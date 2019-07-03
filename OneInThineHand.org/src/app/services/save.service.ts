@@ -4,6 +4,10 @@ import PQueue from 'p-queue';
 import { DatabaseService } from './database.service';
 import { cloneDeep } from 'lodash';
 import { Note, VerseNotes } from '../../../../shared/src/shared';
+import {
+  FakeVerseBreaks,
+  VerseBreaks,
+} from '../../../../shared/src/models/Verse';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +27,30 @@ export class SaveService {
       //   this.interval = setInterval(async (): Promise<void> => {
       //     await this.save();
       //   }, 100000);
+    }
+  }
+  /**
+   * saveOffsets
+   */
+  public async saveFakeVerseBreaks(): Promise<void> {
+    if (
+      this.chaterService.chapterVerses &&
+      this.chaterService.chapterVerses.verses
+    ) {
+      const fakeVerseBreaks = this.chaterService.chapterVerses.verses
+        .map((verse): FakeVerseBreaks | undefined => {
+          // console.log(verse.fakeVerseBreak);
+
+          return verse.fakeVerseBreak;
+        })
+        .filter((v): boolean => {
+          return v !== undefined;
+        }) as VerseBreaks[];
+
+      if (fakeVerseBreaks.length > 0) {
+        await this.databaseService.updateDatabaseItems(fakeVerseBreaks);
+        // console.log(fakeVerseBreaks);
+      }
     }
   }
 

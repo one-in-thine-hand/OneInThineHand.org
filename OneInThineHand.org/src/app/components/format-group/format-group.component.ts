@@ -100,14 +100,12 @@ export class FormatGroupComponent implements OnInit {
   private getMergedTags(fMerged: FMerged, offset: number): void {
     fMerged.offsets = [offset];
 
-    fMerged.formatTags = this.formatTags.filter(
-      (f): boolean => {
-        return (
-          f.uncompressedOffsets !== undefined &&
-          f.uncompressedOffsets.includes(offset)
-        );
-      },
-    );
+    fMerged.formatTags = this.formatTags.filter((f): boolean => {
+      return (
+        f.uncompressedOffsets !== undefined &&
+        f.uncompressedOffsets.includes(offset)
+      );
+    });
   }
 
   private getRefTags(fMerged: FMerged, offset: number): void {

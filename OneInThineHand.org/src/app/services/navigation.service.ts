@@ -180,10 +180,10 @@ export class NavigationService {
 
         this.router.navigateByUrl(`${bookName}/${chapterName}`);
       } else {
-        throw '';
+        throw new Error('');
       }
     } catch (error) {
-      throw 'No valid bookname found';
+      throw new Error('No valid bookname found');
     }
   }
 
@@ -203,8 +203,8 @@ export class NavigationService {
     id: string,
     navItems: NavigationItem[],
   ): NavigationItem | undefined {
-    const navItem = navItems.find((navItem): boolean => {
-      return navItem.href === id;
+    const navItem = navItems.find((nItem): boolean => {
+      return nItem.href === id;
     });
 
     if (navItem) {

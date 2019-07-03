@@ -72,7 +72,6 @@ export class PageStateService {
 
     const pageState = new PageState();
     pageState._id = `${chapter._id}-page-state`;
-    console.log(pageState);
 
     pageState.chapterNotes = chapterNotes;
     pageState.chapter = chapter;

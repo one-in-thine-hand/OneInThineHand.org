@@ -15,6 +15,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { SaveService } from '../../services/save.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { sortBy } from 'lodash';
 
 @Component({
   selector: 'app-n',
@@ -24,7 +25,7 @@ import { TempSettingsService } from '../../services/temp-settings.service';
 export class NComponent implements OnInit {
   @Input() public note: Note;
   @Input() public verseNotes: VerseNotes;
-  public edit: boolean = false;
+  public edit = false;
 
   public constructor(
     public domSanitizer: DomSanitizer,
@@ -35,7 +36,17 @@ export class NComponent implements OnInit {
     public saveService: SaveService,
   ) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    if (this.note && this.note.noteRefs) {
+      this.note.noteRefs.map((noteRef): void => {
+        if (noteRef.text) {
+          noteRef.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
+            noteRef.text,
+          );
+        }
+      });
+    }
+  }
 
   /**
    * convertNoteCategory
@@ -46,18 +57,16 @@ export class NComponent implements OnInit {
     if (noteRef.none === true) {
       return '';
     }
-    const nc = ReferenceLabels.find(
-      (rl): boolean => {
-        // if (
-        //   rl.noteCategory === noteRef.noteCategory &&
-        //   noteRef.text &&
-        //   noteRef.text.includes('many')
-        // ) {
-        //   // console.log(ReferenceLabels);
-        // }
-        return rl.noteCategory === noteRef.noteCategory;
-      },
-    );
+    const nc = ReferenceLabels.find((rl): boolean => {
+      // if (
+      //   rl.noteCategory === noteRef.noteCategory &&
+      //   noteRef.text &&
+      //   noteRef.text.includes('many')
+      // ) {
+      //   // console.log(ReferenceLabels);
+      // }
+      return rl.noteCategory === noteRef.noteCategory;
+    });
     // if (noteRef.text && noteRef.text.includes('many')) {
     //   // console.log(nc);
     // }
@@ -71,9 +80,10 @@ export class NComponent implements OnInit {
   }
 
   public getNoteRefText(noteRef: NoteRef): SafeHtml {
-    return this.domSanitizer.bypassSecurityTrustHtml(
-      noteRef.text ? noteRef.text : '',
-    );
+    return noteRef.safeHtml;
+    // return this.domSanitizer.bypassSecurityTrustHtml(
+    //   noteRef.text ? noteRef.text : '',
+    // );
   }
   public highlight(note: Note): boolean {
     return note.refTag && note.refTag.highlight ? true : false;
@@ -86,6 +96,8 @@ export class NComponent implements OnInit {
     return '';
   }
   public getNoteRefs(secondaryNote: Note): NoteRef[] {
+    // return getVisible(secondaryNote.noteRefs)
+    // return secondaryNote.noteRefs.reverse();
     return getVisible(secondaryNote.noteRefs);
   }
   public async offsetsInput(event: Event, note: Note): Promise<void> {
@@ -106,11 +118,9 @@ export class NComponent implements OnInit {
       ];
       note.offsets = (event.target as HTMLTextAreaElement).value
         .split('')
-        .map(
-          (v): string => {
-            return supportedCharacters.includes(v) ? v : '';
-          },
-        )
+        .map((v): string => {
+          return supportedCharacters.includes(v) ? v : '';
+        })
         .join('');
       // console.log(note.offsets);
 
@@ -120,16 +130,23 @@ export class NComponent implements OnInit {
         this.chapterService.chapterNotes,
       );
 
+      await this.formatTagService.resetFormatTags(
+        this.chapterService.kjvChapterVerse,
+        this.chapterService.kjvChapterNotes,
+      );
       if (note.uncompressedOffsets) {
         note.offsets = getRanges(note.uncompressedOffsets)
-          .map(
-            (offsets): string => {
-              return offsets.join('-');
-            },
-          )
+          .map((offsets): string => {
+            return offsets.join('-');
+          })
           .join(',');
       }
       await this.saveService.save();
     }
+  }
+  public getVerseNotes(): VerseNotes {
+    if (this.verseNotes) {
+    }
+    return this.verseNotes;
   }
 }

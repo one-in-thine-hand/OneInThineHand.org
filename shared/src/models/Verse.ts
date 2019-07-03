@@ -13,17 +13,33 @@ export const enum NodeName {
   span,
 }
 
+export class VerseBreaks {
+  public _id?: string;
+  public _rev?: string;
+  public breaks?: FormatGroup[];
+}
+export class FakeVerseBreaks {
+  public _id?: string;
+  public _rev?: string;
+  public breaks?: FormatTag[];
+}
+
 export class Verse {
   public noteID: string;
-  public _id: string | undefined;
-  public _rev: string | undefined;
-  public verseID: string | undefined;
+  public _id?: string;
+  public _rev?: string;
+  public verseID?: string;
   public formatGroups: FormatGroup[] = [];
-  public classList: string | undefined[] | undefined;
-  public text: string | undefined;
-  public formatTags: FormatTag[] | undefined;
-  public nodeName: NodeName | undefined;
-  public note: VerseNotes | undefined;
-  public context: boolean | undefined;
-  public highlight: boolean | undefined;
+  public classList?: string | undefined[];
+  public text?: string;
+  public formatTags?: FormatTag[];
+  public nodeName?: NodeName;
+  public note?: VerseNotes;
+  public context?: boolean;
+  public highlight?: boolean;
+  // public verseBreaks?:
+  public verseBreaks?: VerseBreaks;
+  public kjvRef: string[] | undefined;
+  public fakeVerseBreak: FakeVerseBreaks | undefined;
+  public kjvVerse: Verse[] | undefined;
 }

@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
 import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { sortBy } from 'lodash';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class NoteComponent implements OnInit {
   @Input() public verseNotes: VerseNotes;
-  public edit: boolean = false;
+  public edit = false;
   public tempNote: Note | undefined;
   public constructor(
     public chapterService: ChapterService,
@@ -43,7 +43,9 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    return secondaryNotes;
+    return sortBy(secondaryNotes, n => {
+      return n.noteType;
+    }).reverse();
   }
 
   public noteRefClick(): void {
@@ -132,6 +134,10 @@ export class NoteComponent implements OnInit {
             await this.formatTagService.resetFormatTags(
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
+            );
+            await this.formatTagService.resetFormatTags(
+              this.chapterService.kjvChapterVerse,
+              this.chapterService.kjvChapterNotes,
             );
           }
         }

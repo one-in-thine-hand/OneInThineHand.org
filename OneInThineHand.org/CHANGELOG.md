@@ -1,5 +1,123 @@
+## <small>5.0.44 (2019-07-03)</small>
+
+* Fixes for KJVRefs ([abaab52](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/abaab52))
+* jst harmony displaying ([2449548](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2449548))
+* More KJVRef work ([206f7db](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/206f7db))
+* New harmony format ([332dae1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/332dae1))
+
+
+
+## <small>5.0.43 (2019-07-02)</small>
+
+* Added fake verse breaks ([d369a51](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d369a51))
+* Added KJV refs to french files ([fe64139](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fe64139))
+* Added new break adder ([58c4b71](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/58c4b71))
+* Added support for french ([3aead5d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3aead5d))
+* adding new format groups ([a78858d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a78858d))
+* Note and break fixes ([ac15e13](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ac15e13))
+* Old formating ([bc54e2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bc54e2a))
+* v5.0.43 ([088b246](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/088b246))
+* Working on KJV ([723998f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/723998f))
+
+
+
+## <small>5.0.42 (2019-06-30)</small>
+
+* v5.0.42 ([9f1cd38](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9f1cd38))
+
+
+
+## <small>5.0.41 (2019-06-30)</small>
+
+* Adding breaks ([77f197e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/77f197e))
+* Adding breaks to verses ([e459cdf](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e459cdf))
+* break editing added ([921042e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/921042e))
+* Break processor finished ([1fbe377](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1fbe377))
+* Bug fixes ([0573117](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0573117))
+* Fix for words of mromon ([3986183](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3986183))
+* Loading with only single files for now ([c876662](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c876662))
+* nav fixes ([860e10c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/860e10c))
+* Notes are causing problems ([7e0eccb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7e0eccb))
+* Possibly fixed note bug ([38c2a0d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/38c2a0d))
+* refactoring ([c929d71](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c929d71))
+* revert to fewer db calls ([f6e5957](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f6e5957))
+* Testing new 7mport ([3fbebcb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3fbebcb))
+* upload ([f277a80](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f277a80))
+* v5.0.41 ([d4e4d1a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d4e4d1a))
+* working on uploading ([abcd64f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/abcd64f))
+
+
+
+## <small>5.0.40 (2019-06-27)</small>
+
+* Fixed underlining ([93cec44](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/93cec44))
+* v5.0.40 ([87097bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/87097bb))
+
+
+
+## <small>5.0.39 (2019-06-27)</small>
+
+* v5.0.39 ([2e352c6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2e352c6))
+
+
+
+## <small>5.0.38 (2019-06-27)</small>
+
+* v5.0.38 ([b6f74ad](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b6f74ad))
+
+
+
+## <small>5.0.37 (2019-06-27)</small>
+
+* Fixing label names ([fad9107](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fad9107))
+* Harmony work didn't work ([3f3c9f9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3f3c9f9))
+* testing loading part of harmony ([12d9feb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/12d9feb))
+* v5.0.37 ([a430590](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a430590))
+
+
+
+## <small>5.0.36 (2019-06-26)</small>
+
+* Refactoring ([0d5bd91](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0d5bd91))
+* Update to note category settings ([920bca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/920bca4))
+* v5.0.36 ([712f981](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/712f981))
+
+
+
+## <small>5.0.35 (2019-06-25)</small>
+
+* Added alert to harmony ([1d4c484](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d4c484))
+* Adding format tags to harmony ([06a2825](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/06a2825))
+* v5.0.35 ([b517fea](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b517fea))
+
+
+
+## <small>5.0.34 (2019-06-25)</small>
+
+* Harmony actually loads now ([ce9b48c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ce9b48c))
+* v5.0.34 ([bdcb21b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bdcb21b))
+
+
+
+## <small>5.0.33 (2019-06-25)</small>
+
+* Adding harmony ([0ae38ce](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0ae38ce))
+* css layout work ([59b98b4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/59b98b4))
+* Fixed navigation error ([d44bbc8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d44bbc8))
+* Harmony data format version 1 ([304c9e9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/304c9e9))
+* Harmony work ([084e75f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/084e75f))
+* missed a file ([51e915e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/51e915e))
+* More harmony work ([19867c0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/19867c0))
+* Null check fix ([eebe55b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/eebe55b))
+* refactoring ([573fc18](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/573fc18))
+* Refactoring ([30588c7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/30588c7))
+* v5.0.33 ([2799b99](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2799b99))
+
+
+
 ## <small>5.0.31 (2019-06-24)</small>
 
+* v5.0.31 ([4dbd4bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4dbd4bb))
 
 
 
