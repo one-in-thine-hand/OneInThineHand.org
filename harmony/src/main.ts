@@ -4,6 +4,10 @@ import { JSDOM } from 'jsdom';
 import { writeFile } from 'fs-extra';
 import { normalize } from 'path';
 import { HarmonyCell, HarmonyRow, Harmony } from './Harmony';
+import {
+  getChapterID,
+  getLanguage,
+} from '../../shared/src/functions/getFormatTagType';
 export async function getHarmoniesFileNames(): Promise<string[]> {
   return FastGlob('../scripture_files/harmony/**/**', {
     onlyFiles: true,
@@ -11,7 +15,7 @@ export async function getHarmoniesFileNames(): Promise<string[]> {
 }
 
 function getTextContent(
-  element: Element,
+  element: Element | Document,
   selector: string,
 ): string | undefined {
   const textElement = element.querySelector(selector);
@@ -47,21 +51,27 @@ function getHarmonyRow(harmony: Element): HarmonyRow[] {
     },
   );
 }
-function getHarmonyChapters(document: Document): Harmony[] {
-  return Array.from(document.querySelectorAll('harmony')).map(
-    (harmony): Harmony => {
-      const title = getTextContent(harmony, 'h1#title1');
-      const titleNumber = getTextContent(harmony, 'p.title-number');
-      const rows = getHarmonyRow(harmony);
 
-      return {
-        _id: harmony.id,
-        harmonyRows: rows,
-        title: title,
-        titleNumber: titleNumber,
-        _rev: undefined,
-      };
-    },
+async function getHarmonyChapters(document: Document): Promise<Harmony[]> {
+  return await Promise.all(
+    Array.from(document.querySelectorAll('body')).map(
+      async (harmony): Promise<Harmony> => {
+        const title = getTextContent(document, 'title');
+        const titleNumber = getTextContent(harmony, 'p.title-number');
+        const rows = getHarmonyRow(harmony);
+
+        const id = await getChapterID(document, await getLanguage(document));
+        console.log(id);
+
+        return {
+          _id: `${id}-harmony`,
+          harmonyRows: rows,
+          title: title,
+          titleNumber: titleNumber,
+          _rev: undefined,
+        };
+      },
+    ),
   );
 }
 
@@ -70,6 +80,8 @@ async function main(): Promise<void> {
   try {
     await mkdirp(normalize('../scripture_files/scriptures/harmony'));
   } catch (error) {}
+  console.log(await getHarmoniesFileNames());
+
   (await getHarmoniesFileNames()).map(
     async (fileName): Promise<void> => {
       try {
@@ -77,8 +89,9 @@ async function main(): Promise<void> {
         const document = new JSDOM(file).window.document;
 
         const harmonies = await getHarmonyChapters(document);
-        await console.log(harmonies);
+        // console.log(harmonies);
 
+        c = c + 1;
         await writeFile(
           normalize(`../scripture_files/scriptures/harmony/harmony-${c}.json`),
           JSON.stringify(harmonies),

@@ -10,7 +10,7 @@ const routes: Routes = [
     component: LandingPageComponent,
   },
   {
-    path: 'harmony/:page',
+    path: 'harmony/:book/:chapter',
     component: HarmonyComponent,
   },
   {
