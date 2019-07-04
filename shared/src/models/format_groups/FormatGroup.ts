@@ -56,16 +56,16 @@ export class FormatGroupLine extends FormatGroup {
   public formatGroupType = FormatGroupType.Line;
 }
 export class FormatGroupLineGap extends FormatGroup {
-  public formatGroupType = FormatGroupType.Gap;
+  public formatGroupType = FormatGroupType.LineGap;
 }
 export class FormatGroupParaGap extends FormatGroup {
   public formatGroupType = FormatGroupType.ParaGap;
 }
-export class FormatGroupProse extends FormatGroup {
-  public formatGroupType = FormatGroupType.Prose;
+export class FormatGroupBlock extends FormatGroup {
+  public formatGroupType = FormatGroupType.Block;
 }
-export class FormatGroupNote extends FormatGroup {
-  public formatGroupType = FormatGroupType.Note;
+export class FormatGroupBlockGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.BlockGap;
 }
 export class FormatGroupPageBreak extends FormatGroup {
   public formatGroupType = FormatGroupType.BR;

@@ -4,6 +4,7 @@ import { normalize } from 'path';
 import { readFile, writeFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 import { getNavigationItem } from './getNavigationItem';
+import yargs from 'yargs';
 import {
   NavigationItem,
   flattenNavigationItems,
@@ -133,5 +134,19 @@ async function main(): Promise<void> {
     JSON.stringify(flattenNavigationItems(nI as NavigationItem[])),
   );
 }
+
+const argv = yargs
+  .usage('Usage: $0 <command> [options]')
+  .command('count', 'Count the lines in a file')
+  .example('$0 count -f foo.js', 'count the lines in the given file')
+  .alias('n', 'notes')
+  .nargs('n', 1)
+  .describe('n', 'Load Notes File')
+  .demandOption(['n'])
+  .help('h')
+  .alias('h', 'help')
+  .epilog('copyright 2019').argv;
+
+console.log(argv.n);
 
 main();

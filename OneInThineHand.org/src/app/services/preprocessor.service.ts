@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NoteProcessor, ChapterNotes } from '../../../../notes/src/main';
-import { ChapterProcessor } from '../../../../chapter/src/main';
 import * as JSZip from 'jszip';
 import { DatabaseService, DatabaseItem } from './database.service';
-import { FormatTags, ChapterVerses } from '../../../../format-tags/src/main';
-import { VerseNotes, CouchDoc } from '../../../../shared/src/shared';
+import { VerseNotes } from '../../../../shared/src/shared';
 import PQueue from 'p-queue';
 
 @Injectable({
@@ -18,8 +16,7 @@ export class PreprocessorService {
     'application/x-zip-compressed',
     'multipart/x-zip',
   ];
-  private formatTagProcessor = new FormatTags();
-  private chapterProcessor = new ChapterProcessor();
+  // private chapterProcessor = new ChapterProcessor();
   public constructor(private databaseService: DatabaseService) {}
 
   private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
@@ -52,31 +49,9 @@ export class PreprocessorService {
                   },
                 );
 
-                let allDocs: DatabaseItem[] = [];
+                const allDocs: DatabaseItem[] = [];
                 const jjj: (() => Promise<void>)[] = [];
 
-                const jt = onlyFiles.map(
-                  async (onlyFile): Promise<void> => {
-                    jjj.push(
-                      async (): Promise<void> => {
-                        try {
-                          const file = JSON.parse(
-                            await files
-                              .file(files.files[onlyFile].name)
-                              .async('text'),
-                          ) as {
-                            _id: string;
-                            _rev: string | undefined;
-                          }[];
-                          // console.log(file);
-                          allDocs = allDocs.concat(file);
-                          // await this.databaseService.bulkDocs(file);
-                          // console.log('Finished');
-                        } catch (error) {}
-                      },
-                    );
-                  },
-                );
                 // queue.addAll(jt);
                 // queue.addAll(() => {});
                 // queue.start();
@@ -179,8 +154,6 @@ export class PreprocessorService {
     }
   }
 
-  private processChapterFiles(files: JSZip) {}
-
   public async loadNoteFiles(event: Event): Promise<void> {
     const zipFiles = (event.target as HTMLInputElement).files;
 
@@ -193,7 +166,7 @@ export class PreprocessorService {
             try {
               const data = await new Response(zipFile).arrayBuffer();
               const files = await JSZip.loadAsync(data);
-              const promises = Object.keys(files.files)
+              const p = Object.keys(files.files)
                 .filter((key): boolean => {
                   return files.files[key].dir === false;
                 })
@@ -216,9 +189,9 @@ export class PreprocessorService {
                       );
                       const notes = await this.noteProcessor.run(newDocument);
                       if (notes) {
-                        notes.forEach((value, key): void => {
-                          if (notesMap.has(key) && value.notes) {
-                            const noteChapter = notesMap.get(key);
+                        notes.forEach((value, k): void => {
+                          if (notesMap.has(k) && value.notes) {
+                            const noteChapter = notesMap.get(k);
                             if (noteChapter && noteChapter.notes) {
                               value.notes.forEach((note): void => {
                                 if (noteChapter.notes) {
@@ -231,7 +204,7 @@ export class PreprocessorService {
                             }
                           } else {
                             console.log('adsfasdf');
-                            notesMap.set(key, value);
+                            notesMap.set(k, value);
                           }
                         });
                       }
@@ -243,7 +216,7 @@ export class PreprocessorService {
                     }
                   },
                 );
-              await Promise.all(promises);
+              await Promise.all(p);
             } catch (error) {
               console.log(error);
             }

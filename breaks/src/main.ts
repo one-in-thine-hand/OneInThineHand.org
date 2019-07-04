@@ -9,8 +9,8 @@ import {
   FormatGroupLine,
   FormatGroupLineGap,
   FormatGroupParaGap,
-  FormatGroupProse,
-  FormatGroupNote,
+  FormatGroupBlock,
+  FormatGroupBlockGap,
   FormatGroupPara,
 } from '../../shared/src/models/format_groups/FormatGroup';
 import { VerseBreaks } from '../../shared/src/models/Verse';
@@ -59,12 +59,12 @@ function getFormatGroupType(
       formatGroup = new FormatGroupLine();
       break;
     }
-    case 'prose': {
-      formatGroup = new FormatGroupProse();
+    case 'block': {
+      formatGroup = new FormatGroupBlock();
       break;
     }
-    case 'note': {
-      formatGroup = new FormatGroupNote();
+    case 'block-gap': {
+      formatGroup = new FormatGroupBlockGap();
       break;
     }
     case 'line-gap': {
@@ -248,7 +248,7 @@ function sliceArray<T>(array: T[], chunkSizes: number): T[][] {
   return newArray;
 }
 async function main(): Promise<void> {
-  const fileNames = await FastGlob('test_breaks/**/**');
+  const fileNames = await FastGlob('../scripture_files/breaks/**/**');
   // console.log(fileNames);
   const proccessedFormatGroups = await processFiles(fileNames);
 

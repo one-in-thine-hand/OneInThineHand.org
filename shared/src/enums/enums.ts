@@ -23,6 +23,14 @@ export const enum Environment {
 // export const ColorEnum = Color;
 // export const ColorEnum = Color;
 // export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
 export const enum FormatGroupType {
   A = 0,
   Text = 1,
@@ -36,12 +44,13 @@ export const enum FormatGroupType {
   Part,
   Segment,
   Line,
-  Gap,
-  Prose,
+  LineGap,
+  Block,
   Note,
   Para,
   LineGap,
   ParaGap,
+  BlockGap,
 }
 // export const enum FormatType {
 //   Base = 0,

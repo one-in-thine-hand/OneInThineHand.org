@@ -34,9 +34,11 @@
   "dependencies": {
     "@types/fs-extra": "^7.0.0",
     "@types/jsdom": "^12.2.3",
+    "@types/yargs": "^13.0.0",
     "fast-glob": "^2.2.7",
     "fs-extra": "^8.0.1",
     "jsdom": "^15.1.1",
-    "tslib": "~1.9.3"
+    "tslib": "~1.9.3",
+    "yargs": "^13.2.4"
   }
 }
