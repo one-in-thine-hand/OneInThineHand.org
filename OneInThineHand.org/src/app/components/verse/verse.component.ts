@@ -65,6 +65,30 @@ export class VerseComponent implements OnInit {
               this.saveStateService.data.paragraphsVisible))
         ) {
           return this.verse.breakFormatGroups.filter((formatGroup): boolean => {
+            switch (formatGroup.formatGroupType) {
+              case FormatGroupType.Para: {
+                return this.saveStateService.data.paragraphsVisible;
+              }
+              case FormatGroupType.ParaGap: {
+                return this.saveStateService.data.paragraphsVisible;
+              }
+              case FormatGroupType.Line: {
+                return this.saveStateService.data.poetryVisible;
+                break;
+              }
+              case FormatGroupType.LineGap: {
+                return this.saveStateService.data.poetryVisible;
+                break;
+              }
+              case FormatGroupType.Block: {
+                return this.saveStateService.data.blockVisible;
+                break;
+              }
+              case FormatGroupType.BlockGap: {
+                return this.saveStateService.data.blockVisible;
+                break;
+              }
+            }
             return (
               formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
               formatGroup.formatGroupType !== FormatGroupType.BR

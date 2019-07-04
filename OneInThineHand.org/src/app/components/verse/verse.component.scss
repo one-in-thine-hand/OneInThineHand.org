@@ -59,3 +59,25 @@ kjv-container {
     grid-column-gap: 5px;
   }
 }
+.format-group-segment {
+  display: block;
+}
+.format-group-part {
+  display: block;
+}
+.format-group-block {
+  display: block;
+}
+.format-group-line {
+  display: block;
+}
+.format-group-para {
+  display: block;
+  background-color: green;
+  text-indent: 1em;
+}
+:host-context(.paragraph-mode) {
+  .format-group {
+    // display: block;
+  }
+}

@@ -14,8 +14,6 @@ export class SaveStateModel {
   public version = 5;
   public navigationPaneToggle: boolean = true;
   public notesPaneToggle: boolean = true;
-  public paragraphsVisible = false;
-  public poetryVisible = false;
   public secondaryNotesVisible = false;
   public englishNotesVisible = false;
   public newNotesVisible = false;
@@ -36,6 +34,8 @@ export class SaveStateModel {
   public tcNotesVisible: boolean | undefined;
   public testOverlayVisible: boolean | undefined;
   public navigationMobilePaneToggle: boolean = false;
+  public paragraphsVisible = false;
+  public poetryVisible = false;
   public blockVisible: boolean = false;
 }
 
