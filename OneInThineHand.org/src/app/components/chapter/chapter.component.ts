@@ -236,15 +236,24 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapterVerses = all[1] as ChapterVerses;
                   this.chapterNotes = all[2] as ChapterNotes;
 
-                  const breaks = all[3] as {
+                  this.chapterService.chapterBreaks = all[3] as {
                     _id: string;
-                    verseBreaks: { _id: string; breaks: FormatGroup[] }[];
+                    _rev: string | undefined;
+                    verseBreaks: {
+                      _id: string;
+                      breaks: FormatGroup[];
+                    }[];
                   };
-                  if (this.chapterVerses.verses) {
+                  if (
+                    this.chapterVerses.verses &&
+                    this.chapterService.chapterBreaks
+                  ) {
                     this.chapterVerses.verses.map((verse): void => {
-                      const b = breaks.verseBreaks.find((brk): boolean => {
-                        return brk._id.replace('-breaks', '') === verse._id;
-                      });
+                      const b = this.chapterService.chapterBreaks.verseBreaks.find(
+                        (brk): boolean => {
+                          return brk._id.replace('-breaks', '') === verse._id;
+                        },
+                      );
                       if (b) {
                         verse.breakFormatGroups = b.breaks;
                       }

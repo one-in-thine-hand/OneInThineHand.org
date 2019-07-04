@@ -34,24 +34,53 @@ export class SaveService {
    */
   public async saveFakeVerseBreaks(): Promise<void> {
     if (
-      this.chaterService.chapterVerses &&
-      this.chaterService.chapterVerses.verses
+      this.chaterService.chapterBreaks &&
+      this.chaterService.chapterBreaks.verseBreaks
     ) {
-      const fakeVerseBreaks = this.chaterService.chapterVerses.verses
-        .map((verse): FakeVerseBreaks | undefined => {
-          // console.log(verse.fakeVerseBreak);
+      this.chaterService.chapterBreaks.verseBreaks.map((verseBreak): void => {
+        if (
+          this.chaterService.chapterVerses &&
+          this.chaterService.chapterVerses.verses
+        ) {
+          const verse = this.chaterService.chapterVerses.verses.find(
+            (v): boolean => {
+              return (
+                v._id !== undefined &&
+                v._id.replace('verse', 'verse-breaks') === verseBreak._id
+              );
+            },
+          );
+          if (verse) {
+            verseBreak.breaks = verse.breakFormatGroups;
+          }
+          // console.log(verse);
+        }
+      });
+      // console.log(this.chaterService.chapterBreaks);
 
-          return verse.fakeVerseBreak;
-        })
-        .filter((v): boolean => {
-          return v !== undefined;
-        }) as VerseBreaks[];
-
-      if (fakeVerseBreaks.length > 0) {
-        await this.databaseService.updateDatabaseItems(fakeVerseBreaks);
-        // console.log(fakeVerseBreaks);
-      }
+      await this.databaseService.updateDatabaseItem(
+        this.chaterService.chapterBreaks,
+      );
     }
+    // if (
+    //   this.chaterService.chapterVerses &&
+    //   this.chaterService.chapterVerses.verses
+    // ) {
+    //   const fakeVerseBreaks = this.chaterService.chapterVerses.verses
+    //     .map((verse): FakeVerseBreaks | undefined => {
+    //       // console.log(verse.fakeVerseBreak);
+
+    //       return verse.fakeVerseBreak;
+    //     })
+    //     .filter((v): boolean => {
+    //       return v !== undefined;
+    //     }) as VerseBreaks[];
+
+    //   if (fakeVerseBreaks.length > 0) {
+    //     await this.databaseService.updateDatabaseItems(fakeVerseBreaks);
+    //     // console.log(fakeVerseBreaks);
+    //   }
+    // }
   }
 
   public async save(): Promise<void> {

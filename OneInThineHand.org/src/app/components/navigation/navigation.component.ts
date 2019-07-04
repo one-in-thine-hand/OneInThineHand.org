@@ -375,8 +375,8 @@ nI:NavigationItem   */
     );
   }
   public async resetVerseBreaks(verse: Verse): Promise<void> {
-    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
-      verse.fakeVerseBreak.breaks = undefined;
+    if (verse.breakFormatGroups) {
+      verse.breakFormatGroups = [];
     }
     await this.formatTagService.resetFormatTags(
       this.chapterService.chapterVerses,

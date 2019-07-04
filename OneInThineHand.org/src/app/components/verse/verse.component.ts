@@ -51,7 +51,6 @@ export class VerseComponent implements OnInit {
           (this.saveStateService.data.blockVisible ||
             this.saveStateService.data.paragraphsVisible))
       ) {
-        console.log(this.verse.breakFormatGroups.length);
         expandOffsets(this.verse.breakFormatGroups);
       } else {
         expandOffsets(this.verse.formatGroups);
@@ -65,9 +64,6 @@ export class VerseComponent implements OnInit {
             (this.saveStateService.data.blockVisible ||
               this.saveStateService.data.paragraphsVisible))
         ) {
-          if (this.verse.breakFormatGroups.length === 1) {
-            console.log(this.verse.breakFormatGroups.length);
-          }
           return this.verse.breakFormatGroups.filter((formatGroup): boolean => {
             return (
               formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&

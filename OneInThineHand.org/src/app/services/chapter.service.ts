@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { Note, Verse, VerseNotes } from '../../../../shared/src/shared';
+import {
+  Note,
+  Verse,
+  VerseNotes,
+  FormatGroup,
+} from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 import { Observable } from 'rxjs';
@@ -17,6 +22,14 @@ export class ChapterService {
   public chapterVerses: ChapterVerses | undefined;
   public kjvChapterVerse: ChapterVerses | undefined;
   public kjvChapterNotes: ChapterNotes | undefined;
+  public chapterBreaks: {
+    _id: string;
+    _rev: string | undefined;
+    verseBreaks: {
+      _id: string;
+      breaks: FormatGroup[];
+    }[];
+  };
 
   public constructor() {}
 
