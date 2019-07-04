@@ -67,6 +67,12 @@ export class FormatGroupBlock extends FormatGroup {
 export class FormatGroupBlockGap extends FormatGroup {
   public formatGroupType = FormatGroupType.BlockGap;
 }
+export class FormatGroupBreaks extends FormatGroup {
+  public formatGroupType = FormatGroupType.Breaks;
+}
+export class FormatGroupGaps extends FormatGroup {
+  public formatGroupType = FormatGroupType.Gaps;
+}
 export class FormatGroupPageBreak extends FormatGroup {
   public formatGroupType = FormatGroupType.BR;
   public offsets = undefined;

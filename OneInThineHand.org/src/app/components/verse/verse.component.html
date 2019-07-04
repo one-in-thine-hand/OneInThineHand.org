@@ -28,6 +28,26 @@
           [formatTags]="verse.formatTags"
         ></app-format-group-part>
         <app-format-group
+          class="{{
+            formatGroup.classList ? formatGroup.classList.join(' ') : ''
+          }}"
+          *ngSwitchCase="18"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          >asdf</app-format-group
+        >
+        <app-format-group
+          class="{{
+            formatGroup.classList ? formatGroup.classList.join(' ') : ''
+          }}"
+          *ngSwitchCase="19"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          >asdf</app-format-group
+        >
+        <!-- <app-format-group
           class="format-group-block"
           *ngSwitchCase="12"
           [verse]="verse"
@@ -62,7 +82,7 @@
         <format-group-gap
           class="format-group-block-gap"
           *ngSwitchCase="17"
-        ></format-group-gap>
+        ></format-group-gap> -->
         <app-format-group
           class="format-group"
           [verse]="verse"

@@ -31,6 +31,54 @@ export const enum Environment {
 // export const ColorEnum = Color;
 // export const ColorEnum = Color;
 // export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
+// export const ColorEnum = Color;
 export const enum FormatGroupType {
   A = 0,
   Text = 1,
@@ -50,6 +98,8 @@ export const enum FormatGroupType {
   LineGap = 15,
   ParaGap = 16,
   BlockGap = 17,
+  Breaks,
+  Gaps,
 }
 // export const enum FormatType {
 //   Base = 0,

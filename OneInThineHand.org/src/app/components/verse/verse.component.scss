@@ -73,11 +73,38 @@ kjv-container {
 }
 .format-group-para {
   display: inline-block;
-  background-color: green;
   text-indent: 1em;
 }
 :host-context(.paragraph-mode) {
   .format-group {
     // display: block;
+  }
+}
+:host-context(.paragraph-mode) {
+  .para {
+    display: inline;
+    margin-left: 1em;
+  }
+  .para-gap {
+    display: block;
+  }
+}
+
+:host-context(.poetry-mode) {
+  .line {
+    margin-left: 1em;
+    display: block;
+  }
+  .line-gap {
+    display: block;
+  }
+}
+:host-context(.block-mode) {
+  .block {
+    margin-left: 2em;
+    font-size: 15.5px;
+  }
+  .block-gap {
+    display: block;
   }
 }

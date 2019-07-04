@@ -3,17 +3,9 @@ import FastGlob from 'fast-glob';
 import { readFile, writeFile, mkdirp } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 
-import { FormatGroup } from '../../shared/src/shared';
+import { FormatGroup, FormatGroupType } from '../../shared/src/shared';
 import { normalize } from 'path';
-import {
-  FormatGroupLine,
-  FormatGroupLineGap,
-  FormatGroupParaGap,
-  FormatGroupBlock,
-  FormatGroupBlockGap,
-  FormatGroupPara,
-  FormatGroupText,
-} from '../../shared/src/models/format_groups/FormatGroup';
+import { FormatGroupBreaks } from '../../shared/src/models/format_groups/FormatGroup';
 import { VerseBreaks } from '../../shared/src/models/Verse';
 // const pQueue = new PQueue({ concurrency: 10 });
 
@@ -45,62 +37,40 @@ import { VerseBreaks } from '../../shared/src/models/Verse';
 // }
 
 function getFormatGroupType(
-  nodeName: string,
+  element: Element,
   offsets?: string,
-  classList?: string[],
-): FormatGroup | undefined {
-  let formatGroup: FormatGroup | undefined;
-  switch (nodeName) {
-    case 'para': {
-      formatGroup = new FormatGroupPara();
+  // classList?: string[],
+): FormatGroup {
+  let formatGroup = new FormatGroupBreaks();
 
-      break;
-    }
-    case 'line': {
-      formatGroup = new FormatGroupLine();
-      break;
-    }
-    case 'block': {
-      formatGroup = new FormatGroupBlock();
-      break;
-    }
-    case 'block-gap': {
-      formatGroup = new FormatGroupBlockGap();
-      break;
-    }
-    case 'line-gap': {
-      formatGroup = new FormatGroupLineGap();
-      break;
-    }
-    case 'para-gap': {
-      formatGroup = new FormatGroupParaGap();
-      break;
-    }
-    case 'plain': {
-      formatGroup = new FormatGroupText();
-      break;
-    }
-    // case 'gap': {
-    //   formatGroup = new FormatGroupPara();
-    //   break;
-    // }
-  }
-  if (formatGroup) {
-    formatGroup.offsets = offsets;
-    formatGroup.classList = classList;
-    return formatGroup;
-  }
-  console.log(nodeName);
-
-  return undefined;
-}
-function getClassList(element: Element): string[] | undefined {
   try {
-    const classList = Array.from(element.classList.values());
-    return classList.length > 0 ? classList : undefined;
-  } catch (error) {}
-  return undefined;
+    formatGroup.classList = element.className.split(',');
+    if (!element.className.includes('gap')) {
+      formatGroup.offsets = offsets;
+    } else {
+      console.log('asdoifjaoisdfj');
+
+      formatGroup.formatGroupType = FormatGroupType.Gaps;
+      console.log(formatGroup.formatGroupType);
+    }
+  } catch (error) {
+    console.log(element);
+
+    console.log(error);
+  }
+  return formatGroup;
+  // if (formatGroup) {
+  //   formatGroup.classList = classList;
+  //   return formatGroup;
+  // }
 }
+// function getClassList(element: Element): string[] | undefined {
+//   try {
+//     const classList = Array.from(element.classList.values());
+//     return classList.length > 0 ? classList : undefined;
+//   } catch (error) {}
+//   return undefined;
+// }
 
 function queryToArray(selector: string, doc?: Document | Element): Element[] {
   const d = doc ? doc : document;
@@ -116,7 +86,7 @@ function getOffSets(element: Element): string | undefined {
   }
 }
 
-function filterChildrensTextNodes(node: Element | Node): Node[] {
+export function filterChildrensTextNodes(node: Element | Node): Node[] {
   return Array.from(node.childNodes).filter(
     (childNode): boolean => {
       return childNode.nodeName.toLowerCase() !== '#text';
@@ -136,15 +106,15 @@ async function processFiles(
     _id?: string;
     verseBreaks?: VerseBreaks[];
   }[] = [];
-  console.log('aoiioasdjf');
-  console.log(fileNames);
+  // console.log('aoiioasdjf');
+  // console.log(fileNames);
 
   const p = fileNames.map(
     async (fileName): Promise<void> => {
-      console.log(fileName);
+      // console.log(fileName);
 
       const file = await readFile(fileName);
-      console.log(file);
+      // console.log(file);
 
       const document = new JSDOM(file).window.document;
       queryToArray('chapter', document).map(
@@ -157,21 +127,33 @@ async function processFiles(
             verseBreaks: [],
           };
           queryToArray('verse-breaks', chapter).map(
-            (verseBreak): void => {
+            (verseBreakElement): void => {
               const verseBreaks = new VerseBreaks();
-              verseBreaks._id = verseBreak.id;
-              const formatGroups = filterChildrensTextNodes(verseBreak).map(
-                (childNode): FormatGroup | undefined => {
-                  const offsets = getOffSets(childNode as Element);
-                  const classList = getClassList(childNode as Element);
+              verseBreaks._id = verseBreakElement.id;
+
+              const formatGroups = queryToArray('break', verseBreakElement).map(
+                (brk): FormatGroup => {
+                  const offsets = getOffSets(brk);
+                  // const classList = getClassList(brk as Element);
                   return getFormatGroupType(
-                    childNode.nodeName.toLowerCase(),
+                    brk,
                     offsets,
-                    classList,
+                    // classList,
                   );
                 },
               );
-              console.log(formatGroups);
+              // filterChildrensTextNodes(verseBreakElement).map(
+              //   (childNode): FormatGroup | undefined => {
+              //     const offsets = getOffSets(childNode as Element);
+              //     // const classList = getClassList(childNode as Element);
+              //     return getFormatGroupType(
+              //       childNode as Element,
+              //       offsets,
+              //       // classList,
+              //     );
+              //   },
+              // );
+              // console.log(formatGroups);
 
               verseBreaks.breaks = formatGroups.filter(
                 (formatGroup): boolean => {
@@ -188,11 +170,11 @@ async function processFiles(
     },
   );
 
-  console.log(p);
+  // console.log(p);
 
   await Promise.all(p);
 
-  console.log(proccessedFormatGroups);
+  // console.log(proccessedFormatGroups);
   return proccessedFormatGroups;
 
   // pQueue.add(
