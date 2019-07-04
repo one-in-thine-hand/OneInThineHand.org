@@ -73,7 +73,7 @@ export class ExportService {
           const blob = new Blob([exportText], {
             type: 'text/html;charset=utf=8',
           });
-          saveAs(blob, `${bookName}.html`);
+          saveAs(blob, `${bookName}-breaks.html`);
           // console.log(blob);
           // console.log(exportText);
         }
@@ -189,19 +189,22 @@ export class ExportService {
         return 'Para'.toLowerCase();
       }
       case FormatGroupType.ParaGap: {
-        return 'ParaGap'.toLowerCase();
+        return 'Para-Gap'.toLowerCase();
       }
       case FormatGroupType.Line: {
         return 'Line'.toLowerCase();
       }
       case FormatGroupType.LineGap: {
-        return 'LineGap'.toLowerCase();
+        return 'Line-Gap'.toLowerCase();
       }
       case FormatGroupType.BlockGap: {
-        return 'BlockGap'.toLowerCase();
+        return 'Block-Gap'.toLowerCase();
       }
       case FormatGroupType.Block: {
         return 'Block'.toLowerCase();
+      }
+      case FormatGroupType.Text: {
+        return 'Plain'.toLowerCase();
       }
 
       default:
@@ -265,7 +268,7 @@ export class ExportService {
             classList = classList.concat(note.classList);
           }
           return `<note class="${classList.join(' ')}" id="${note.id}" ${
-            note.offsets !== undefined ? `offsets="${note.offsets}"` : ''
+            note.offsets !== undefined ? `offsets=\"${note.offsets}\"` : ''
           }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''
