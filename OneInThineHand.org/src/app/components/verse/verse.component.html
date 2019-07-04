@@ -28,6 +28,43 @@
           [formatTags]="verse.formatTags"
         ></app-format-group-part>
         <app-format-group
+          class="format-group-block"
+          *ngSwitchCase="12"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          >asdf</app-format-group
+        >
+        <app-format-group
+          class="format-group-line"
+          *ngSwitchCase="11"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          >asdf</app-format-group
+        >
+        <app-format-group
+          class="format-group-para"
+          *ngSwitchCase="14"
+          [verse]="verse"
+          [formatGroup]="formatGroup"
+          [formatTags]="verse.formatTags"
+          >asdf</app-format-group
+        >
+        <format-group-gap
+          class="format-group-line-gap"
+          *ngSwitchCase="15"
+        ></format-group-gap>
+        <format-group-gap
+          class="format-group-para-gap"
+          *ngSwitchCase="16"
+        ></format-group-gap>
+        <format-group-gap
+          class="format-group-block-gap"
+          *ngSwitchCase="17"
+        ></format-group-gap>
+        <app-format-group
+          class="format-group"
           [verse]="verse"
           [formatGroup]="formatGroup"
           [formatTags]="verse.formatTags"

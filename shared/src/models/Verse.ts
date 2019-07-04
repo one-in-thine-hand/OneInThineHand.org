@@ -42,4 +42,5 @@ export class Verse {
   public kjvRef: string[] | undefined;
   public fakeVerseBreak: FakeVerseBreaks | undefined;
   public kjvVerse: Verse[] | undefined;
+  public breakFormatGroups: FormatGroup[];
 }

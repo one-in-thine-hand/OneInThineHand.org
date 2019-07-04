@@ -6,6 +6,7 @@ import {
   FormatGroupType,
 } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-verse',
@@ -15,7 +16,10 @@ import { ChapterService } from '../../services/chapter.service';
 export class VerseComponent implements OnInit {
   @Input() public verse: Verse;
   public kjvRefVerse: Verse | undefined;
-  public constructor(public chapterService: ChapterService) {}
+  public constructor(
+    public chapterService: ChapterService,
+    public saveStateService: SaveStateService,
+  ) {}
 
   public ngOnInit(): void {}
 
@@ -40,9 +44,40 @@ export class VerseComponent implements OnInit {
       this.verse.formatTags &&
       this.verse.text
     ) {
-      expandOffsets(this.verse.formatGroups);
+      if (
+        this.verse.breakFormatGroups &&
+        this.verse.breakFormatGroups.length > 0 &&
+        (this.saveStateService.data.poetryVisible ||
+          (this.saveStateService.data.blockVisible ||
+            this.saveStateService.data.paragraphsVisible))
+      ) {
+        console.log(this.verse.breakFormatGroups.length);
+        expandOffsets(this.verse.breakFormatGroups);
+      } else {
+        expandOffsets(this.verse.formatGroups);
+      }
       expandOffsets(this.verse.formatTags);
-
+      try {
+        if (
+          this.verse.breakFormatGroups &&
+          this.verse.breakFormatGroups.length > 0 &&
+          (this.saveStateService.data.poetryVisible ||
+            (this.saveStateService.data.blockVisible ||
+              this.saveStateService.data.paragraphsVisible))
+        ) {
+          if (this.verse.breakFormatGroups.length === 1) {
+            console.log(this.verse.breakFormatGroups.length);
+          }
+          return this.verse.breakFormatGroups.filter((formatGroup): boolean => {
+            return (
+              formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+              formatGroup.formatGroupType !== FormatGroupType.BR
+            );
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
       // console.log(this.verse);
       return this.verse.formatGroups.filter((formatGroup): boolean => {
         return (

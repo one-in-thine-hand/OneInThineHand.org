@@ -49,15 +49,36 @@ export class PreprocessorService {
                   },
                 );
 
-                const allDocs: DatabaseItem[] = [];
+                let allDocs: DatabaseItem[] = [];
                 const jjj: (() => Promise<void>)[] = [];
 
+                const jt = onlyFiles.map(
+                  async (onlyFile): Promise<void> => {
+                    jjj.push(
+                      async (): Promise<void> => {
+                        try {
+                          const file = JSON.parse(
+                            await files
+                              .file(files.files[onlyFile].name)
+                              .async('text'),
+                          ) as {
+                            _id: string;
+                            _rev: string | undefined;
+                          }[];
+                          // console.log(file);
+                          allDocs = allDocs.concat(file);
+                          // await this.databaseService.bulkDocs(file);
+                          // console.log('Finished');
+                        } catch (error) {}
+                      },
+                    );
+                  },
+                );
                 // queue.addAll(jt);
                 // queue.addAll(() => {});
                 // queue.start();
                 await queue.addAll(jjj);
                 // await Promise.all(jt);
-                console.log(allDocs);
                 const d = await this.databaseService.allDocs();
                 if (d) {
                   d.rows.map((r): void => {
@@ -69,6 +90,7 @@ export class PreprocessorService {
                     }
                   });
                 }
+                console.log(allDocs);
                 // await this.databaseService.bulkDocs(allDocs);
                 const t = this.sliceArray(allDocs, 1000).map(
                   async (array): Promise<void> => {

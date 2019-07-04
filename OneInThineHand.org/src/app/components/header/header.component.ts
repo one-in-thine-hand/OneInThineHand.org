@@ -59,12 +59,31 @@ export class HeaderComponent implements OnInit {
   public async paragraphsVisible(): Promise<void> {
     this.saveStateService.data.paragraphsVisible = !this.saveStateService.data
       .paragraphsVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+
+    await this.saveStateService.save();
+  }
+  public async blockVisible(): Promise<void> {
+    this.saveStateService.data.blockVisible = !this.saveStateService.data
+      .blockVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
 
     await this.saveStateService.save();
   }
   public async poetryVisible(): Promise<void> {
     this.saveStateService.data.poetryVisible = !this.saveStateService.data
       .poetryVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+
     await this.saveStateService.save();
   }
   public async secondaryNotesVisible(): Promise<void> {

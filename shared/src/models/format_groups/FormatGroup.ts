@@ -7,7 +7,7 @@ export abstract class FormatGroup {
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
   public classList: string[] | undefined;
-  fMerges: FMerged[] | undefined;
+  public fMerges: FMerged[] | undefined;
 }
 
 export class FormatGroupA extends FormatGroup {

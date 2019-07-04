@@ -35,7 +35,9 @@ export class FormatTagService {
     offsets: string | undefined;
     uncompressedOffsets: number[] | undefined;
   }): void {
-    item.uncompressedOffsets = parseOffsets(item.offsets);
+    item.uncompressedOffsets = item.offsets
+      ? parseOffsets(item.offsets)
+      : undefined;
   }
 
   public async resetVerses(verses: Verse[]): Promise<void> {
@@ -51,16 +53,48 @@ export class FormatTagService {
     //   },
     // );
     // await Promise.all(promises);
-    verses.map((verse): void => {
-      this.buildOffsets(verse.formatGroups);
-      this.buildOffsets(verse.formatTags);
-      this.buildFormatGroups(
-        verse.formatGroups,
-        verse.formatTags,
-        verse.note,
-        verse,
-      );
-    });
+    if (
+      this.saveStateService.data.poetryVisible ||
+      this.saveStateService.data.blockVisible ||
+      this.saveStateService.data.paragraphsVisible
+    ) {
+      console.log('asodifjaoisdfjaoidjsfoiajsdfoiajsdfoiajsdfoiajsdf');
+
+      try {
+        verses.map((verse): void => {
+          this.buildOffsets(
+            verse.breakFormatGroups !== undefined &&
+              verse.breakFormatGroups.length > 0
+              ? verse.breakFormatGroups
+              : verse.formatGroups,
+          );
+          this.buildOffsets(verse.formatTags);
+          this.buildFormatGroups(
+            verse.breakFormatGroups !== undefined &&
+              verse.breakFormatGroups.length > 0
+              ? verse.breakFormatGroups
+              : verse.formatGroups,
+
+            verse.formatTags,
+            verse.note,
+            verse,
+          );
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      verses.map((verse): void => {
+        this.buildOffsets(verse.formatGroups);
+        this.buildOffsets(verse.formatTags);
+        this.buildFormatGroups(
+          verse.formatGroups,
+          verse.formatTags,
+          verse.note,
+          verse,
+        );
+      });
+    }
   }
 
   private sliceArray<T>(array: T[], chunkSizes: number): T[][] {

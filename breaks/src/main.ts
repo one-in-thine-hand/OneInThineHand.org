@@ -12,6 +12,7 @@ import {
   FormatGroupBlock,
   FormatGroupBlockGap,
   FormatGroupPara,
+  FormatGroupText,
 } from '../../shared/src/models/format_groups/FormatGroup';
 import { VerseBreaks } from '../../shared/src/models/Verse';
 // const pQueue = new PQueue({ concurrency: 10 });
@@ -73,6 +74,10 @@ function getFormatGroupType(
     }
     case 'para-gap': {
       formatGroup = new FormatGroupParaGap();
+      break;
+    }
+    case 'plain': {
+      formatGroup = new FormatGroupText();
       break;
     }
     // case 'gap': {
@@ -147,7 +152,10 @@ async function processFiles(
           let verseBreaksChapter: {
             _id?: string;
             verseBreaks: VerseBreaks[];
-          } = { _id: `${chapter.id}-breaks`, verseBreaks: [] };
+          } = {
+            _id: `${chapter.id.replace('-chapter', '')}-breaks`,
+            verseBreaks: [],
+          };
           queryToArray('verse-breaks', chapter).map(
             (verseBreak): void => {
               const verseBreaks = new VerseBreaks();
@@ -163,6 +171,8 @@ async function processFiles(
                   );
                 },
               );
+              console.log(formatGroups);
+
               verseBreaks.breaks = formatGroups.filter(
                 (formatGroup): boolean => {
                   return formatGroup !== undefined;

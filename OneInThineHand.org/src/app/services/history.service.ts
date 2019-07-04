@@ -46,36 +46,28 @@ export class HistoryService {
           chapterVerses: cloneDeep(chapterVerses),
         });
         if (chapterNotes.notes) {
-          chapterNotes.notes.map(
-            (n): void => {
-              if (s.chapterNotes.notes) {
-                const o = s.chapterNotes.notes.find(
-                  (l): boolean => {
-                    return l._id === n._id;
-                  },
-                );
-                if (o) {
-                  n.notes = o.notes;
-                }
+          chapterNotes.notes.map((n): void => {
+            if (s.chapterNotes.notes) {
+              const o = s.chapterNotes.notes.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.notes = o.notes;
               }
-            },
-          );
+            }
+          });
         }
         if (chapterVerses.verses) {
-          chapterVerses.verses.map(
-            (n): void => {
-              if (s.chapterVerses.verses) {
-                const o = s.chapterVerses.verses.find(
-                  (l): boolean => {
-                    return l._id === n._id;
-                  },
-                );
-                if (o) {
-                  n.formatGroups = o.formatGroups;
-                }
+          chapterVerses.verses.map((n): void => {
+            if (s.chapterVerses.verses) {
+              const o = s.chapterVerses.verses.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.formatGroups = o.formatGroups;
               }
-            },
-          );
+            }
+          });
         }
 
         // chapterNotes.notes = s.chapterNotes.notes;
@@ -98,36 +90,28 @@ export class HistoryService {
           chapterVerses: cloneDeep(chapterVerses),
         });
         if (chapterNotes.notes) {
-          chapterNotes.notes.map(
-            (n): void => {
-              if (s.chapterNotes.notes) {
-                const o = s.chapterNotes.notes.find(
-                  (l): boolean => {
-                    return l._id === n._id;
-                  },
-                );
-                if (o) {
-                  n.notes = o.notes;
-                }
+          chapterNotes.notes.map((n): void => {
+            if (s.chapterNotes.notes) {
+              const o = s.chapterNotes.notes.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.notes = o.notes;
               }
-            },
-          );
+            }
+          });
         }
         if (chapterVerses.verses) {
-          chapterVerses.verses.map(
-            (n): void => {
-              if (s.chapterVerses.verses) {
-                const o = s.chapterVerses.verses.find(
-                  (l): boolean => {
-                    return l._id === n._id;
-                  },
-                );
-                if (o) {
-                  n.formatGroups = o.formatGroups;
-                }
+          chapterVerses.verses.map((n): void => {
+            if (s.chapterVerses.verses) {
+              const o = s.chapterVerses.verses.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.formatGroups = o.formatGroups;
               }
-            },
-          );
+            }
+          });
         }
 
         // chapterNotes.notes = s.chapterNotes.notes;
@@ -151,9 +135,7 @@ export function findByAttribute<T, T2>(
   if (list === undefined || list.length === 0) {
     return undefined;
   }
-  return list.find(
-    (l): boolean => {
-      return l[attr] !== undefined && l[attr] === val;
-    },
-  );
+  return list.find((l): boolean => {
+    return l[attr] !== undefined && l[attr] === val;
+  });
 }

@@ -30,6 +30,7 @@ import {
 import {
   FormatGroupPart,
   FormatGroupSegment,
+  FormatGroup,
 } from '../../../../../shared/src/models/format_groups/FormatGroup';
 @Component({
   selector: 'app-chapter',
@@ -222,8 +223,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
                   ]);
                   // console.log(all);
+                  console.log(
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
+                  );
 
                   console.log(all);
 
@@ -231,30 +236,46 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapterVerses = all[1] as ChapterVerses;
                   this.chapterNotes = all[2] as ChapterNotes;
 
-                  const vIds = this.chapter.verseIDS.filter((v): boolean => {
-                    return !v.includes('--');
-                  });
-                  const ids = this.chapterService.generateIDS(vIds);
-                  const breaks = (await this.databaseService.bulkGetByIDs(
-                    ids,
-                  )) as FakeVerseBreaks[];
-                  console.log(breaks);
+                  const breaks = all[3] as {
+                    _id: string;
+                    verseBreaks: { _id: string; breaks: FormatGroup[] }[];
+                  };
+                  if (this.chapterVerses.verses) {
+                    this.chapterVerses.verses.map((verse): void => {
+                      const b = breaks.verseBreaks.find((brk): boolean => {
+                        return brk._id.replace('-breaks', '') === verse._id;
+                      });
+                      if (b) {
+                        verse.breakFormatGroups = b.breaks;
+                      }
+                      console.log(b);
+                    });
+                  }
 
-                  breaks.map((b): void => {
-                    const v =
-                      this.chapterVerses && this.chapterVerses.verses
-                        ? this.chapterVerses.verses.find((v2): boolean => {
-                            return (
-                              v2._id !== undefined &&
-                              b._id === v2._id.replace('verse', 'breaks')
-                            );
-                          })
-                        : undefined;
-                    console.log(v);
-                    if (v) {
-                      v.fakeVerseBreak = b;
-                    }
-                  });
+                  // const vIds = this.chapter.verseIDS.filter((v): boolean => {
+                  //   return !v.includes('--');
+                  // });
+                  // const ids = this.chapterService.generateIDS(vIds);
+                  // const breaks = (await this.databaseService.bulkGetByIDs(
+                  //   ids,
+                  // )) as FakeVerseBreaks[];
+                  // console.log(breaks);
+
+                  // breaks.map((b): void => {
+                  //   const v =
+                  //     this.chapterVerses && this.chapterVerses.verses
+                  //       ? this.chapterVerses.verses.find((v2): boolean => {
+                  //           return (
+                  //             v2._id !== undefined &&
+                  //             b._id === v2._id.replace('verse', 'breaks')
+                  //           );
+                  //         })
+                  //       : undefined;
+                  //   console.log(v);
+                  //   if (v) {
+                  //     v.fakeVerseBreak = b;
+                  //   }
+                  // });
 
                   await this.setChapterVariables(
                     this.chapterNotes,
