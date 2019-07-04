@@ -1,3 +1,8 @@
+## <small>5.0.46 (2019-07-04)</small>
+
+
+
+
 ## <small>5.0.45 (2019-07-04)</small>
 
 * Added alert to harmony ([1d4c484](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d4c484))
@@ -211,6 +216,7 @@
 * v5.0.42 ([9f1cd38](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9f1cd38))
 * v5.0.43 ([088b246](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/088b246))
 * v5.0.44 ([d460467](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d460467))
+* v5.0.45 ([2c41559](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2c41559))
 * v5.0.5 ([9d6fad4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9d6fad4))
 * v5.0.6 ([ec14b57](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ec14b57))
 * v5.0.7 ([96c6ec2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96c6ec2))
