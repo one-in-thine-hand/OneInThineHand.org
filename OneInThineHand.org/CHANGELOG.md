@@ -1,6 +1,16 @@
+## <small>5.0.48 (2019-07-04)</small>
+
+* block work ([c9f6931](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c9f6931))
+* formating fixes ([0a0365b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0a0365b))
+* Para, line, block modes ([0fad01c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0fad01c))
+* Styling starting to work ([6eea393](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6eea393))
+
+
+
 ## <small>5.0.47 (2019-07-04)</small>
 
 * bug fixes ([8cb2d7b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8cb2d7b))
+* v5.0.47 ([82b495e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/82b495e))
 
 
 
