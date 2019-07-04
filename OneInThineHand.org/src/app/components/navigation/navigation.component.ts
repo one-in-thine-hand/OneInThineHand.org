@@ -14,7 +14,10 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ParamService } from '../../services/param.service';
 import { flattenNavigationItem } from '../../../../../shared/src/models/NavigationItem';
 import { ChapterService } from '../../services/chapter.service';
-import { VerseBreaks } from '../../../../../shared/src/models/Verse';
+import {
+  VerseBreaks,
+  FakeVerseBreaks,
+} from '../../../../../shared/src/models/Verse';
 import { SaveService } from '../../services/save.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
@@ -309,13 +312,17 @@ nI:NavigationItem   */
     if (offsets) {
       formatTag.offsets = offset ? offset : offsets ? offsets.offsets : '';
       formatTag.formatType = formatTagType;
+      if (!offsets.verse.fakeVerseBreak) {
+        offsets.verse.fakeVerseBreak = new FakeVerseBreaks();
+        offsets.verse.fakeVerseBreak.breaks = [];
+      }
       if (offsets.verse.fakeVerseBreak) {
         if (!offsets.verse.fakeVerseBreak.breaks) {
           offsets.verse.fakeVerseBreak.breaks = [];
         }
-        console.log(formatTag);
+        // console.log(formatTag);
 
-        console.log(offsets.verse.fakeVerseBreak.breaks);
+        // console.log(offsets.verse.fakeVerseBreak.breaks);
 
         offsets.verse.fakeVerseBreak.breaks.push(formatTag);
       }

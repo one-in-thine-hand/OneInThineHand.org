@@ -9,6 +9,8 @@ import {
   ReferenceLabel,
   getRanges,
   NoteTypeConverts,
+  FormatGroup,
+  FormatGroupType,
 } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { saveAs } from 'file-saver';
@@ -42,7 +44,7 @@ export class ExportService {
               },
             ),
           (a): number => {
-            return parseInt(a.id.split('-')[2]);
+            return parseInt(a.id.split('-')[2], 10);
           },
         );
 
@@ -77,6 +79,135 @@ export class ExportService {
         }
       }
     }
+  }
+
+  /**
+   * exportBook
+   */
+  public async exportBreaks(): Promise<void> {
+    if (this.chapterService.chapter) {
+      const idSplit = this.chapterService.chapter._id.split('-');
+      const bookName = `${idSplit[0]}-${idSplit[1]}`;
+
+      const docs = await this.databaseService.allDocs();
+      if (docs) {
+        const ids = sortBy(
+          docs.rows
+            .filter((d): boolean => {
+              return d.id.includes(bookName) && d.id.includes('breaks');
+            })
+            .map(
+              (d): CouchDoc => {
+                return { id: d.id, rev: d.value.rev };
+              },
+            ),
+          (a): number => {
+            return parseInt(a.id.split('-')[2], 10);
+          },
+        );
+
+        const bulkGetDocs = await this.databaseService.bulkGet(ids);
+        if (bulkGetDocs) {
+          const exportText = `<?xml version="1.0" encoding="UTF-8"?>
+          <testament data-content-type="overlay-break" lang="eng">
+            ${bulkGetDocs.results
+              .map((r): {
+                _id: string;
+                _rev: string | undefined;
+                verseBreaks: {
+                  _id: string;
+                  breaks: FormatGroup[];
+                }[];
+              } => {
+                return (r.docs[0] as any).ok as {
+                  _id: string;
+                  _rev: string | undefined;
+                  verseBreaks: {
+                    _id: string;
+                    breaks: FormatGroup[];
+                  }[];
+                };
+              })
+              .map((cNotes): string => {
+                return this.chapterBreaksToString(cNotes);
+              })
+              .join('\n')}
+              </testament>`;
+
+          const blob = new Blob([exportText], {
+            type: 'text/html;charset=utf=8',
+          });
+          saveAs(blob, `${bookName}.html`);
+          // console.log(blob);
+          // console.log(exportText);
+        }
+      }
+    }
+  }
+  public chapterBreaksToString(cNotes: {
+    _id: string;
+    _rev: string | undefined;
+    verseBreaks: {
+      _id: string;
+      breaks: FormatGroup[];
+    }[];
+  }): string {
+    let chapterNotesString = `<chapter id="${cNotes._id.replace(
+      'notes',
+      'chapter',
+    )}">`;
+    if (cNotes.verseBreaks) {
+      chapterNotesString = `${chapterNotesString} ${cNotes.verseBreaks
+        .map((verseBreak): string => {
+          return `<verse-breaks id="${verseBreak._id}">${this.breaksToString(
+            verseBreak.breaks,
+          )}</verse-breaks>`;
+        })
+        .join('')}</chapter>`;
+    }
+    return chapterNotesString;
+  }
+  public breaksToString(breaks: FormatGroup[]): string {
+    return breaks
+      .map((brk): string => {
+        const elementName = this.getBreakElementName(brk.formatGroupType);
+        if (elementName) {
+          return `<${elementName} ${
+            brk.offsets ? `offsets=${brk.offsets}` : ''
+          }></${elementName}>`;
+        }
+        return '';
+      })
+      .join('\n');
+    return '';
+  }
+  public getBreakElementName(
+    formatGroupType: FormatGroupType | undefined,
+  ): string | undefined {
+    switch (formatGroupType) {
+      case FormatGroupType.Para: {
+        return 'Para'.toLowerCase();
+      }
+      case FormatGroupType.ParaGap: {
+        return 'ParaGap'.toLowerCase();
+      }
+      case FormatGroupType.Line: {
+        return 'Line'.toLowerCase();
+      }
+      case FormatGroupType.LineGap: {
+        return 'LineGap'.toLowerCase();
+      }
+      case FormatGroupType.BlockGap: {
+        return 'BlockGap'.toLowerCase();
+      }
+      case FormatGroupType.Block: {
+        return 'Block'.toLowerCase();
+      }
+
+      default:
+        break;
+    }
+    return undefined;
   }
   public chapterNotesToString(cNotes: ChapterNotes): string {
     let chapterNotesString = `<chapter id="${cNotes._id.replace(

@@ -19,7 +19,7 @@ import { flatten } from 'lodash';
 })
 export class HeaderDropdownComponent implements OnInit {
   public showOrphanNotes: boolean = false;
-  preparingHarmony: boolean;
+  public preparingHarmony: boolean;
   public constructor(
     public saveState: SaveStateService,
     public chapterService: ChapterService,
@@ -93,8 +93,9 @@ export class HeaderDropdownComponent implements OnInit {
   public async showOrphanRefs(): Promise<void> {
     console.log('hgg');
 
-    if (this.chapterService.notes)
+    if (this.chapterService.notes) {
       this.visibilityService.showMissingOffsets(this.chapterService.notes);
+    }
   }
 
   public async save(): Promise<void> {
@@ -117,5 +118,9 @@ export class HeaderDropdownComponent implements OnInit {
    */
   public async exportBook(): Promise<void> {
     await this.exportService.exportBook();
+  }
+
+  public async exportBreaks(): Promise<void> {
+    await this.exportService.exportBreaks();
   }
 }

@@ -1,4 +1,4 @@
-import { sortBy, uniq, flatten } from 'lodash';
+import { sortBy, uniq } from 'lodash';
 import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
@@ -12,23 +12,12 @@ import { ParamService, ChapterParams } from '../../services/param.service';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { ChapterNotes } from '../../../../../notes/src/main';
 import { PageStateService } from '../../services/page-state.service';
-import {
-  parseOffsets,
-  Verse,
-  CouchDoc,
-  Note,
-  VerseNotes,
-} from '../../../../../shared/src/shared';
+import { parseOffsets, Verse } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
 import {
-  VerseBreaks,
-  FakeVerseBreaks,
-} from '../../../../../shared/src/models/Verse';
-import {
-  FormatGroupPart,
   FormatGroupSegment,
   FormatGroup,
 } from '../../../../../shared/src/models/format_groups/FormatGroup';
@@ -198,7 +187,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapterNotes,
                   this.chapterVerses,
                   this.chapter,
-                  language,
                   false,
                   true,
                 );
@@ -290,7 +278,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     this.chapterNotes,
                     this.chapterVerses,
                     this.chapter,
-                    language,
                   );
 
                   if (this.chapterVerses.verses) {
@@ -434,7 +421,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
     chapterNotes: ChapterNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
-    language: string,
     newPage: boolean = true,
     pageStateActive: boolean = false,
   ): Promise<void> {
