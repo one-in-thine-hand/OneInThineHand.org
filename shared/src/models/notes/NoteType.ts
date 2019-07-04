@@ -34,13 +34,15 @@ export const enum NoteCategory {
 }
 
 export enum NoteType {
-  PRINT = 0,
-  HARMONY = 1,
-  TRANSLATION = 2,
-  TEST = 3,
-  EXISTING = 4,
-  TC = 5,
+  PRINT,
+  HARMONY,
+  JST,
   QUO,
+  Phrasing,
+  TRANSLATION,
+  TEST,
+  EXISTING,
+  TC,
 }
 
 export class NoteTypeConvert {
@@ -66,10 +68,24 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     visible: true,
   },
   {
+    noteType: NoteType.JST,
+    className: 'overlay-jst',
+    shortName: 'JST',
+    longName: 'JST',
+    visible: true,
+  },
+  {
     noteType: NoteType.QUO,
     className: 'overlay-quo',
     shortName: 'QUO',
     longName: 'Quotation',
+    visible: true,
+  },
+  {
+    noteType: NoteType.Phrasing,
+    className: 'overlay-phr',
+    shortName: 'PHR',
+    longName: 'Phrasing',
     visible: true,
   },
   {
