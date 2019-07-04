@@ -30,9 +30,9 @@
     name="note-ref"
     id=""
     rows="1"
-    [(ngModel)]="note.offsets"
     (input)="offsetsInput($event, note)"
-  ></textarea>
+    >{{ note.offsets }}</textarea
+  >
   <span class="edit-buttons" *ngIf="tempSettingsService.editMode"
     ><button class=" btn btn-outline-primary" (click)="edit = !edit">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

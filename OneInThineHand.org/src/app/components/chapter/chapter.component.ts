@@ -247,7 +247,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                       if (b) {
                         verse.breakFormatGroups = b.breaks;
                       }
-                      console.log(b);
+                      // console.log(b);
                     });
                   }
 

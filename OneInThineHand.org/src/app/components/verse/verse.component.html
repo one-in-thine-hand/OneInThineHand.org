@@ -12,7 +12,7 @@
     [ngClass]="{ 'kjv-verse': verse.kjvVerse }"
   >
     <ng-container *ngFor="let formatGroup of this.getFormatGroups()">
-      <span [ngSwitch]="formatGroup.formatGroupType">
+      <ng-container [ngSwitch]="formatGroup.formatGroupType">
         <app-format-group-segment
           class="format-group-segment"
           *ngSwitchCase="10"
@@ -90,7 +90,7 @@
           [formatTags]="verse.formatTags"
           *ngSwitchDefault
         ></app-format-group>
-      </span>
+      </ng-container>
     </ng-container>
   </verse>
 </kjv-container>

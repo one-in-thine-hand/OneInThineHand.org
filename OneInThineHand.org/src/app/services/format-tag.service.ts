@@ -58,8 +58,6 @@ export class FormatTagService {
       this.saveStateService.data.blockVisible ||
       this.saveStateService.data.paragraphsVisible
     ) {
-      console.log('asodifjaoisdfjaoidjsfoiajsdfoiajsdfoiajsdfoiajsdf');
-
       try {
         verses.map((verse): void => {
           this.buildOffsets(
