@@ -84,6 +84,10 @@ kjv-container {
   .para {
     display: inline;
     margin-left: 1em;
+    // &::before {
+    //   content: '\A';
+    //   white-space: pre;
+    // }
   }
   .para-gap {
     display: block;
@@ -103,8 +107,21 @@ kjv-container {
   .block {
     margin-left: 2em;
     font-size: 15.5px;
+    display: block;
   }
   .block-gap {
     display: block;
+  }
+}
+
+.plain {
+}
+
+@mixin fakebre {
+  &::before,
+  &::after {
+    content: '\A';
+    white-space: pre;
+    // display: block;
   }
 }

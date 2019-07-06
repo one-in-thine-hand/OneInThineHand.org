@@ -38,10 +38,10 @@ export class HarmonyComponent implements OnInit {
             if (!lang) {
               this.router.navigateByUrl('/');
             } else {
-              console.log(`${lang}-${book}-${chap}-harmony`);
+              console.log(`${book}-${chap}-harmony`);
 
               this.harmony = (await this.databaseService.getDatabaseItem(
-                `${book}-${chap}-harmony`,
+                `${lang}-${book}-${chap}-chapter-harmony`,
               )) as Harmony;
 
               console.log(this.harmony);
@@ -83,33 +83,46 @@ export class HarmonyComponent implements OnInit {
       await Promise.all(p);
 
       flat.map((f): void => {
-        f.verse = this.verses.find((v): boolean => {
-          return v._id === `${f.verseRef}-verse`;
-        });
-        console.log(f);
+        f.verseRef
+          ? f.verseRef.map((vRef): Verse | undefined => {
+              return this.verses.find((v): boolean => {
+                return v._id === `${vRef}-verse`;
+              });
+            })
+          : [];
+        f.verse;
       });
-      await this.formatTagService.resetVerses(flat.map(f => {
-        return f.verse;
-      }) as Verse[]);
+
+      const vs = flatten(
+        flat.map((f): Verse[] => {
+          return f.verse ? f.verse : [];
+        }),
+      );
+      await this.formatTagService.resetVerses(vs);
+
+      // await this.formatTagService.resetVerses(flatten(flat
+      //   .map((f): Verse[] | undefined => {
+      //     return f.verse;
+      //   })
+      //   .filter(f => {
+      //     return f !== undefined;
+      //   }) as Verse[]) as Verse[]);
       console.log(this.verses);
 
       // console.log(flat);
     }
   }
   private getChapterId(flat: HarmonyCell[]): string[] {
-    const i = flat
-      .map((f): string | undefined => {
-        return f.verseRef;
-      })
-      .filter((f): boolean => {
-        return f !== undefined;
-      })
-      .map((f: string): string => {
-        const ids = f.split('-');
-        // console.log(ids.pop());
-        ids.pop();
-        return `${ids.join('-')}-chapter-verses`;
-      });
+    const i = flatten(
+      flat.map((f): string[] => {
+        return f.verseRef ? f.verseRef : [];
+      }),
+    ).map((f: string): string => {
+      const ids = f.split('-');
+      // console.log(ids.pop());
+      ids.pop();
+      return `${ids.join('-')}-chapter-verses`;
+    });
     return uniq(i);
   }
 }

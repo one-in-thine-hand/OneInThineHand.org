@@ -24,16 +24,18 @@ function getTextContent(
     : undefined;
 }
 function getHarmonyCell(element: Element): HarmonyCell {
-  const sortKey = getTextContent(element, 'sortKey');
-  const verseRef = element.querySelector('verseRef');
-
-  if (sortKey) {
-    return {
-      verse: undefined,
-      sortKey: sortKey,
-      verseRef: verseRef ? verseRef.id : undefined,
-    };
-  }
+  // const sortKey = getTextContent(element, 'sortKey');
+  // const verseRef = element.querySelector('verseRef');
+  const verseRefs = Array.from(element.querySelectorAll('verseRef')).map(
+    (verseRefElement): string => {
+      return verseRefElement.id;
+    },
+  );
+  return {
+    verse: undefined,
+    sortKey: undefined,
+    verseRef: verseRefs ? verseRefs : undefined,
+  };
 
   throw '';
 }
@@ -54,7 +56,7 @@ function getHarmonyRow(harmony: Element): HarmonyRow[] {
 
 async function getHarmonyChapters(document: Document): Promise<Harmony[]> {
   return await Promise.all(
-    Array.from(document.querySelectorAll('body')).map(
+    Array.from(document.querySelectorAll('.body-block')).map(
       async (harmony): Promise<Harmony> => {
         const title = getTextContent(document, 'title');
         const titleNumber = getTextContent(harmony, 'p.title-number');
@@ -87,6 +89,8 @@ async function main(): Promise<void> {
       try {
         const file = await readFile(fileName);
         const document = new JSDOM(file).window.document;
+
+        // console.log(document);
 
         const harmonies = await getHarmonyChapters(document);
         // console.log(harmonies);

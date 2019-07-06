@@ -4,6 +4,7 @@ dependencies:
   fast-glob: 3.0.3
   fs-extra: 8.1.0
   jsdom: 15.1.1
+  lodash: 4.17.11
   tslib: 1.9.3
 devDependencies:
   '@types/jest': 23.3.14
@@ -4281,6 +4282,7 @@ specifiers:
   fs-extra: ^8.0.1
   jest: ~23.6.0
   jsdom: ^15.1.1
+  lodash: ^4.17.11
   prettier: 1.15.3
   rimraf: ^2.6.3
   ts-jest: ~23.10.5

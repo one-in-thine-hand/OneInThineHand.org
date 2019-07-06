@@ -27,7 +27,7 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "start": " tsc && node --abort-on-uncaught-exception --max-old-space-size=16000 build/src/main.js"
+    "start": " tsc && node --abort-on-uncaught-exception --max-old-space-size=16000 build/harmony/src/main.js"
   },
   "author": "Jared Parkinson <jared@parkinson.im>",
   "license": "Apache-2.0",
@@ -37,6 +37,7 @@
     "fast-glob": "^3.0.2",
     "fs-extra": "^8.0.1",
     "jsdom": "^15.1.1",
+    "lodash": "^4.17.11",
     "tslib": "~1.9.3"
   }
 }

@@ -1,4 +1,4 @@
-import { Verse } from '../../shared/src/shared';
+import { Verse } from '../../shared/src/models/Verse';
 
 // export abstract class HarmonyElement {
 //   public verseTitle: string;
@@ -27,9 +27,9 @@ import { Verse } from '../../shared/src/shared';
 // }
 
 export class HarmonyCell {
-  public sortKey: string;
-  public verseRef: string | undefined;
-  public verse: Verse | undefined;
+  public sortKey?: string;
+  public verseRef: string[] | undefined;
+  public verse: Verse[] | undefined;
 }
 
 export class HarmonyRow {

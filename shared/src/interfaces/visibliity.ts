@@ -1,5 +1,5 @@
 export interface Visibility {
-  visible: boolean | undefined;
+  visible?: boolean;
 }
 
 export function getVisible<T extends Visibility>(items: T[]): T[] {
