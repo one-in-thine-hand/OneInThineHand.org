@@ -8,6 +8,8 @@ import {
   VerseNotes,
   FormatGroup,
   FormatTagType,
+  expandOffsets,
+  parseOffsets,
 } from '../../../../shared/src/shared';
 import {
   FakeVerseBreaks,
@@ -153,26 +155,33 @@ export class SaveService {
     } else {
       vBreaks = this.generateBreaks();
     }
-    console.log(vBreaks);
+    // console.log(vBreaks);
 
     // const vBreaks = cloneDeep(this.chaterService.chapterBreaks);
+
+    console.log('Save Fake Verses');
 
     if (
       this.chaterService.chapterVerses &&
       this.chaterService.chapterVerses.verses
     ) {
       this.chaterService.chapterVerses.verses.map((verse): void => {
+        // console.log(verse.fakeVerseBreak);
+
         if (vBreaks) {
           const brk = vBreaks.verseBreaks.find((b): boolean => {
             return (
-              b._id !== undefined && b._id.replace('-breaks', '') === verse._id
+              b._id !== undefined &&
+              b._id.replace('-breaks', '-verse') === verse._id
             );
           });
+          // console.log(brk);
+
           if (brk && verse.fakeVerseBreak) {
             brk.breaks = this.convertFormatTagsToFormatGroups(
               verse.fakeVerseBreak,
             );
-            console.log(brk.breaks);
+            // console.log(brk.breaks);
           } else {
             const a: {
               _id: string;
@@ -189,6 +198,40 @@ export class SaveService {
               a.breaks = verse.breakFormatGroups;
             }
           }
+
+          const mergedBreaks = vBreaks.verseBreaks.map((vB): {
+            _id: string;
+            breaks: FormatGroup[];
+          } => {
+            const brks: FormatGroup[] = [];
+            let lastBrk: FormatGroup | undefined;
+            vB.breaks.map((b): void => {
+              if (brks.length === 0) {
+                brks.push(b);
+                lastBrk = b;
+              } else {
+                if (
+                  lastBrk &&
+                  lastBrk.offsets === b.offsets &&
+                  (b.classList && !b.classList.includes('gap'))
+                ) {
+                  lastBrk.classList =
+                    lastBrk.classList && b.classList
+                      ? lastBrk.classList.concat(b.classList)
+                      : b.classList;
+                } else {
+                  brks.push(b);
+                  lastBrk = b;
+                }
+              }
+            });
+
+            return { _id: vB._id, breaks: brks };
+            // console.log(vB._id);
+            // console.log(brks);
+          });
+          vBreaks.verseBreaks = mergedBreaks;
+          // return;
         }
       });
 

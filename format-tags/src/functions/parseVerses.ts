@@ -440,7 +440,6 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
     verseElement.ownerDocument as Document,
     lang,
   );
-  console.log(chapterID);
 
   verse._id = `${chapterID.replace('chapter', '')}${
     verse.verseID.startsWith('p')
