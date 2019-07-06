@@ -212,13 +212,13 @@ export class PreprocessorService {
                       const notes = await this.noteProcessor.run(newDocument);
                       if (notes) {
                         notes.forEach((value, k): void => {
-                          if (notesMap.has(k) && value.notes) {
+                          if (notesMap.has(k) && value.verseNotes) {
                             const noteChapter = notesMap.get(k);
-                            if (noteChapter && noteChapter.notes) {
-                              value.notes.forEach((note): void => {
-                                if (noteChapter.notes) {
+                            if (noteChapter && noteChapter.verseNotes) {
+                              value.verseNotes.forEach((note): void => {
+                                if (noteChapter.verseNotes) {
                                   this.mergeSecondaryNotes(
-                                    noteChapter.notes,
+                                    noteChapter.verseNotes,
                                     note,
                                   );
                                 }

@@ -293,8 +293,8 @@ export class SaveService {
             if (this.chaterService.chapterNotes.save === true) {
               this.chaterService.chapterNotes.save = undefined;
               const temp = cloneDeep(this.chaterService.chapterNotes);
-              temp.notes = temp.notes
-                ? temp.notes.map(
+              temp.verseNotes = temp.verseNotes
+                ? temp.verseNotes.map(
                     (verseNotes): VerseNotes => {
                       verseNotes.notes = verseNotes.notes
                         ? verseNotes.notes.map(
@@ -307,7 +307,7 @@ export class SaveService {
                       return verseNotes;
                     },
                   )
-                : temp.notes;
+                : temp.verseNotes;
               await this.databaseService.updateDatabaseItem(temp);
               console.log('Finished');
             }

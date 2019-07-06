@@ -276,18 +276,21 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   //   }
                   // });
 
-                  await this.setChapterVariables(
-                    this.chapterNotes,
-                    this.chapterVerses,
-                    this.chapter,
-                  );
-
-                  if (this.chapterVerses.verses) {
-                    this.setHighlighting(
-                      chapterParams,
-                      this.chapterVerses.verses,
-                      language,
+                  try {
+                    await this.setChapterVariables(
+                      this.chapterNotes,
+                      this.chapterVerses,
+                      this.chapter,
                     );
+                    if (this.chapterVerses.verses) {
+                      this.setHighlighting(
+                        chapterParams,
+                        this.chapterVerses.verses,
+                        language,
+                      );
+                    }
+                  } catch (error) {
+                    console.log(error);
                   }
                 } catch (error) {
                   // console.log(error);
@@ -428,11 +431,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     if (!pageStateActive) {
       if (chapterNotes) {
-        await this.offsetService.expandNotes(chapterNotes.notes);
+        await this.offsetService.expandNotes(chapterNotes.verseNotes);
         if (chapterVerses && chapterVerses.verses) {
           this.chapterService.mergeVersesNotes(
             chapterVerses.verses,
-            chapterNotes.notes,
+            chapterNotes.verseNotes,
           );
         }
       }
@@ -456,17 +459,21 @@ export class ChapterComponent implements OnInit, OnDestroy {
       ? chapterVerses.verses
       : undefined;
     if (this.chapterNotes) {
-      this.chapterService.notes = this.chapterNotes.notes;
+      this.chapterService.notes = this.chapterNotes.verseNotes;
     }
     this.chapterService.chapterVerses = this.chapterVerses;
 
-    await this.getKJVRef(this.chapterVerses);
+    try {
+      // await this.getKJVRef(this.chapterVerses);
+    } catch (error) {
+      console.log(error);
+    }
     if (newPage) {
       await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
-    this.visibilityService.resetNoteVisibility(chapterNotes.notes);
+    this.visibilityService.resetNoteVisibility(chapterNotes.verseNotes);
   }
   public async getKJVRef(
     chapterVerses: ChapterVerses | undefined,
@@ -492,7 +499,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
         this.chapterService.kjvChapterVerse = new ChapterVerses();
         this.chapterService.kjvChapterVerse.verses = [];
         this.chapterService.kjvChapterNotes = new ChapterNotes();
-        this.chapterService.kjvChapterNotes.notes = [];
+        this.chapterService.kjvChapterNotes.verseNotes = [];
         const promises = uniq(
           kjvRefs.map((k): string => {
             const kSplit = k.split('-');
@@ -517,11 +524,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
             }
             if (
               this.chapterService.chapterNotes &&
-              this.chapterService.chapterNotes.notes &&
-              notes.notes
+              this.chapterService.chapterNotes.verseNotes &&
+              notes.verseNotes
             ) {
-              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
-                notes.notes,
+              this.chapterService.chapterNotes.verseNotes = this.chapterService.chapterNotes.verseNotes.concat(
+                notes.verseNotes,
               );
             }
 
@@ -561,100 +568,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
             }
           });
         }
-        // const asdf = uniq(
-        //   flatten(
-        //     chapterVerses.verses.map((verse): string[] => {
-        //       let kjvRefs: string[] = [];
-        //       if (verse.kjvRef) {
-        //         console.log(verse.kjvRef);
-        //         const kjvRefSubg = verse.kjvRef.map((k): string[] => {
-        //           return k.split('-');
-        //         });
-        //         kjvRefSubg.map((kjvRef): void => {
-        //           try {
-        //             kjvRefs.push(
-        //               `${kjvRef[0]}-${kjvRef[1]}-${kjvRef[2]}-chapter-verses`,
-        //             );
-        //           } catch (error) {
-        //             console.log(error);
-        //           }
-        //         });
-        //       }
-        //       if (verse.formatGroups) {
-        //         const moreKJVRefs = verse.formatGroups.map((formatGroup):
-        //           | string[]
-        //           | undefined => {
-        //           if ((formatGroup as FormatGroupPart).kjvRef !== undefined) {
-        //             const subKJVRefs = (formatGroup as FormatGroupPart).kjvRef;
-        //             if (subKJVRefs) {
-        //               return subKJVRefs
-        //                 .map((kjvRef): string | undefined => {
-        //                   try {
-        //                     return `${subKJVRefs[0]}-${subKJVRefs[1]}-${subKJVRefs[2]}-chapter-verses`;
-        //                   } catch (error) {
-        //                     return undefined;
-        //                   }
-        //                   // return (formatGroup as FormatGroupPart).kjvRef as string;
-        //                 })
-        //                 .filter((a): boolean => {
-        //                   return a !== undefined;
-        //                 }) as string[];
-        //             }
-        //           }
-        //         });
-        //         console.log(moreKJVRefs);
-        //         kjvRefs = kjvRefs.concat(
-        //           flatten((moreKJVRefs.filter((a): boolean => {
-        //             return a !== undefined;
-        //           }) as never) as string[]),
-        //         );
-        //       }
-        //       console.log(kjvRefs);
-        //       return uniq(kjvRefs);
-        //     }),
-        //   ),
-        // );
-        // if (asdf.length === 1) {
-        //   try {
-        //     this.chapterService.kjvChapterVerse = (await this.databaseService.getDatabaseItem(
-        //       asdf[0],
-        //     )) as ChapterVerses;
-        //     console.log(asdf);
-        //     this.chapterService.kjvChapterNotes = (await this.databaseService.getDatabaseItem(
-        //       asdf[0].replace('-chapter-verses', '-notes'),
-        //     )) as ChapterNotes;
-        //     await this.formatTagService.resetFormatTags(
-        //       this.chapterService.kjvChapterVerse,
-        //       this.chapterService.kjvChapterNotes,
-        //     );
-        //     console.log(this.chapterService.kjvChapterVerse);
-        //     if (this.chapterService.kjvChapterVerse.verses) {
-        //       this.chapterService.kjvChapterVerse.verses.map(
-        //         (kjvVerse): void => {
-        //           const verse =
-        //             this.chapterVerses && this.chapterVerses.verses
-        //               ? this.chapterVerses.verses.find((v): boolean => {
-        //                   return (
-        //                     v._id !== undefined &&
-        //                     v._id.replace('fra', 'eng') === kjvVerse._id
-        //                   );
-        //                 })
-        //               : undefined;
-        //           if (verse) {
-        //             if (!verse.kjvVerse) {
-        //               verse.kjvVerse = [];
-        //             }
-        //             verse.kjvVerse.push(kjvVerse);
-        //           }
-        //         },
-        //       );
-        //     }
-        //   } catch (error) {
-        //     console.log(error);
-        //   }
-        // } else if (asdf.length > 1) {
-        //   console.log(asdf);
-        // }
       }
     } catch (error) {
       console.log(error);

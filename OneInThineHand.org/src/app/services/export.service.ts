@@ -217,8 +217,8 @@ export class ExportService {
       'notes',
       'chapter',
     )}">`;
-    if (cNotes.notes) {
-      chapterNotesString = `${chapterNotesString} ${cNotes.notes
+    if (cNotes.verseNotes) {
+      chapterNotesString = `${chapterNotesString} ${cNotes.verseNotes
         .map((verseNote): string => {
           return `<verse-notes id="${verseNote._id}">${this.notesToString(
             verseNote.notes,

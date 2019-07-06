@@ -114,7 +114,7 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
 export class ChapterNotes {
   public _id: string;
   public _rev: string | undefined;
-  public notes: VerseNotes[] | undefined;
+  public verseNotes: VerseNotes[] | undefined;
   public save: boolean | undefined;
 }
 
@@ -167,7 +167,7 @@ export class NoteProcessor {
               },
             );
 
-          chapterNotes.notes = notes;
+          chapterNotes.verseNotes = notes;
 
           this.chapterNotesMap.set(chapterNotes._id, chapterNotes);
           this.notesMap.set(id, notes);

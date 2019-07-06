@@ -45,10 +45,10 @@ export class HistoryService {
           saveStateData: saveStateData,
           chapterVerses: cloneDeep(chapterVerses),
         });
-        if (chapterNotes.notes) {
-          chapterNotes.notes.map((n): void => {
-            if (s.chapterNotes.notes) {
-              const o = s.chapterNotes.notes.find((l): boolean => {
+        if (chapterNotes.verseNotes) {
+          chapterNotes.verseNotes.map((n): void => {
+            if (s.chapterNotes.verseNotes) {
+              const o = s.chapterNotes.verseNotes.find((l): boolean => {
                 return l._id === n._id;
               });
               if (o) {
@@ -89,10 +89,10 @@ export class HistoryService {
           saveStateData: saveStateData,
           chapterVerses: cloneDeep(chapterVerses),
         });
-        if (chapterNotes.notes) {
-          chapterNotes.notes.map((n): void => {
-            if (s.chapterNotes.notes) {
-              const o = s.chapterNotes.notes.find((l): boolean => {
+        if (chapterNotes.verseNotes) {
+          chapterNotes.verseNotes.map((n): void => {
+            if (s.chapterNotes.verseNotes) {
+              const o = s.chapterNotes.verseNotes.find((l): boolean => {
                 return l._id === n._id;
               });
               if (o) {
