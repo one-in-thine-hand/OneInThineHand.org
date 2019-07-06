@@ -1,6 +1,14 @@
+## <small>5.0.51 (2019-07-06)</small>
+
+* breaks ([238244c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/238244c))
+* Updated breaks ([a0afae0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a0afae0))
+
+
+
 ## <small>5.0.50 (2019-07-06)</small>
 
 * Note type update ([cf322ef](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/cf322ef))
+* v5.0.50 ([e9a604a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e9a604a))
 * Verse breaks editor may work again ([717579d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/717579d))
 
 
