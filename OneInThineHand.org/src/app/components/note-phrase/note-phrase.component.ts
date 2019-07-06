@@ -9,6 +9,7 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveService } from '../../services/save.service';
+import { scrollIntoView } from '../../scroll-into-view';
 
 @Component({
   selector: 'app-note-phrase',
@@ -56,9 +57,30 @@ export class NotePhraseComponent implements OnInit {
     }
     return undefined;
   }
+
+  private scrollVerseIntoView(): void {
+    try {
+      if (this.verseNotes._id) {
+        const verseElement = document.querySelector(
+          `#${(this.verseNotes._id as string).replace('-notes', '')}`,
+        );
+
+        if (verseElement) {
+          verseElement.scrollIntoView({ block: 'center' });
+        }
+        // scrollIntoView(
+        //   `#${(this.verseNotes._id as string).replace('-notes', '')}`,
+        //   {},
+        // );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();
 
+    this.scrollVerseIntoView();
     if (selection) {
       try {
         await this.addOffsets(selection, secondaryNote);

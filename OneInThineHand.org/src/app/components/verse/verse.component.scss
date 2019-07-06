@@ -1,12 +1,12 @@
 verse {
-  margin-bottom: 7px;
+  // margin-bottom: 7px;
   &.highlight {
     padding: 0 0 6pt 5px;
-    border-left: 3px solid #f68d2e;
+    border-left: 2.5px solid #f68d2e;
   }
   &.context:not(.highlight) {
     padding: 0 0 6pt 5px;
-    border-left: 3px solid #2ca1a5;
+    border-left: 2.5px solid #2ca1a5;
   }
   display: block;
 
@@ -98,6 +98,8 @@ kjv-container {
   .line {
     margin-left: 1em;
     display: block;
+    padding-left: 22px;
+    text-indent: -22px;
   }
   .line-gap {
     display: block;
@@ -124,4 +126,8 @@ kjv-container {
     white-space: pre;
     // display: block;
   }
+}
+app-format-group.line:nth-child(1) {
+  margin-top: -1.5em;
+  // line-height: 1;
 }
