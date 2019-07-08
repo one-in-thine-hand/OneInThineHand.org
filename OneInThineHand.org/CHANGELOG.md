@@ -1,3 +1,8 @@
+## <small>5.0.53 (2019-07-08)</small>
+
+
+
+
 ## <small>5.0.52 (2019-07-08)</small>
 
 * Added support for dual language switch ([162c0c5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/162c0c5))
@@ -6,6 +11,7 @@
 * JST now displays ([7d130ac](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7d130ac))
 * More side by side work ([8e297de](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8e297de))
 * Reverting back to old note type ([f7b503f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f7b503f))
+* v5.0.52 ([7a56889](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7a56889))
 * Working on integrating new format ([a90595d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a90595d))
 
 
