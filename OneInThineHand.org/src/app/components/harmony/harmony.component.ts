@@ -1,128 +1,117 @@
-import { Harmony, HarmonyCell } from '../../../../../harmony/src/Harmony';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
-import { CouchDoc, Verse } from '../../../../../shared/src/shared';
-import { DatabaseService } from '../../services/database.service';
-import { flatten, uniq } from 'lodash';
-import PQueue from 'p-queue/dist';
-import { FormatTagService } from '../../services/format-tag.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { sortBy } from 'lodash';
+
+import { Verse } from '../../../../../shared/src/shared';
+import { DatabaseService, DatabaseItem } from '../../services/database.service';
+import { FormatTagService } from '../../services/format-tag.service';
+import { MapShell, KJVVerseRef } from './map-shell';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-harmony',
   templateUrl: './harmony.component.html',
   styleUrls: ['./harmony.component.scss'],
 })
 export class HarmonyComponent implements OnInit {
-  public harmony: Harmony | undefined;
-  public harmonyDocQueue = new PQueue({ concurrency: 1 });
-  public verses: Verse[] = [];
+  public mapShell?: MapShell;
+  public mapShellDatabaseItems?: DatabaseItem[];
+  public safeHeader?: SafeHtml;
+  public verses?: Verse[];
+
   public constructor(
     public databaseService: DatabaseService,
     public formatTagService: FormatTagService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
+    public httpClient: HttpClient,
+    public domSanitizer: DomSanitizer,
   ) {}
-
   public async ngOnInit(): Promise<void> {
     this.databaseService.initReadingMode();
 
     this.activatedRoute.params.subscribe(
       async (params): Promise<void> => {
-        this.activatedRoute.queryParams.subscribe(
-          async (queryParams): Promise<void> => {
-            const chap = params['chapter'] as string;
-            const book = params['book'] as string;
-            const lang = queryParams['lang'] as string | undefined;
-            if (!lang) {
-              this.router.navigateByUrl('/');
-            } else {
-              console.log(`${book}-${chap}-harmony`);
+        const id = `${params['language']}-${params['book']}-${params['chapter']}-chapter-map-shell`;
+        console.log(id);
 
-              this.harmony = (await this.databaseService.getDatabaseItem(
-                `${lang}-${book}-${chap}-chapter-harmony`,
-              )) as Harmony;
+        this.mapShell = ((await this.databaseService.getDatabaseItem(
+          id,
+        )) as never) as MapShell;
 
-              console.log(this.harmony);
-              this.setHarmonVerse(this.harmony);
-            }
-          },
-        );
+        this.mapShellDatabaseItems = await this.getDataBaseItems(this.mapShell);
+        this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
+        if (this.verses && this.mapShell) {
+          if (this.mapShell.headerHtml) {
+            this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
+              this.mapShell.headerHtml,
+            );
+          }
+          await this.formatTagService.resetVerses(this.verses);
+          this.addVersesToMapShell(this.verses, this.mapShell);
+        }
       },
     );
   }
 
-  public async setHarmonVerse(hmy?: Harmony): Promise<void> {
-    if (hmy) {
-      const flat = flatten(
-        hmy.harmonyRows.map((row): HarmonyCell[] => {
-          return row.harmonyCells.map(
-            (cell): HarmonyCell => {
-              return cell;
-            },
-          );
-        }),
-      );
-      const chapterIDS = this.getChapterId(flat);
-      const p = chapterIDS.map(
-        async (id): Promise<void> => {
-          try {
-            const i = (await this.databaseService.getDatabaseItem(
-              id,
-            )) as ChapterVerses;
-            if (i && i.verses) {
-              this.verses = this.verses.concat(i.verses);
-            }
-            console.log(i);
-          } catch (error) {
-            console.log(error);
+  private addVersesToMapShell(verses: Verse[], mapShell: MapShell): void {
+    mapShell.mapShellRows.map((mapShellRow): void => {
+      mapShellRow.mapShellColumns.map((mapShellColumn): void => {
+        mapShellColumn.verses = [];
+        mapShellColumn.verseRefs.map((verseRef): void => {
+          let verse = verses.find((v): boolean => {
+            return v._id === verseRef.id;
+          });
+          if (verse && mapShellColumn.verses) {
+            mapShellColumn.verses.push(verse);
           }
-        },
-      );
-      await Promise.all(p);
 
-      flat.map((f): void => {
-        f.verseRef
-          ? f.verseRef.map((vRef): Verse | undefined => {
-              return this.verses.find((v): boolean => {
-                return v._id === `${vRef}-verse`;
-              });
-            })
-          : [];
-        f.verse;
+          if ((verseRef as KJVVerseRef).kjvRef) {
+            verse = verses.find((v): boolean => {
+              return v._id === (verseRef as KJVVerseRef).kjvRef;
+            });
+            if (verse && mapShellColumn.verses) {
+              mapShellColumn.verses.push(verse);
+            }
+          }
+          // console.log(verseRef);
+          // console.log(verse);
+        });
+        console.log(mapShellColumn.verses);
       });
-
-      const vs = flatten(
-        flat.map((f): Verse[] => {
-          return f.verse ? f.verse : [];
-        }),
-      );
-      await this.formatTagService.resetVerses(vs);
-
-      // await this.formatTagService.resetVerses(flatten(flat
-      //   .map((f): Verse[] | undefined => {
-      //     return f.verse;
-      //   })
-      //   .filter(f => {
-      //     return f !== undefined;
-      //   }) as Verse[]) as Verse[]);
-      console.log(this.verses);
-
-      // console.log(flat);
-    }
-  }
-  private getChapterId(flat: HarmonyCell[]): string[] {
-    const i = flatten(
-      flat.map((f): string[] => {
-        return f.verseRef ? f.verseRef : [];
-      }),
-    ).map((f: string): string => {
-      const ids = f.split('-');
-      // console.log(ids.pop());
-      ids.pop();
-      return `${ids.join('-')}-chapter-verses`;
     });
-    return uniq(i);
+  }
+
+  private extractVersesFromDatabaseItems(databaseItems: DatabaseItem[]): void {
+    const chapterVerses = databaseItems
+      .map((databaseItem): DatabaseItem | undefined => {
+        if ((databaseItem as ChapterVerses).verses !== undefined) {
+          return databaseItem;
+        }
+        return undefined;
+      })
+      .filter((databaseItem): boolean => {
+        return databaseItem !== undefined;
+      }) as ChapterVerses[];
+    chapterVerses.map((chapterVerse): void => {
+      if (!this.verses) {
+        this.verses = [];
+      }
+      this.verses = this.verses.concat(
+        chapterVerse.verses ? chapterVerse.verses : [],
+      );
+    });
+    console.log(this.verses);
+  }
+
+  private async getDataBaseItems(mapShell: MapShell): Promise<DatabaseItem[]> {
+    try {
+      return (await this.databaseService.bulkGetByIDs(
+        mapShell.databaseIDS,
+      )) as DatabaseItem[];
+    } catch (error) {
+      return [];
+    }
   }
 }

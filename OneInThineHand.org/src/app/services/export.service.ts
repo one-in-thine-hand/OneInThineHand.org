@@ -11,6 +11,7 @@ import {
   NoteTypeConverts,
   FormatGroup,
   FormatGroupType,
+  CouchDocGet,
 } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { saveAs } from 'file-saver';
@@ -22,6 +23,59 @@ export class ExportService {
     public chapterService: ChapterService,
     public databaseService: DatabaseService,
   ) {}
+  public breaksToString(breaks: FormatGroup[]): string {
+    return breaks
+      .map((brk): string => {
+        const elementName = this.getBreakElementName(brk.formatGroupType);
+        if (elementName) {
+          return `<${elementName} ${
+            brk.offsets ? `offsets=${brk.offsets}` : ''
+          }></${elementName}>`;
+        }
+        return '';
+      })
+      .join('\n');
+    return '';
+  }
+  public chapterBreaksToString(cNotes: {
+    _id: string;
+    _rev: string | undefined;
+    verseBreaks: {
+      _id: string;
+      breaks: FormatGroup[];
+    }[];
+  }): string {
+    let chapterNotesString = `<chapter id="${cNotes._id.replace(
+      'notes',
+      'chapter',
+    )}">`;
+    if (cNotes.verseBreaks) {
+      chapterNotesString = `${chapterNotesString} ${cNotes.verseBreaks
+        .map((verseBreak): string => {
+          return `<verse-breaks id="${verseBreak._id}">${this.breaksToString(
+            verseBreak.breaks,
+          )}</verse-breaks>`;
+        })
+        .join('')}</chapter>`;
+    }
+    return chapterNotesString;
+  }
+  public chapterNotesToString(cNotes: ChapterNotes): string {
+    let chapterNotesString = `<chapter id="${cNotes._id.replace(
+      'notes',
+      'chapter',
+    )}">`;
+    if (cNotes.notes) {
+      chapterNotesString = `${chapterNotesString} ${cNotes.notes
+        .map((verseNote): string => {
+          return `<verse-notes id="${verseNote._id}">${this.notesToString(
+            verseNote.notes,
+          )}</verse-notes>`;
+        })
+        .join('')}</chapter>`;
+    }
+    return chapterNotesString;
+  }
 
   /**
    * exportBook
@@ -39,7 +93,7 @@ export class ExportService {
               return d.id.includes(bookName) && d.id.includes('note');
             })
             .map(
-              (d): CouchDoc => {
+              (d): CouchDocGet => {
                 return { id: d.id, rev: d.value.rev };
               },
             ),
@@ -97,7 +151,7 @@ export class ExportService {
               return d.id.includes(bookName) && d.id.includes('breaks');
             })
             .map(
-              (d): CouchDoc => {
+              (d): CouchDocGet => {
                 return { id: d.id, rev: d.value.rev };
               },
             ),
@@ -144,43 +198,6 @@ export class ExportService {
       }
     }
   }
-  public chapterBreaksToString(cNotes: {
-    _id: string;
-    _rev: string | undefined;
-    verseBreaks: {
-      _id: string;
-      breaks: FormatGroup[];
-    }[];
-  }): string {
-    let chapterNotesString = `<chapter id="${cNotes._id.replace(
-      'notes',
-      'chapter',
-    )}">`;
-    if (cNotes.verseBreaks) {
-      chapterNotesString = `${chapterNotesString} ${cNotes.verseBreaks
-        .map((verseBreak): string => {
-          return `<verse-breaks id="${verseBreak._id}">${this.breaksToString(
-            verseBreak.breaks,
-          )}</verse-breaks>`;
-        })
-        .join('')}</chapter>`;
-    }
-    return chapterNotesString;
-  }
-  public breaksToString(breaks: FormatGroup[]): string {
-    return breaks
-      .map((brk): string => {
-        const elementName = this.getBreakElementName(brk.formatGroupType);
-        if (elementName) {
-          return `<${elementName} ${
-            brk.offsets ? `offsets=${brk.offsets}` : ''
-          }></${elementName}>`;
-        }
-        return '';
-      })
-      .join('\n');
-    return '';
-  }
   public getBreakElementName(
     formatGroupType: FormatGroupType | undefined,
   ): string | undefined {
@@ -211,22 +228,6 @@ export class ExportService {
         break;
     }
     return undefined;
-  }
-  public chapterNotesToString(cNotes: ChapterNotes): string {
-    let chapterNotesString = `<chapter id="${cNotes._id.replace(
-      'notes',
-      'chapter',
-    )}">`;
-    if (cNotes.notes) {
-      chapterNotesString = `${chapterNotesString} ${cNotes.notes
-        .map((verseNote): string => {
-          return `<verse-notes id="${verseNote._id}">${this.notesToString(
-            verseNote.notes,
-          )}</verse-notes>`;
-        })
-        .join('')}</chapter>`;
-    }
-    return chapterNotesString;
   }
   public notesToString(notes: Note[] | undefined): string {
     if (notes) {

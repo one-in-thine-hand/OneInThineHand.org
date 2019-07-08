@@ -70,7 +70,7 @@ export {
 
 export { sortNotes } from './functions/sortNotes';
 
-export { CouchDocGet as CouchDoc } from './interfaces/CouchDoc';
+export { CouchDocGet, CouchDoc } from './interfaces/CouchDoc';
 export {
   NavigationItem,
   flattenNavigationItems,

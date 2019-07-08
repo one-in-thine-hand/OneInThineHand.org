@@ -14,6 +14,10 @@ const routes: Routes = [
     component: HarmonyComponent,
   },
   {
+    path: ':language/:book/:chapter',
+    component: HarmonyComponent,
+  },
+  {
     path: 'harmony',
     component: HarmonyComponent,
   },

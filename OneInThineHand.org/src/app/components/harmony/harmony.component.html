@@ -1,7 +1,61 @@
-<ng-container *ngIf="harmony && this.harmony.harmonyRows">
-  <harmony-row *ngFor="let row of this.harmony.harmonyRows">
-    <harmony-cell *ngFor="let col of row.harmonyCells"
-      ><app-verse *ngFor="let v of col.verse" [verse]="v"></app-verse
-    ></harmony-cell>
-  </harmony-row>
-</ng-container>
+<chapter-parent>
+  <chapter-grid class="chapter-grid">
+    <div style=" user-select: none;"></div>
+    <div
+      class="left-chapter-nav-btn chapter-nav-btn"
+      style=" user-select: none;"
+    >
+      <a [href]="chapter.previousPage" *ngIf="chapter">
+        <i
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
+            <path fill="none" d="M0 0h24v24H0z" />
+          </svg> </i
+      ></a>
+    </div>
+    <map-shell>
+      <ng-container *ngIf="this.mapShell">
+        <header
+          class="map-shell"
+          *ngIf="this.safeHeader"
+          [innerHTML]="this.safeHeader"
+        ></header>
+        <map-shell-row *ngFor="let mapShellRow of this.mapShell.mapShellRows">
+          <map-shell-column
+            *ngFor="let mapShellColumn of mapShellRow.mapShellColumns"
+          >
+            <ng-container *ngIf="mapShellColumn.verses">
+              <app-verse
+                *ngFor="let verse of mapShellColumn.verses"
+                [verse]="verse"
+              ></app-verse>
+            </ng-container>
+          </map-shell-column>
+        </map-shell-row>
+      </ng-container>
+    </map-shell>
+    <div
+      class="right-chapter-nav-btn chapter-nav-btn"
+      style=" user-select: none;"
+    >
+      <a [href]="chapter.nextPage" *ngIf="chapter">
+        <i>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z" />
+            <path fill="none" d="M0 0h24v24H0z" />
+          </svg> </i
+      ></a>
+    </div>
+    <div style=" user-select: none;"></div>
+  </chapter-grid>
+</chapter-parent>
