@@ -86,7 +86,7 @@ export class HarmonyComponent implements OnInit {
           // console.log(verseRef);
           // console.log(verse);
         });
-        console.log(mapShellColumn.verses);
+        // console.log(mapShellColumn.verses);
       });
     });
   }

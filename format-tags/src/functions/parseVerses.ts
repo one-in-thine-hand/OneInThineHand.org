@@ -26,7 +26,7 @@ import {
   getChapterID,
   getLanguage,
 } from '../../../shared/src/functions/getFormatTagType';
-import { getKJVRef } from './addFormatTextGroup';
+// import { getKJVRef } from './addFormatTextGroup';
 
 // import { getID, getLanguage } from '../../../oith.shared/src/functions';
 
@@ -384,6 +384,12 @@ function buildFormatTag(
     }
   } else {
     const newClassList = classList.concat(getFormatTagTypeFromNode(childNode));
+    if (
+      childNode.nodeName.toLowerCase() === 'deletion' ||
+      childNode.nodeName.toLowerCase() === 'insertion'
+    ) {
+      //  newClassList.push( childNode.nodeName.toLowerCase());
+    }
     Array.from(childNode.childNodes).map(
       (childNode2): void => {
         buildFormatTag(childNode2, formatTags, newClassList, count);
@@ -441,19 +447,21 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
     lang,
   );
 
-  verse._id = `${chapterID.replace('chapter', '')}${
+  verse._id = `${chapterID.replace('chapter', '')}-${
     verse.verseID.startsWith('p')
       ? verse.verseID.replace('p', '')
       : verse.verseID
-  }-verse`;
-  if (lang === 'fra') {
-    verse.kjvRef = getKJVRef(verseElement, verse._id);
-  }
-  verse.noteID = `${chapterID.replace('chapter', '')}${
+  }-verse`.replace('--', '-');
+  // if (lang === 'fra') {
+  //   verse.kjvRef = getKJVRef(verseElement, verse._id);
+  // }
+  verse.noteID = `${chapterID.replace('chapter', '')}-${
     verse.verseID.startsWith('p')
       ? verse.verseID.replace('p', '')
       : verse.verseID
-  }-verse-notes`;
+  }-verse-notes`
+    .replace('jst-', 'jst_')
+    .replace('--', '-');
   // console.log(id);
 
   const formatGroups = await queryFormatGroups(verseElement, verse);
@@ -481,6 +489,20 @@ async function parseVerse(verseElement: Element): Promise<Verse | undefined> {
   return verse;
 }
 
+async function fixJSTIds(verses: Verse[], document: Document): Promise<void> {
+  const lang = await getLanguage(document);
+  verses.map(
+    (verse): void => {
+      if (verse._id && verse._id.includes('jst-')) {
+        verse._id = verse._id.replace('jst-', 'jst_');
+        verse._id = !verse._id.startsWith(lang)
+          ? `${lang}-${verse._id}`
+          : verse._id;
+      }
+    },
+  );
+}
+
 export async function parseVerses(document: Document): Promise<Verse[]> {
   await normalizeCharacterCounts(document);
   // if (!(await verifyVerseFlatness(document))) {
@@ -502,5 +524,6 @@ export async function parseVerses(document: Document): Promise<Verse[]> {
       return verse !== undefined;
     },
   ) as Verse[];
+  await fixJSTIds(verses, document);
   return verses;
 }

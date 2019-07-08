@@ -203,6 +203,8 @@ export const enum FormatTagType {
   Plain,
   BlockGap,
   Para,
+  insertion,
+  deletion,
 }
 
 export const enum Optional {

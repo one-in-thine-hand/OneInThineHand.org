@@ -1,9 +1,5 @@
-import {
-  FormatTagType,
-  DisplayAs,
-  FormatTagTypeOptions,
-  Optional,
-} from '../shared';
+import { FormatTagType, DisplayAs, Optional } from '../shared';
+import { FormatTagTypeOptions } from '../enums/enums';
 
 export const verseSelectors: string[] = [
   'p.verse',
@@ -75,6 +71,18 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     formatTagType: FormatTagType.entry,
     optional: Optional.NEVER,
     displayAs: DisplayAs.NEVER,
+  },
+  {
+    className: 'insertion',
+    formatTagType: FormatTagType.insertion,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
+    className: 'deletion',
+    formatTagType: FormatTagType.deletion,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
   },
   {
     className: 'closing',

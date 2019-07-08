@@ -15,6 +15,7 @@ export function getFormatTagType(
 export function getFormatTagTypeFromNode(node: Node): FormatTagType[] {
   try {
     const classList = Array.from((node as Element).classList);
+    classList.push(node.nodeName.toLowerCase());
     return classList
       .map(
         (cl): FormatTagType | undefined => {
@@ -84,6 +85,19 @@ export function getElementAttribute(
   }
   throw 'Attribute not found';
 }
+export const specialChapterIDs = [
+  'bofm-eight',
+  'bofm-bofm-title',
+  'bofm-explanation',
+  'bofm-illustrations',
+  'bofm-introduction',
+  'bofm-js',
+  'bofm-three',
+  'bofm-title-page',
+  'pgp-introduction',
+  'pgp-title-page',
+  'triple-title-page',
+];
 
 export async function getChapterID(
   document: Document,
@@ -101,16 +115,18 @@ export async function getChapterID(
       return id.startsWith(bookName.chapterStartsWith);
     },
   );
-
   if (book) {
     id = `${language}-${id.replace(
       book.chapterStartsWith,
       book.startsWith,
     )}-chapter`;
+  } else if (specialChapterIDs.includes(id)) {
+    return `${language}-${id.replace(/\-/g, '_')}-chapter`;
   }
-  // console.log(`${id} - ${book ? book.startsWith : 'nothing'}`);
+
   return id;
 }
+
 export async function getLanguage(document: Document): Promise<string> {
   return getElementAttribute(document, 'html', 'lang', new RegExp(/.+/g));
 }

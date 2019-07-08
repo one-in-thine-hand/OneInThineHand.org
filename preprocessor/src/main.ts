@@ -93,7 +93,7 @@ async function processScriptureFiles(
         count = count + 1;
 
         console.log(`${count}/${totalCount}`);
-
+ 
         // console.log(verses);
         // console.log(scriptureFile);
       } catch (error) {
