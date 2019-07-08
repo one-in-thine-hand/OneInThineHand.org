@@ -431,11 +431,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     if (!pageStateActive) {
       if (chapterNotes) {
-        await this.offsetService.expandNotes(chapterNotes.verseNotes);
+        await this.offsetService.expandNotes(chapterNotes.notes);
         if (chapterVerses && chapterVerses.verses) {
           this.chapterService.mergeVersesNotes(
             chapterVerses.verses,
-            chapterNotes.verseNotes,
+            chapterNotes.notes,
           );
         }
       }
@@ -459,7 +459,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
       ? chapterVerses.verses
       : undefined;
     if (this.chapterNotes) {
-      this.chapterService.notes = this.chapterNotes.verseNotes;
+      this.chapterService.notes = this.chapterNotes.notes;
     }
     this.chapterService.chapterVerses = this.chapterVerses;
 
@@ -473,7 +473,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
-    this.visibilityService.resetNoteVisibility(chapterNotes.verseNotes);
+    this.visibilityService.resetNoteVisibility(chapterNotes.notes);
   }
   public async getKJVRef(
     chapterVerses: ChapterVerses | undefined,
@@ -499,7 +499,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
         this.chapterService.kjvChapterVerse = new ChapterVerses();
         this.chapterService.kjvChapterVerse.verses = [];
         this.chapterService.kjvChapterNotes = new ChapterNotes();
-        this.chapterService.kjvChapterNotes.verseNotes = [];
+        this.chapterService.kjvChapterNotes.notes = [];
         const promises = uniq(
           kjvRefs.map((k): string => {
             const kSplit = k.split('-');
@@ -524,11 +524,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
             }
             if (
               this.chapterService.chapterNotes &&
-              this.chapterService.chapterNotes.verseNotes &&
-              notes.verseNotes
+              this.chapterService.chapterNotes.notes &&
+              notes.notes
             ) {
-              this.chapterService.chapterNotes.verseNotes = this.chapterService.chapterNotes.verseNotes.concat(
-                notes.verseNotes,
+              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
+                notes.notes,
               );
             }
 

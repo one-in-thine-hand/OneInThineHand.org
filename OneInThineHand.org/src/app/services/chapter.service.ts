@@ -50,8 +50,8 @@ export class ChapterService {
     }
   }
   public resetNoteVis(): void {
-    if (this.chapterNotes && this.chapterNotes.verseNotes) {
-      this.chapterNotes.verseNotes.map((note): void => {
+    if (this.chapterNotes && this.chapterNotes.notes) {
+      this.chapterNotes.notes.map((note): void => {
         if (note.notes) {
           note.notes.map((secondaryNote): void => {
             if (secondaryNote.refTag) {
