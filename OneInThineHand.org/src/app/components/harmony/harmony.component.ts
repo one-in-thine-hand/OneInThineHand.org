@@ -44,8 +44,11 @@ export class HarmonyComponent implements OnInit {
         this.mapShell = ((await this.databaseService.getDatabaseItem(
           id,
         )) as never) as MapShell;
+        console.log(this.mapShell);
 
         this.mapShellDatabaseItems = await this.getDataBaseItems(this.mapShell);
+        console.log(this.mapShellDatabaseItems);
+
         this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
         if (this.verses && this.mapShell) {
           if (this.mapShell.headerHtml) {

@@ -30,6 +30,13 @@ import PQueue from 'p-queue/dist';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
+  public currentNavItems: NavigationItem[] = [];
+
+  public navigationItems = navigation.navigation.filter((navItem): boolean => {
+    return navItem.title !== '';
+  }) as NavigationItem[];
+
+  public saveQueue = new PQueue({ concurrency: 1 });
   public constructor(
     public navigationService: NavigationService,
     public tempSettingsService: TempSettingsService,
@@ -42,78 +49,48 @@ export class NavigationComponent implements OnInit {
     public formatTagService: FormatTagService,
   ) {}
 
-  public currentNavItems: NavigationItem[] = [];
-
-  public navigationItems = navigation.navigation.filter((navItem): boolean => {
-    return navItem.title !== '';
-  }) as NavigationItem[];
-
-  public saveQueue = new PQueue({ concurrency: 1 });
-  public ngOnInit(): void {
-    this.router.events.subscribe(
-      async (value): Promise<void> => {
-        this.tempSettingsService.navigationMobilePaneToggle = false;
-        if (value instanceof NavigationEnd) {
-          console.log(value);
-          await this.resetNavigation(this.navigationItems);
-          try {
-            // const chapterParams = this.paramService.parseChapterParams(params);
-            const n = this.findNav(
-              value.url.split('.')[0],
-              this.navigationItems,
-            );
-            if (n) {
-              this.currentNavItems = flattenNavigationItem(n).filter(
-                (nk): boolean => {
-                  return nk.display === true;
-                },
-              );
-            } else {
-              throw new Error('');
-            }
-          } catch (error) {
-            console.log(error);
-
-            this.currentNavItems = this.navigationItems;
-          }
-        }
-      },
-    );
-    this.activatedRouter.params.subscribe((): void => {});
+  public async addBlock(): Promise<void> {
+    await this.addBreak(FormatTagType.Block);
   }
-  /**
-   * isSingleChapter
-nI:NavigationItem   */
-  public isSingleChapter(nI: NavigationItem): boolean {
-    return [
-      'Obadiah',
-      'Philemon',
-      '2John',
-      '3John',
-      'Jude',
-      'Enos',
-      'Jarom',
-      'Omni',
-      'WordsofMormon',
-      'JosephSmith—Matthew',
-      'JosephSmith—History',
-      'ArticlesofFaith',
-    ].includes(nI.title.replace(/\s/g, ''));
+  public async addBlockGap(): Promise<void> {
+    await this.addBreak(FormatTagType.BlockGap);
+  }
+  public async addLine(): Promise<void> {
+    await this.addBreak(FormatTagType.Line);
+  }
+  public async addLineGap(): Promise<void> {
+    await this.addBreak(FormatTagType.LineGap);
   }
 
-  public async goHome(): Promise<void> {
-    this.currentNavItems = this.navigationItems;
+  public async addPara(): Promise<void> {
+    await this.addBreak(FormatTagType.Para);
   }
-  public async resetNavigation(navItems: NavigationItem[]): Promise<void> {
-    navItems.map(
-      async (navItem): Promise<void> => {
-        navItem.active = false;
-        navItem.display = false;
-        if (navItem.navItems) {
-          await this.resetNavigation(navItem.navItems);
-        }
-      },
-    );
+  public async addParaGap(): Promise<void> {
+    await this.addBreak(FormatTagType.ParaGap);
+  }
+
+  public async addPlain(): Promise<void> {
+    await this.addBreak(FormatTagType.Plain);
+  }
+
+  public async addressBarKeyUp(
+    event: KeyboardEvent | undefined,
+  ): Promise<void> {
+    if (
+      event &&
+      event instanceof KeyboardEvent &&
+      event.key === 'Enter' &&
+      event.target
+    ) {
+      try {
+        const addressBarInput = (event.target as HTMLInputElement).value
+          .trim()
+          .replace(':', '.');
+        await this.navigationService.parseAddressBarUrl(addressBarInput);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
   public findNav(
     id: string,
@@ -165,50 +142,52 @@ nI:NavigationItem   */
     }
     return undefined;
   }
-  private setNavItemsDisplay(
-    navItems: NavigationItem[],
-    active: boolean,
-    display: boolean,
-  ): void {
-    navItems.map((n): void => {
-      this.setNavItemDisplay(n, active, display);
-    });
-  }
-
-  private setNavItemDisplay(
-    n: NavigationItem,
-    active: boolean,
-    display: boolean,
-  ): void {
-    n.active = active;
-    n.display = display;
-  }
-
-  public async addressBarKeyUp(
-    event: KeyboardEvent | undefined,
-  ): Promise<void> {
-    if (
-      event &&
-      event instanceof KeyboardEvent &&
-      event.key === 'Enter' &&
-      event.target
-    ) {
-      try {
-        const addressBarInput = (event.target as HTMLInputElement).value
-          .trim()
-          .replace(':', '.');
-        await this.navigationService.parseAddressBarUrl(addressBarInput);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  public getNavGrid(): string {
+    return `48px ${window.innerHeight - 192}px 48px`;
   }
 
   public getNavHeight(): string {
     return `${window.innerHeight - 192}px`;
   }
-  public getNavGrid(): string {
-    return `48px ${window.innerHeight - 192}px 48px`;
+
+  public getVerseNumbers(): { verse: Verse; verseNumber: string }[] {
+    if (this.chapterService.verses) {
+      return filterUndefined(
+        this.chapterService.verses.map((verse):
+          | { verse: Verse; verseNumber: string }
+          | undefined => {
+          if (verse._id) {
+            console.log();
+
+            return { verseNumber: verse._id.split('-')[3], verse: verse };
+          }
+        }),
+      );
+    }
+    return [];
+  }
+
+  public async goHome(): Promise<void> {
+    this.currentNavItems = this.navigationItems;
+  }
+  /**
+   * isSingleChapter
+nI:NavigationItem   */
+  public isSingleChapter(nI: NavigationItem): boolean {
+    return [
+      'Obadiah',
+      'Philemon',
+      '2John',
+      '3John',
+      'Jude',
+      'Enos',
+      'Jarom',
+      'Omni',
+      'WordsofMormon',
+      'JosephSmith—Matthew',
+      'JosephSmith—History',
+      'ArticlesofFaith',
+    ].includes(nI.title.replace(/\s/g, ''));
   }
 
   public async navigationParentClick(navItem: NavigationItem): Promise<void> {
@@ -228,28 +207,100 @@ nI:NavigationItem   */
       }
     }
   }
+  public ngOnInit(): void {
+    this.router.events.subscribe(
+      async (value): Promise<void> => {
+        this.tempSettingsService.navigationMobilePaneToggle = false;
+        if (value instanceof NavigationEnd) {
+          console.log(value);
+          await this.resetNavigation(this.navigationItems);
+          try {
+            // const chapterParams = this.paramService.parseChapterParams(params);
+            const n = this.findNav(
+              value.url.split('.')[0],
+              this.navigationItems,
+            );
+            if (n) {
+              this.currentNavItems = flattenNavigationItem(n).filter(
+                (nk): boolean => {
+                  return nk.display === true;
+                },
+              );
+            } else {
+              throw new Error('');
+            }
+          } catch (error) {
+            console.log(error);
 
-  private validateSelectedNodes(node: Node): Element | undefined {
-    if (
-      (node as HTMLElement).getAttribute !== undefined &&
-      (node as HTMLElement).getAttribute('offsets') !== null
-    ) {
-      return node as Element;
-    } else {
-      let parentElement: Element | undefined | null = node.parentElement;
+            this.currentNavItems = this.navigationItems;
+          }
+        }
+      },
+    );
+    this.activatedRouter.params.subscribe((): void => {});
+  }
 
-      while (
-        parentElement &&
-        parentElement.getAttribute !== null &&
-        parentElement.getAttribute('offsets') === null
-      ) {
-        parentElement = parentElement.parentElement;
-      }
-      if (parentElement) {
-        return parentElement;
-      }
+  public async refreshBreaks(): Promise<void> {
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+  }
+  public async resetNavigation(navItems: NavigationItem[]): Promise<void> {
+    navItems.map(
+      async (navItem): Promise<void> => {
+        navItem.active = false;
+        navItem.display = false;
+        if (navItem.navItems) {
+          await this.resetNavigation(navItem.navItems);
+        }
+      },
+    );
+  }
+  public async resetVerseBreaks(verse: Verse): Promise<void> {
+    if (verse.breakFormatGroups) {
+      verse.breakFormatGroups = [];
     }
-    return undefined;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+    await this.saveQueue.add(
+      async (): Promise<void> => {
+        await this.saveService.saveFakeVerseBreaks();
+      },
+    );
+  }
+
+  private async addBreak(
+    formatTagType: FormatTagType,
+    offset?: string,
+  ): Promise<void> {
+    const offsets = this.calcOffset();
+    const formatTag = new FormatTag();
+    if (offsets) {
+      formatTag.offsets = offset ? offset : offsets ? offsets.offsets : '';
+      formatTag.formatType = formatTagType;
+      if (!offsets.verse.fakeVerseBreak) {
+        offsets.verse.fakeVerseBreak = new FakeVerseBreaks();
+        offsets.verse.fakeVerseBreak.breaks = [];
+      }
+      if (offsets.verse.fakeVerseBreak) {
+        if (!offsets.verse.fakeVerseBreak.breaks) {
+          offsets.verse.fakeVerseBreak.breaks = [];
+        }
+        // console.log(formatTag);
+
+        // console.log(offsets.verse.fakeVerseBreak.breaks);
+
+        offsets.verse.fakeVerseBreak.breaks.push(formatTag);
+      }
+      await this.saveQueue.add(
+        async (): Promise<void> => {
+          await this.saveService.saveFakeVerseBreaks();
+        },
+      );
+    }
   }
   private calcOffset(): { offsets: string; verse: Verse } | undefined {
     const selection = window.getSelection();
@@ -303,97 +354,45 @@ nI:NavigationItem   */
     return undefined;
   }
 
-  private async addBreak(
-    formatTagType: FormatTagType,
-    offset?: string,
-  ): Promise<void> {
-    const offsets = this.calcOffset();
-    const formatTag = new FormatTag();
-    if (offsets) {
-      formatTag.offsets = offset ? offset : offsets ? offsets.offsets : '';
-      formatTag.formatType = formatTagType;
-      if (!offsets.verse.fakeVerseBreak) {
-        offsets.verse.fakeVerseBreak = new FakeVerseBreaks();
-        offsets.verse.fakeVerseBreak.breaks = [];
+  private setNavItemDisplay(
+    n: NavigationItem,
+    active: boolean,
+    display: boolean,
+  ): void {
+    n.active = active;
+    n.display = display;
+  }
+  private setNavItemsDisplay(
+    navItems: NavigationItem[],
+    active: boolean,
+    display: boolean,
+  ): void {
+    navItems.map((n): void => {
+      this.setNavItemDisplay(n, active, display);
+    });
+  }
+
+  private validateSelectedNodes(node: Node): Element | undefined {
+    if (
+      (node as HTMLElement).getAttribute !== undefined &&
+      (node as HTMLElement).getAttribute('offsets') !== null
+    ) {
+      return node as Element;
+    } else {
+      let parentElement: Element | undefined | null = node.parentElement;
+
+      while (
+        parentElement &&
+        parentElement.getAttribute !== null &&
+        parentElement.getAttribute('offsets') === null
+      ) {
+        parentElement = parentElement.parentElement;
       }
-      if (offsets.verse.fakeVerseBreak) {
-        if (!offsets.verse.fakeVerseBreak.breaks) {
-          offsets.verse.fakeVerseBreak.breaks = [];
-        }
-        // console.log(formatTag);
-
-        // console.log(offsets.verse.fakeVerseBreak.breaks);
-
-        offsets.verse.fakeVerseBreak.breaks.push(formatTag);
+      if (parentElement) {
+        return parentElement;
       }
-      await this.saveQueue.add(
-        async (): Promise<void> => {
-          await this.saveService.saveFakeVerseBreaks();
-        },
-      );
     }
-  }
-
-  public async addPara(): Promise<void> {
-    await this.addBreak(FormatTagType.Para);
-  }
-  public async addParaGap(): Promise<void> {
-    await this.addBreak(FormatTagType.ParaGap);
-  }
-  public async addLine(): Promise<void> {
-    await this.addBreak(FormatTagType.Line);
-  }
-  public async addLineGap(): Promise<void> {
-    await this.addBreak(FormatTagType.LineGap);
-  }
-
-  public async addBlock(): Promise<void> {
-    await this.addBreak(FormatTagType.Block);
-  }
-  public async addBlockGap(): Promise<void> {
-    await this.addBreak(FormatTagType.BlockGap);
-  }
-
-  public async addPlain(): Promise<void> {
-    await this.addBreak(FormatTagType.Plain);
-  }
-
-  public getVerseNumbers(): { verseNumber: string; verse: Verse }[] {
-    if (this.chapterService.verses) {
-      return filterUndefined(
-        this.chapterService.verses.map((verse):
-          | { verseNumber: string; verse: Verse }
-          | undefined => {
-          if (verse._id) {
-            console.log();
-
-            return { verseNumber: verse._id.split('-')[3], verse: verse };
-          }
-        }),
-      );
-    }
-    return [];
-  }
-
-  public async refreshBreaks(): Promise<void> {
-    await this.formatTagService.resetFormatTags(
-      this.chapterService.chapterVerses,
-      this.chapterService.chapterNotes,
-    );
-  }
-  public async resetVerseBreaks(verse: Verse): Promise<void> {
-    if (verse.breakFormatGroups) {
-      verse.breakFormatGroups = [];
-    }
-    await this.formatTagService.resetFormatTags(
-      this.chapterService.chapterVerses,
-      this.chapterService.chapterNotes,
-    );
-    await this.saveQueue.add(
-      async (): Promise<void> => {
-        await this.saveService.saveFakeVerseBreaks();
-      },
-    );
+    return undefined;
   }
   // public async addPoetry(): Promise<void> {
   //   await this.addBreak(FormatTagType.Poetry);
