@@ -22,11 +22,11 @@
     </div>
     <map-shell>
       <ng-container *ngIf="this.mapShell">
-        <header
+        <!-- <header
           class="map-shell"
           *ngIf="this.safeHeader"
           [innerHTML]="this.safeHeader"
-        ></header>
+        ></header> -->
         <map-shell-row *ngFor="let mapShellRow of this.mapShell.mapShellRows">
           <map-shell-column
             *ngFor="let mapShellColumn of mapShellRow.mapShellColumns"

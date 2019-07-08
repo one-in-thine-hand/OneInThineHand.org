@@ -9,6 +9,7 @@ import { MapShell, KJVVerseRef } from './map-shell';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { SaveStateService } from '../../services/save-state.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
 
 @Component({
   selector: 'app-harmony',
@@ -18,7 +19,7 @@ import { SaveStateService } from '../../services/save-state.service';
 export class HarmonyComponent implements OnInit {
   public mapShell?: MapShell;
   public mapShellDatabaseItems?: DatabaseItem[];
-  public safeHeader?: SafeHtml;
+  // public safeHeader?: SafeHtml;
   public verses?: Verse[];
 
   public constructor(
@@ -29,6 +30,7 @@ export class HarmonyComponent implements OnInit {
     public httpClient: HttpClient,
     public domSanitizer: DomSanitizer,
     public saveStateService: SaveStateService,
+    public tempSettings: TempSettingsService,
   ) {}
   public getWhiteSpaceHeight(): string {
     return `${window.innerHeight - 64}px`;
@@ -51,13 +53,18 @@ export class HarmonyComponent implements OnInit {
 
         this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
         if (this.verses && this.mapShell) {
-          if (this.mapShell.headerHtml) {
-            this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
-              this.mapShell.headerHtml,
-            );
-          }
+          // if (this.mapShell.headerHtml) {
+          // this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
+          // this.mapShell.headerHtml,
+          // );
+          // }
           await this.formatTagService.resetVerses(this.verses);
           this.addVersesToMapShell(this.verses, this.mapShell);
+          if (id.includes('jst_')) {
+            this.tempSettings.jstMode = true;
+          } else {
+            this.tempSettings.jstMode = false;
+          }
         }
       },
     );

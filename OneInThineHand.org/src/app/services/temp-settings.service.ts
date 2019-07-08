@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class TempSettingsService {
   public editMode = false;
-  public navigationMobilePaneToggle: boolean = false;
-  constructor() {}
+  public jstMode = false;
+  public navigationMobilePaneToggle = false;
+  public constructor() {}
 }
