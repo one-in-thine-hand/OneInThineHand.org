@@ -8,6 +8,7 @@ import { FormatTagService } from '../../services/format-tag.service';
 import { MapShell, KJVVerseRef } from './map-shell';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-harmony',
@@ -27,7 +28,11 @@ export class HarmonyComponent implements OnInit {
     public router: Router,
     public httpClient: HttpClient,
     public domSanitizer: DomSanitizer,
+    public saveStateService: SaveStateService,
   ) {}
+  public getWhiteSpaceHeight(): string {
+    return `${window.innerHeight - 64}px`;
+  }
   public async ngOnInit(): Promise<void> {
     this.databaseService.initReadingMode();
 

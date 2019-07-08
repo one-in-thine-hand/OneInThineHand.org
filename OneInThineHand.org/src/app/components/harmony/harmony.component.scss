@@ -38,6 +38,16 @@ $chapterGridMargins: 32px;
     16px $chapterGridMargins auto $chapterGridMargins 16px,
     80%
   );
+
+  map-shell-row {
+    display: grid;
+    grid-column-gap: 5px;
+
+    grid-template-columns: 1fr 1fr;
+    @media screen and (max-width: 1000px) {
+      grid-template-columns: 1fr !important;
+    }
+  }
   .chapter-nav-btn {
     width: 32px;
     i {

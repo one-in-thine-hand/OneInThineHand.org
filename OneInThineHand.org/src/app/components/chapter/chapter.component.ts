@@ -27,6 +27,14 @@ import {
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit, OnDestroy {
+  public chapter: Chapter | undefined;
+  public chapterNotes: ChapterNotes;
+  public chapterVerses: ChapterVerses | undefined;
+  public ctrlKeyInterval: NodeJS.Timer | undefined;
+  public ctrlKeyPressed: boolean;
+  public popStateActivated = false;
+  public shiftKeyInterval: NodeJS.Timer | undefined;
+  public shiftKeyPressed: boolean;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -41,107 +49,144 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public router: Router,
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
-  public popStateActivated = false;
-  public chapter: Chapter | undefined;
-  public chapterNotes: ChapterNotes;
-  public chapterVerses: ChapterVerses | undefined;
-  public ctrlKeyPressed: boolean;
-  public shiftKeyPressed: boolean;
-  public ctrlKeyInterval: NodeJS.Timer | undefined;
-  public shiftKeyInterval: NodeJS.Timer | undefined;
-  public async ngOnDestroy(): Promise<void> {
-    await this.setHistory();
-    this.chapterService.chapterNotes = undefined;
+
+  public getHighlightVerses(
+    chapterParams: ChapterParams,
+    context: number[] | undefined,
+    verses: Verse[],
+    language: string,
+  ): Verse[] {
+    if (context) {
+      const filteredVerses = context.map((c): Verse | undefined => {
+        return verses.find((verse): boolean => {
+          return (
+            verse._id ===
+            `${language}-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
+          );
+        });
+      });
+      // console.log(filteredVerses);
+
+      return filteredVerses.filter((v): boolean => {
+        return v !== undefined;
+      }) as Verse[];
+    } else {
+      return [];
+    }
   }
-
-  @HostListener('window:keyup', ['$event'])
-  public async onKeyUp(event: KeyboardEvent): Promise<void> {
-    if (event instanceof KeyboardEvent) {
-      // console.log(event);
-      if (event.ctrlKey || event.key.toLowerCase() === 'control') {
-        console.log('asdfiojasdoifj');
-
-        this.ctrlKeyPressed = true;
-        if (this.ctrlKeyInterval !== undefined) {
-          clearInterval(this.ctrlKeyInterval);
-        }
-        this.ctrlKeyInterval = setInterval((): void => {
-          this.ctrlKeyPressed = false;
-          if (this.ctrlKeyInterval) {
-            clearInterval(this.ctrlKeyInterval);
+  public async getKJVRef(
+    chapterVerses: ChapterVerses | undefined,
+  ): Promise<void> {
+    try {
+      if (chapterVerses && chapterVerses.verses) {
+        const kjvRefs: string[] = [];
+        chapterVerses.verses.map((verse): void => {
+          if (verse.kjvRef) {
+            verse.kjvRef.map((k): void => {
+              kjvRefs.push(k);
+            });
+            verse.formatGroups.map((formatGroup): void => {
+              const fGroup: FormatGroupSegment = formatGroup as never;
+              if (fGroup.kjvRef) {
+                fGroup.kjvRef.map((k): void => {
+                  kjvRefs.push(k);
+                });
+              }
+            });
           }
-        }, 1000);
-        // setTimeout((): void => {
-        //   this.ctrlKeyPressed = false;
-        // }, 1000);
-      }
-      if (event.shiftKey || event.key.toLowerCase() === 'shift') {
-        this.shiftKeyPressed = true;
-        if (this.shiftKeyInterval !== undefined) {
-          clearInterval(this.shiftKeyInterval);
-        }
-        this.shiftKeyInterval = setInterval((): void => {
-          this.shiftKeyPressed = false;
-          if (this.shiftKeyInterval) {
-            clearInterval(this.shiftKeyInterval);
-          }
-        }, 1000);
-        // setTimeout((): void => {
-        //   this.shiftKeyPressed = false;
-        // }, 1000);
-      }
-      // console.log(event);
-
-      // console.log(this.ctrlKeyPressed);
-      // console.log(this.shiftKeyPressed);
-
-      if (this.ctrlKeyPressed) {
-        switch (event.key.toLowerCase()) {
-          case 'z': {
-            // if (this.chapterVerses && this.chapterNotes) {
-            //   this.historyService.undoHistory(
-            //     this.chapterNotes,
-            //     this.saveStateService.data,
-            //     this.chapterVerses,
-            //   );
-            // await
-            // }
-            // await this.formatTagService.resetFormatTags(this.chapterVerses);
-            break;
-          }
-          case 'y': {
-            // console.log('y');
-            // if (this.chapterVerses && this.chapterNotes) {
-            //   this.historyService.redoHistory(
-            //     this.chapterNotes,
-            //     this.chapterVerses,
-            //     this.saveStateService.data,
-            //   );
-            // }
-
-            break;
-          }
-          case 's': {
-            if (this.shiftKeyPressed) {
-              console.log('hggg');
-              await this.saveService.save();
-              // await this.databaseService.updateDatabaseItem(this.chapterNotes);
-              console.log('Finished');
+        });
+        this.chapterService.kjvChapterVerse = new ChapterVerses();
+        this.chapterService.kjvChapterVerse.verses = [];
+        this.chapterService.kjvChapterNotes = new ChapterNotes();
+        this.chapterService.kjvChapterNotes.notes = [];
+        const promises = uniq(
+          kjvRefs.map((k): string => {
+            const kSplit = k.split('-');
+            return `${kSplit[0]}-${kSplit[1]}-${kSplit[2]}-chapter-verses`;
+          }),
+        ).map(
+          async (chapterID): Promise<void> => {
+            const verse = (await this.databaseService.getDatabaseItem(
+              chapterID,
+            )) as ChapterVerses;
+            const notes = (await this.databaseService.getDatabaseItem(
+              chapterID.replace('-chapter-verses', '-notes'),
+            )) as ChapterNotes;
+            if (
+              this.chapterService.kjvChapterVerse &&
+              this.chapterService.kjvChapterVerse.verses &&
+              verse.verses
+            ) {
+              this.chapterService.kjvChapterVerse.verses = this.chapterService.kjvChapterVerse.verses.concat(
+                verse.verses,
+              );
             }
-            break;
-          }
+            if (
+              this.chapterService.chapterNotes &&
+              this.chapterService.chapterNotes.notes &&
+              notes.notes
+            ) {
+              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
+                notes.notes,
+              );
+            }
+
+            await this.formatTagService.resetFormatTags(
+              this.chapterService.kjvChapterVerse,
+              this.chapterService.kjvChapterNotes,
+            );
+          },
+        );
+        await Promise.all(promises);
+        console.log(this.chapterService.kjvChapterVerse);
+        if (
+          this.chapterService.kjvChapterVerse.verses &&
+          this.chapterVerses &&
+          this.chapterVerses.verses
+        ) {
+          this.chapterVerses.verses.map((verse): void => {
+            if (verse.kjvRef) {
+              verse.kjvRef.map((k): void => {
+                if (
+                  this.chapterService.kjvChapterVerse &&
+                  this.chapterService.kjvChapterVerse.verses
+                ) {
+                  const v = this.chapterService.kjvChapterVerse.verses.find(
+                    (ver): boolean => {
+                      return ver._id === k;
+                    },
+                  );
+                  if (v) {
+                    if (!verse.kjvVerse) {
+                      verse.kjvVerse = [];
+                    }
+                    verse.kjvVerse.push(v);
+                  }
+                }
+              });
+            }
+          });
         }
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  @HostListener('window:popstate', ['$event'])
-  public onPopState(event: PopStateEvent): void {
-    this.popStateActivated = event.state !== null;
-    this.pageStateService.timer = undefined;
+  public getWhiteSpaceHeight(): string {
+    return `${window.innerHeight - 34}px`;
+  }
 
-    console.log(`Activate History ${this.popStateActivated}`);
-    console.log(event);
+  public gotoChapter(href: string | undefined): void {
+    console.log(href);
+    if (href) {
+      this.router.navigateByUrl(href.replace('#/', ''));
+      this.popStateActivated = true;
+    }
+  }
+  public async ngOnDestroy(): Promise<void> {
+    await this.setHistory();
+    this.chapterService.chapterNotes = undefined;
   }
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
@@ -305,21 +350,111 @@ export class ChapterComponent implements OnInit, OnDestroy {
     );
   }
 
-  private async setHistory(): Promise<void> {
-    if (this.chapter && this.chapterVerses && this.chapterNotes) {
-      this.pageStateService.newPage(
-        this.chapter,
-        this.chapterVerses,
-        this.chapterNotes,
-      );
+  @HostListener('window:keyup', ['$event'])
+  public async onKeyUp(event: KeyboardEvent): Promise<void> {
+    if (event instanceof KeyboardEvent) {
+      // console.log(event);
+      if (event.ctrlKey || event.key.toLowerCase() === 'control') {
+        console.log('asdfiojasdoifj');
+
+        this.ctrlKeyPressed = true;
+        if (this.ctrlKeyInterval !== undefined) {
+          clearInterval(this.ctrlKeyInterval);
+        }
+        this.ctrlKeyInterval = setInterval((): void => {
+          this.ctrlKeyPressed = false;
+          if (this.ctrlKeyInterval) {
+            clearInterval(this.ctrlKeyInterval);
+          }
+        }, 1000);
+        // setTimeout((): void => {
+        //   this.ctrlKeyPressed = false;
+        // }, 1000);
+      }
+      if (event.shiftKey || event.key.toLowerCase() === 'shift') {
+        this.shiftKeyPressed = true;
+        if (this.shiftKeyInterval !== undefined) {
+          clearInterval(this.shiftKeyInterval);
+        }
+        this.shiftKeyInterval = setInterval((): void => {
+          this.shiftKeyPressed = false;
+          if (this.shiftKeyInterval) {
+            clearInterval(this.shiftKeyInterval);
+          }
+        }, 1000);
+        // setTimeout((): void => {
+        //   this.shiftKeyPressed = false;
+        // }, 1000);
+      }
+      // console.log(event);
+
+      // console.log(this.ctrlKeyPressed);
+      // console.log(this.shiftKeyPressed);
+
+      if (this.ctrlKeyPressed) {
+        switch (event.key.toLowerCase()) {
+          case 'z': {
+            // if (this.chapterVerses && this.chapterNotes) {
+            //   this.historyService.undoHistory(
+            //     this.chapterNotes,
+            //     this.saveStateService.data,
+            //     this.chapterVerses,
+            //   );
+            // await
+            // }
+            // await this.formatTagService.resetFormatTags(this.chapterVerses);
+            break;
+          }
+          case 'y': {
+            // console.log('y');
+            // if (this.chapterVerses && this.chapterNotes) {
+            //   this.historyService.redoHistory(
+            //     this.chapterNotes,
+            //     this.chapterVerses,
+            //     this.saveStateService.data,
+            //   );
+            // }
+
+            break;
+          }
+          case 's': {
+            if (this.shiftKeyPressed) {
+              console.log('hggg');
+              await this.saveService.save();
+              // await this.databaseService.updateDatabaseItem(this.chapterNotes);
+              console.log('Finished');
+            }
+            break;
+          }
+        }
+      }
     }
   }
 
-  public gotoChapter(href: string | undefined): void {
-    console.log(href);
-    if (href) {
-      this.router.navigateByUrl(href.replace('#/', ''));
-      this.popStateActivated = true;
+  @HostListener('window:popstate', ['$event'])
+  public onPopState(event: PopStateEvent): void {
+    this.popStateActivated = event.state !== null;
+    this.pageStateService.timer = undefined;
+
+    console.log(`Activate History ${this.popStateActivated}`);
+    console.log(event);
+  }
+
+  public async onScroll(): Promise<void> {
+    const verseElements = Array.from(document.querySelectorAll('verse'));
+    for (let x = 0; x < verseElements.length; x++) {
+      const verseElement = verseElements[x];
+      if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
+        if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
+          if (x === 0) {
+            await asyncScrollIntoView('.notes-top');
+          } else if (x === verseElements.length - 1) {
+            await asyncScrollIntoView('.notes-bottom');
+          }
+        }
+
+        break;
+      }
     }
   }
   public previousChapter(): void {
@@ -346,80 +481,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
 
       v[attrName] = true;
     });
-  }
-
-  private async setHighlighting(
-    chapterParams: ChapterParams,
-    verses: Verse[],
-    language: string,
-  ): Promise<void> {
-    const highlightOffSets = parseOffsets(chapterParams.highlight);
-    const contextOffsets = parseOffsets(chapterParams.context);
-
-    verses.forEach((verse): void => {
-      verse.highlight = false;
-      verse.context = false;
-    });
-
-    this.highlightVerses(
-      chapterParams,
-      highlightOffSets,
-      verses,
-      'highlight',
-      language,
-    );
-    this.highlightVerses(
-      chapterParams,
-      contextOffsets,
-      verses,
-      'context',
-      language,
-    );
-
-    if (highlightOffSets) {
-      let highlighting: number[] = [];
-      highlighting = highlighting.concat(highlightOffSets);
-      if (contextOffsets) {
-        highlighting = highlighting.concat(contextOffsets);
-      }
-
-      await asyncScrollIntoView(
-        `#${language}-${chapterParams.book}-${chapterParams.chapter}-${
-          sortBy(highlighting)[0]
-        }-verse`,
-        { timeout: 100 },
-      );
-
-      // const ve
-    } else {
-      await asyncScrollIntoView('verse');
-      await asyncScrollIntoView('verse-notes');
-    }
-  }
-
-  public getHighlightVerses(
-    chapterParams: ChapterParams,
-    context: number[] | undefined,
-    verses: Verse[],
-    language: string,
-  ): Verse[] {
-    if (context) {
-      const filteredVerses = context.map((c): Verse | undefined => {
-        return verses.find((verse): boolean => {
-          return (
-            verse._id ===
-            `${language}-${chapterParams.book}-${chapterParams.chapter}-${c}-verse`
-          );
-        });
-      });
-      // console.log(filteredVerses);
-
-      return filteredVerses.filter((v): boolean => {
-        return v !== undefined;
-      }) as Verse[];
-    } else {
-      return [];
-    }
   }
 
   private async setChapterVariables(
@@ -475,124 +536,63 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(chapterNotes.notes);
   }
-  public async getKJVRef(
-    chapterVerses: ChapterVerses | undefined,
+
+  private async setHighlighting(
+    chapterParams: ChapterParams,
+    verses: Verse[],
+    language: string,
   ): Promise<void> {
-    try {
-      if (chapterVerses && chapterVerses.verses) {
-        const kjvRefs: string[] = [];
-        chapterVerses.verses.map((verse): void => {
-          if (verse.kjvRef) {
-            verse.kjvRef.map((k): void => {
-              kjvRefs.push(k);
-            });
-            verse.formatGroups.map((formatGroup): void => {
-              const fGroup: FormatGroupSegment = formatGroup as never;
-              if (fGroup.kjvRef) {
-                fGroup.kjvRef.map((k): void => {
-                  kjvRefs.push(k);
-                });
-              }
-            });
-          }
-        });
-        this.chapterService.kjvChapterVerse = new ChapterVerses();
-        this.chapterService.kjvChapterVerse.verses = [];
-        this.chapterService.kjvChapterNotes = new ChapterNotes();
-        this.chapterService.kjvChapterNotes.notes = [];
-        const promises = uniq(
-          kjvRefs.map((k): string => {
-            const kSplit = k.split('-');
-            return `${kSplit[0]}-${kSplit[1]}-${kSplit[2]}-chapter-verses`;
-          }),
-        ).map(
-          async (chapterID): Promise<void> => {
-            const verse = (await this.databaseService.getDatabaseItem(
-              chapterID,
-            )) as ChapterVerses;
-            const notes = (await this.databaseService.getDatabaseItem(
-              chapterID.replace('-chapter-verses', '-notes'),
-            )) as ChapterNotes;
-            if (
-              this.chapterService.kjvChapterVerse &&
-              this.chapterService.kjvChapterVerse.verses &&
-              verse.verses
-            ) {
-              this.chapterService.kjvChapterVerse.verses = this.chapterService.kjvChapterVerse.verses.concat(
-                verse.verses,
-              );
-            }
-            if (
-              this.chapterService.chapterNotes &&
-              this.chapterService.chapterNotes.notes &&
-              notes.notes
-            ) {
-              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
-                notes.notes,
-              );
-            }
+    const highlightOffSets = parseOffsets(chapterParams.highlight);
+    const contextOffsets = parseOffsets(chapterParams.context);
 
-            await this.formatTagService.resetFormatTags(
-              this.chapterService.kjvChapterVerse,
-              this.chapterService.kjvChapterNotes,
-            );
-          },
-        );
-        await Promise.all(promises);
-        console.log(this.chapterService.kjvChapterVerse);
-        if (
-          this.chapterService.kjvChapterVerse.verses &&
-          this.chapterVerses &&
-          this.chapterVerses.verses
-        ) {
-          this.chapterVerses.verses.map((verse): void => {
-            if (verse.kjvRef) {
-              verse.kjvRef.map((k): void => {
-                if (
-                  this.chapterService.kjvChapterVerse &&
-                  this.chapterService.kjvChapterVerse.verses
-                ) {
-                  const v = this.chapterService.kjvChapterVerse.verses.find(
-                    (ver): boolean => {
-                      return ver._id === k;
-                    },
-                  );
-                  if (v) {
-                    if (!verse.kjvVerse) {
-                      verse.kjvVerse = [];
-                    }
-                    verse.kjvVerse.push(v);
-                  }
-                }
-              });
-            }
-          });
-        }
+    verses.forEach((verse): void => {
+      verse.highlight = false;
+      verse.context = false;
+    });
+
+    this.highlightVerses(
+      chapterParams,
+      highlightOffSets,
+      verses,
+      'highlight',
+      language,
+    );
+    this.highlightVerses(
+      chapterParams,
+      contextOffsets,
+      verses,
+      'context',
+      language,
+    );
+
+    if (highlightOffSets) {
+      let highlighting: number[] = [];
+      highlighting = highlighting.concat(highlightOffSets);
+      if (contextOffsets) {
+        highlighting = highlighting.concat(contextOffsets);
       }
-    } catch (error) {
-      console.log(error);
+
+      await asyncScrollIntoView(
+        `#${language}-${chapterParams.book}-${chapterParams.chapter}-${
+          sortBy(highlighting)[0]
+        }-verse`,
+        { timeout: 100 },
+      );
+
+      // const ve
+    } else {
+      await asyncScrollIntoView('verse');
+      await asyncScrollIntoView('verse-notes');
     }
   }
 
-  public async onScroll(): Promise<void> {
-    const verseElements = Array.from(document.querySelectorAll('verse'));
-    for (let x = 0; x < verseElements.length; x++) {
-      const verseElement = verseElements[x];
-      if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
-        if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
-          if (x === 0) {
-            await asyncScrollIntoView('.notes-top');
-          } else if (x === verseElements.length - 1) {
-            await asyncScrollIntoView('.notes-bottom');
-          }
-        }
-
-        break;
-      }
+  private async setHistory(): Promise<void> {
+    if (this.chapter && this.chapterVerses && this.chapterNotes) {
+      this.pageStateService.newPage(
+        this.chapter,
+        this.chapterVerses,
+        this.chapterNotes,
+      );
     }
-  }
-
-  public getWhiteSpaceHeight(): string {
-    return `${window.innerHeight - 34}px`;
   }
 }

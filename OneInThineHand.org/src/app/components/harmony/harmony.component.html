@@ -1,5 +1,7 @@
-<chapter-parent>
-  <chapter-grid class="chapter-grid">
+<chapter-parent
+  [ngClass]="{ 'notes-off': !this.saveStateService.data.notesPaneToggle }"
+>
+  <map-shell-grid class="chapter-grid">
     <div style=" user-select: none;"></div>
     <div
       class="left-chapter-nav-btn chapter-nav-btn"
@@ -37,6 +39,10 @@
             </ng-container>
           </map-shell-column>
         </map-shell-row>
+        <div
+          class="white-space"
+          [ngStyle]="{ height: getWhiteSpaceHeight() }"
+        ></div>
       </ng-container>
     </map-shell>
     <div
@@ -57,5 +63,5 @@
       ></a>
     </div>
     <div style=" user-select: none;"></div>
-  </chapter-grid>
+  </map-shell-grid>
 </chapter-parent>
