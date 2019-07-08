@@ -19,7 +19,7 @@ import { TempSettingsService } from '../../services/temp-settings.service';
 export class HarmonyComponent implements OnInit {
   public mapShell?: MapShell;
   public mapShellDatabaseItems?: DatabaseItem[];
-  // public safeHeader?: SafeHtml;
+  public safeHeader?: SafeHtml;
   public verses?: Verse[];
 
   public constructor(
@@ -53,17 +53,18 @@ export class HarmonyComponent implements OnInit {
 
         this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
         if (this.verses && this.mapShell) {
-          // if (this.mapShell.headerHtml) {
-          // this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
-          // this.mapShell.headerHtml,
-          // );
-          // }
+          if (this.mapShell.headerHtml) {
+            this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
+              this.mapShell.headerHtml,
+            );
+          }
           await this.formatTagService.resetVerses(this.verses);
           this.addVersesToMapShell(this.verses, this.mapShell);
           if (id.includes('jst_')) {
             this.tempSettings.jstMode = true;
           } else {
             this.tempSettings.jstMode = false;
+            this.safeHeader = undefined;
           }
         }
       },

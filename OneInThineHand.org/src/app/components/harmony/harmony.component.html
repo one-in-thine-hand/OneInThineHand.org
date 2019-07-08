@@ -7,7 +7,7 @@
       class="left-chapter-nav-btn chapter-nav-btn"
       style=" user-select: none;"
     >
-      <a [href]="chapter.previousPage" *ngIf="chapter">
+      <a href="" *ngIf="false">
         <i
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -22,11 +22,11 @@
     </div>
     <map-shell>
       <ng-container *ngIf="this.mapShell">
-        <!-- <header
+        <header
           class="map-shell"
           *ngIf="this.safeHeader"
           [innerHTML]="this.safeHeader"
-        ></header> -->
+        ></header>
         <map-shell-row *ngFor="let mapShellRow of this.mapShell.mapShellRows">
           <map-shell-column
             *ngFor="let mapShellColumn of mapShellRow.mapShellColumns"
@@ -49,7 +49,7 @@
       class="right-chapter-nav-btn chapter-nav-btn"
       style=" user-select: none;"
     >
-      <a [href]="chapter.nextPage" *ngIf="chapter">
+      <a href="" *ngIf="false">
         <i>
           <svg
             xmlns="http://www.w3.org/2000/svg"

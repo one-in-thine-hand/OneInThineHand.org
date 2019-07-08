@@ -26,8 +26,8 @@ export class ParamService {
 export class ChapterParams {
   public book: string;
   public chapter: string;
-  public highlight: string | undefined;
   public context: string | undefined;
+  public highlight: string | undefined;
 }
 
 // type Test = Omit<ChapterParams, 'book'>;
