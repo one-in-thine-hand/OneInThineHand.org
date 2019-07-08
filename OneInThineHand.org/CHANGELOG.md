@@ -1,5 +1,11 @@
+## <small>5.0.54 (2019-07-08)</small>
+
+
+
+
 ## <small>5.0.53 (2019-07-08)</small>
 
+* v5.0.53 ([fb68694](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fb68694))
 
 
 
