@@ -5,38 +5,38 @@ import {
 } from '../../../../shared/src/shared';
 
 export class RefLabelSetting {
-  public visible: boolean;
   public refLabelName: string;
   public refLabelShortName: string;
+  public visible: boolean;
 }
 
 export class SaveStateModel {
-  public version = 5;
-  public navigationPaneToggle: boolean = true;
-  public notesPaneToggle: boolean = true;
-  public secondaryNotesVisible = false;
+  public blockVisible = false;
+  public editMode = false;
   public englishNotesVisible = false;
-  public newNotesVisible = false;
   public englishOverlayVisible = false;
-  public translatorNotesVisible = true;
+  public existingNotesVisible: boolean | undefined;
   public fontSize = '16';
   public language: string;
   public lineHeight = '20';
-  public noteTypeSettings = NoteTypeConverts;
-  public refLabelSettings: RefLabelSetting[] = [];
-  public underLineRefs: boolean = true;
-  public ReferenceLabelSetting = ReferenceLabels;
+  public navigationMobilePaneToggle = false;
+  public navigationPaneToggle = true;
+  public newNotesVisible = false;
   public noteCategorySettings = ReferenceLabels;
-  public editMode = false;
-  public translationOverlayVisible: boolean | undefined;
-  public existingNotesVisible: boolean | undefined;
-  public printNotesVisible: boolean | undefined;
-  public tcNotesVisible: boolean | undefined;
-  public testOverlayVisible: boolean | undefined;
-  public navigationMobilePaneToggle: boolean = false;
+  public notesPaneToggle = true;
+  public noteTypeSettings = NoteTypeConverts;
   public paragraphsVisible = false;
   public poetryVisible = false;
-  public blockVisible: boolean = false;
+  public printNotesVisible: boolean | undefined;
+  public ReferenceLabelSetting = ReferenceLabels;
+  public refLabelSettings: RefLabelSetting[] = [];
+  public secondaryNotesVisible = false;
+  public tcNotesVisible: boolean | undefined;
+  public testOverlayVisible: boolean | undefined;
+  public translationOverlayVisible: boolean | undefined;
+  public translatorNotesVisible = true;
+  public underLineRefs = true;
+  public version = 5;
 }
 
 // export const refLabelSettingsTemplate = [
