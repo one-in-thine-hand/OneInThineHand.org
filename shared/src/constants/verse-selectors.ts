@@ -13,6 +13,12 @@ export const verseSelectors: string[] = [
 
 export const formatTagTypeOptions: FormatTagTypeOptions[] = [
   {
+    className: 'verse-number-all',
+    formatTagType: FormatTagType.verseNumberAll,
+    optional: Optional.ALWAYS,
+    displayAs: DisplayAs.CLASS,
+  },
+  {
     className: 'verse-number',
     formatTagType: FormatTagType.verseNumber,
     optional: Optional.ALWAYS,

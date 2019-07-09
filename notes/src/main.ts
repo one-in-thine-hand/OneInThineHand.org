@@ -70,6 +70,9 @@ function parseNotes(verseNotes: Element): Note[] {
 
         note.noteType = getNoteType(noteElement);
         note.offsets = getElementsAttribute(noteElement, 'offsets');
+        if (note.offsets === 'all') {
+          note.offsets = '0';
+        }
         return note;
       },
     );
