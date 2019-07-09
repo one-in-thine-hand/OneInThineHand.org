@@ -1,7 +1,15 @@
+## <small>5.0.56 (2019-07-09)</small>
+
+* bug fixes ([9629b72](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9629b72))
+* note offset fix ([f9015fc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f9015fc))
+
+
+
 ## <small>5.0.55 (2019-07-09)</small>
 
 * Added header to jst ([0034e5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0034e5e))
 * Updating to beta ([3e1dca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3e1dca4))
+* v5.0.55 ([8900458](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8900458))
 
 
 
