@@ -1,5 +1,13 @@
+## <small>5.0.55 (2019-07-09)</small>
+
+* Added header to jst ([0034e5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0034e5e))
+* Updating to beta ([3e1dca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3e1dca4))
+
+
+
 ## <small>5.0.54 (2019-07-08)</small>
 
+* v5.0.54 ([9bdf720](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9bdf720))
 
 
 
