@@ -269,7 +269,13 @@ export class ExportService {
             classList = classList.concat(note.classList);
           }
           return `<note class="${classList.join(' ')}" id="${note.id}" ${
-            note.offsets !== undefined ? `offsets=\"${note.offsets}\"` : ''
+            note.offsets !== undefined
+              ? `offsets=\"${
+                  note.offsets === 'all' || note.offsets === '0'
+                    ? 'all'
+                    : note.offsets
+                }\"`
+              : ''
           }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''
