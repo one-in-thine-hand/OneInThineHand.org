@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const FastGlob = require('fast-glob');
 import { normalize } from 'path';
-import { uniq } from 'lodash';
+import { uniq, sortBy } from 'lodash';
 import { FormatTags } from '../../format-tags/src/main';
 import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
 import { basename } from 'path';
@@ -93,7 +93,7 @@ async function processScriptureFiles(
         count = count + 1;
 
         console.log(`${count}/${totalCount}`);
- 
+
         // console.log(verses);
         // console.log(scriptureFile);
       } catch (error) {
@@ -140,6 +140,7 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
           notes.notes.map(
             (note): void => {
               // console.log(note.notes);
+
               if (value.notes) {
                 const newNote = value.notes.find(
                   (n): boolean => {
@@ -153,6 +154,12 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
 
                   note.notes = uniq(note.notes);
                 }
+                note.notes = sortBy(
+                  note.notes,
+                  (n): number => {
+                    return n.noteType ? n.noteType : 0;
+                  },
+                );
               }
               // console.log(note.notes);
             },
