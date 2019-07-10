@@ -9,7 +9,7 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveService } from '../../services/save.service';
-import { scrollIntoView } from '../../scroll-into-view';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-note-phrase',
@@ -26,57 +26,15 @@ export class NotePhraseComponent implements OnInit {
     public formatTagService: FormatTagService,
     public modalService: NgbModal,
     public saveService: SaveService,
+    public domSanitizer: DomSanitizer,
   ) {}
-  public ngOnInit(): void {}
 
-  public getNotePhrase(notePhrase: NotePhrase | undefined): string {
+  public getNotePhrase(notePhrase: NotePhrase | undefined): string | SafeHtml {
     return notePhrase && notePhrase.text
-      ? notePhrase.text
+      ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase.text)
       : 'Note Phrase Missing';
   }
-
-  private validateSelectedNodes(node: Node): Element | undefined {
-    if (
-      (node as HTMLElement).getAttribute !== undefined &&
-      (node as HTMLElement).getAttribute('offsets') !== null
-    ) {
-      return node as Element;
-    } else {
-      let parentElement: Element | undefined | null = node.parentElement;
-
-      while (
-        parentElement &&
-        parentElement.getAttribute !== null &&
-        parentElement.getAttribute('offsets') === null
-      ) {
-        parentElement = parentElement.parentElement;
-      }
-      if (parentElement) {
-        return parentElement;
-      }
-    }
-    return undefined;
-  }
-
-  private scrollVerseIntoView(): void {
-    try {
-      if (this.verseNotes._id) {
-        const verseElement = document.querySelector(
-          `#${(this.verseNotes._id as string).replace('-notes', '')}`,
-        );
-
-        if (verseElement) {
-          verseElement.scrollIntoView({ block: 'center' });
-        }
-        // scrollIntoView(
-        //   `#${(this.verseNotes._id as string).replace('-notes', '')}`,
-        //   {},
-        // );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  public ngOnInit(): void {}
   public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();
 
@@ -155,5 +113,48 @@ export class NotePhraseComponent implements OnInit {
         throw new Error('No valid selection');
       }
     }
+  }
+
+  private scrollVerseIntoView(): void {
+    try {
+      if (this.verseNotes._id) {
+        const verseElement = document.querySelector(
+          `#${(this.verseNotes._id as string).replace('-notes', '')}`,
+        );
+
+        if (verseElement) {
+          verseElement.scrollIntoView({ block: 'center' });
+        }
+        // scrollIntoView(
+        //   `#${(this.verseNotes._id as string).replace('-notes', '')}`,
+        //   {},
+        // );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private validateSelectedNodes(node: Node): Element | undefined {
+    if (
+      (node as HTMLElement).getAttribute !== undefined &&
+      (node as HTMLElement).getAttribute('offsets') !== null
+    ) {
+      return node as Element;
+    } else {
+      let parentElement: Element | undefined | null = node.parentElement;
+
+      while (
+        parentElement &&
+        parentElement.getAttribute !== null &&
+        parentElement.getAttribute('offsets') === null
+      ) {
+        parentElement = parentElement.parentElement;
+      }
+      if (parentElement) {
+        return parentElement;
+      }
+    }
+    return undefined;
   }
 }

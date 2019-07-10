@@ -7,7 +7,6 @@ import {
   parseOffsets,
   DisplayAs,
   VerseNotes,
-  expandOffsets,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
@@ -23,7 +22,6 @@ import PQueue from 'p-queue/dist';
   providedIn: 'root',
 })
 export class FormatTagService {
-
   public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
   public resetVerseQueue = new PQueue({ concurrency: 1 });
   public constructor(
@@ -105,7 +103,7 @@ export class FormatTagService {
     }
   }
 
-  public expandFakeVerseBreaks(verse: Verse) {
+  public expandFakeVerseBreaks(verse: Verse): void {
     if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
       verse.fakeVerseBreak.breaks.map(brk => {
         brk.uncompressedOffsets = parseOffsets(brk.offsets);
