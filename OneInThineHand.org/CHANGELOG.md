@@ -1,7 +1,17 @@
+## <small>5.0.57 (2019-07-10)</small>
+
+* Bug fixes ([204e71b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/204e71b))
+* Fixes to note sorting ([e8086c3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e8086c3))
+* Update note phrase to support SafeHTML ([7089b31](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7089b31))
+* Update to note sorting ([fce4d2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fce4d2a))
+
+
+
 ## <small>5.0.56 (2019-07-09)</small>
 
 * bug fixes ([9629b72](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9629b72))
 * note offset fix ([f9015fc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f9015fc))
+* v5.0.56 ([2dcfcd2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2dcfcd2))
 
 
 
