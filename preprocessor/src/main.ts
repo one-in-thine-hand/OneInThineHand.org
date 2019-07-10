@@ -154,12 +154,26 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
 
                   note.notes = uniq(note.notes);
                 }
-                note.notes = sortBy(
-                  note.notes,
-                  (n): number => {
-                    return n.noteType ? n.noteType : 0;
-                  },
-                );
+                if (note.notes) {
+                  note.notes.map(
+                    (n): void => {
+                      n.noteRefs = sortBy(
+                        n.noteRefs,
+                        (noteRef): number => {
+                          return noteRef.noteCategory
+                            ? noteRef.noteCategory
+                            : 0;
+                        },
+                      );
+                    },
+                  );
+                  note.notes = sortBy(
+                    note.notes,
+                    (n): number => {
+                      return n.noteType ? n.noteType : 0;
+                    },
+                  );
+                }
               }
               // console.log(note.notes);
             },

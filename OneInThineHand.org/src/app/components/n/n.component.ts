@@ -15,7 +15,6 @@ import { ChapterService } from '../../services/chapter.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { SaveService } from '../../services/save.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
-import { sortBy } from 'lodash';
 
 @Component({
   selector: 'app-n',

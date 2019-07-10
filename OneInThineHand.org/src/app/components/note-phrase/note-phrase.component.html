@@ -1,3 +1,4 @@
-<note-phrase (click)="this.notePhraseClick(note)">{{
-  getNotePhrase(note.notePhrase)
-}}</note-phrase>
+<note-phrase
+  (click)="this.notePhraseClick(note)"
+  [innerHTML]="getNotePhrase(note.notePhrase)"
+></note-phrase>

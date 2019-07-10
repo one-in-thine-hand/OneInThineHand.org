@@ -45,7 +45,7 @@ export class NoteComponent implements OnInit {
     }
     return sortBy(secondaryNotes, n => {
       return n.noteType;
-    }).reverse();
+    });
   }
 
   public noteRefClick(): void {
