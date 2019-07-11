@@ -80,10 +80,12 @@ $chapterGridMargins: 32px;
 //   }
 // }
 map-shell-row {
-  map-shell-column:first-child {
+  map-shell-column {
     div {
       display: flex;
-      align-content: center;
+      margin-top: 2.5px;
+      margin-bottom: 2.5px;
+      justify-content: center;
       .test-border {
         width: 20%;
         border-bottom-style: solid;
@@ -92,4 +94,15 @@ map-shell-row {
       }
     }
   }
+  map-shell-column:last-child {
+    div {
+      .test-border {
+        width: 90%;
+      }
+    }
+  }
+}
+
+map-shell map-shell-row:last-of-type map-shell-column:last-of-type div {
+  display: none;
 }
