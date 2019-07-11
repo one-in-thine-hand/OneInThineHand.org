@@ -1,9 +1,16 @@
+## <small>5.0.59 (2019-07-11)</small>
+
+* update to manifest files ([1d47f0b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d47f0b))
+
+
+
 ## <small>5.0.58 (2019-07-11)</small>
 
 * bug fixes ([909ccdd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/909ccdd))
 * bug fixes ([e1274f5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e1274f5))
 * Note order work ([68af5b1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/68af5b1))
 * Side by side underline ([63db77e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/63db77e))
+* v5.0.58 ([446c5c5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/446c5c5))
 
 
 
