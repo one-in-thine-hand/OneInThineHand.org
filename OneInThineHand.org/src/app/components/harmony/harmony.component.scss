@@ -72,3 +72,24 @@ $chapterGridMargins: 32px;
   font-style: italic;
   color: darkgray;
 }
+// map-shell-row {
+//   div:first-child {
+//     border-bottom-style: solid;
+//     border-bottom-width: 1px;
+//     border-bottom-left-radius: 1px;
+//   }
+// }
+map-shell-row {
+  map-shell-column:first-child {
+    div {
+      display: flex;
+      align-content: center;
+      .test-border {
+        width: 20%;
+        border-bottom-style: solid;
+        border-bottom-width: 1.5px;
+        border-bottom-left-radius: 1px;
+      }
+    }
+  }
+}
