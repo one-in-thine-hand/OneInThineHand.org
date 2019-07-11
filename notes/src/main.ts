@@ -138,37 +138,63 @@ export class NoteProcessor {
 
           const chapterNotes = new ChapterNotes();
           chapterNotes._id = id.replace('chapter', 'notes');
+          const notes = Array.from(
+            chapterElement.querySelectorAll('verse-notes'),
+          ).map(
+            (noteElement: Element): VerseNotes => {
+              const verseNotes = new VerseNotes();
+              try {
+                verseNotes._id = noteElement.id;
 
-          const notes = Array.from(chapterElement.childNodes)
-            .filter(
-              (node): boolean => {
-                return node.nodeName.toLowerCase() === 'verse-notes';
-              },
-            )
-            .map(
-              (noteElement: Element): VerseNotes => {
-                const verseNotes = new VerseNotes();
-                try {
-                  verseNotes._id = noteElement.id;
+                let verseMarker = ''; //verseNotes._id.split('-')[3];
 
-                  let verseMarker = ''; //verseNotes._id.split('-')[3];
+                verseMarker = verseNotes._id.split('-')[3];
 
-                  verseMarker = verseNotes._id.split('-')[3];
+                verseNotes.noteShortTitle = parseShortTitle(verseMarker);
+                verseNotes.noteTitle = parseNoteTitle(
+                  verseMarker,
+                  chapterElement.id,
+                );
 
-                  verseNotes.noteShortTitle = parseShortTitle(verseMarker);
-                  verseNotes.noteTitle = parseNoteTitle(
-                    verseMarker,
-                    chapterElement.id,
-                  );
+                verseNotes.notes = parseNotes(noteElement);
+              } catch (error) {
+                console.log(error);
+                // verseMarker = '';
+              }
+              return verseNotes;
+            },
+          );
 
-                  verseNotes.notes = parseNotes(noteElement);
-                } catch (error) {
-                  console.log(error);
-                  // verseMarker = '';
-                }
-                return verseNotes;
-              },
-            );
+          // const notes = Array.from(chapterElement.childNodes)
+          //   .filter(
+          //     (node): boolean => {
+          //       return node.nodeName.toLowerCase() === 'verse-notes';
+          //     },
+          //   )
+          //   .map(
+          //     (noteElement: Element): VerseNotes => {
+          //       const verseNotes = new VerseNotes();
+          //       try {
+          //         verseNotes._id = noteElement.id;
+
+          //         let verseMarker = ''; //verseNotes._id.split('-')[3];
+
+          //         verseMarker = verseNotes._id.split('-')[3];
+
+          //         verseNotes.noteShortTitle = parseShortTitle(verseMarker);
+          //         verseNotes.noteTitle = parseNoteTitle(
+          //           verseMarker,
+          //           chapterElement.id,
+          //         );
+
+          //         verseNotes.notes = parseNotes(noteElement);
+          //       } catch (error) {
+          //         console.log(error);
+          //         // verseMarker = '';
+          //       }
+          //       return verseNotes;
+          //     },
+          //   );
 
           chapterNotes.notes = notes;
 
