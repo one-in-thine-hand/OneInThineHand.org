@@ -17,7 +17,8 @@
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "lib": ["es7"]
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

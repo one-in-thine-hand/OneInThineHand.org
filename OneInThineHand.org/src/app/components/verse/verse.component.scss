@@ -127,7 +127,31 @@ kjv-container {
     // display: block;
   }
 }
-app-format-group.line:nth-child(1) {
-  margin-top: -1.5em;
-  // line-height: 1;
+:host-context(.paragraph-mode) {
+  // .line-gap,
+  // .block-gap {
+  //   margin-top: 0 !important;
+  // }
+  app-format-group.para:nth-child(1) {
+    margin-top: -1.5em;
+  }
+}
+:host-context(.paragraph-mode.block-mode) {
+  app-format-group.block:nth-child(1) {
+    margin-top: -1.5em;
+  }
+}
+:host-context(.paragraph-mode) {
+  app-format-group.para:nth-child(1) {
+    margin-top: -1.5em;
+  }
+}
+:host-context(.poetry-mode) {
+  app-format-group.line:nth-child(1) {
+    margin-top: -1.5em;
+  }
+}
+
+[class*='gap'] {
+  margin-bottom: 8pt;
 }

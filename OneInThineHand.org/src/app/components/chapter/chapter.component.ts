@@ -285,7 +285,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                       const b = this.chapterService.chapterBreaks.verseBreaks.find(
                         (brk): boolean => {
                           return (
-                            brk._id.replace('-breaks', '-verse') === verse._id
+                            brk._id.replace('-verse-breaks', '-verse') === verse._id
                           );
                         },
                       );
