@@ -82,6 +82,8 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
 
 async function main(): Promise<void> {
   const fileNames = await FastGlob(normalize(`./manifests/**/**`));
+  console.log(fileNames);
+  
   // console.log(fileNames);
   const navItems = fileNames.map(
     async (fileName: string): Promise<NavigationItem | undefined> => {
