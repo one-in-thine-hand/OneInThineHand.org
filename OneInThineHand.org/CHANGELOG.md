@@ -1,6 +1,14 @@
+## <small>5.0.61 (2019-07-12)</small>
+
+* offset fixes ([6d1b21e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6d1b21e))
+* Updaing ids ([e94b58b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e94b58b))
+
+
+
 ## <small>5.0.59 (2019-07-11)</small>
 
 * update to manifest files ([1d47f0b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d47f0b))
+* v5.0.59 ([048402e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/048402e))
 
 
 
