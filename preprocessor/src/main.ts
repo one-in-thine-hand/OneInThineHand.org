@@ -50,49 +50,55 @@ async function processScriptureFiles(
       try {
         const scriptureFile = await readFile(normalize(scriptureFileName));
         const document = new JSDOM(scriptureFile).window.document;
-        const verses = await formaTags.main(document);
-        const chapter = await chapterProcessor.main(document);
-        // const lang = await getLanguage(document);
-        // const id = await getID(document, lang);
-        // console.log(chapter);
-        // getID()
-        // console.log(dirname(normalize(scriptureFileName)));
-        // const directory = normalize(
-        //   dirname(
-        //     scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
-        //   ),
-        // );
-        // if (!(await pathExists(directory))) {
-        //   await mkdirp(directory);
-        // }
-        const directory = normalize(
-          `../scripture_files/scriptures/scriptures/`,
-        );
-        // console.log(await pathExists(directory));
+        const html = document.querySelector('html');
+        const fileTypeAttr = html
+          ? html.getAttribute('data-content-type') === 'chapter'
+          : undefined;
+        if (fileTypeAttr) {
+          const verses = await formaTags.main(document);
+          const chapter = await chapterProcessor.main(document);
+          // const lang = await getLanguage(document);
+          // const id = await getID(document, lang);
+          // console.log(chapter);
+          // getID()
+          // console.log(dirname(normalize(scriptureFileName)));
+          // const directory = normalize(
+          //   dirname(
+          //     scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
+          //   ),
+          // );
+          // if (!(await pathExists(directory))) {
+          //   await mkdirp(directory);
+          // }
+          const directory = normalize(
+            `../scripture_files/scriptures/scriptures/`,
+          );
+          // console.log(await pathExists(directory));
 
-        if (!(await pathExists(directory))) {
-          await mkdirp(directory);
+          if (!(await pathExists(directory))) {
+            await mkdirp(directory);
+          }
+          // console.log(`${directory}/${basename(id)}-verses.json`);
+
+          if (verses && verses.verses) {
+            allVerses = allVerses.concat(verses.verses);
+          }
+          await writeFile(
+            normalize(
+              `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
+            ),
+            JSON.stringify(verses),
+          );
+          await writeFile(
+            normalize(
+              `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
+            ),
+            JSON.stringify(chapter),
+          );
+          count = count + 1;
+
+          console.log(`${count}/${totalCount}`);
         }
-        // console.log(`${directory}/${basename(id)}-verses.json`);
-
-        if (verses && verses.verses) {
-          allVerses = allVerses.concat(verses.verses);
-        }
-        await writeFile(
-          normalize(
-            `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
-          ),
-          JSON.stringify(verses),
-        );
-        await writeFile(
-          normalize(
-            `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
-          ),
-          JSON.stringify(chapter),
-        );
-        count = count + 1;
-
-        console.log(`${count}/${totalCount}`);
 
         // console.log(verses);
         // console.log(scriptureFile);
