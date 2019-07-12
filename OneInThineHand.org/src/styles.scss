@@ -127,10 +127,12 @@ div.main {
   background: none;
 }
 
-.insertion {
+.insertion,
+insertion {
   font-weight: 700;
 }
-.deletion {
+.deletion,
+deletion {
   font-style: italic;
 }
 

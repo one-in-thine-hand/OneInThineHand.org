@@ -245,7 +245,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 }
                 if (notesGrid) {
                   console.log(pageState.notesScrollTop);
-                  notesGrid.scrollTop = pageState.notesScrollTop;
+                  setTimeout((): void => {
+                    notesGrid.scrollTop = pageState.notesScrollTop;
+                  }, 300);
                 }
                 this.popStateActivated = false;
                 // if (this.pageStateService.currentPageState) {
