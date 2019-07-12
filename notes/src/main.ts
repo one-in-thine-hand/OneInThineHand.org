@@ -99,7 +99,7 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
 
   verseMarker = verseMarker;
   if (!name) {
-    console.log(lang);
+    // console.log(lang);
 
     throw chapterID;
   }
@@ -135,6 +135,7 @@ export class NoteProcessor {
       Array.from(document.querySelectorAll('chapter')).map(
         (chapterElement): void => {
           const id = chapterElement.id;
+          // console.log();
 
           const chapterNotes = new ChapterNotes();
           chapterNotes._id = id.replace('chapter', 'notes');
@@ -147,8 +148,14 @@ export class NoteProcessor {
                 verseNotes._id = noteElement.id;
 
                 let verseMarker = ''; //verseNotes._id.split('-')[3];
+                const split = verseNotes._id.split('-');
+                split.pop();
+                split.pop();
 
-                verseMarker = verseNotes._id.split('-')[3];
+                const tempMarker = split.pop();
+                verseMarker = tempMarker ? tempMarker : '';
+
+                // console.log(verseMarker);
 
                 verseNotes.noteShortTitle = parseShortTitle(verseMarker);
                 verseNotes.noteTitle = parseNoteTitle(

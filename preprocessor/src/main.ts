@@ -103,6 +103,8 @@ async function processScriptureFiles(
         // console.log(verses);
         // console.log(scriptureFile);
       } catch (error) {
+        console.log('iojasdfoiajsdfoij');
+
         console.log(error);
       }
     },
@@ -231,12 +233,16 @@ async function main(): Promise<void> {
         await mkdirp(directory);
       }
 
+      console.log(`${directory}/${key.replace('chapter', 'notes')}.json`);
+
       try {
         await writeFile(
-          `${directory}/${key.replace('chapter', 'notes')}.json`,
+          `${directory}${key.replace('chapter', 'notes')}.json`,
           JSON.stringify(value),
         );
       } catch (error) {
+        console.log('oiasjdfoiajsdfoijadsfoijadsoifj');
+
         console.log(error);
       }
     },

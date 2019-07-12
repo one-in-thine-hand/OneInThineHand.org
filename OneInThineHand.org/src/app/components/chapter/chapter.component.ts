@@ -259,9 +259,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
                   ]);
                   // console.log(all);
-                  console.log(
+                  console.log([
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
+                    `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
-                  );
+                  ]);
 
                   console.log(all);
 
@@ -285,7 +288,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                       const b = this.chapterService.chapterBreaks.verseBreaks.find(
                         (brk): boolean => {
                           return (
-                            brk._id.replace('-verse-breaks', '-verse') === verse._id
+                            brk._id.replace('-breaks', '-verse') === verse._id
                           );
                         },
                       );
