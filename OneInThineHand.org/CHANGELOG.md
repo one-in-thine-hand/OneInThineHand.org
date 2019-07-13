@@ -1,6 +1,16 @@
+## <small>5.0.63 (2019-07-13)</small>
+
+* harmony notes ([a82375a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a82375a))
+* Harmony updates ([b166d32](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b166d32))
+* side by side border update ([1f50c14](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f50c14))
+* Updated settings page ([27ad0fd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/27ad0fd))
+
+
+
 ## <small>5.0.62 (2019-07-12)</small>
 
 * Possible Page state fix ([bcce204](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bcce204))
+* v5.0.62 ([2d1fd93](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2d1fd93))
 
 
 
