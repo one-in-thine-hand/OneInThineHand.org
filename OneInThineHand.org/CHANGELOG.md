@@ -1,6 +1,12 @@
+## <small>5.0.68 (2019-07-13)</small>
+
+
+
+
 ## <small>5.0.67 (2019-07-13)</small>
 
 * bug fixes ([51cfd91](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/51cfd91))
+* v5.0.67 ([99133af](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/99133af))
 
 
 
