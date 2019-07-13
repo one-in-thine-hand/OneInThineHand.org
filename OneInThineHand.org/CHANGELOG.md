@@ -1,6 +1,13 @@
+## <small>5.0.65 (2019-07-13)</small>
+
+* bug fixes ([eff1ef3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/eff1ef3))
+
+
+
 ## <small>5.0.64 (2019-07-13)</small>
 
 * Added support for verse number coloring ([e4a44da](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e4a44da))
+* v5.0.64 ([70733f1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/70733f1))
 
 
 
