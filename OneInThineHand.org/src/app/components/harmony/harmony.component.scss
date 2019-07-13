@@ -47,14 +47,14 @@ $chapterGridMargins: 32px;
     @media screen and (min-width: 1000px) {
       map-shell-column {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto 1px;
         div {
           display: flex;
           // margin-top: 2.5px;
           // margin-bottom: 2.5px;
           align-items: center;
           .test-border {
-            height: 10px;
+            height: 90%;
             border-right: solid;
             border-right-width: 1.5px;
             // border-right-left-radius: 1px;

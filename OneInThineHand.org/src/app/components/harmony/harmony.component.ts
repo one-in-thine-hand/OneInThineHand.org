@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Verse, VerseNotes } from '../../../../../shared/src/shared';
 import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { FormatTagService } from '../../services/format-tag.service';
-import { MapShell, KJVVerseRef } from './map-shell';
+import { MapShell, KJVVerseRef, MapShellColumn } from './map-shell';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { SaveStateService } from '../../services/save-state.service';
@@ -36,6 +36,38 @@ export class HarmonyComponent implements OnInit {
     public tempSettings: TempSettingsService,
     public offsetService: OffsetService,
   ) {}
+  public async extractVerseNotesFromDatabaseItems(
+    mapShellDatabaseItems: DatabaseItem[],
+    verses: Verse[],
+  ): Promise<void> {
+    const p = mapShellDatabaseItems
+      .filter((mapShellDatabaseItem): boolean => {
+        return (mapShellDatabaseItem as ChapterNotes).notes !== undefined;
+      })
+      .map(
+        async (chapterNotes: ChapterNotes): Promise<void> => {
+          console.log(chapterNotes);
+          if (chapterNotes.notes) {
+            await this.offsetService.expandNotes(chapterNotes.notes);
+            chapterNotes.notes.map((verseNote): void => {
+              const verse = verses.find((verse): boolean => {
+                return (
+                  verse._id !== undefined &&
+                  verse._id.replace('verse', 'verse-notes') === verseNote._id
+                );
+              });
+              if (verse) {
+                verse.note = verseNote;
+              }
+              // console.log(verse);
+            });
+          }
+        },
+      );
+    console.log('oijasofaoijsdf');
+    await Promise.all(p);
+    await this.formatTagService.resetVerses(verses);
+  }
   public getWhiteSpaceHeight(): string {
     return `${window.innerHeight - 64}px`;
   }
@@ -80,37 +112,28 @@ export class HarmonyComponent implements OnInit {
       },
     );
   }
-  public async extractVerseNotesFromDatabaseItems(
-    mapShellDatabaseItems: DatabaseItem[],
-    verses: Verse[],
-  ): Promise<void> {
-    const p = mapShellDatabaseItems
-      .filter((mapShellDatabaseItem): boolean => {
-        return (mapShellDatabaseItem as ChapterNotes).notes !== undefined;
-      })
-      .map(
-        async (chapterNotes: ChapterNotes): Promise<void> => {
-          console.log(chapterNotes);
-          if (chapterNotes.notes) {
-            await this.offsetService.expandNotes(chapterNotes.notes);
-            chapterNotes.notes.map((verseNote): void => {
-              const verse = verses.find((verse): boolean => {
-                return (
-                  verse._id !== undefined &&
-                  verse._id.replace('verse', 'verse-notes') === verseNote._id
-                );
-              });
-              if (verse) {
-                verse.note = verseNote;
-              }
-              console.log(verse);
-            });
-          }
-        },
-      );
-    console.log('oijasofaoijsdf');
-    await Promise.all(p);
-    await this.formatTagService.resetVerses(verses);
+  public showBorder(mapShellColumn: MapShellColumn | undefined): boolean {
+    console.log(
+      mapShellColumn !== undefined &&
+        mapShellColumn.verseRefs !== undefined &&
+        mapShellColumn.verseRefs.filter((verseRef): boolean => {
+          return (
+            !verseRef.id.includes('title1') &&
+            !verseRef.id.includes('title_number1')
+          );
+        }).length > 0,
+    );
+
+    return (
+      mapShellColumn !== undefined &&
+      mapShellColumn.verseRefs !== undefined &&
+      mapShellColumn.verseRefs.filter((verseRef): boolean => {
+        return (
+          !verseRef.id.includes('title1') &&
+          !verseRef.id.includes('title_number1')
+        );
+      }).length > 0
+    );
   }
 
   private addVersesToMapShell(verses: Verse[], mapShell: MapShell): void {
