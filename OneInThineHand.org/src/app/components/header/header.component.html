@@ -148,6 +148,20 @@
     </button>
   </div>
   <div class="modal-body settings">
+    <h2>Note Overlays</h2>
+    <ul class="note-overlays">
+      <li
+        (click)="refLabelClick(r)"
+        *ngFor="let r of this.saveStateService.data.noteTypeSettings"
+        [ngClass]="{
+          'btn-overlay-primary': r.visible,
+          ' btn-overlay-secondary': !r.visible
+        }"
+      >
+        <!-- class="btn btn-primary" -->
+        {{ r.shortName }}
+      </li>
+    </ul>
     <h2>Note Categories</h2>
     <table class="table">
       <tr>
@@ -314,20 +328,7 @@
         {{ r.referenceLabelShortName }}
       </li>
     </ul> -->
-    <h2>Note Types</h2>
-    <ul>
-      <li
-        (click)="refLabelClick(r)"
-        *ngFor="let r of this.saveStateService.data.noteTypeSettings"
-        [ngClass]="{
-          'btn-primary': r.visible,
-          ' btn-secondary': !r.visible
-        }"
-        class="btn btn-primary"
-      >
-        {{ r.shortName }}
-      </li>
-    </ul>
+
     <!-- <ul>
       <li
         (click)="refLabelClick('englishOverlayVisible')"

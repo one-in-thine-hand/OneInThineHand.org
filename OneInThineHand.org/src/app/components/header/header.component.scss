@@ -75,3 +75,23 @@
 table {
   text-align: center;
 }
+
+.note-overlays {
+  padding: 0;
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    &.btn-overlay-primary {
+      background-color: #c3dbf7;
+    }
+    &.btn-overlay-secondary {
+      background-color: white;
+    }
+  }
+}
