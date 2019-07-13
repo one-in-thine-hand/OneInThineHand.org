@@ -1,5 +1,7 @@
 <chapter-parent
-  [ngClass]="{ 'notes-off': !this.saveStateService.data.notesPaneToggle }"
+  [ngClass]="{
+    'notes-off': !this.saveStateService.data.notesPaneToggle || !verseNotes
+  }"
 >
   <map-shell-grid class="chapter-grid">
     <div style=" user-select: none;"></div>
@@ -70,4 +72,22 @@
     </div>
     <div style=" user-select: none;"></div>
   </map-shell-grid>
+  <div
+    id="notes"
+    *ngIf="this.saveStateService.data.notesPaneToggle && verseNotes"
+  >
+    <div class="notes-top"></div>
+    <ng-container *ngIf="verseNotes">
+      <app-note
+        class="app-note"
+        *ngFor="let verseNote of verseNotes"
+        [verseNotes]="verseNote"
+      ></app-note>
+      <div
+        class="white-space"
+        [ngStyle]="{ height: getWhiteSpaceHeight() }"
+      ></div>
+    </ng-container>
+    <div class="notes-bottom"></div>
+  </div>
 </chapter-parent>

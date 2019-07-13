@@ -159,6 +159,11 @@ export class FormatTagService {
             return s.refTag as RefTag;
           },
         );
+      if (oFtags.length > 0) {
+        console.log(oFtags);
+      } else {
+        // console.log(o);
+      }
 
       return oFtags.length > 0 ? oFtags : undefined;
     }
