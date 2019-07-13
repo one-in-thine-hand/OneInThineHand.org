@@ -51,6 +51,8 @@ export class VerseComponent implements OnInit {
           (this.saveStateService.data.blockVisible ||
             this.saveStateService.data.paragraphsVisible))
       ) {
+        console.log('tedt');
+
         expandOffsets(this.verse.breakFormatGroups);
       } else {
         expandOffsets(this.verse.formatGroups);

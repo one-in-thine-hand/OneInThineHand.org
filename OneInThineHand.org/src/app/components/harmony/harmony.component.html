@@ -32,10 +32,13 @@
             *ngFor="let mapShellColumn of mapShellRow.mapShellColumns"
           >
             <ng-container *ngIf="mapShellColumn.verses">
-              <app-verse
-                *ngFor="let verse of mapShellColumn.verses"
-                [verse]="verse"
-              ></app-verse>
+              <map-verses>
+                <app-verse
+                  *ngFor="let verse of mapShellColumn.verses"
+                  [verse]="verse"
+                ></app-verse>
+              </map-verses>
+
               <div class="test-border">
                 <div class="test-border"></div>
               </div>

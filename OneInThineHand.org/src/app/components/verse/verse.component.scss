@@ -148,7 +148,9 @@ kjv-container {
 }
 :host-context(.poetry-mode) {
   app-format-group.line:nth-child(1) {
-    margin-top: -1.5em;
+    margin-top: -1.51em;
+  }
+  .poetry-gap {
   }
 }
 

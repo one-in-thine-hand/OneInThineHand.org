@@ -224,6 +224,8 @@ export class FormatTagService {
       this.saveStateService.data.blockVisible ||
       this.saveStateService.data.paragraphsVisible
     ) {
+      console.log('jhhhh');
+
       try {
         verses.map((verse): void => {
           this.buildOffsets(
