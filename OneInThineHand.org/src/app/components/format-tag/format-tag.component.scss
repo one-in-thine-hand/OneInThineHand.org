@@ -71,6 +71,12 @@ f {
   }
 }
 
+:host-context(verse.all) {
+  .verse-number {
+    color: darkviolet;
+  }
+}
+
 :host-context(.edit-mode) f {
   // pointer-events: none;
 }

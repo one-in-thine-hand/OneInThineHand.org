@@ -115,6 +115,19 @@ export class VerseComponent implements OnInit {
 
   public getClassList(): string {
     const classList: string[] = [];
+    if (
+      this.verse.note &&
+      this.verse.note.notes &&
+      this.verse.note.notes.filter((note): boolean => {
+        return (
+          (note.visible &&
+            (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
+          note.offsets === 'all'
+        );
+      }).length > 0
+    ) {
+      classList.push('all');
+    }
 
     if (this.verse && this.verse.context) {
       classList.push('context');
