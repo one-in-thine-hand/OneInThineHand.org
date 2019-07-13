@@ -143,7 +143,8 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.QUO1,
     referenceLabelName: 'Quotation',
     visible: true,
-    referenceLabelShortName: 'QUO-1',
+    referenceLabelShortName: 'QUO',
+    // referenceLabelShortName: 'QUO-1',
   },
   {
     sortOrder: 0,
@@ -151,7 +152,8 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.QUO2,
     referenceLabelName: 'Quotation',
     visible: true,
-    referenceLabelShortName: 'QUO-2',
+    referenceLabelShortName: 'QUO',
+    // referenceLabelShortName: 'QUO-2',
   },
   {
     sortOrder: 0,
