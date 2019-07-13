@@ -14,26 +14,37 @@ import { SaveStateService } from '../../services/save-state.service';
   styleUrls: ['./verse.component.scss'],
 })
 export class VerseComponent implements OnInit {
-  @Input() public verse: Verse;
   public kjvRefVerse: Verse | undefined;
+  @Input() public verse: Verse;
   public constructor(
     public chapterService: ChapterService,
     public saveStateService: SaveStateService,
   ) {}
 
-  public ngOnInit(): void {}
+  public getClassList(): string {
+    const classList: string[] = [];
+    if (
+      this.verse.note &&
+      this.verse.note.notes &&
+      this.verse.note.notes.filter((note): boolean => {
+        return (
+          (note.visible &&
+            (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
+          note.offsets === 'all'
+        );
+      }).length > 0
+    ) {
+      classList.push('all');
+    }
 
-  // @HostListener('mouseup', ['$event'])
-  // public onPopState(event: PopStateEvent): void {
-  //   // console.log(event);
-  // }
-  public getID(): string {
-    // if (this.verse === undefined || this.verse._id === undefined) {
-    //   console.log(this.verse);
-    // }
-    return this.verse !== undefined && this.verse._id !== undefined
-      ? this.verse._id
-      : '';
+    if (this.verse && this.verse.context) {
+      classList.push('context');
+    }
+    if (this.verse && this.verse.highlight) {
+      classList.push('highlight');
+    }
+
+    return classList.toString().replace(/,/g, ' ');
   }
   public getFormatGroups(): FormatGroup[] {
     // console.log(this.verse);
@@ -113,30 +124,17 @@ export class VerseComponent implements OnInit {
     return [];
   }
 
-  public getClassList(): string {
-    const classList: string[] = [];
-    if (
-      this.verse.note &&
-      this.verse.note.notes &&
-      this.verse.note.notes.filter((note): boolean => {
-        return (
-          (note.visible &&
-            (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
-          note.offsets === 'all'
-        );
-      }).length > 0
-    ) {
-      classList.push('all');
-    }
-
-    if (this.verse && this.verse.context) {
-      classList.push('context');
-    }
-    if (this.verse && this.verse.highlight) {
-      classList.push('highlight');
-    }
-
-    return classList.toString().replace(/,/g, ' ');
+  // @HostListener('mouseup', ['$event'])
+  // public onPopState(event: PopStateEvent): void {
+  //   // console.log(event);
+  // }
+  public getID(): string {
+    // if (this.verse === undefined || this.verse._id === undefined) {
+    //   console.log(this.verse);
+    // }
+    return this.verse !== undefined && this.verse._id !== undefined
+      ? this.verse._id
+      : '';
   }
 
   public getOffSets(): string {
@@ -144,4 +142,6 @@ export class VerseComponent implements OnInit {
       this.verse && this.verse.text ? this.verse.text.length - 1 : 0
     }`;
   }
+
+  public ngOnInit(): void {}
 }
