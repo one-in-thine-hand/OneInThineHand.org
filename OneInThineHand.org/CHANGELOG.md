@@ -1,9 +1,16 @@
+## <small>5.0.64 (2019-07-13)</small>
+
+* Added support for verse number coloring ([e4a44da](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e4a44da))
+
+
+
 ## <small>5.0.63 (2019-07-13)</small>
 
 * harmony notes ([a82375a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a82375a))
 * Harmony updates ([b166d32](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b166d32))
 * side by side border update ([1f50c14](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f50c14))
 * Updated settings page ([27ad0fd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/27ad0fd))
+* v5.0.63 ([1545595](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1545595))
 
 
 
