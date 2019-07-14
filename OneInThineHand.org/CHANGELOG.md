@@ -1,5 +1,13 @@
+## <small>5.0.70 (2019-07-14)</small>
+
+* Added animation ([c6b8da8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c6b8da8))
+* animation ([c5d43bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c5d43bb))
+
+
+
 ## <small>5.0.69 (2019-07-14)</small>
 
+* v5.0.69 ([c3bfaf7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c3bfaf7))
 
 
 
