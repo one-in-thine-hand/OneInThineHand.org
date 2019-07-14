@@ -152,7 +152,7 @@
     <ul class="note-overlays">
       <li
         (click)="refLabelClick(r)"
-        *ngFor="let r of this.saveStateService.data.noteTypeSettings"
+        *ngFor="let r of this.saveStateService.getNoteOverlays()"
         [ngClass]="{
           'btn-overlay-primary': r.visible,
           ' btn-overlay-secondary': !r.visible

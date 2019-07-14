@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SaveStateModel } from './SaveStateModel';
 import { ReferenceLabel } from '../../../../shared/src/models/notes/Note';
+import { sortBy } from 'lodash';
 import {
   NoteTypeConvert,
   NoteTypeConverts,
@@ -11,9 +12,16 @@ import {
   providedIn: 'root',
 })
 export class SaveStateService {
-  public constructor() {}
-
   public data: SaveStateModel = new SaveStateModel();
+  public constructor() {}
+  public getNoteOverlays(): NoteTypeConvert[] {
+    if (this.data && this.data.noteTypeSettings) {
+      return sortBy(this.data.noteTypeSettings, (ntSetting): number => {
+        return ntSetting.noteType;
+      });
+    }
+    return [];
+  }
 
   public async load(): Promise<void> {
     const tempData = localStorage.getItem('oithSettings');
@@ -85,6 +93,9 @@ export class SaveStateService {
     // );
     await this.save();
   }
+  public async save(): Promise<void> {
+    localStorage.setItem('oithSettings', JSON.stringify(this.data));
+  }
   private mergeNoteSettings<T extends { className: string }>(
     noteSettings: T[],
     noteSettingsMaster: T[],
@@ -102,9 +113,5 @@ export class SaveStateService {
     } else {
       noteSettings = noteSettingsMaster;
     }
-  }
-
-  public async save(): Promise<void> {
-    localStorage.setItem('oithSettings', JSON.stringify(this.data));
   }
 }

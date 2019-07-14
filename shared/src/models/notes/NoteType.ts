@@ -36,6 +36,7 @@ export enum NoteType {
   QUO,
   Phrasing,
   TRANSLATION,
+  CR,
   TEST,
   EXISTING,
   TC,
@@ -89,6 +90,13 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     className: 'overlay-trn',
     shortName: 'Translation',
     longName: 'Translation',
+    visible: true,
+  },
+  {
+    noteType: NoteType.CR,
+    className: 'overlay-cr',
+    shortName: 'Cross Reference',
+    longName: 'Cross Reference',
     visible: true,
   },
   {
