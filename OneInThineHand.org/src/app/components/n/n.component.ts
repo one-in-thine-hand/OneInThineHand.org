@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import {
   Note,
   VerseNotes,
@@ -15,6 +15,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { SaveService } from '../../services/save.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-n',
@@ -25,6 +26,17 @@ export class NComponent implements OnInit {
   @Input() public note: Note;
   @Input() public verseNotes: VerseNotes;
   public edit = false;
+  // @HostListener('click', ['$event'])
+  // public routerLinks(event: MouseEvent): void {
+  //   const href = (event.target as HTMLAnchorElement).href as string | undefined;
+  //   if (href) {
+  //     console.log(href.split('#/')[1].replace('jst-', 'eng/jst_'));
+
+  //     this.router.navigateByUrl(
+  //       href.split('#/')[1].replace('jst-', 'eng/jst_'),
+  //     );
+  //   }
+  // }
 
   public constructor(
     public domSanitizer: DomSanitizer,
@@ -33,6 +45,7 @@ export class NComponent implements OnInit {
     public formatTagService: FormatTagService,
     public tempSettingsService: TempSettingsService,
     public saveService: SaveService,
+    public router: Router,
   ) {}
 
   public ngOnInit(): void {

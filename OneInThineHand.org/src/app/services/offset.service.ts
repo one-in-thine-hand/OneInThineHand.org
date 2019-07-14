@@ -33,6 +33,7 @@ export class OffsetService {
                   );
 
                   if (secondaryNote.uncompressedOffsets) {
+                    secondaryNote.uncompressedOffsets.pop();
                     secondaryNote.offsets = getRanges(
                       secondaryNote.uncompressedOffsets,
                     )
