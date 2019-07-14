@@ -46,7 +46,7 @@ export class HarmonyComponent implements OnInit {
       })
       .map(
         async (chapterNotes: ChapterNotes): Promise<void> => {
-          console.log(chapterNotes);
+          // console.log(chapterNotes);
           if (chapterNotes.notes) {
             await this.offsetService.expandNotes(chapterNotes.notes);
             chapterNotes.notes.map((verseNote): void => {
@@ -64,7 +64,7 @@ export class HarmonyComponent implements OnInit {
           }
         },
       );
-    console.log('oijasofaoijsdf');
+    // console.log('oijasofaoijsdf');
     await Promise.all(p);
     await this.formatTagService.resetVerses(verses);
   }
@@ -77,15 +77,16 @@ export class HarmonyComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       async (params): Promise<void> => {
         const id = `${params['language']}-${params['book']}-${params['chapter']}-chapter-map-shell`;
-        console.log(id);
+        // console.log(id);
 
         this.mapShell = ((await this.databaseService.getDatabaseItem(
           id,
         )) as never) as MapShell;
-        console.log(this.mapShell);
+        // console.log(this.mapShell);
 
         this.mapShellDatabaseItems = await this.getDataBaseItems(this.mapShell);
         console.log(this.mapShellDatabaseItems);
+        console.log(this.mapShell);
 
         await this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
         if (this.verses) {
@@ -113,16 +114,16 @@ export class HarmonyComponent implements OnInit {
     );
   }
   public showBorder(mapShellColumn: MapShellColumn | undefined): boolean {
-    console.log(
-      mapShellColumn !== undefined &&
-        mapShellColumn.verseRefs !== undefined &&
-        mapShellColumn.verseRefs.filter((verseRef): boolean => {
-          return (
-            !verseRef.id.includes('title1') &&
-            !verseRef.id.includes('title_number1')
-          );
-        }).length > 0,
-    );
+    // console.log(
+    //   mapShellColumn !== undefined &&
+    //     mapShellColumn.verseRefs !== undefined &&
+    //     mapShellColumn.verseRefs.filter((verseRef): boolean => {
+    //       return (
+    //         !verseRef.id.includes('title1') &&
+    //         !verseRef.id.includes('title_number1')
+    //       );
+    //     }).length > 0,
+    // );
 
     return (
       mapShellColumn !== undefined &&
@@ -183,7 +184,7 @@ export class HarmonyComponent implements OnInit {
         chapterVerse.verses ? chapterVerse.verses : [],
       );
     });
-    console.log(this.verses);
+    // console.log(this.verses);
   }
 
   private async getDataBaseItems(mapShell: MapShell): Promise<DatabaseItem[]> {

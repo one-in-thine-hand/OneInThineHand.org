@@ -159,7 +159,7 @@ export const ReferenceLabels: ReferenceLabel[] = [
     noteCategory: NoteCategory.IEQUO,
     referenceLabelName: 'IE Quotation',
     visible: true,
-    referenceLabelShortName: 'QUO',
+    referenceLabelShortName: 'IE',
   },
   {
     sortOrder: 0,

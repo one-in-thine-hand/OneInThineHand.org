@@ -74,15 +74,15 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   {
     noteType: NoteType.QUO,
     className: 'overlay-quo',
-    shortName: 'QUO',
+    shortName: 'Quotation',
     longName: 'Quotation',
     visible: true,
   },
   {
     noteType: NoteType.Phrasing,
     className: 'overlay-phr',
-    shortName: 'PHR',
-    longName: 'Phrasing',
+    shortName: 'Phrase',
+    longName: 'Phrase',
     visible: true,
   },
   {
