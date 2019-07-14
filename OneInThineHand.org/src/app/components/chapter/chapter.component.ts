@@ -35,6 +35,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public popStateActivated = false;
   public shiftKeyInterval: NodeJS.Timer | undefined;
   public shiftKeyPressed: boolean;
+  public fadeOutChapter = false;
+  public fadeInChapter = false;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -195,13 +197,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
       async (params): Promise<void> => {
         this.activatedRouter.queryParams.subscribe(
           async (queryParam): Promise<void> => {
+            this.fadeOutChapter = true;
+            this.fadeInChapter = false;
             let language = queryParam['lang'] as string | undefined;
             if (!language) {
               language = 'eng';
             }
 
             await this.setHistory();
-            await asyncScrollTop('.chapter-grid');
 
             const chapterParams = this.paramService.parseChapterParams(params);
             if (
@@ -253,6 +256,10 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 // if (this.pageStateService.currentPageState) {
                 // }
               } else {
+                setTimeout(async (): Promise<void> => {
+                  await asyncScrollTop('.chapter-grid');
+                }, 300);
+
                 try {
                   const all = await this.databaseService.bulkGetByIDs([
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
@@ -528,7 +535,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
       this.chapterService.notes = this.chapterNotes.notes;
     }
     this.chapterService.chapterVerses = this.chapterVerses;
-
+    this.fadeOutChapter = false;
+    this.fadeInChapter = true;
+    setTimeout(() => {
+      this.fadeInChapter = false;
+    }, 500);
     try {
       // await this.getKJVRef(this.chapterVerses);
     } catch (error) {
