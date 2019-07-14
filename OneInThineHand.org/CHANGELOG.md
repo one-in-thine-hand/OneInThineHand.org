@@ -1,7 +1,15 @@
+## <small>5.0.71 (2019-07-14)</small>
+
+* New note categories ([05f62c6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/05f62c6))
+* Note Type sorting ([fa3c88e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fa3c88e))
+
+
+
 ## <small>5.0.70 (2019-07-14)</small>
 
 * Added animation ([c6b8da8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c6b8da8))
 * animation ([c5d43bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c5d43bb))
+* v5.0.70 ([25dbf9b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/25dbf9b))
 
 
 
