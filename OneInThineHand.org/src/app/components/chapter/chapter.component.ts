@@ -21,6 +21,7 @@ import {
   FormatGroupSegment,
   FormatGroup,
 } from '../../../../../shared/src/models/format_groups/FormatGroup';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -32,12 +33,13 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public chapterVerses: ChapterVerses | undefined;
   public ctrlKeyInterval: NodeJS.Timer | undefined;
   public ctrlKeyPressed: boolean;
+  public fadeInChapter = false;
+  public fadeOutChapter = false;
   public popStateActivated = false;
   public shiftKeyInterval: NodeJS.Timer | undefined;
   public shiftKeyPressed: boolean;
-  public fadeOutChapter = false;
-  public fadeInChapter = false;
   public constructor(
+    public titleService: Title,
     public chapterService: ChapterService,
     public offsetService: OffsetService,
     public visibilityService: VisibilityService,
@@ -207,12 +209,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
             await this.setHistory();
 
             const chapterParams = this.paramService.parseChapterParams(params);
-            if (chapterParams.book.includes('jst-')) {
+            if (chapterParams.book.includes('jst_')) {
               this.router.navigateByUrl(
-                `eng/${chapterParams.book.replace('jst-', 'jst-')}/${
-                  chapterParams.chapter
-                }`,
+                `eng/${chapterParams.book}/${chapterParams.chapter}`,
+                { replaceUrl: true },
               );
+              // this.router
             } else {
               if (
                 this.chapter &&
@@ -362,6 +364,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 }
               }
               // this.historyService.init();
+              if (this.chapter) {
+                this.titleService.setTitle(this.chapter.title);
+              }
               this.popStateActivated = false;
             }
           },

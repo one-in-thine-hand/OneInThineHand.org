@@ -4,6 +4,7 @@ import {
   getElementsAttribute,
   NotePhrase,
   NoteRef,
+  NoteCategory,
 } from '../../shared/src/shared';
 import { bookNames } from './consts';
 import { getNoteType } from '../../shared/src/shared';
@@ -36,6 +37,14 @@ function parseNoteRefs(element: Element): NoteRef[] {
       const noteRef = new NoteRef();
 
       noteRef.noteCategory = getNoteReferenceLabel(noteRefElement);
+      if (
+        noteRef.noteCategory === NoteCategory.ERR &&
+        noteRefElement.querySelector('[class*=reference-label]') === null
+      ) {
+        noteRef.noteCategory = NoteCategory.NONE;
+      } else if (noteRef.noteCategory === NoteCategory.ERR) {
+        console.log(noteRefElement.outerHTML);
+      }
 
       if (noteRefHasNoneClass(noteRefElement)) {
         noteRef.none = true;
@@ -101,7 +110,7 @@ function parseNoteTitle(verseMarker: string, chapterID: string): string {
   if (!name) {
     // console.log(lang);
 
-    throw chapterID;
+    throw new Error(`Note Title error ${chapterID}`);
   }
   return `${name ? name.fullName : ''} ${
     name
@@ -165,7 +174,7 @@ export class NoteProcessor {
 
                 verseNotes.notes = parseNotes(noteElement);
               } catch (error) {
-                console.log(error);
+                // console.log(error);
                 // verseMarker = '';
               }
               return verseNotes;

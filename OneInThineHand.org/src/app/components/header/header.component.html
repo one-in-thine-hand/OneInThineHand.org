@@ -298,18 +298,33 @@
       <tr>
         <td
           [ngClass]="{
-            'table-primary': categoryIsActive('reference-label-doctrine')
+            'table-primary': categoryIsActive('reference-label-tg')
           }"
-          (click)="
-            noteCategoryBtnClick([
-              'reference-label-doctrine',
-              'reference-label-bd',
-              'reference-label-tg',
-              'reference-label-gs'
-            ])
-          "
+          (click)="noteCategoryBtnClick(['reference-label-tg'])"
         >
-          DOCT
+          TG
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-gs')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-gs'])"
+        >
+          GS
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-bd')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-bd'])"
+        >
+          BD
         </td>
         <td></td>
       </tr>
@@ -403,7 +418,7 @@
       class="btn btn-outline-dark"
       (click)="modal.close('Save click')"
     >
-      Save
+      Close
     </button>
   </div>
 </ng-template>

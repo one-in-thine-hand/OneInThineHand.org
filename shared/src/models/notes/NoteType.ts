@@ -1,12 +1,3 @@
-// import * as he from 'he';
-// import * as he from 'he';
-
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
 export const enum NoteCategory {
   ERR = 100000,
   QUO = 0,
@@ -31,6 +22,11 @@ export const enum NoteCategory {
   QUO2 = 19,
   OR1 = 20,
   OR2 = 21,
+  ORT2,
+  ORT1,
+  NONE,
+  IEQUO1,
+  IEQUO,
 }
 
 export enum NoteType {
