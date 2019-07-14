@@ -1,7 +1,14 @@
+## <small>5.0.72 (2019-07-14)</small>
+
+* bug fixes ([632c547](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/632c547))
+
+
+
 ## <small>5.0.71 (2019-07-14)</small>
 
 * New note categories ([05f62c6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/05f62c6))
 * Note Type sorting ([fa3c88e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fa3c88e))
+* v5.0.71 ([6bdd44a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6bdd44a))
 
 
 
