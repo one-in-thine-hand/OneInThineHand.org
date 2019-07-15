@@ -15,6 +15,7 @@ export class DatabaseService {
   public async allDocs(): Promise<
     PouchDB.Core.AllDocsResponse<{}> | undefined
   > {
+    this.initReadingMode();
     if (this.db) {
       return await this.db.allDocs();
     }

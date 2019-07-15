@@ -47,6 +47,8 @@ export class PreprocessorService {
 
             const allDocs = await this.databaseService.allDocs();
             console.log(allDocs);
+
+            console.log(allDocs);
             // console.log(u);
             const onlyFiles = Object.keys(unziped.files).filter(
               (key): boolean => {
@@ -64,9 +66,9 @@ export class PreprocessorService {
                   await this.databaseService.setDocsRev(d, allDocs);
                   await this.databaseService.bulkDocs(d);
                   this.count = this.count + 1;
-                  console.log(this.count);
+                  // console.log(this.count);
 
-                  console.log(this.count / this.fileCount);
+                  // console.log(this.count / this.fileCount);
                 },
               ),
             );

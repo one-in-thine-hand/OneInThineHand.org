@@ -60,11 +60,8 @@ export class HeaderComponent implements OnInit {
   public categoryIsActive(noteCategoryClassName: string): boolean {
     const noteCategory = this.findNoteCategorySetting(noteCategoryClassName);
     if (!noteCategory) {
-      // console.log(noteCategoryClassName);
-      // console.log(ReferenceLabels);
     }
     return noteCategory && noteCategory.visible ? noteCategory.visible : false;
-    // return true;
   }
   public async forwardClick(): Promise<void> {
     this.location.forward();
@@ -86,7 +83,6 @@ export class HeaderComponent implements OnInit {
     this.uploading = true;
     await this.preprocessorService.loadChapterFiles(event);
     this.uploading = false;
-    // console.log('Finished');
 
     return;
   }
@@ -119,28 +115,12 @@ export class HeaderComponent implements OnInit {
           const noteCat = noteCategories[x];
 
           noteCat.visible = noteCategories[0].visible;
-          // console.log(noteCat.visible);
         }
-        // noteCategories[1].visible = noteCategories[0].visible;
       }
     } catch (error) {}
-    // const noteCategory = this.saveStateService.data.noteCategorySettings.find(
-    //   (noteCategory): boolean => {
-    //     return noteCategory.className === noteCategoryClassName;
-    //   },
-    // );
 
-    // if (noteCategory) {
-    //   noteCategory.visible = !noteCategory.visible;
-    // }
-
-    // if (this.chapterService.notes) {
-    //   this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-    //   // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
-    // }
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
@@ -178,7 +158,6 @@ export class HeaderComponent implements OnInit {
 
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
@@ -193,7 +172,6 @@ export class HeaderComponent implements OnInit {
 
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
@@ -221,12 +199,6 @@ export class HeaderComponent implements OnInit {
     const refLabelQuo = this.findNoteCategorySetting(
       'reference-label-quotation',
     );
-    // const refLabelQuo1 = this.findNoteCategorySetting(
-    //   'reference-label-quotation-1',
-    // );
-    // const refLabelQuo2 = this.findNoteCategorySetting(
-    //   'reference-label-quotation-2',
-    // );
     const refLabels = this.findNoteCategorysSetting([
       'reference-label-quotation-1',
       'reference-label-quotation-2',
@@ -244,16 +216,8 @@ export class HeaderComponent implements OnInit {
       });
     }
 
-    // if (refLabelQuo && refLabelQuo1 && refLabelQuo2) {
-    //   refLabelQuo.visible = !refLabelQuo.visible;
-
-    //   refLabelQuo2.visible = false;
-    //   refLabelQuo1.visible = refLabelQuo.visible;
-    // }
-
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
@@ -261,52 +225,28 @@ export class HeaderComponent implements OnInit {
     const refLabelQuo = this.findNoteCategorySetting(
       'reference-label-quotation',
     );
-    // const refLabelQuo1 = this.findNoteCategorySetting(
-    //   'reference-label-quotation-1',
-    // );
-    // const refLabelQuo2 = this.findNoteCategorySetting(
-    //   'reference-label-quotation-2',
-    // );
     if (refLabelQuo) {
       refLabelQuo.visible = true;
       const vis = this.flipRefLabelVis('reference-label-quotation-2');
       console.log(vis);
 
-      // this.flipRefLabelVis('reference-label-ie-quotation-2', !vis);
       this.flipRefLabelVis('reference-label-ie-quotation-2', !vis);
       this.flipRefLabelVis('reference-label-ie-quotation-1', !vis);
       this.flipRefLabelVis('reference-label-quotation-1', vis);
     }
 
-    // const referenceLabels = this.findNoteCategorysSetting([
-    //   'reference-label-quotation-1',
-    //   'reference-label-quotation-2',
-    //   'reference-label-ie-quotation-1',
-    //   'reference-label-ie-quotation-2',
-    // ]);
-
-    // if (refLabelQuo && refLabelQuo1 && refLabelQuo2) {
-    //   refLabelQuo.visible = true;
-
-    //   refLabelQuo2.visible = !refLabelQuo2.visible;
-    //   refLabelQuo1.visible = !refLabelQuo2.visible;
-    // }
-
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
 
   public refLabelClick(ref: { visible: boolean } | string): void {
     const asdf = this.electronService.isElectron();
-    // console.log(ref);
 
     if ((ref as { visible: boolean }).visible !== undefined) {
       (ref as { visible: boolean }).visible = !(ref as { visible: boolean })
         .visible;
-      // console.log(ref);
     } else {
       this.saveStateService.data[ref as string] = !this.saveStateService.data[
         ref as string
@@ -314,7 +254,6 @@ export class HeaderComponent implements OnInit {
     }
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     this.saveStateService.save();
   }
@@ -363,7 +302,6 @@ export class HeaderComponent implements OnInit {
     }
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
@@ -391,7 +329,6 @@ export class HeaderComponent implements OnInit {
 
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-      // this.formatTagService.resetFormatTags(this.chapterService.chapterVerses);
     }
     await this.saveStateService.save();
   }
