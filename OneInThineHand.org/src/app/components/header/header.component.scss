@@ -8,7 +8,7 @@
 
   grid-template-rows: 48px;
   @media only screen and (max-width: 400.98px or (orientation: portrait)) {
-    grid-template-columns: 0 100% 0;
+    grid-template-columns: 0px 100vw 0;
     .header-title {
       display: none;
     }
@@ -19,9 +19,12 @@
       display: none;
     }
   }
-  @media only screen and (max-width: 401px or (orientation: portrait)) {
-    grid-template-columns: 0 100% 0;
+  @media only screen and (max-width: 479.98px or (orientation: portrait)) {
+    grid-template-columns: 0px 100vw 0;
     .header-title {
+      display: none;
+    }
+    .edit-btn {
       display: none;
     }
     .oith-header-middle {
