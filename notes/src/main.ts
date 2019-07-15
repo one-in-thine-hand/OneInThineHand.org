@@ -79,9 +79,17 @@ function parseNotes(verseNotes: Element): Note[] {
 
         note.noteType = getNoteType(noteElement);
         note.offsets = getElementsAttribute(noteElement, 'offsets');
-        if (note.offsets === 'all') {
-          note.offsets = '0';
+
+        if (
+          note.notePhrase &&
+          note.notePhrase.text &&
+          note.notePhrase.text.includes('whole verse')
+        ) {
+          note.offsets = 'all';
         }
+        // if (note.offsets === 'all') {
+        //   note.offsets = '0';
+        // }
         return note;
       },
     );

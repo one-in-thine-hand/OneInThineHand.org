@@ -114,27 +114,28 @@ export class NComponent implements OnInit {
   }
   public async offsetsInput(event: Event, note: Note): Promise<void> {
     if (event.type === 'input' && event.target) {
-      const supportedCharacters = [
-        '0',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        ',',
-        '-',
-      ];
-      note.offsets = (event.target as HTMLTextAreaElement).value
-        .split('')
-        .map((v): string => {
-          return supportedCharacters.includes(v) ? v : '';
-        })
-        .join('');
+      // const supportedCharacters = [
+      //   '0',
+      //   '1',
+      //   '2',
+      //   '3',
+      //   '4',
+      //   '5',
+      //   '6',
+      //   '7',
+      //   '8',
+      //   '9',
+      //   ',',
+      //   '-',
+      // ];
+      // note.offsets = (event.target as HTMLTextAreaElement).value
+      //   .split('')
+      //   .map((v): string => {
+      //     return supportedCharacters.includes(v) ? v : '';
+      //   })
+      //   .join('');
       // console.log(note.offsets);
+      note.offsets = (event.target as HTMLTextAreaElement).value;
 
       await this.offsetService.expandNotes(this.chapterService.notes);
       await this.formatTagService.resetFormatTags(

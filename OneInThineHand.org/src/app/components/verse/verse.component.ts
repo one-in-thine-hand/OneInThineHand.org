@@ -23,17 +23,8 @@ export class VerseComponent implements OnInit {
 
   public getClassList(): string {
     const classList: string[] = [];
-    if (
-      this.verse.note &&
-      this.verse.note.notes &&
-      this.verse.note.notes.filter((note): boolean => {
-        return (
-          (note.visible &&
-            (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
-          note.offsets === 'all'
-        );
-      }).length > 0
-    ) {
+
+    if (this.getVerseNoteHasAll()) {
       classList.push('all');
     }
 
@@ -144,4 +135,38 @@ export class VerseComponent implements OnInit {
   }
 
   public ngOnInit(): void {}
+
+  private getVerseNoteHasAll(): boolean {
+    if (
+      this.chapterService.chapterNotes &&
+      this.chapterService.chapterNotes.notes
+    ) {
+      const verseNote = this.chapterService.chapterNotes.notes.find(
+        (vN): boolean => {
+          return (
+            this.verse._id !== undefined &&
+            this.verse._id.replace('verse', 'verse-notes') === vN._id
+          );
+        },
+      );
+      if (verseNote) {
+        console.log(verseNote);
+
+        if (
+          verseNote.notes &&
+          verseNote.notes.filter((note): boolean => {
+            return (
+              (note.visible &&
+                (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
+              note.offsets === 'all'
+            );
+          }).length > 0
+        ) {
+          console.log('oaisjdfoiajsdfoi');
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

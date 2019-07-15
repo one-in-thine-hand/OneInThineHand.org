@@ -234,7 +234,10 @@ export class ExportService {
       return notes
         .map((note): string => {
           if (note.uncompressedOffsets) {
-            if (note.uncompressedOffsets.includes(0)) {
+            if (
+              note.uncompressedOffsets.includes(0) ||
+              note.offsets === 'all'
+            ) {
               note.offsets = 'all';
             } else {
               note.offsets = getRanges(note.uncompressedOffsets)

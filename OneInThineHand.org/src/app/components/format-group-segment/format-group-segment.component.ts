@@ -109,40 +109,7 @@ export class FormatGroupSegmentComponent implements OnInit {
     });
   }
 
-  private getRefTags(fMerged: FMerged, offset: number): void {
-    // if (this.verse.note && this.verse.note.notes) {
-    //   this.verse.note.notes.map(
-    //     (secondaryNote): void => {
-    //       if (secondaryNote.visible && secondaryNote.refTag) {
-    //         if (
-    //           secondaryNote.offsets === 'all' ||
-    //           (secondaryNote.uncompressedOffsets &&
-    //             secondaryNote.uncompressedOffsets.includes(offset))
-    //         ) {
-    //           fMerged.refTags
-    //             ? fMerged.refTags.push(secondaryNote.refTag)
-    //             : (fMerged.refTags = [secondaryNote.refTag]);
-    //           // console.log(fMerged.refTags);
-    //         }
-    //       }
-    //     },
-    //   );
-    //   this.verse.note.notes.map(
-    //     (secondaryNote): void => {
-    //       if (secondaryNote.formatTag) {
-    //         if (secondaryNote.formatTag.offsets === 'all') {
-    //           fMerged.formatTags.push(secondaryNote.formatTag);
-    //         } else if (
-    //           secondaryNote.formatTag.uncompressedOffsets &&
-    //           secondaryNote.formatTag.uncompressedOffsets.includes(offset)
-    //         ) {
-    //           fMerged.formatTags.push(secondaryNote.formatTag);
-    //         }
-    //       }
-    //     },
-    //   );
-    // }
-  }
+  private getRefTags(fMerged: FMerged, offset: number): void {}
 
   public getOffSets(f: FMerged): string {
     // console.log(f);

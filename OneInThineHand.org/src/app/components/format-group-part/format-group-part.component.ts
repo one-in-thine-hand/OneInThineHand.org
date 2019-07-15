@@ -14,36 +14,12 @@ import { ChapterService } from '../../services/chapter.service';
   styleUrls: ['./format-group-part.component.scss'],
 })
 export class FormatGroupPartComponent implements OnInit {
-  @Input() public verse: Verse;
+  public fMerged: FMerged[] = [];
   @Input() public formatGroup: FormatGroupPart;
   @Input() public formatTags: FormatTag[];
   public hasKJVVerse = false;
-
-  public fMerged: FMerged[] = [];
+  @Input() public verse: Verse;
   public constructor(public chapterService: ChapterService) {}
-
-  public ngOnInit(): void {
-    console.log(this.formatGroup.kjvRef);
-  }
-
-  public getKJVPartVerse(): Verse[] | undefined {
-    if (
-      this.chapterService.kjvChapterVerse &&
-      this.chapterService.kjvChapterVerse.verses
-    ) {
-      const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
-        (v): boolean => {
-          return (
-            v._id !== undefined &&
-            this.formatGroup.kjvRef !== undefined &&
-            this.formatGroup.kjvRef.includes(v._id)
-          );
-        },
-      );
-      this.hasKJVVerse = kjvVerse !== undefined;
-      return kjvVerse;
-    }
-  }
   /**
    * getFormatTags
    */
@@ -99,6 +75,38 @@ export class FormatGroupPartComponent implements OnInit {
     // return this.fMerged;
   }
 
+  public getKJVPartVerse(): Verse[] | undefined {
+    if (
+      this.chapterService.kjvChapterVerse &&
+      this.chapterService.kjvChapterVerse.verses
+    ) {
+      const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
+        (v): boolean => {
+          return (
+            v._id !== undefined &&
+            this.formatGroup.kjvRef !== undefined &&
+            this.formatGroup.kjvRef.includes(v._id)
+          );
+        },
+      );
+      this.hasKJVVerse = kjvVerse !== undefined;
+      return kjvVerse;
+    }
+  }
+
+  public getOffSets(f: FMerged): string {
+    // console.log(f);
+
+    if (f.offsets) {
+      return `${f.offsets[0]}-${last(f.offsets)}`;
+    }
+    return '0,0';
+  }
+
+  public ngOnInit(): void {
+    console.log(this.formatGroup.kjvRef);
+  }
+
   private checkIfDuplicateMerge(
     lastMerged: FMerged | undefined,
     fMerged: FMerged,
@@ -131,47 +139,5 @@ export class FormatGroupPartComponent implements OnInit {
     });
   }
 
-  private getRefTags(fMerged: FMerged, offset: number): void {
-    // if (this.verse.note && this.verse.note.notes) {
-    //   this.verse.note.notes.map(
-    //     (secondaryNote): void => {
-    //       if (secondaryNote.visible && secondaryNote.refTag) {
-    //         if (
-    //           secondaryNote.offsets === 'all' ||
-    //           (secondaryNote.uncompressedOffsets &&
-    //             secondaryNote.uncompressedOffsets.includes(offset))
-    //         ) {
-    //           fMerged.refTags
-    //             ? fMerged.refTags.push(secondaryNote.refTag)
-    //             : (fMerged.refTags = [secondaryNote.refTag]);
-    //           // console.log(fMerged.refTags);
-    //         }
-    //       }
-    //     },
-    //   );
-    //   this.verse.note.notes.map(
-    //     (secondaryNote): void => {
-    //       if (secondaryNote.formatTag) {
-    //         if (secondaryNote.formatTag.offsets === 'all') {
-    //           fMerged.formatTags.push(secondaryNote.formatTag);
-    //         } else if (
-    //           secondaryNote.formatTag.uncompressedOffsets &&
-    //           secondaryNote.formatTag.uncompressedOffsets.includes(offset)
-    //         ) {
-    //           fMerged.formatTags.push(secondaryNote.formatTag);
-    //         }
-    //       }
-    //     },
-    //   );
-    // }
-  }
-
-  public getOffSets(f: FMerged): string {
-    // console.log(f);
-
-    if (f.offsets) {
-      return `${f.offsets[0]}-${last(f.offsets)}`;
-    }
-    return '0,0';
-  }
+  private getRefTags(fMerged: FMerged, offset: number): void {}
 }
