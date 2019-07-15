@@ -1,6 +1,13 @@
+## <small>5.0.77 (2019-07-15)</small>
+
+* mobile bug fixes ([fcc7362](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fcc7362))
+
+
+
 ## <small>5.0.76 (2019-07-15)</small>
 
 * mobile fixes ([683909b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/683909b))
+* v5.0.76 ([d6ac7b6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d6ac7b6))
 
 
 
