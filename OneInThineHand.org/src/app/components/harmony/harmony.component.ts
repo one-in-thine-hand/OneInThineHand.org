@@ -48,19 +48,19 @@ export class HarmonyComponent implements OnInit {
         async (chapterNotes: ChapterNotes): Promise<void> => {
           // console.log(chapterNotes);
           if (chapterNotes.notes) {
-            await this.offsetService.expandNotes(chapterNotes.notes);
-            chapterNotes.notes.map((verseNote): void => {
-              const verse = verses.find((verse): boolean => {
-                return (
-                  verse._id !== undefined &&
-                  verse._id.replace('verse', 'verse-notes') === verseNote._id
-                );
-              });
-              if (verse) {
-                verse.note = verseNote;
-              }
-              // console.log(verse);
-            });
+            // await this.offsetService.expandNotes(chapterNotes.notes);
+            // chapterNotes.notes.map((verseNote): void => {
+            //   const verse = verses.find((verse): boolean => {
+            //     return (
+            //       verse._id !== undefined &&
+            //       verse._id.replace('verse', 'verse-notes') === verseNote._id
+            //     );
+            //   });
+            //   if (verse) {
+            //     verse.note = verseNote;
+            //   }
+            //   // console.log(verse);
+            // });
           }
         },
       );
