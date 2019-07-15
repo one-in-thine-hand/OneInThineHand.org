@@ -84,9 +84,7 @@ export class HeaderComponent implements OnInit {
   }
   public async loadChapterFile(event: Event): Promise<void> {
     this.uploading = true;
-    await this.preprocessorService.loadChapterFiles(
-      event.target as HTMLInputElement,
-    );
+    await this.preprocessorService.loadChapterFiles(event);
     this.uploading = false;
     // console.log('Finished');
 
@@ -152,14 +150,13 @@ export class HeaderComponent implements OnInit {
 
     await this.saveStateService.save();
   }
-  public async onSubmit(): Promise<void> {
+  public async onSubmit(event: Event): Promise<void> {
     const fileInput = document.querySelector('#chapterFileOpener');
+    this.uploading = true;
+    await this.preprocessorService.loadChapterFiles(event);
+
+    this.uploading = false;
     if (fileInput) {
-      this.uploading = true;
-      await this.preprocessorService.loadChapterFiles(
-        fileInput as HTMLInputElement,
-      );
-      this.uploading = false;
     }
   }
   public async open(content): Promise<void> {

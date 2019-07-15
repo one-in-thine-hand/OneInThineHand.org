@@ -38,8 +38,6 @@ export class VerseComponent implements OnInit {
     return classList.toString().replace(/,/g, ' ');
   }
   public getFormatGroups(): FormatGroup[] {
-    // console.log(this.verse);
-
     if (
       this.verse &&
       this.verse.formatGroups &&
@@ -53,8 +51,6 @@ export class VerseComponent implements OnInit {
           (this.saveStateService.data.blockVisible ||
             this.saveStateService.data.paragraphsVisible))
       ) {
-        console.log('tedt');
-
         expandOffsets(this.verse.breakFormatGroups);
       } else {
         expandOffsets(this.verse.formatGroups);
@@ -99,10 +95,7 @@ export class VerseComponent implements OnInit {
             );
           });
         }
-      } catch (error) {
-        console.log(error);
-      }
-      // console.log(this.verse);
+      } catch (error) {}
       return this.verse.formatGroups.filter((formatGroup): boolean => {
         return (
           formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
@@ -110,18 +103,15 @@ export class VerseComponent implements OnInit {
         );
       }); // this.verse.formatTags.map((f): void => {});
     } else {
-      // console.log(this.verse);
     }
     return [];
   }
 
   // @HostListener('mouseup', ['$event'])
   // public onPopState(event: PopStateEvent): void {
-  //   // console.log(event);
   // }
   public getID(): string {
     // if (this.verse === undefined || this.verse._id === undefined) {
-    //   console.log(this.verse);
     // }
     return this.verse !== undefined && this.verse._id !== undefined
       ? this.verse._id
@@ -150,8 +140,6 @@ export class VerseComponent implements OnInit {
         },
       );
       if (verseNote) {
-        console.log(verseNote);
-
         if (
           verseNote.notes &&
           verseNote.notes.filter((note): boolean => {
@@ -162,7 +150,6 @@ export class VerseComponent implements OnInit {
             );
           }).length > 0
         ) {
-          console.log('oaisjdfoiajsdfoi');
           return true;
         }
       }

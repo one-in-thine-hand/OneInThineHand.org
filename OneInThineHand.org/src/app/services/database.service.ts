@@ -91,6 +91,23 @@ export class DatabaseService {
       this.db = new PouchDB(`${window.location.hostname}-oneinthinehand-org`);
     }
   }
+  public async setDocsRev(
+    docs: CouchDoc[],
+    allDocs: PouchDB.Core.AllDocsResponse<{}> | undefined,
+  ): Promise<void> {
+    if (allDocs) {
+      docs.map((doc): void => {
+        const savedDoc = allDocs.rows.find((d): boolean => {
+          return doc._id === d.id;
+        });
+        doc._rev = savedDoc ? savedDoc.value.rev : undefined;
+      });
+    } else {
+      docs.map((doc): void => {
+        doc._rev = undefined;
+      });
+    }
+  }
 
   public async updateDatabaseItem(item: {
     _id: string;

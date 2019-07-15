@@ -389,7 +389,7 @@
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">
-      <form (ngSubmit)="onSubmit()" #fileUpload="ngForm">
+      <form (ngSubmit)="onSubmit($event)" #fileUpload="ngForm">
         Load Files
         <input
           multiple
@@ -400,7 +400,16 @@
         <button type="submit">Install</button>
       </form>
     </div>
-    <div *ngIf="this.uploading">Loading Files</div>
+    <div *ngIf="this.uploading">
+      <ngb-progressbar
+        type="danger"
+        [value]="
+          (this.preprocessorService.count /
+            this.preprocessorService.fileCount) *
+          100
+        "
+      ></ngb-progressbar>
+    </div>
     <!-- <div>
       Upload Note Files
       <input
