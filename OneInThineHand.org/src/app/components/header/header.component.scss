@@ -7,8 +7,8 @@
   // grid-template-columns: 48px 48px 48px 48px 48px;
 
   grid-template-rows: 48px;
-  @media only screen and (max-width: 379.98px or (orientation: portrait)) {
-    grid-template-columns: 0 minmax(288px, 332px) 48px;
+  @media only screen and (max-width: 400.98px or (orientation: portrait)) {
+    grid-template-columns: 0 100% 0;
     .header-title {
       display: none;
     }
@@ -16,7 +16,16 @@
       grid-template-columns: 48px 48px 48px 48px 0 48px 48px 48px !important;
     }
   }
-  @media only screen and (min-width: 380px or (orientation: portrait)) {
+  @media only screen and (max-width: 401px or (orientation: portrait)) {
+    grid-template-columns: 0 100% 0;
+    .header-title {
+      display: none;
+    }
+    .oith-header-middle {
+      grid-template-columns: 48px 48px 48px 48px auto 48px 48px 48px;
+    }
+  }
+  @media only screen and (min-width: 480px or (orientation: portrait)) {
     grid-template-columns: 48px auto 48px;
     .header-title {
       display: none;
