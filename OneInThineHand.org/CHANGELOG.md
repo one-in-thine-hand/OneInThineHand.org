@@ -1,6 +1,15 @@
+## <small>5.0.73 (2019-07-15)</small>
+
+* bug fixes ([2bbf816](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2bbf816))
+* Offset fix ([7feda59](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7feda59))
+* removed poetry margin in paragraph mode ([5ac191c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5ac191c))
+
+
+
 ## <small>5.0.72 (2019-07-14)</small>
 
 * bug fixes ([632c547](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/632c547))
+* v5.0.72 ([5736f5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5736f5e))
 
 
 
