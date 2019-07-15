@@ -1,7 +1,13 @@
+## <small>5.0.80 (2019-07-15)</small>
+
+
+
+
 ## <small>5.0.79 (2019-07-15)</small>
 
 * bug fix ([ffb83ac](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ffb83ac))
 * bug fixes ([166575d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/166575d))
+* v5.0.79 ([9b35d14](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9b35d14))
 
 
 
