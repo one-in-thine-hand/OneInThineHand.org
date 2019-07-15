@@ -146,14 +146,18 @@ kjv-container {
     margin-top: -1.5em;
   }
 }
-:host-context(.poetry-mode) {
+:host-context(.poetry-mode.paragraph-mode) {
   app-format-group.line:nth-child(1) {
     margin-top: -1.51em;
   }
   .poetry-gap {
   }
 }
-
+:host-context(.poetry-mode) {
+  [class*='gap'] {
+    margin-bottom: 8pt;
+  }
+}
 [class*='gap'] {
   margin-bottom: 8pt;
 }

@@ -172,7 +172,7 @@ export const ReferenceLabels: ReferenceLabel[] = [
   {
     sortOrder: 0,
     className: 'reference-label-ie-quotation-2',
-    noteCategory: NoteCategory.QUO2,
+    noteCategory: NoteCategory.IEQUO2,
     referenceLabelName: 'IE Quotation 2',
     visible: true,
     referenceLabelShortName: 'IE',

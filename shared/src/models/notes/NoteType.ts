@@ -27,6 +27,7 @@ export const enum NoteCategory {
   NONE,
   IEQUO1,
   IEQUO,
+  IEQUO2,
 }
 
 export enum NoteType {
@@ -95,8 +96,8 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   {
     noteType: NoteType.CR,
     className: 'overlay-cr',
-    shortName: 'Cross Reference',
-    longName: 'Cross Reference',
+    shortName: 'Cross-Reference',
+    longName: 'Cross-Reference',
     visible: true,
   },
   {
