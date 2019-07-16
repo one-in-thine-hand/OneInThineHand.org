@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import {
-  Verse,
   FormatGroup,
   FormatTag,
   FormatGroupType,
   parseOffsets,
   DisplayAs,
-  VerseNotes,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
   RefTag,
 } from '../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, first, last } from 'lodash';
-import { ChapterVerses } from '../../../../format-tags/src/main';
+
 import { HistoryService } from './history.service';
-import { ChapterNotes } from '../../../../notes/src/main';
+
 import { SaveStateService } from './save-state.service';
 import PQueue from 'p-queue/dist';
+import {
+  ChapterVerses,
+  VerseNote,
+  Verse,
+  VerseNotes,
+} from '../models/verse-notes';
 @Injectable({
   providedIn: 'root',
 })
@@ -31,7 +35,7 @@ export class FormatTagService {
   public buildFormatGroup(
     grp: FormatGroup,
     fTags: FormatTag[] | undefined,
-    note: VerseNotes | undefined,
+    note: VerseNote | undefined,
     verse: Verse,
   ): void {
     grp.uncompressedOffsets = parseOffsets(grp.offsets);
@@ -71,8 +75,8 @@ export class FormatTagService {
   public buildFormatGroups(
     formatGroups: FormatGroup[] | undefined,
     fTags: FormatTag[] | undefined,
-    note: VerseNotes | undefined,
     verse: Verse,
+    note?: VerseNote,
   ): void {
     if (formatGroups && fTags) {
       formatGroups
@@ -140,23 +144,23 @@ export class FormatTagService {
   }
   public getRefTags(
     o: number,
-    note: VerseNotes | undefined,
+    note: VerseNote | undefined,
   ): RefTag[] | undefined {
     if (note && note.notes) {
       const oFtags = note.notes
         .filter((f): boolean => {
-          if (f.refTag && f.refTag.offsets === 'all') {
+          if (f.noteRefFormatTag && f.noteRefFormatTag.offsets === 'all') {
             return true;
           }
           return (
-            f.refTag !== undefined &&
+            f.noteRefFormatTag !== undefined &&
             f.uncompressedOffsets !== undefined &&
             (f.offsets === 'all' || f.uncompressedOffsets.includes(o))
           );
         })
         .map(
           (s): RefTag => {
-            return s.refTag as RefTag;
+            return s.noteRefFormatTag as RefTag;
           },
         );
 
@@ -178,7 +182,7 @@ export class FormatTagService {
   }
   public async resetFormatTags(
     chapterVerses: ChapterVerses | undefined,
-    chapterNotes: ChapterNotes | undefined,
+    chapterNotes: VerseNotes | undefined,
   ): Promise<void> {
     await this.resetFormatTagsQueue.add(
       async (): Promise<void> => {
@@ -240,10 +244,9 @@ export class FormatTagService {
               verse.breakFormatGroups.length > 0
               ? verse.breakFormatGroups
               : verse.formatGroups,
-
             verse.formatTags,
-            verse.note,
             verse,
+            verse.note,
           );
         });
       } catch (error) {
@@ -256,8 +259,8 @@ export class FormatTagService {
         this.buildFormatGroups(
           verse.formatGroups,
           verse.formatTags,
-          verse.note,
           verse,
+          verse.note,
         );
       });
     }

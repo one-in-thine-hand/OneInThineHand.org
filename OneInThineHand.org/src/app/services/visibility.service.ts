@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
-import { VerseNotes } from '../../../../shared/src/shared';
+import { VerseNotes } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +20,8 @@ export class VisibilityService {
     if (notes) {
       this.resetHighlight();
       notes.map((note): void => {
-        if (note.notes) {
-          note.notes.map((sN): void => {
+        if (note.verseNotes) {
+          note.verseNotes.map((sN): void => {
             const noteTypeSetting = this.saveStateService.data.noteTypeSettings.find(
               (nC): boolean => {
                 return nC.noteType === sN.noteType;

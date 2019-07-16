@@ -1,4 +1,4 @@
-import { FormatGroup } from '../../../../shared/src/shared';
+import { FormatGroup, FormatTag } from '../../../../shared/src/shared';
 
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
@@ -472,17 +472,17 @@ export class NoteRef implements Visibility {
   public visible?: boolean;
 }
 
-export class FormatTag {
-  public classList: string[] | undefined;
-  public displayAs: DisplayAs | undefined;
-  public formatType: FormatTagType | undefined;
-  public offsets: string | undefined;
-  public optional: Optional | undefined;
-  public refs: string[] | undefined;
-  public text: string | undefined;
-  public uncompressedOffsets: number[] | undefined;
-  public visible: boolean | undefined;
-}
+// export class FormatTag {
+//   public classList: string[] | undefined;
+//   public displayAs: DisplayAs | undefined;
+//   public formatType: FormatTagType | undefined;
+//   public offsets: string | undefined;
+//   public optional: Optional | undefined;
+//   public refs: string[] | undefined;
+//   public text: string | undefined;
+//   public uncompressedOffsets: number[] | undefined;
+//   public visible: boolean | undefined;
+// }
 
 export class NoteRefFormatTag {
   public highlight = false;
@@ -501,8 +501,8 @@ export class MergedFormatTags {
 
 export class Note implements CouchDoc, Doc, Offsets {
   public _id: string;
-
   public _rev?: string;
+  public classList?: string[];
   public lang: LanguageCode;
   public noteMarker?: string;
   public notePhrase: string;
@@ -1055,4 +1055,10 @@ export class Verse {
   // public verseBreaks?:
   public verseBreaks?: VerseBreaks;
   public verseID?: string;
+}
+
+export class ChapterVerses {
+  public _id: string;
+  public _rev: string | undefined;
+  public verses: Verse[] | undefined;
 }

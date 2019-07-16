@@ -3,8 +3,6 @@ import {
   parseOffsets,
   FormatTag,
   VerseNotes,
-  sortNotes,
-  getRanges,
   NoteRef,
 } from '../../../../shared/src/shared';
 import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
@@ -14,9 +12,8 @@ import PQueue from 'p-queue';
   providedIn: 'root',
 })
 export class OffsetService {
-  public constructor() {}
-
   public expandNotesQueue = new PQueue({ concurrency: 1 });
+  public constructor() {}
 
   public async expandNotes(notes: VerseNotes[] | undefined): Promise<void> {
     // console.log(notes);

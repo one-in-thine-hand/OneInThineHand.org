@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { Verse, FormatGroup } from '../../../../shared/src/shared';
-import { ChapterNotes } from '../../../../notes/src/main';
-import { ChapterVerses } from '../../../../format-tags/src/main';
-import { Observable } from 'rxjs';
+import { FormatGroup } from '../../../../shared/src/shared';
 import { flatten } from '@angular/compiler';
-import { VerseNote } from '../models/verse-notes';
+
+import {
+  VerseNotes,
+  Verse,
+  ChapterVerses,
+  VerseNote,
+} from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +23,10 @@ export class ChapterService {
       breaks: FormatGroup[];
     }[];
   };
-  public chapterNotes: ChapterNotes | undefined;
+  public chapterNotes: VerseNotes | undefined;
   public chapterVerses: ChapterVerses | undefined;
-  public kjvChapterNotes: ChapterNotes | undefined;
-  public kjvChapterVerse: ChapterVerses | undefined;
-  public notes: VerseNote[] | undefined;
+  public kjvChapterNotes: VerseNotes | undefined;
+  public notes: VerseNotes[] | undefined;
   public verses: Verse[] | undefined;
 
   public constructor() {}
@@ -58,12 +60,12 @@ export class ChapterService {
     }
   }
   public resetNoteVis(): void {
-    if (this.chapterNotes && this.chapterNotes.notes) {
-      this.chapterNotes.notes.map((note): void => {
+    if (this.chapterNotes && this.chapterNotes.verseNotes) {
+      this.chapterNotes.verseNotes.map((note): void => {
         if (note.notes) {
           note.notes.map((secondaryNote): void => {
-            if (secondaryNote.refTag) {
-              secondaryNote.refTag.highlight = false;
+            if (secondaryNote.noteRefFormatTag) {
+              secondaryNote.noteRefFormatTag.highlight = false;
             }
             // secondaryNote.highlight = false;s
           });
