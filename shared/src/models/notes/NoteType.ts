@@ -28,6 +28,8 @@ export const enum NoteCategory {
   IEQUO1,
   IEQUO,
   IEQUO2,
+  pronunciation1,
+  pronunciation2,
 }
 
 export enum NoteType {

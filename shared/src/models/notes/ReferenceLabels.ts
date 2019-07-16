@@ -235,6 +235,22 @@ export const ReferenceLabels: ReferenceLabel[] = [
     visible: true,
     referenceLabelShortName: 'TRN',
   },
+  {
+    sortOrder: 0,
+    className: 'reference-label-pronunciation-1',
+    noteCategory: NoteCategory.pronunciation1,
+    referenceLabelName: 'pronunciation 1',
+    visible: true,
+    referenceLabelShortName: '',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-pronunciation-2',
+    noteCategory: NoteCategory.pronunciation2,
+    referenceLabelName: 'pronunciation 2',
+    visible: true,
+    referenceLabelShortName: '',
+  },
 ];
 
 export function getReferenceLabelByClassName(
