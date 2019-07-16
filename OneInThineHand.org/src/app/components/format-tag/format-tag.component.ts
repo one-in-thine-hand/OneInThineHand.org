@@ -1,22 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { last } from 'lodash';
+
 import {
   FMerged,
   RefTag,
 } from '../../../../../shared/src/models/format_tags/FormatTag';
-import { Verse } from '../../../../../shared/src/shared';
-import { MarkService } from '../../services/mark.service';
-import { last } from 'lodash';
-import { VisibilityService } from '../../services/visibility.service';
+import {
+  DisplayAs,
+  FormatTagType,
+  formatTagTypeOptions,
+  Optional,
+  Verse,
+  VerseNote,
+} from '../../models/verse-notes';
+import { asyncScrollIntoView } from '../../scroll-into-view';
 import { ChapterService } from '../../services/chapter.service';
 import { findByAttribute } from '../../services/history.service';
-import { asyncScrollIntoView } from '../../scroll-into-view';
-import { DisplayAs, Optional } from '../../models/verse-notes';
-import {
-  VerseNote,
-  VerseNotes,
-  FormatTagTypeOptions,
-  FormatTagType,
-} from '../../models/verse-notes';
+import { MarkService } from '../../services/mark.service';
+import { VisibilityService } from '../../services/visibility.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -69,7 +70,7 @@ export class FormatTagComponent implements OnInit {
             r.highlight = true;
 
             await asyncScrollIntoView(
-              `#${(this.verse.note as VerseNotes)._id as string}`,
+              `#${(this.verse.note as VerseNote)._id as string}`,
             );
             // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
           } else {

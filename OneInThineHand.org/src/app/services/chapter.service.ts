@@ -1,27 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import {
-  Note,
-  Verse,
-  VerseNotes,
-  FormatGroup,
-} from '../../../../shared/src/shared';
+import { Verse, FormatGroup } from '../../../../shared/src/shared';
 import { ChapterNotes } from '../../../../notes/src/main';
 import { ChapterVerses } from '../../../../format-tags/src/main';
 import { Observable } from 'rxjs';
 import { flatten } from '@angular/compiler';
+import { VerseNote } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChapterService {
   public chapter: Chapter | undefined;
-  public verses: Verse[] | undefined;
-  public notes: VerseNotes[] | undefined;
-  public chapterNotes: ChapterNotes | undefined;
-  public chapterVerses: ChapterVerses | undefined;
-  public kjvChapterVerse: ChapterVerses | undefined;
-  public kjvChapterNotes: ChapterNotes | undefined;
   public chapterBreaks: {
     _id: string;
     _rev: string | undefined;
@@ -30,12 +20,30 @@ export class ChapterService {
       breaks: FormatGroup[];
     }[];
   };
+  public chapterNotes: ChapterNotes | undefined;
+  public chapterVerses: ChapterVerses | undefined;
+  public kjvChapterNotes: ChapterNotes | undefined;
+  public kjvChapterVerse: ChapterVerses | undefined;
+  public notes: VerseNote[] | undefined;
+  public verses: Verse[] | undefined;
 
   public constructor() {}
 
+  public generateIDS(verseIDS: string[]): string[] {
+    return flatten(
+      verseIDS.map((verseID): string[] => {
+        return [
+          // verseID.replace('verse', 'note'),
+          verseID.replace('verse', 'breaks'),
+        ];
+      }),
+    );
+    throw new Error('Method not implemented.');
+  }
+
   public mergeVersesNotes(
     verses: Verse[],
-    notes: VerseNotes[] | undefined,
+    notes: VerseNote[] | undefined,
   ): void {
     if (notes) {
       verses.map((verse): void => {
@@ -62,17 +70,5 @@ export class ChapterService {
         }
       });
     }
-  }
-
-  public generateIDS(verseIDS: string[]): string[] {
-    return flatten(
-      verseIDS.map((verseID): string[] => {
-        return [
-          // verseID.replace('verse', 'note'),
-          verseID.replace('verse', 'breaks'),
-        ];
-      }),
-    );
-    throw new Error('Method not implemented.');
   }
 }

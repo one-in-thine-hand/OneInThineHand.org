@@ -1,3 +1,5 @@
+import { FormatGroup } from '../../../../shared/src/shared';
+
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
   ERR = 100000,
@@ -1011,3 +1013,46 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
 ];
+
+export const enum NodeName {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+}
+
+export class VerseBreaks {
+  public _id?: string;
+  public _rev?: string;
+  public breaks?: FormatGroup[];
+}
+export class FakeVerseBreaks {
+  public _id?: string;
+  public _rev?: string;
+  public breaks?: FormatTag[];
+}
+
+export class Verse {
+  public _id?: string;
+  public _rev?: string;
+  public breakFormatGroups: FormatGroup[];
+  public classList?: string | undefined[];
+  public context?: boolean;
+  public fakeVerseBreak: FakeVerseBreaks | undefined;
+  public formatGroups: FormatGroup[] = [];
+  public formatTags?: FormatTag[];
+  public highlight?: boolean;
+  public kjvRef: string[] | undefined;
+  public kjvVerse: Verse[] | undefined;
+  public nodeName?: NodeName;
+  public note?: VerseNote;
+  public noteID: string;
+  public text?: string;
+  // public verseBreaks?:
+  public verseBreaks?: VerseBreaks;
+  public verseID?: string;
+}
