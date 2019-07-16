@@ -81,6 +81,8 @@ export class NComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    console.log('oiajsdfoiajsdfoiajsdfo');
+
     if (this.note && this.note.noteRefs) {
       this.note.noteRefs.map((noteRef): void => {
         if (noteRef.text) {

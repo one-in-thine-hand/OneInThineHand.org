@@ -1,4 +1,8 @@
 <note-phrase
   (click)="this.notePhraseClick(note)"
-  [innerHTML]="getNotePhrase(note.notePhrase)"
+  [innerHTML]="
+    this.domSanitizer.bypassSecurityTrustHtml(
+      note.notePhrase ? note.notePhrase : ''
+    )
+  "
 ></note-phrase>

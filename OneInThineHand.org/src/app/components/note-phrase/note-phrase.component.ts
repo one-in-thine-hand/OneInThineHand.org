@@ -29,9 +29,9 @@ export class NotePhraseComponent implements OnInit {
     public domSanitizer: DomSanitizer,
   ) {}
 
-  public getNotePhrase(notePhrase: NotePhrase | undefined): string | SafeHtml {
-    return notePhrase && notePhrase.text
-      ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase.text)
+  public getNotePhrase(notePhrase: string | undefined): string | SafeHtml {
+    return notePhrase && notePhrase
+      ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase)
       : 'Note Phrase Missing';
   }
   public ngOnInit(): void {}

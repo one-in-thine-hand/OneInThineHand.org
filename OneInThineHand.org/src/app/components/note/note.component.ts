@@ -9,9 +9,10 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { sortBy } from 'lodash';
+import { VerseNote, Note } from '../../models/verse-notes';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -20,7 +21,7 @@ import { sortBy } from 'lodash';
 export class NoteComponent implements OnInit {
   public edit = false;
   public tempNote: Note | undefined;
-  @Input() public verseNotes: VerseNotes;
+  @Input() public verseNotes: VerseNote;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -52,6 +53,8 @@ export class NoteComponent implements OnInit {
   }
 
   public getSecondaryNotes(): Note[] {
+    console.log(this.verseNotes.notes);
+
     let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
       secondaryNotes = this.verseNotes.notes.filter(
@@ -132,8 +135,9 @@ export class NoteComponent implements OnInit {
 
         // console.log(range);
       } catch (error) {
-        if (secondaryNote.refTag) {
-          secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
+        if (secondaryNote.noteRefFormatTag) {
+          secondaryNote.noteRefFormatTag.highlight = !secondaryNote
+            .noteRefFormatTag.highlight;
         }
         console.log(error);
       }
@@ -155,13 +159,12 @@ export class NoteComponent implements OnInit {
   }
 
   public saveNote(modal): void {
-    this.tempNote = new Note();
-    this.tempNote.notePhrase = new NotePhrase();
-    this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
-
-    console.log(getInputValue('#noteReferenceTemp'));
-    console.log(getInputValue('#noteReferenceLabelTemp'));
-    modal.close('Save click');
+    // this.tempNote = new Note();
+    // this.tempNote.notePhrase = new NotePhrase();
+    // this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
+    // console.log(getInputValue('#noteReferenceTemp'));
+    // console.log(getInputValue('#noteReferenceLabelTemp'));
+    // modal.close('Save click');
   }
 
   private validateSelectedNodes(node: Node): Element | undefined {
