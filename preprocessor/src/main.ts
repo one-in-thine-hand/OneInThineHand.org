@@ -226,17 +226,11 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
 }
 
 async function main(): Promise<void> {
-  if (false) {
-    const formaTags = new FormatTags();
-    const scriptureFileNames = await getScriptureFiles();
-    const chapterProcessor = new ChapterProcessor();
+  const formaTags = new FormatTags();
+  const scriptureFileNames = await getScriptureFiles();
+  const chapterProcessor = new ChapterProcessor();
 
-    await processScriptureFiles(
-      scriptureFileNames,
-      formaTags,
-      chapterProcessor,
-    );
-  }
+  await processScriptureFiles(scriptureFileNames, formaTags, chapterProcessor);
 
   const noteProcessor = new NoteProcessor();
   const noteFileNames = await getNoteFiles();
