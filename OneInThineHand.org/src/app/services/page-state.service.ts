@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ChapterNotes } from '../../../../notes/src/main';
+
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { ChapterVerses } from '../../../../format-tags/src/main';
+
 import { DatabaseService } from './database.service';
 import { Router } from '@angular/router';
 import { PageState } from './PageState';
+import { ChapterVerses, VerseNotes } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,32 @@ export class PageStateService {
     //   this.currentPageState = undefined;
     //   this.timer = undefined;
     // });
+  }
+
+  public async newPage(
+    chapter: Chapter,
+    chapterVerses: ChapterVerses,
+    chapterNotes: VerseNotes,
+  ): Promise<void> {
+    // console.log('oiasdjfoiajsdf');
+    // this.timer = undefined;
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    // if (!this.currentPageState) {
+    // }
+
+    const pageState = new PageState();
+    pageState._id = `${chapter._id}-page-state`;
+
+    pageState.chapterNotes = chapterNotes;
+    pageState.chapter = chapter;
+    pageState.chapterVerses = chapterVerses;
+
+    this.setScrollTop(pageState);
+    // await this.databaseService.updateDatabaseItem(pageState);
+    this.pageStateMap.set(pageState._id, pageState);
+    this.startHistory();
   }
 
   public async pageStateExists(chapterID: string): Promise<boolean> {
@@ -57,30 +84,17 @@ export class PageStateService {
     }
   }
 
-  public async newPage(
-    chapter: Chapter,
-    chapterVerses: ChapterVerses,
-    chapterNotes: ChapterNotes,
-  ): Promise<void> {
-    // console.log('oiasdjfoiajsdf');
-    // this.timer = undefined;
-    if (this.timer) {
-      clearInterval(this.timer);
+  public setScrollTop(pageState: PageState): void {
+    if (pageState) {
+      const chapterGrid = document.querySelector('.chapter-grid');
+      const notesGrid = document.querySelector('#notes');
+      if (chapterGrid) {
+        pageState.chapterGridScrollTop = chapterGrid.scrollTop;
+      }
+      if (notesGrid) {
+        pageState.notesScrollTop = notesGrid.scrollTop;
+      }
     }
-    // if (!this.currentPageState) {
-    // }
-
-    const pageState = new PageState();
-    pageState._id = `${chapter._id}-page-state`;
-
-    pageState.chapterNotes = chapterNotes;
-    pageState.chapter = chapter;
-    pageState.chapterVerses = chapterVerses;
-
-    this.setScrollTop(pageState);
-    // await this.databaseService.updateDatabaseItem(pageState);
-    this.pageStateMap.set(pageState._id, pageState);
-    this.startHistory();
   }
 
   public updateHistory(): void {
@@ -102,18 +116,5 @@ export class PageStateService {
     //     // await this.databaseService.updateDatabaseItem(this.currentPageState);
     //   }
     // }, 2000);
-  }
-
-  public setScrollTop(pageState: PageState): void {
-    if (pageState) {
-      const chapterGrid = document.querySelector('.chapter-grid');
-      const notesGrid = document.querySelector('#notes');
-      if (chapterGrid) {
-        pageState.chapterGridScrollTop = chapterGrid.scrollTop;
-      }
-      if (notesGrid) {
-        pageState.notesScrollTop = notesGrid.scrollTop;
-      }
-    }
   }
 }

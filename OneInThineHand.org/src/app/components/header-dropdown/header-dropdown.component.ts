@@ -7,11 +7,12 @@ import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
 import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { ExportService } from '../../services/export.service';
-import { ChapterVerses } from '../../../../../format-tags/src/main';
+
 import { Verse } from '../../../../../shared/src/shared';
 import PQueue from 'p-queue/dist';
 import { flatten } from 'lodash';
 import { FormatTagService } from '../../services/format-tag.service';
+import { ChapterVerses } from '../../models/verse-notes';
 
 @Component({
   selector: 'app-header-dropdown',

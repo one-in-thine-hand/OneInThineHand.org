@@ -6,11 +6,11 @@ import { Verse, VerseNotes } from '../../../../../shared/src/shared';
 import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { MapShell, KJVVerseRef, MapShellColumn } from './map-shell';
-import { ChapterVerses } from '../../../../../format-tags/src/main';
+
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { SaveStateService } from '../../services/save-state.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
-import { ChapterNotes } from '../../../../../notes/src/main';
+
 import { OffsetService } from '../../services/offset.service';
 
 @Component({

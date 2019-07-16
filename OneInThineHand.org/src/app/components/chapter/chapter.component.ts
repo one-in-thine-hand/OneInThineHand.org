@@ -9,10 +9,9 @@ import { HeaderService } from '../../services/header.service';
 import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParamService, ChapterParams } from '../../services/param.service';
-import { ChapterVerses } from '../../../../../format-tags/src/main';
-import { ChapterNotes } from '../../../../../notes/src/main';
+
 import { PageStateService } from '../../services/page-state.service';
-import { parseOffsets, Verse } from '../../../../../shared/src/shared';
+import { parseOffsets } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
@@ -22,21 +21,22 @@ import {
   FormatGroup,
 } from '../../../../../shared/src/models/format_groups/FormatGroup';
 import { Title } from '@angular/platform-browser';
+import { ChapterVerses, VerseNotes, Verse } from '../../models/verse-notes';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit, OnDestroy {
-  public chapter: Chapter | undefined;
-  public chapterNotes: ChapterNotes;
-  public chapterVerses: ChapterVerses | undefined;
-  public ctrlKeyInterval: NodeJS.Timer | undefined;
+  public chapter?: Chapter;
+  public chapterNotes: VerseNotes;
+  public chapterVerses?: ChapterVerses;
+  public ctrlKeyInterval?: NodeJS.Timer;
   public ctrlKeyPressed: boolean;
   public fadeInChapter = false;
   public fadeOutChapter = false;
   public popStateActivated = false;
-  public shiftKeyInterval: NodeJS.Timer | undefined;
+  public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
   public constructor(
     public titleService: Title,
@@ -76,104 +76,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
       }) as Verse[];
     } else {
       return [];
-    }
-  }
-  public async getKJVRef(
-    chapterVerses: ChapterVerses | undefined,
-  ): Promise<void> {
-    try {
-      if (chapterVerses && chapterVerses.verses) {
-        const kjvRefs: string[] = [];
-        chapterVerses.verses.map((verse): void => {
-          if (verse.kjvRef) {
-            verse.kjvRef.map((k): void => {
-              kjvRefs.push(k);
-            });
-            verse.formatGroups.map((formatGroup): void => {
-              const fGroup: FormatGroupSegment = formatGroup as never;
-              if (fGroup.kjvRef) {
-                fGroup.kjvRef.map((k): void => {
-                  kjvRefs.push(k);
-                });
-              }
-            });
-          }
-        });
-        this.chapterService.kjvChapterVerse = new ChapterVerses();
-        this.chapterService.kjvChapterVerse.verses = [];
-        this.chapterService.kjvChapterNotes = new ChapterNotes();
-        this.chapterService.kjvChapterNotes.notes = [];
-        const promises = uniq(
-          kjvRefs.map((k): string => {
-            const kSplit = k.split('-');
-            return `${kSplit[0]}-${kSplit[1]}-${kSplit[2]}-chapter-verses`;
-          }),
-        ).map(
-          async (chapterID): Promise<void> => {
-            const verse = (await this.databaseService.getDatabaseItem(
-              chapterID,
-            )) as ChapterVerses;
-            const notes = (await this.databaseService.getDatabaseItem(
-              chapterID.replace('-chapter-verses', '-notes'),
-            )) as ChapterNotes;
-            if (
-              this.chapterService.kjvChapterVerse &&
-              this.chapterService.kjvChapterVerse.verses &&
-              verse.verses
-            ) {
-              this.chapterService.kjvChapterVerse.verses = this.chapterService.kjvChapterVerse.verses.concat(
-                verse.verses,
-              );
-            }
-            if (
-              this.chapterService.chapterNotes &&
-              this.chapterService.chapterNotes.notes &&
-              notes.notes
-            ) {
-              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
-                notes.notes,
-              );
-            }
-
-            await this.formatTagService.resetFormatTags(
-              this.chapterService.kjvChapterVerse,
-              this.chapterService.kjvChapterNotes,
-            );
-          },
-        );
-        await Promise.all(promises);
-        console.log(this.chapterService.kjvChapterVerse);
-        if (
-          this.chapterService.kjvChapterVerse.verses &&
-          this.chapterVerses &&
-          this.chapterVerses.verses
-        ) {
-          this.chapterVerses.verses.map((verse): void => {
-            if (verse.kjvRef) {
-              verse.kjvRef.map((k): void => {
-                if (
-                  this.chapterService.kjvChapterVerse &&
-                  this.chapterService.kjvChapterVerse.verses
-                ) {
-                  const v = this.chapterService.kjvChapterVerse.verses.find(
-                    (ver): boolean => {
-                      return ver._id === k;
-                    },
-                  );
-                  if (v) {
-                    if (!verse.kjvVerse) {
-                      verse.kjvVerse = [];
-                    }
-                    verse.kjvVerse.push(v);
-                  }
-                }
-              });
-            }
-          });
-        }
-      }
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -509,7 +411,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   }
 
   private async setChapterVariables(
-    chapterNotes: ChapterNotes,
+    chapterNotes: VerseNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
     newPage: boolean = true,
@@ -517,11 +419,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     if (!pageStateActive) {
       if (chapterNotes) {
-        await this.offsetService.expandNotes(chapterNotes.notes);
+        await this.offsetService.expandNotes(chapterNotes.verseNotes);
         if (chapterVerses && chapterVerses.verses) {
           this.chapterService.mergeVersesNotes(
             chapterVerses.verses,
-            chapterNotes.notes,
+            chapterNotes.verseNotes,
           );
         }
       }

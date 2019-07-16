@@ -1,3 +1,10 @@
+import { FormatGroup, FormatTag } from '../../../../shared/src/shared';
+import {
+  FakeVerseBreaks,
+  NodeName,
+  VerseBreaks,
+} from '../../../../shared/src/models/Verse';
+
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
   ERR = 100000,
@@ -470,17 +477,17 @@ export class NoteRef implements Visibility {
   public visible?: boolean;
 }
 
-export class FormatTag {
-  public classList: string[] | undefined;
-  public displayAs: DisplayAs | undefined;
-  public formatType: FormatTagType | undefined;
-  public offsets: string | undefined;
-  public optional: Optional | undefined;
-  public refs: string[] | undefined;
-  public text: string | undefined;
-  public uncompressedOffsets: number[] | undefined;
-  public visible: boolean | undefined;
-}
+// export class FormatTag {
+//   public classList: string[] | undefined;
+//   public displayAs: DisplayAs | undefined;
+//   public formatType: FormatTagType | undefined;
+//   public offsets: string | undefined;
+//   public optional: Optional | undefined;
+//   public refs: string[] | undefined;
+//   public text: string | undefined;
+//   public uncompressedOffsets: number[] | undefined;
+//   public visible: boolean | undefined;
+// }
 
 export class NoteRefFormatTag {
   public highlight = false;
@@ -499,8 +506,8 @@ export class MergedFormatTags {
 
 export class Note implements CouchDoc, Doc, Offsets {
   public _id: string;
-
   public _rev?: string;
+  public classList?: string[];
   public lang: LanguageCode;
   public noteMarker?: string;
   public notePhrase: string;
@@ -1011,3 +1018,30 @@ export const formatTagTypeOptions: FormatTagTypeOptions[] = [
     displayAs: DisplayAs.CLASS,
   },
 ];
+
+export class Verse {
+  public _id?: string;
+  public _rev?: string;
+  public breakFormatGroups: FormatGroup[];
+  public classList?: string | undefined[];
+  public context?: boolean;
+  public fakeVerseBreak: FakeVerseBreaks | undefined;
+  public formatGroups: FormatGroup[] = [];
+  public formatTags?: FormatTag[];
+  public highlight?: boolean;
+  public kjvRef: string[] | undefined;
+  public kjvVerse: Verse[] | undefined;
+  public nodeName?: NodeName;
+  public note?: VerseNote;
+  public noteID: string;
+  public text?: string;
+  // public verseBreaks?:
+  public verseBreaks?: VerseBreaks;
+  public verseID?: string;
+}
+
+export class ChapterVerses {
+  public _id: string;
+  public _rev: string | undefined;
+  public verses: Verse[] | undefined;
+}
