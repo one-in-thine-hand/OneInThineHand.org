@@ -11,8 +11,8 @@
         {{ getNotePhrase(note.notePhrase) }}
       </li> -->
   <ul class="note-refs" *ngIf="note.noteRefs">
-    <ng-container *ngFor="let noteRef of getNoteRefs(note)">
-      <li [class]="getRefClass(noteRef)">
+    <ng-container *ngFor="let noteRef of note.noteRefs">
+      <li [class]="getRefClass(noteRef)" *ngIf="noteRef.visisible">
         <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
         <span [innerHTML]="noteRef.safeHtml"></span>
       </li>

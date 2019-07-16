@@ -3,20 +3,20 @@ import {
   FMerged,
   RefTag,
 } from '../../../../../shared/src/models/format_tags/FormatTag';
-import {
-  Optional,
-  formatTagTypeOptions,
-  DisplayAs,
-  FormatTagType,
-  Verse,
-  VerseNotes,
-} from '../../../../../shared/src/shared';
+import { Verse } from '../../../../../shared/src/shared';
 import { MarkService } from '../../services/mark.service';
 import { last } from 'lodash';
 import { VisibilityService } from '../../services/visibility.service';
 import { ChapterService } from '../../services/chapter.service';
 import { findByAttribute } from '../../services/history.service';
 import { asyncScrollIntoView } from '../../scroll-into-view';
+import { DisplayAs, Optional } from '../../models/verse-notes';
+import {
+  VerseNote,
+  VerseNotes,
+  FormatTagTypeOptions,
+  FormatTagType,
+} from '../../models/verse-notes';
 
 @Component({
   selector: 'app-format-tag',
@@ -123,9 +123,9 @@ export class FormatTagComponent implements OnInit {
       this.fMerged.formatTags
         .filter((f): boolean => {
           return (
-            (f.displayAs === DisplayAs.CLASS &&
-              f.optional !== Optional.NEVER) ||
-            f.formatType === FormatTagType.verseNumber
+            (f.displayAs === (DisplayAs.CLASS as number) &&
+              f.optional !== (Optional.NEVER as number)) ||
+            f.formatType === (FormatTagType.verseNumber as number)
           );
         })
         .map((f): void => {
@@ -158,7 +158,8 @@ export class FormatTagComponent implements OnInit {
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
         return (
-          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+          f.displayAs === (DisplayAs.RICHTEXT as number) &&
+          f.optional !== (Optional.NEVER as number)
         );
       });
       // .map(
