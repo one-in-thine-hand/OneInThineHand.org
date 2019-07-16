@@ -17,6 +17,11 @@
     class="dropdown-menu-left"
     aria-labelledby="btnHeaderDropdown"
   >
+    <button ngbDropdownItem (click)="this.paragraphsVisible()">
+      Paragrah Mode
+    </button>
+    <button ngbDropdownItem (click)="this.poetryVisible()">Poetry Mode</button>
+    <button ngbDropdownItem (click)="this.blockVisible()">Block Mode</button>
     <button ngbDropdownItem (click)="save()">Save</button>
     <button ngbDropdownItem (click)="edit()">Edit</button>
     <button ngbDropdownItem>Add Note</button>

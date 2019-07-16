@@ -1,5 +1,192 @@
+## <small>5.0.80 (2019-07-15)</small>
+
+
+
+
+## <small>5.0.79 (2019-07-15)</small>
+
+* bug fix ([ffb83ac](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ffb83ac))
+* bug fixes ([166575d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/166575d))
+* v5.0.79 ([9b35d14](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9b35d14))
+
+
+
+## <small>5.0.78 (2019-07-15)</small>
+
+* v5.0.78 ([59e3771](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/59e3771))
+
+
+
+## <small>5.0.77 (2019-07-15)</small>
+
+* mobile bug fixes ([fcc7362](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fcc7362))
+* v5.0.77 ([19ef826](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/19ef826))
+
+
+
+## <small>5.0.76 (2019-07-15)</small>
+
+* mobile fixes ([683909b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/683909b))
+* v5.0.76 ([d6ac7b6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d6ac7b6))
+
+
+
+## <small>5.0.75 (2019-07-15)</small>
+
+* bug fixes ([ba642a9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ba642a9))
+* v5.0.75 ([ae560ef](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ae560ef))
+
+
+
+## <small>5.0.74 (2019-07-15)</small>
+
+* Bug fixes ([017ace7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/017ace7))
+* v5.0.74 ([051ac7e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/051ac7e))
+
+
+
+## <small>5.0.73 (2019-07-15)</small>
+
+* bug fixes ([2bbf816](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2bbf816))
+* Offset fix ([7feda59](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7feda59))
+* removed poetry margin in paragraph mode ([5ac191c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5ac191c))
+* v5.0.73 ([594534b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/594534b))
+
+
+
+## <small>5.0.72 (2019-07-14)</small>
+
+* bug fixes ([632c547](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/632c547))
+* v5.0.72 ([5736f5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5736f5e))
+
+
+
+## <small>5.0.71 (2019-07-14)</small>
+
+* New note categories ([05f62c6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/05f62c6))
+* Note Type sorting ([fa3c88e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fa3c88e))
+* v5.0.71 ([6bdd44a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6bdd44a))
+
+
+
+## <small>5.0.70 (2019-07-14)</small>
+
+* Added animation ([c6b8da8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c6b8da8))
+* animation ([c5d43bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c5d43bb))
+* v5.0.70 ([25dbf9b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/25dbf9b))
+
+
+
+## <small>5.0.69 (2019-07-14)</small>
+
+* v5.0.69 ([c3bfaf7](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c3bfaf7))
+
+
+
+## <small>5.0.68 (2019-07-13)</small>
+
+* v5.0.68 ([6f1f26e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6f1f26e))
+
+
+
+## <small>5.0.67 (2019-07-13)</small>
+
+* bug fixes ([51cfd91](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/51cfd91))
+* v5.0.67 ([99133af](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/99133af))
+
+
+
+## <small>5.0.66 (2019-07-13)</small>
+
+* v5.0.66 ([3c7b0d4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3c7b0d4))
+
+
+
+## <small>5.0.65 (2019-07-13)</small>
+
+* bug fixes ([eff1ef3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/eff1ef3))
+* v5.0.65 ([85e81d0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/85e81d0))
+
+
+
+## <small>5.0.64 (2019-07-13)</small>
+
+* Added support for verse number coloring ([e4a44da](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e4a44da))
+* v5.0.64 ([70733f1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/70733f1))
+
+
+
+## <small>5.0.63 (2019-07-13)</small>
+
+* harmony notes ([a82375a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a82375a))
+* Harmony updates ([b166d32](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b166d32))
+* side by side border update ([1f50c14](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f50c14))
+* Updated settings page ([27ad0fd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/27ad0fd))
+* v5.0.63 ([1545595](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1545595))
+
+
+
+## <small>5.0.62 (2019-07-12)</small>
+
+* Possible Page state fix ([bcce204](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bcce204))
+* v5.0.62 ([2d1fd93](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2d1fd93))
+
+
+
+## <small>5.0.61 (2019-07-12)</small>
+
+* offset fixes ([6d1b21e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6d1b21e))
+* Updaing ids ([e94b58b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e94b58b))
+* v5.0.61 ([86cc643](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/86cc643))
+
+
+
+## <small>5.0.59 (2019-07-11)</small>
+
+* update to manifest files ([1d47f0b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d47f0b))
+* v5.0.59 ([048402e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/048402e))
+
+
+
+## <small>5.0.58 (2019-07-11)</small>
+
+* bug fixes ([909ccdd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/909ccdd))
+* bug fixes ([e1274f5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e1274f5))
+* Note order work ([68af5b1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/68af5b1))
+* Side by side underline ([63db77e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/63db77e))
+* v5.0.58 ([446c5c5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/446c5c5))
+
+
+
+## <small>5.0.57 (2019-07-10)</small>
+
+* Bug fixes ([204e71b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/204e71b))
+* Fixes to note sorting ([e8086c3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e8086c3))
+* Update note phrase to support SafeHTML ([7089b31](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7089b31))
+* Update to note sorting ([fce4d2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/fce4d2a))
+* v5.0.57 ([75f6514](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/75f6514))
+
+
+
+## <small>5.0.56 (2019-07-09)</small>
+
+* bug fixes ([9629b72](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9629b72))
+* note offset fix ([f9015fc](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f9015fc))
+* v5.0.56 ([2dcfcd2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2dcfcd2))
+
+
+
+## <small>5.0.55 (2019-07-09)</small>
+
+* Added header to jst ([0034e5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0034e5e))
+* Updating to beta ([3e1dca4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3e1dca4))
+* v5.0.55 ([8900458](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8900458))
+
+
+
 ## <small>5.0.54 (2019-07-08)</small>
 
+* v5.0.54 ([9bdf720](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9bdf720))
 
 
 

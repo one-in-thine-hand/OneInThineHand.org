@@ -44,7 +44,59 @@ $chapterGridMargins: 32px;
     grid-column-gap: 5px;
 
     grid-template-columns: 1fr 1fr;
-    @media screen and (max-width: 1000px) {
+    map-shell-column {
+      div {
+        display: flex;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+        justify-content: center;
+        .test-border {
+          width: 20%;
+          border-bottom-style: solid;
+          border-bottom-width: 1.5px;
+          border-bottom-left-radius: 1px;
+        }
+      }
+    }
+    map-shell-column:last-child {
+      div {
+        .test-border {
+          width: 90%;
+        }
+      }
+    }
+    @media screen and (min-width: 1000px) {
+      // map-shell-column {
+      //   display: grid;
+      //   grid-template-columns: auto 1px;
+      //   div {
+      //     display: flex;
+      //     // margin-top: 2.5px;
+      //     // margin-bottom: 2.5px;
+      //     align-items: center;
+      //     .test-border {
+      //       height: 90%;
+      //       border-right: solid;
+      //       border-right-width: 1.5px;
+      //       // border-right-left-radius: 1px;
+      //     }
+      //   }
+      // }
+      map-shell-column:last-child {
+        div {
+          .test-border {
+            width: 20%;
+          }
+        }
+      }
+      &:last-of-type map-shell-column div {
+        display: none !important;
+      }
+      // map-shell-column:last-of-type div {
+      //   display: none;
+      // }
+    }
+    @media screen and (max-width: 999.98px) {
       grid-template-columns: 1fr !important;
     }
   }
@@ -71,4 +123,17 @@ $chapterGridMargins: 32px;
 .deletion {
   font-style: italic;
   color: darkgray;
+}
+// map-shell-row {
+//   div:first-child {
+//     border-bottom-style: solid;
+//     border-bottom-width: 1px;
+//     border-bottom-left-radius: 1px;
+//   }
+// }
+map-shell-row {
+}
+
+map-shell map-shell-row:last-of-type map-shell-column:last-of-type div {
+  display: none;
 }

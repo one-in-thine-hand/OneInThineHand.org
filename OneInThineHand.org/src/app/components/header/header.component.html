@@ -12,6 +12,7 @@
     <li
       (click)="tempSettingsService.editMode = !tempSettingsService.editMode"
       [ngClass]="{ 'bg-light': tempSettingsService.editMode }"
+      class="edit-btn"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +59,9 @@
         style="width: 40px"
       >
         <path
-          d="M17.04 25.36h65.91v6H17.04zM17.04 39.79h43.87v6H17.04zM17.04 68.64h65.91v6H17.04z"
+          d="M83 74.6H17v-6h66v6zm0-14.4H39.1v-6H83v6zm0-28.8H17v-6h66v6z"
         />
-        <path d="M17.04 68.64h43.87v6H17.04zM17.04 54.21h43.87v6H17.04z" />
+        <path d="M83 31.4H39.1v-6H83v6zm0 14.4H39.1v-6H83v6z" />
       </svg>
     </li>
     <li id="btnBack" (click)="this.backClick()">
@@ -148,6 +149,20 @@
     </button>
   </div>
   <div class="modal-body settings">
+    <h2>Note Overlays</h2>
+    <ul class="note-overlays">
+      <li
+        (click)="refLabelClick(r)"
+        *ngFor="let r of this.saveStateService.getNoteOverlays()"
+        [ngClass]="{
+          'btn-overlay-primary': r.visible,
+          ' btn-overlay-secondary': !r.visible
+        }"
+      >
+        <!-- class="btn btn-primary" -->
+        {{ r.shortName }}
+      </li>
+    </ul>
     <h2>Note Categories</h2>
     <table class="table">
       <tr>
@@ -284,18 +299,33 @@
       <tr>
         <td
           [ngClass]="{
-            'table-primary': categoryIsActive('reference-label-doctrine')
+            'table-primary': categoryIsActive('reference-label-tg')
           }"
-          (click)="
-            noteCategoryBtnClick([
-              'reference-label-doctrine',
-              'reference-label-bd',
-              'reference-label-tg',
-              'reference-label-gs'
-            ])
-          "
+          (click)="noteCategoryBtnClick(['reference-label-tg'])"
         >
-          DOCT
+          TG
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-gs')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-gs'])"
+        >
+          GS
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-bd')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-bd'])"
+        >
+          BD
         </td>
         <td></td>
       </tr>
@@ -314,20 +344,7 @@
         {{ r.referenceLabelShortName }}
       </li>
     </ul> -->
-    <h2>Note Types</h2>
-    <ul>
-      <li
-        (click)="refLabelClick(r)"
-        *ngFor="let r of this.saveStateService.data.noteTypeSettings"
-        [ngClass]="{
-          'btn-primary': r.visible,
-          ' btn-secondary': !r.visible
-        }"
-        class="btn btn-primary"
-      >
-        {{ r.shortName }}
-      </li>
-    </ul>
+
     <!-- <ul>
       <li
         (click)="refLabelClick('englishOverlayVisible')"
@@ -373,7 +390,7 @@
   </div>
   <div class="modal-body">
     <div *ngIf="!this.uploading">
-      <form (ngSubmit)="onSubmit()" #fileUpload="ngForm">
+      <form (ngSubmit)="onSubmit($event)" #fileUpload="ngForm">
         Load Files
         <input
           multiple
@@ -381,10 +398,19 @@
           name="chapter-file"
           id="chapterFileOpener"
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Install</button>
       </form>
     </div>
-    <div *ngIf="this.uploading">Loading Files</div>
+    <div *ngIf="this.uploading">
+      <ngb-progressbar
+        type="danger"
+        [value]="
+          (this.preprocessorService.count /
+            this.preprocessorService.fileCount) *
+          100
+        "
+      ></ngb-progressbar>
+    </div>
     <!-- <div>
       Upload Note Files
       <input
@@ -402,7 +428,7 @@
       class="btn btn-outline-dark"
       (click)="modal.close('Save click')"
     >
-      Save
+      Close
     </button>
   </div>
 </ng-template>

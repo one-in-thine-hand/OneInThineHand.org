@@ -1,12 +1,3 @@
-// import * as he from 'he';
-// import * as he from 'he';
-
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
-// import * as he from 'he';
 export const enum NoteCategory {
   ERR = 100000,
   QUO = 0,
@@ -31,6 +22,12 @@ export const enum NoteCategory {
   QUO2 = 19,
   OR1 = 20,
   OR2 = 21,
+  ORT2,
+  ORT1,
+  NONE,
+  IEQUO1,
+  IEQUO,
+  IEQUO2,
 }
 
 export enum NoteType {
@@ -40,6 +37,7 @@ export enum NoteType {
   QUO,
   Phrasing,
   TRANSLATION,
+  CR,
   TEST,
   EXISTING,
   TC,
@@ -77,15 +75,15 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   {
     noteType: NoteType.QUO,
     className: 'overlay-quo',
-    shortName: 'QUO',
+    shortName: 'Quotation',
     longName: 'Quotation',
     visible: true,
   },
   {
     noteType: NoteType.Phrasing,
     className: 'overlay-phr',
-    shortName: 'PHR',
-    longName: 'Phrasing',
+    shortName: 'Phrase',
+    longName: 'Phrase',
     visible: true,
   },
   {
@@ -93,6 +91,13 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
     className: 'overlay-trn',
     shortName: 'Translation',
     longName: 'Translation',
+    visible: true,
+  },
+  {
+    noteType: NoteType.CR,
+    className: 'overlay-cr',
+    shortName: 'Cross-Reference',
+    longName: 'Cross-Reference',
     visible: true,
   },
   {

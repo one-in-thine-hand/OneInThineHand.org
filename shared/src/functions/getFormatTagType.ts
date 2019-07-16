@@ -1,7 +1,7 @@
 import { formatTagTypeOptions } from '../constants/verse-selectors';
 import { FormatTagType, FormatTagTypeOptions } from '../enums/enums';
 import { range, sortBy, uniq } from 'lodash';
-import { bookNames } from '../models/BookName';
+// import { bookNames } from '../models/BookName';
 export function getFormatTagType(
   formatType: FormatTagType,
 ): FormatTagTypeOptions | undefined {
@@ -110,21 +110,29 @@ export async function getChapterID(
     new RegExp(new RegExp(/(?!\\)[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+$/g)),
   ).replace(/\//g, '-')}`;
 
-  const book = bookNames.find(
-    (bookName): boolean => {
-      return id.startsWith(bookName.chapterStartsWith);
-    },
-  );
-  if (book) {
-    id = `${language}-${id.replace(
-      book.chapterStartsWith,
-      book.startsWith,
-    )}-chapter`;
-  } else if (specialChapterIDs.includes(id)) {
-    return `${language}-${id.replace(/\-/g, '_')}-chapter`;
-  }
+  return `${language}-${id}-chapter`;
+  // console.log(id);
 
-  return id;
+  // const book = bookNames.find(
+  //   (bookName): boolean => {
+  //     return id.startsWith(bookName.chapterStartsWith);
+  //   },
+  // );
+  // // console.log(language);
+  // // console.log(id);
+
+  // if (book) {
+  //   id = `${language}-${id.replace(
+  //     book.chapterStartsWith,
+  //     book.startsWith,
+  //   )}-chapter`;
+  // } else if (id.includes('jst-')) {
+  //   return `${language}-${id}-chapter`.replace('jst-', 'jst_');
+  // } else if (specialChapterIDs.includes(id)) {
+  //   // specialChapterIDs.
+  //   return `${language}-${id.replace(/\-/g, '_')}-chapter`;
+  // }
+  // return id;
 }
 
 export async function getLanguage(document: Document): Promise<string> {
@@ -141,7 +149,7 @@ export function parseOffsets(offets: string | undefined): number[] | undefined {
       if (r.indexOf('-') !== -1) {
         const split2 = r.split('-');
         const f = parseInt(split2[0]);
-        const l = parseInt(split2[1]);
+        const l = parseInt(split2[1]) + 1;
         offsetSplit = offsetSplit.concat(range(f, l + 1));
       } else {
         offsetSplit.push(parseInt(r));

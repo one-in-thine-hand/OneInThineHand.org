@@ -11,6 +11,7 @@ import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { Verse } from '../../../../../shared/src/shared';
 import PQueue from 'p-queue/dist';
 import { flatten } from 'lodash';
+import { FormatTagService } from '../../services/format-tag.service';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -18,10 +19,12 @@ import { flatten } from 'lodash';
   styleUrls: ['./header-dropdown.component.scss'],
 })
 export class HeaderDropdownComponent implements OnInit {
-  public showOrphanNotes: boolean = false;
+  public pQueueVerses = new PQueue({ concurrency: 1 });
   public preparingHarmony: boolean;
+  public showOrphanNotes = false;
   public constructor(
-    public saveState: SaveStateService,
+    public saveStateService: SaveStateService,
+    public formatTagService: FormatTagService,
     public chapterService: ChapterService,
     public databaseService: DatabaseService,
     public textSelectionService: TextSelectService,
@@ -31,10 +34,56 @@ export class HeaderDropdownComponent implements OnInit {
 
     private location: Location,
   ) {}
+  public async blockVisible(): Promise<void> {
+    this.saveStateService.data.blockVisible = !this.saveStateService.data
+      .blockVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
 
-  public pQueueVerses = new PQueue({ concurrency: 1 });
+    await this.saveStateService.save();
+  }
+  /**
+   * edit
+   */
+  public edit(): void {
+    this.saveStateService.data.editMode = !this.saveStateService.data.editMode;
+  }
+
+  /**
+   * exportBook
+   */
+  public async exportBook(): Promise<void> {
+    await this.exportService.exportBook();
+  }
+
+  public async exportBreaks(): Promise<void> {
+    await this.exportService.exportBreaks();
+  }
 
   public ngOnInit(): void {}
+
+  public async paragraphsVisible(): Promise<void> {
+    this.saveStateService.data.paragraphsVisible = !this.saveStateService.data
+      .paragraphsVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+
+    await this.saveStateService.save();
+  }
+  public async poetryVisible(): Promise<void> {
+    this.saveStateService.data.poetryVisible = !this.saveStateService.data
+      .poetryVisible;
+    await this.formatTagService.resetFormatTags(
+      this.chapterService.chapterVerses,
+      this.chapterService.chapterNotes,
+    );
+
+    await this.saveStateService.save();
+  }
   public async prepareForHarmony(): Promise<void> {
     console.log('aoisdjfoiasjdfoiajsdf');
 
@@ -77,14 +126,13 @@ export class HeaderDropdownComponent implements OnInit {
     }
   }
 
-  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
-    const newArray: T[][] = [];
-    let x = 0;
-    while (x < array.length) {
-      newArray.push(array.slice(x, x + chunkSizes));
-      x = x + chunkSizes;
+  public async save(): Promise<void> {
+    if (this.chapterService.chapterNotes) {
+      await this.databaseService.updateDatabaseItem(
+        this.chapterService.chapterNotes,
+      );
+      console.log('Finished');
     }
-    return newArray;
   }
 
   public async showNotes(): Promise<void> {
@@ -98,29 +146,13 @@ export class HeaderDropdownComponent implements OnInit {
     }
   }
 
-  public async save(): Promise<void> {
-    if (this.chapterService.chapterNotes) {
-      await this.databaseService.updateDatabaseItem(
-        this.chapterService.chapterNotes,
-      );
-      console.log('Finished');
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
     }
-  }
-  /**
-   * edit
-   */
-  public edit(): void {
-    this.saveState.data.editMode = !this.saveState.data.editMode;
-  }
-
-  /**
-   * exportBook
-   */
-  public async exportBook(): Promise<void> {
-    await this.exportService.exportBook();
-  }
-
-  public async exportBreaks(): Promise<void> {
-    await this.exportService.exportBreaks();
+    return newArray;
   }
 }

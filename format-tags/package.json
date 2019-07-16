@@ -33,6 +33,6 @@
   "dependencies": {
     "@types/lodash": "^4.14.135",
     "lodash": "^4.17.11",
-    "tslib": "~1.9.3"
+    "tslib": "^1.9.3"
   }
 }

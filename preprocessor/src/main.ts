@@ -2,13 +2,15 @@
 const FastGlob = require('fast-glob');
 import { normalize } from 'path';
 import { uniq } from 'lodash';
-import { FormatTags } from '../../format-tags/src/main';
-import { readFile, pathExists, mkdirp, writeFile } from 'fs-extra';
-import { basename } from 'path';
+import { FormatTags, ChapterVerses } from '../../format-tags/src/main';
+import { readFile } from 'fs-extra';
+// import { basename } from 'path';
 import { JSDOM } from 'jsdom';
 import { ChapterProcessor } from '../../chapter/src/main';
 import { NoteProcessor, ChapterNotes } from '../../notes/src/main';
 import { Verse } from '../../shared/src/shared';
+import { arrayToFile } from './arrayToFile';
+import { Chapter } from '../../chapter/src/Chapter';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -42,68 +44,100 @@ async function processScriptureFiles(
   formaTags: FormatTags,
   chapterProcessor: ChapterProcessor,
 ): Promise<void> {
-  const totalCount = scriptureFileNames.length;
-  let count = 0;
   let allVerses: Verse[] = [];
   const promises = scriptureFileNames.map(
-    async (scriptureFileName): Promise<void> => {
+    async (
+      scriptureFileName,
+    ): Promise<[Chapter, ChapterVerses] | undefined> => {
       try {
         const scriptureFile = await readFile(normalize(scriptureFileName));
         const document = new JSDOM(scriptureFile).window.document;
-        const verses = await formaTags.main(document);
-        const chapter = await chapterProcessor.main(document);
-        // const lang = await getLanguage(document);
-        // const id = await getID(document, lang);
-        // console.log(chapter);
-        // getID()
-        // console.log(dirname(normalize(scriptureFileName)));
-        // const directory = normalize(
-        //   dirname(
-        //     scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
-        //   ),
-        // );
-        // if (!(await pathExists(directory))) {
-        //   await mkdirp(directory);
-        // }
-        const directory = normalize(
-          `../scripture_files/scriptures/scriptures/`,
-        );
-        // console.log(await pathExists(directory));
+        const html = document.querySelector('html');
+        const fileTypeAttr = html
+          ? html.getAttribute('data-content-type') === 'chapter'
+          : undefined;
+        if (fileTypeAttr) {
+          const verses = await formaTags.main(document);
+          const chapter = await chapterProcessor.main(document);
+          if (chapter && verses) {
+            return [chapter, verses];
+          } else {
+            return undefined;
+          }
+          // const lang = await getLanguage(document);
+          // const id = await getID(document, lang);
+          // console.log(chapter);
+          // getID()
+          // console.log(dirname(normalize(scriptureFileName)));
+          // const directory = normalize(
+          //   dirname(
+          //     scriptureFileName.replace('scriptures_unprocessed', 'scriptures'),
+          //   ),
+          // );
+          // if (!(await pathExists(directory))) {
+          //   await mkdirp(directory);
+          // }
+          // const directory = normalize(
+          //   `../scripture_files/scriptures/scriptures/`,
+          // );
+          // // console.log(await pathExists(directory));
 
-        if (!(await pathExists(directory))) {
-          await mkdirp(directory);
+          // if (!(await pathExists(directory))) {
+          //   await mkdirp(directory);
+          // }
+          // // console.log(`${directory}/${basename(id)}-verses.json`);
+
+          // if (verses && verses.verses) {
+          //   allVerses = allVerses.concat(verses.verses);
+          // }
+          // await writeFile(
+          //   normalize(
+          //     `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
+          //   ),
+          //   JSON.stringify(verses),
+          // );
+          // await writeFile(
+          //   normalize(
+          //     `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
+          //   ),
+          //   JSON.stringify(chapter),
+          // );
+          // count = count + 1;
+
+          // console.log(`${count}/${totalCount}`);
         }
-        // console.log(`${directory}/${basename(id)}-verses.json`);
 
-        if (verses && verses.verses) {
-          allVerses = allVerses.concat(verses.verses);
-        }
-        await writeFile(
-          normalize(
-            `${directory}/${basename(verses ? verses._id : 'failed')}.json`,
-          ),
-          JSON.stringify(verses),
-        );
-        await writeFile(
-          normalize(
-            `${directory}/${basename(chapter ? chapter._id : 'failed')}.json`,
-          ),
-          JSON.stringify(chapter),
-        );
-        count = count + 1;
-
-        console.log(`${count}/${totalCount}`);
- 
         // console.log(verses);
         // console.log(scriptureFile);
       } catch (error) {
+        console.log('iojasdfoiajsdfoij');
+
         console.log(error);
+        return undefined;
       }
+      return undefined;
     },
   );
 
-  await Promise.all(promises);
+  const chaptersVases = (await Promise.all(promises)).filter(
+    (chapterV): boolean => {
+      return chapterV !== undefined;
+    },
+  ) as [Chapter, ChapterVerses][];
   console.log(allVerses.length);
+
+  const cVerses = chaptersVases.map(
+    (v): ChapterVerses => {
+      return v[1];
+    },
+  );
+  const chapters = chaptersVases.map(
+    (v): Chapter => {
+      return v[0];
+    },
+  );
+  await arrayToFile(cVerses, 'chapterVerses');
+  await arrayToFile(chapters, 'chapters');
 
   // try {
   //   await mkdirp(`../scripture_files/scriptures/verses/`);
@@ -140,6 +174,7 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
           notes.notes.map(
             (note): void => {
               // console.log(note.notes);
+
               if (value.notes) {
                 const newNote = value.notes.find(
                   (n): boolean => {
@@ -153,6 +188,26 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
 
                   note.notes = uniq(note.notes);
                 }
+                // if (note.notes) {
+                //   note.notes.map(
+                //     (n): void => {
+                //       n.noteRefs = sortBy(
+                //         n.noteRefs,
+                //         (noteRef): number => {
+                //           return noteRef.noteCategory
+                //             ? noteRef.noteCategory
+                //             : 0;
+                //         },
+                //       );
+                //     },
+                //   );
+                //   note.notes = sortBy(
+                //     note.notes,
+                //     (n): number => {
+                //       return n.noteType ? n.noteType : 0;
+                //     },
+                //   );
+                // }
               }
               // console.log(note.notes);
             },
@@ -197,23 +252,29 @@ async function main(): Promise<void> {
   );
   await Promise.all(promises);
   console.log('finished');
-  notesMap.forEach(
-    async (value, key): Promise<void> => {
-      const directory = normalize(`../scripture_files/scriptures/notes/`);
-      if (!(await pathExists(directory))) {
-        await mkdirp(directory);
-      }
+  await arrayToFile(Array.from(notesMap.values()), 'notes');
 
-      try {
-        await writeFile(
-          `${directory}/${key.replace('chapter', 'notes')}.json`,
-          JSON.stringify(value),
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  );
+  // notesMap.forEach(
+  //   async (value, key): Promise<void> => {
+  //     const directory = normalize(`../scripture_files/scriptures/notes/`);
+  //     if (!(await pathExists(directory))) {
+  //       await mkdirp(directory);
+  //     }
+
+  //     console.log(`${directory}/${key.replace('chapter', 'notes')}.json`);
+
+  //     try {
+  //       await writeFile(
+  //         `${directory}${key.replace('chapter', 'notes')}.json`,
+  //         JSON.stringify(value),
+  //       );
+  //     } catch (error) {
+  //       console.log('oiasjdfoiajsdfoijadsfoijadsoifj');
+
+  //       console.log(error);
+  //     }
+  //   },
+  // );
 }
-
+console.clear();
 main();

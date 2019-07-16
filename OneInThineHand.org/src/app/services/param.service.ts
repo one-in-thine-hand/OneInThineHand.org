@@ -15,7 +15,7 @@ export class ParamService {
       book = 'w_of_m';
     }
     return {
-      book: book.replace('-', '_'),
+      book: book,
       chapter: chapter[0],
       highlight: chapter[1] !== undefined ? chapter[1] : undefined,
       context: chapter[2] !== undefined ? chapter[2] : undefined,

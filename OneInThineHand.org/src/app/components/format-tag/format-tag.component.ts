@@ -24,12 +24,12 @@ import { asyncScrollIntoView } from '../../scroll-into-view';
   styleUrls: ['./format-tag.component.scss'],
 })
 export class FormatTagComponent implements OnInit {
-  @Input() public fMerged: FMerged;
-  @Input() public verse: Verse;
-  public text = '';
   public classList: string[] = [];
+  @Input() public fMerged: FMerged;
   public offsets = '';
   public refList: string[] | undefined;
+  public text = '';
+  @Input() public verse: Verse;
 
   public constructor(
     public markService: MarkService,
@@ -38,43 +38,49 @@ export class FormatTagComponent implements OnInit {
     public chapterService: ChapterService,
   ) {}
 
-  public ngOnInit(): void {}
+  public async formatTagClick(event: Event): Promise<void> {
+    // const selection = window.getSelection();
+    // this.visibilityService.resetHighlight();
+    if (this.checkNoTextIsSelected()) {
+      this.chapterService.resetNoteVis();
 
-  public getText(): string {
-    const text = this.fMerged.text;
-    if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
-      const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
-        return (
-          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
-        );
-      });
-      // .map(
-      //   (f): void => {
-      //   },
-      // );
+      if (this.fMerged.refTags) {
+        if (this.refList === undefined) {
+          // this.refList = this.fMerged.refTags.map((refT): string => {
+          //   return refT.secondaryNoteID;
+          // });
+          const tempRefList = this.getVisibleRefTags(true);
 
-      return this.markService.getFormatTagRichText(
-        this.fMerged.text,
-        richFormatTags,
-      );
+          if (tempRefList) {
+            this.refList = tempRefList.map((refTag): string => {
+              return refTag.secondaryNoteID;
+            });
+          }
+        }
+        if (this.refList) {
+          const id = this.refList.pop();
+          const r = findByAttribute(
+            'secondaryNoteID',
+            id,
+            this.fMerged.refTags,
+          );
 
-      // return text;
-    }
-    if (this.text !== text) {
-      this.text = text;
-    }
+          if (r) {
+            r.highlight = true;
 
-    return this.text;
-  }
-  private getVisibleRefTags(): RefTag[] | undefined {
-    if (this.fMerged.refTags) {
-      return this.fMerged.refTags.filter((refTag): boolean => {
-        return (
-          this.visibilityService.secondaryNotesVisibility.get(
-            refTag.secondaryNoteID,
-          ) === true
-        );
-      });
+            await asyncScrollIntoView(
+              `#${(this.verse.note as VerseNotes)._id as string}`,
+            );
+            // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
+          } else {
+            this.refList = undefined;
+          }
+        }
+        // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
+      }
+      // if (selection) {
+      //   selection.addRange(selection.getRangeAt(0));
+      // }
     }
   }
 
@@ -147,6 +153,35 @@ export class FormatTagComponent implements OnInit {
     return '0,0';
   }
 
+  public getText(): string {
+    const text = this.fMerged.text;
+    if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
+      const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
+        return (
+          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+        );
+      });
+      // .map(
+      //   (f): void => {
+      //   },
+      // );
+
+      return this.markService.getFormatTagRichText(
+        this.fMerged.text,
+        richFormatTags,
+      );
+
+      // return text;
+    }
+    if (this.text !== text) {
+      this.text = text;
+    }
+
+    return this.text;
+  }
+
+  public ngOnInit(): void {}
+
   private checkNoTextIsSelected(): boolean {
     try {
       const selection = window.getSelection();
@@ -157,50 +192,27 @@ export class FormatTagComponent implements OnInit {
       return false;
     }
   }
-
-  public async formatTagClick(event: Event): Promise<void> {
-    // const selection = window.getSelection();
-    // this.visibilityService.resetHighlight();
-    if (this.checkNoTextIsSelected()) {
-      this.chapterService.resetNoteVis();
-
-      if (this.fMerged.refTags) {
-        if (this.refList === undefined) {
-          // this.refList = this.fMerged.refTags.map((refT): string => {
-          //   return refT.secondaryNoteID;
-          // });
-          const tempRefList = this.getVisibleRefTags();
-
-          if (tempRefList) {
-            this.refList = tempRefList.map((refTag): string => {
-              return refTag.secondaryNoteID;
-            });
-          }
-        }
-        if (this.refList) {
-          const id = this.refList.pop();
-          const r = findByAttribute(
-            'secondaryNoteID',
-            id,
-            this.fMerged.refTags,
+  private getVisibleRefTags(includeAll?: boolean): RefTag[] | undefined {
+    if (this.fMerged.refTags) {
+      return this.fMerged.refTags.filter((refTag): boolean => {
+        if (
+          !includeAll &&
+          ((refTag.offsets !== undefined && refTag.offsets.startsWith('0')) ||
+            refTag.offsets === 'all')
+        ) {
+          return (
+            this.visibilityService.secondaryNotesVisibility.get(
+              refTag.secondaryNoteID,
+            ) === true && refTag.highlight === true
           );
-
-          if (r) {
-            r.highlight = true;
-
-            await asyncScrollIntoView(
-              `#${(this.verse.note as VerseNotes)._id as string}`,
-            );
-            // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
-          } else {
-            this.refList = undefined;
-          }
         }
-        // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
-      }
-      // if (selection) {
-      //   selection.addRange(selection.getRangeAt(0));
-      // }
+
+        return (
+          this.visibilityService.secondaryNotesVisibility.get(
+            refTag.secondaryNoteID,
+          ) === true
+        );
+      });
     }
   }
 }

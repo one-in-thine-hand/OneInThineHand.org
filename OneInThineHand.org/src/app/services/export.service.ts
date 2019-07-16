@@ -234,7 +234,10 @@ export class ExportService {
       return notes
         .map((note): string => {
           if (note.uncompressedOffsets) {
-            if (note.uncompressedOffsets.includes(0)) {
+            if (
+              note.uncompressedOffsets.includes(0) ||
+              note.offsets === 'all'
+            ) {
               note.offsets = 'all';
             } else {
               note.offsets = getRanges(note.uncompressedOffsets)
@@ -269,7 +272,13 @@ export class ExportService {
             classList = classList.concat(note.classList);
           }
           return `<note class="${classList.join(' ')}" id="${note.id}" ${
-            note.offsets !== undefined ? `offsets=\"${note.offsets}\"` : ''
+            note.offsets !== undefined
+              ? `offsets=\"${
+                  note.offsets === 'all' || note.offsets === '0'
+                    ? 'all'
+                    : note.offsets
+                }\"`
+              : ''
           }>
           <p class="note-phrase">${
             note.notePhrase ? note.notePhrase.text : ''

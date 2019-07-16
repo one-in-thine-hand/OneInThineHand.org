@@ -7,7 +7,6 @@ import {
   parseOffsets,
   DisplayAs,
   VerseNotes,
-  expandOffsets,
 } from '../../../../shared/src/shared';
 import {
   FMerged,
@@ -23,150 +22,12 @@ import PQueue from 'p-queue/dist';
   providedIn: 'root',
 })
 export class FormatTagService {
+  public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
+  public resetVerseQueue = new PQueue({ concurrency: 1 });
   public constructor(
     private historyService: HistoryService,
     private saveStateService: SaveStateService,
   ) {}
-
-  public resetFormatTagsQueue = new PQueue({ concurrency: 1 });
-  public resetVerseQueue = new PQueue({ concurrency: 1 });
-
-  private buildOffset(item: {
-    offsets: string | undefined;
-    uncompressedOffsets: number[] | undefined;
-  }): void {
-    item.uncompressedOffsets = item.offsets
-      ? parseOffsets(item.offsets)
-      : undefined;
-  }
-
-  public async resetVerses(verses: Verse[]): Promise<void> {
-    // const promises = this.sliceArray(verses, 4000).map(
-    //   async (verse): Promise<void> => {
-    //     await this.resetVerseQueue.add((): void => {
-    //       verse.map((v): void => {
-    //         this.buildOffsets(v.formatGroups);
-    //         this.buildOffsets(v.formatTags);
-    //         this.buildFormatGroups(v.formatGroups, v.formatTags, v.note, v);
-    //       });
-    //     });
-    //   },
-    // );
-    // await Promise.all(promises);
-    if (
-      this.saveStateService.data.poetryVisible ||
-      this.saveStateService.data.blockVisible ||
-      this.saveStateService.data.paragraphsVisible
-    ) {
-      try {
-        verses.map((verse): void => {
-          this.buildOffsets(
-            verse.breakFormatGroups !== undefined &&
-              verse.breakFormatGroups.length > 0
-              ? verse.breakFormatGroups
-              : verse.formatGroups,
-          );
-          this.buildOffsets(verse.formatTags);
-          this.buildFormatGroups(
-            verse.breakFormatGroups !== undefined &&
-              verse.breakFormatGroups.length > 0
-              ? verse.breakFormatGroups
-              : verse.formatGroups,
-
-            verse.formatTags,
-            verse.note,
-            verse,
-          );
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      verses.map((verse): void => {
-        this.buildOffsets(verse.formatGroups);
-        this.buildOffsets(verse.formatTags);
-        this.buildFormatGroups(
-          verse.formatGroups,
-          verse.formatTags,
-          verse.note,
-          verse,
-        );
-      });
-    }
-  }
-
-  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
-    const newArray: T[][] = [];
-    let x = 0;
-    while (x < array.length) {
-      newArray.push(array.slice(x, x + chunkSizes));
-      x = x + chunkSizes;
-    }
-    return newArray;
-  }
-  public async resetFormatTags(
-    chapterVerses: ChapterVerses | undefined,
-    chapterNotes: ChapterNotes | undefined,
-  ): Promise<void> {
-    await this.resetFormatTagsQueue.add(
-      async (): Promise<void> => {
-        if (chapterVerses && chapterNotes) {
-          this.historyService.addHistory(
-            chapterVerses,
-            this.saveStateService.data,
-            chapterNotes,
-          );
-        }
-        if (chapterVerses && chapterVerses.verses) {
-          await this.resetVerses(chapterVerses.verses);
-          // chapterVerses.verses.map((verse): void => {
-          //   this.buildOffsets(verse.formatGroups);
-          //   this.buildOffsets(verse.formatTags);
-          //   this.buildFormatGroups(
-          //     verse.formatGroups,
-          //     verse.formatTags,
-          //     verse.note,
-          //     verse,
-          //   );
-          // });
-        }
-      },
-    );
-  }
-  public buildOffsets(
-    formatGroups:
-      | {
-          offsets: string | undefined;
-          uncompressedOffsets: number[] | undefined;
-        }[]
-      | undefined,
-  ): void {
-    if (formatGroups) {
-      formatGroups.map((fGrp): void => {
-        this.buildOffset(fGrp);
-      });
-    }
-  }
-  public buildFormatGroups(
-    formatGroups: FormatGroup[] | undefined,
-    fTags: FormatTag[] | undefined,
-    note: VerseNotes | undefined,
-    verse: Verse,
-  ): void {
-    if (formatGroups && fTags) {
-      formatGroups
-        .filter((grp): boolean => {
-          return (
-            grp.formatGroupType !== FormatGroupType.PAGE_BREAK &&
-            grp.formatGroupType !== FormatGroupType.BR &&
-            grp.offsets !== undefined
-          );
-        })
-        .map((grp): void => {
-          this.buildFormatGroup(grp, fTags, note, verse);
-        });
-    }
-  }
   public buildFormatGroup(
     grp: FormatGroup,
     fTags: FormatTag[] | undefined,
@@ -207,17 +68,45 @@ export class FormatTagService {
       this.addText(grp.fMerges, verse);
     }
   }
-  private addText(fMerges: FMerged[], verse: Verse): void {
-    if (verse.text) {
-      fMerges.map((fM): void => {
-        const f = first(fM.offsets);
-        const l = last(fM.offsets);
-        if (f !== undefined && l !== undefined) {
-          fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
-        } else {
-          console.log(`${f} ${l}`);
-        }
-        // console.log(verse.text ? verse.text.slice(f, l) : '');
+  public buildFormatGroups(
+    formatGroups: FormatGroup[] | undefined,
+    fTags: FormatTag[] | undefined,
+    note: VerseNotes | undefined,
+    verse: Verse,
+  ): void {
+    if (formatGroups && fTags) {
+      formatGroups
+        .filter((grp): boolean => {
+          return (
+            grp.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+            grp.formatGroupType !== FormatGroupType.BR &&
+            grp.offsets !== undefined
+          );
+        })
+        .map((grp): void => {
+          this.buildFormatGroup(grp, fTags, note, verse);
+        });
+    }
+  }
+  public buildOffsets(
+    formatGroups:
+      | {
+          offsets: string | undefined;
+          uncompressedOffsets: number[] | undefined;
+        }[]
+      | undefined,
+  ): void {
+    if (formatGroups) {
+      formatGroups.map((fGrp): void => {
+        this.buildOffset(fGrp);
+      });
+    }
+  }
+
+  public expandFakeVerseBreaks(verse: Verse): void {
+    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
+      verse.fakeVerseBreak.breaks.map(brk => {
+        brk.uncompressedOffsets = parseOffsets(brk.offsets);
       });
     }
   }
@@ -275,14 +164,6 @@ export class FormatTagService {
     }
     return undefined;
   }
-
-  public expandFakeVerseBreaks(verse: Verse) {
-    if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
-      verse.fakeVerseBreak.breaks.map(brk => {
-        brk.uncompressedOffsets = parseOffsets(brk.offsets);
-      });
-    }
-  }
   public getVerseBreaks(o: number, verse: Verse): FormatTag[] | undefined {
     if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
       const vb = verse.fakeVerseBreak.breaks.filter((b): boolean => {
@@ -294,5 +175,124 @@ export class FormatTagService {
       return vb.length > 0 ? vb : undefined;
     }
     return undefined;
+  }
+  public async resetFormatTags(
+    chapterVerses: ChapterVerses | undefined,
+    chapterNotes: ChapterNotes | undefined,
+  ): Promise<void> {
+    await this.resetFormatTagsQueue.add(
+      async (): Promise<void> => {
+        if (chapterVerses && chapterNotes) {
+          this.historyService.addHistory(
+            chapterVerses,
+            this.saveStateService.data,
+            chapterNotes,
+          );
+        }
+        if (chapterVerses && chapterVerses.verses) {
+          await this.resetVerses(chapterVerses.verses);
+          // chapterVerses.verses.map((verse): void => {
+          //   this.buildOffsets(verse.formatGroups);
+          //   this.buildOffsets(verse.formatTags);
+          //   this.buildFormatGroups(
+          //     verse.formatGroups,
+          //     verse.formatTags,
+          //     verse.note,
+          //     verse,
+          //   );
+          // });
+        }
+      },
+    );
+  }
+
+  public async resetVerses(verses: Verse[]): Promise<void> {
+    // const promises = this.sliceArray(verses, 4000).map(
+    //   async (verse): Promise<void> => {
+    //     await this.resetVerseQueue.add((): void => {
+    //       verse.map((v): void => {
+    //         this.buildOffsets(v.formatGroups);
+    //         this.buildOffsets(v.formatTags);
+    //         this.buildFormatGroups(v.formatGroups, v.formatTags, v.note, v);
+    //       });
+    //     });
+    //   },
+    // );
+    // await Promise.all(promises);
+    if (
+      this.saveStateService.data.poetryVisible ||
+      this.saveStateService.data.blockVisible ||
+      this.saveStateService.data.paragraphsVisible
+    ) {
+      console.log('jhhhh');
+
+      try {
+        verses.map((verse): void => {
+          this.buildOffsets(
+            verse.breakFormatGroups !== undefined &&
+              verse.breakFormatGroups.length > 0
+              ? verse.breakFormatGroups
+              : verse.formatGroups,
+          );
+          this.buildOffsets(verse.formatTags);
+          this.buildFormatGroups(
+            verse.breakFormatGroups !== undefined &&
+              verse.breakFormatGroups.length > 0
+              ? verse.breakFormatGroups
+              : verse.formatGroups,
+
+            verse.formatTags,
+            verse.note,
+            verse,
+          );
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      verses.map((verse): void => {
+        this.buildOffsets(verse.formatGroups);
+        this.buildOffsets(verse.formatTags);
+        this.buildFormatGroups(
+          verse.formatGroups,
+          verse.formatTags,
+          verse.note,
+          verse,
+        );
+      });
+    }
+  }
+  private addText(fMerges: FMerged[], verse: Verse): void {
+    if (verse.text) {
+      fMerges.map((fM): void => {
+        const f = first(fM.offsets);
+        const l = last(fM.offsets);
+        if (f !== undefined && l !== undefined) {
+          fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
+        } else {
+          console.log(`${f} ${l}`);
+        }
+        // console.log(verse.text ? verse.text.slice(f, l) : '');
+      });
+    }
+  }
+
+  private buildOffset(item: {
+    offsets: string | undefined;
+    uncompressedOffsets: number[] | undefined;
+  }): void {
+    item.uncompressedOffsets = item.offsets
+      ? parseOffsets(item.offsets)
+      : undefined;
+  }
+
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
+    }
+    return newArray;
   }
 }

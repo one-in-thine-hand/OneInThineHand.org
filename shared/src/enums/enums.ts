@@ -205,6 +205,7 @@ export const enum FormatTagType {
   Para,
   insertion,
   deletion,
+  verseNumberAll,
 }
 
 export const enum Optional {

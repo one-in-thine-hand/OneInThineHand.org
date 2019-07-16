@@ -14,30 +14,30 @@ import { SaveStateService } from '../../services/save-state.service';
   styleUrls: ['./verse.component.scss'],
 })
 export class VerseComponent implements OnInit {
-  @Input() public verse: Verse;
   public kjvRefVerse: Verse | undefined;
+  @Input() public verse: Verse;
   public constructor(
     public chapterService: ChapterService,
     public saveStateService: SaveStateService,
   ) {}
 
-  public ngOnInit(): void {}
+  public getClassList(): string {
+    const classList: string[] = [];
 
-  // @HostListener('mouseup', ['$event'])
-  // public onPopState(event: PopStateEvent): void {
-  //   // console.log(event);
-  // }
-  public getID(): string {
-    // if (this.verse === undefined || this.verse._id === undefined) {
-    //   console.log(this.verse);
-    // }
-    return this.verse !== undefined && this.verse._id !== undefined
-      ? this.verse._id
-      : '';
+    if (this.getVerseNoteHasAll()) {
+      classList.push('all');
+    }
+
+    if (this.verse && this.verse.context) {
+      classList.push('context');
+    }
+    if (this.verse && this.verse.highlight) {
+      classList.push('highlight');
+    }
+
+    return classList.toString().replace(/,/g, ' ');
   }
   public getFormatGroups(): FormatGroup[] {
-    // console.log(this.verse);
-
     if (
       this.verse &&
       this.verse.formatGroups &&
@@ -95,10 +95,7 @@ export class VerseComponent implements OnInit {
             );
           });
         }
-      } catch (error) {
-        console.log(error);
-      }
-      // console.log(this.verse);
+      } catch (error) {}
       return this.verse.formatGroups.filter((formatGroup): boolean => {
         return (
           formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
@@ -106,27 +103,57 @@ export class VerseComponent implements OnInit {
         );
       }); // this.verse.formatTags.map((f): void => {});
     } else {
-      // console.log(this.verse);
     }
     return [];
   }
 
-  public getClassList(): string {
-    const classList: string[] = [];
-
-    if (this.verse && this.verse.context) {
-      classList.push('context');
-    }
-    if (this.verse && this.verse.highlight) {
-      classList.push('highlight');
-    }
-
-    return classList.toString().replace(/,/g, ' ');
+  // @HostListener('mouseup', ['$event'])
+  // public onPopState(event: PopStateEvent): void {
+  // }
+  public getID(): string {
+    // if (this.verse === undefined || this.verse._id === undefined) {
+    // }
+    return this.verse !== undefined && this.verse._id !== undefined
+      ? this.verse._id
+      : '';
   }
 
   public getOffSets(): string {
     return `0-${
       this.verse && this.verse.text ? this.verse.text.length - 1 : 0
     }`;
+  }
+
+  public ngOnInit(): void {}
+
+  private getVerseNoteHasAll(): boolean {
+    if (
+      this.chapterService.chapterNotes &&
+      this.chapterService.chapterNotes.notes
+    ) {
+      const verseNote = this.chapterService.chapterNotes.notes.find(
+        (vN): boolean => {
+          return (
+            this.verse._id !== undefined &&
+            this.verse._id.replace('verse', 'verse-notes') === vN._id
+          );
+        },
+      );
+      if (verseNote) {
+        if (
+          verseNote.notes &&
+          verseNote.notes.filter((note): boolean => {
+            return (
+              (note.visible &&
+                (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
+              note.offsets === 'all'
+            );
+          }).length > 0
+        ) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

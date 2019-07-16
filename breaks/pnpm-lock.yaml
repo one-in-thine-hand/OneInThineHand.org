@@ -3,7 +3,7 @@ dependencies:
   '@types/fs-extra': 8.0.0
   '@types/jsdom': 12.2.4
   cuid: 2.1.6
-  fast-glob: 3.0.3
+  fast-glob: 3.0.4
   fs-extra: 8.1.0
   jsdom: 15.1.1
   p-queue: 6.0.2
@@ -1247,7 +1247,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
-  /fast-glob/3.0.3:
+  /fast-glob/3.0.4:
     dependencies:
       '@nodelib/fs.stat': 2.0.1
       '@nodelib/fs.walk': 1.2.2
@@ -1259,7 +1259,7 @@ packages:
     engines:
       node: '>=8'
     resolution:
-      integrity: sha512-scDJbDhN+6S4ELXzzN96Fqm5y1CMRn+Io3C4Go+n/gUKP+LW26Wma6IxLSsX2eAMBUOFmyHKDBrUSuoHsycQ5A==
+      integrity: sha512-wkIbV6qg37xTJwqSsdnIphL1e+LaGz4AIQqr00mIubMaEhv1/HEmJ0uuCGZRNRUkZZmOB5mJKO0ZUTVq+SxMQg==
   /fast-json-stable-stringify/2.0.0:
     resolution:
       integrity: sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
@@ -4297,7 +4297,7 @@ specifiers:
   eslint: ^5.16.0
   eslint-config-prettier: ^4.2.0
   eslint-plugin-prettier: ^3.0.1
-  fast-glob: ^3.0.3
+  fast-glob: ^3.0.4
   fs-extra: ^8.1.0
   jest: ~23.6.0
   jsdom: ^15.1.1

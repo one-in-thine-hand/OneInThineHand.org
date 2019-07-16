@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import './app/styles/mediaQueries.scss';
+@import './app/styles/animate.css';
 @import './app/styles/bootstrap.min.css';
 
 html,
@@ -127,9 +128,11 @@ div.main {
   background: none;
 }
 
+.insertion,
 insertion {
   font-weight: 700;
 }
+.deletion,
 deletion {
   font-style: italic;
 }
@@ -150,4 +153,8 @@ a {
     text-align: center;
     font-weight: 700;
   }
+}
+
+.modal-backdrop {
+  opacity: 0 !important;
 }

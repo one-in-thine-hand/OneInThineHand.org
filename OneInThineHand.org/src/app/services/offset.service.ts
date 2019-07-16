@@ -28,22 +28,26 @@ export class OffsetService {
             try {
               if (note.notes) {
                 note.notes.map((secondaryNote): void => {
-                  secondaryNote.uncompressedOffsets = parseOffsets(
-                    secondaryNote.offsets,
-                  );
-
-                  if (secondaryNote.uncompressedOffsets) {
-                    secondaryNote.offsets = getRanges(
-                      secondaryNote.uncompressedOffsets,
-                    )
-                      .map((offsets): string => {
-                        return offsets.join('-');
-                      })
-                      .join(',');
+                  if (
+                    secondaryNote.offsets &&
+                    (secondaryNote.offsets.startsWith('0') ||
+                      secondaryNote.offsets === 'all')
+                  ) {
+                    secondaryNote.uncompressedOffsets = [0];
+                  } else if (!secondaryNote.offsets) {
+                    secondaryNote.uncompressedOffsets = undefined;
+                  } else {
+                    secondaryNote.uncompressedOffsets = parseOffsets(
+                      secondaryNote.offsets,
+                    );
+                    if (secondaryNote.uncompressedOffsets) {
+                      secondaryNote.uncompressedOffsets.pop();
+                    }
                   }
                   if (
                     (secondaryNote.uncompressedOffsets ||
-                      secondaryNote.offsets === 'all') &&
+                      secondaryNote.offsets === 'all' ||
+                      secondaryNote.offsets === '0') &&
                     secondaryNote.noteRefs
                   ) {
                     const formatTag = new FormatTag();

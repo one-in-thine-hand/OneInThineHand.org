@@ -29,10 +29,7 @@ export class FormatTags {
       const language = await getLanguage(document);
       // console.log(language);
 
-      chapterVerses._id = `${await getChapterID(
-        document,
-        language,
-      )}-chapter-verses`;
+      chapterVerses._id = `${await getChapterID(document, language)}-verses`;
       if (chapterVerses._id.startsWith('jst-')) {
         chapterVerses._id = chapterVerses._id.replace('jst-', 'jst_');
         if (!chapterVerses._id.startsWith(language)) {

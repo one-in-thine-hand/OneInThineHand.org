@@ -18,8 +18,7 @@
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": true,
-    "typeRoots": ["node_modules/@types"]
+    "strictNullChecks": true
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

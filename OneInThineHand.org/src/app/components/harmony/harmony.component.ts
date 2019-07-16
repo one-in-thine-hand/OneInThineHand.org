@@ -2,14 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Verse } from '../../../../../shared/src/shared';
+import { Verse, VerseNotes } from '../../../../../shared/src/shared';
 import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { FormatTagService } from '../../services/format-tag.service';
-import { MapShell, KJVVerseRef } from './map-shell';
+import { MapShell, KJVVerseRef, MapShellColumn } from './map-shell';
 import { ChapterVerses } from '../../../../../format-tags/src/main';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { SaveStateService } from '../../services/save-state.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { ChapterNotes } from '../../../../../notes/src/main';
+import { OffsetService } from '../../services/offset.service';
 
 @Component({
   selector: 'app-harmony',
@@ -20,6 +22,7 @@ export class HarmonyComponent implements OnInit {
   public mapShell?: MapShell;
   public mapShellDatabaseItems?: DatabaseItem[];
   public safeHeader?: SafeHtml;
+  public verseNotes?: VerseNotes[];
   public verses?: Verse[];
 
   public constructor(
@@ -31,7 +34,40 @@ export class HarmonyComponent implements OnInit {
     public domSanitizer: DomSanitizer,
     public saveStateService: SaveStateService,
     public tempSettings: TempSettingsService,
+    public offsetService: OffsetService,
   ) {}
+  public async extractVerseNotesFromDatabaseItems(
+    mapShellDatabaseItems: DatabaseItem[],
+    verses: Verse[],
+  ): Promise<void> {
+    const p = mapShellDatabaseItems
+      .filter((mapShellDatabaseItem): boolean => {
+        return (mapShellDatabaseItem as ChapterNotes).notes !== undefined;
+      })
+      .map(
+        async (chapterNotes: ChapterNotes): Promise<void> => {
+          // console.log(chapterNotes);
+          if (chapterNotes.notes) {
+            // await this.offsetService.expandNotes(chapterNotes.notes);
+            // chapterNotes.notes.map((verseNote): void => {
+            //   const verse = verses.find((verse): boolean => {
+            //     return (
+            //       verse._id !== undefined &&
+            //       verse._id.replace('verse', 'verse-notes') === verseNote._id
+            //     );
+            //   });
+            //   if (verse) {
+            //     verse.note = verseNote;
+            //   }
+            //   // console.log(verse);
+            // });
+          }
+        },
+      );
+    // console.log('oijasofaoijsdf');
+    await Promise.all(p);
+    await this.formatTagService.resetVerses(verses);
+  }
   public getWhiteSpaceHeight(): string {
     return `${window.innerHeight - 64}px`;
   }
@@ -41,17 +77,24 @@ export class HarmonyComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       async (params): Promise<void> => {
         const id = `${params['language']}-${params['book']}-${params['chapter']}-chapter-map-shell`;
-        console.log(id);
+        // console.log(id);
 
         this.mapShell = ((await this.databaseService.getDatabaseItem(
           id,
         )) as never) as MapShell;
-        console.log(this.mapShell);
+        // console.log(this.mapShell);
 
         this.mapShellDatabaseItems = await this.getDataBaseItems(this.mapShell);
         console.log(this.mapShellDatabaseItems);
+        console.log(this.mapShell);
 
-        this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
+        await this.extractVersesFromDatabaseItems(this.mapShellDatabaseItems);
+        if (this.verses) {
+          this.extractVerseNotesFromDatabaseItems(
+            this.mapShellDatabaseItems,
+            this.verses,
+          );
+        }
         if (this.verses && this.mapShell) {
           if (this.mapShell.headerHtml) {
             this.safeHeader = this.domSanitizer.bypassSecurityTrustHtml(
@@ -68,6 +111,29 @@ export class HarmonyComponent implements OnInit {
           }
         }
       },
+    );
+  }
+  public showBorder(mapShellColumn: MapShellColumn | undefined): boolean {
+    // console.log(
+    //   mapShellColumn !== undefined &&
+    //     mapShellColumn.verseRefs !== undefined &&
+    //     mapShellColumn.verseRefs.filter((verseRef): boolean => {
+    //       return (
+    //         !verseRef.id.includes('title1') &&
+    //         !verseRef.id.includes('title_number1')
+    //       );
+    //     }).length > 0,
+    // );
+
+    return (
+      mapShellColumn !== undefined &&
+      mapShellColumn.verseRefs !== undefined &&
+      mapShellColumn.verseRefs.filter((verseRef): boolean => {
+        return (
+          !verseRef.id.includes('title1') &&
+          !verseRef.id.includes('title_number1')
+        );
+      }).length > 0
     );
   }
 
@@ -118,7 +184,7 @@ export class HarmonyComponent implements OnInit {
         chapterVerse.verses ? chapterVerse.verses : [],
       );
     });
-    console.log(this.verses);
+    // console.log(this.verses);
   }
 
   private async getDataBaseItems(mapShell: MapShell): Promise<DatabaseItem[]> {

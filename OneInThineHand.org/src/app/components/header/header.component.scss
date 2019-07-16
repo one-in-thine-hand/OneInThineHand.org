@@ -7,7 +7,31 @@
   // grid-template-columns: 48px 48px 48px 48px 48px;
 
   grid-template-rows: 48px;
-  @media only screen and (min-width: 320px or (orientation: portrait)) {
+  @media only screen and (max-width: 400.98px or (orientation: portrait)) {
+    grid-template-columns: 0px 100vw 0;
+    .header-title {
+      display: none;
+    }
+    .oith-header-middle {
+      grid-template-columns: 48px 48px 48px 48px 0 48px 48px 48px !important;
+    }
+    .edit-btn {
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 479.98px or (orientation: portrait)) {
+    grid-template-columns: 0px 100vw 0;
+    .header-title {
+      display: none;
+    }
+    .edit-btn {
+      display: none;
+    }
+    .oith-header-middle {
+      grid-template-columns: 48px 48px 48px 48px auto 48px 48px 48px;
+    }
+  }
+  @media only screen and (min-width: 480px or (orientation: portrait)) {
     grid-template-columns: 48px auto 48px;
     .header-title {
       display: none;
@@ -74,4 +98,24 @@
 
 table {
   text-align: center;
+}
+
+.note-overlays {
+  padding: 0;
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    &.btn-overlay-primary {
+      background-color: #c3dbf7;
+    }
+    &.btn-overlay-secondary {
+      background-color: white;
+    }
+  }
 }

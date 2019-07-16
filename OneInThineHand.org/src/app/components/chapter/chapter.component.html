@@ -1,5 +1,10 @@
 <chapter-parent
-  [ngClass]="{ 'notes-off': !this.saveStateService.data.notesPaneToggle }"
+  class="animated fastest"
+  [ngClass]="{
+    'notes-off': !this.saveStateService.data.notesPaneToggle,
+    fadeIn: fadeInChapter,
+    fadeOut: fadeOutChapter
+  }"
 >
   <div
     class="chapter-grid"

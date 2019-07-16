@@ -4,7 +4,6 @@ import { normalize } from 'path';
 import { readFile, writeFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 import { getNavigationItem } from './getNavigationItem';
-import yargs from 'yargs';
 import {
   NavigationItem,
   flattenNavigationItems,
@@ -83,6 +82,8 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
 
 async function main(): Promise<void> {
   const fileNames = await FastGlob(normalize(`./manifests/**/**`));
+  console.log(fileNames);
+  
   // console.log(fileNames);
   const navItems = fileNames.map(
     async (fileName: string): Promise<NavigationItem | undefined> => {
@@ -135,18 +136,18 @@ async function main(): Promise<void> {
   );
 }
 
-const argv = yargs
-  .usage('Usage: $0 <command> [options]')
-  .command('count', 'Count the lines in a file')
-  .example('$0 count -f foo.js', 'count the lines in the given file')
-  .alias('n', 'notes')
-  .nargs('n', 1)
-  .describe('n', 'Load Notes File')
-  .demandOption(['n'])
-  .help('h')
-  .alias('h', 'help')
-  .epilog('copyright 2019').argv;
+// const argv = yargs
+//   .usage('Usage: $0 <command> [options]')
+//   .command('count', 'Count the lines in a file')
+//   .example('$0 count -f foo.js', 'count the lines in the given file')
+//   .alias('n', 'notes')
+//   .nargs('n', 1)
+//   .describe('n', 'Load Notes File')
+//   .demandOption(['n'])
+//   .help('h')
+//   .alias('h', 'help')
+//   .epilog('copyright 2019').argv;
 
-console.log(argv.n);
+// console.log(argv.n);
 
 main();
