@@ -27,6 +27,7 @@ export class VisibilityService {
                 return nC.noteType === sN.noteType;
               },
             );
+            // console.log(noteTypeSetting);
 
             sN.visible = noteTypeSetting ? noteTypeSetting.visible : true;
 
@@ -64,12 +65,15 @@ export class VisibilityService {
                     return rL.noteCategory === noteRef.noteCategory;
                   },
                 );
+
                 noteRef.visible = nC ? nC.visible : false;
+
                 // if (noteRef.visible === true) {
                 //   console.log(this.saveStateService.data.noteCategorySettings);
                 // }
                 return noteRef.visible ? noteRef.visible : false;
               });
+
               sN.visible = visibility.includes(true);
             }
 

@@ -53,7 +53,7 @@ export class NoteComponent implements OnInit {
   }
 
   public getSecondaryNotes(): Note[] {
-    console.log(this.verseNotes.notes);
+    // console.klog(this.verseNotes.notes);
 
     let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
