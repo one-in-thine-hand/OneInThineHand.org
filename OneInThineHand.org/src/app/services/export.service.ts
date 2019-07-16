@@ -3,9 +3,6 @@ import { sortBy } from 'lodash';
 import { DatabaseService } from './database.service';
 import { ChapterService } from './chapter.service';
 import {
-  CouchDoc,
-  getReferenceLabelByNoteCategory,
-  ReferenceLabel,
   getRanges,
   NoteTypeConverts,
   FormatGroup,

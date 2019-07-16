@@ -155,6 +155,8 @@ export const enum NoteCategorySort {
   IEQUO1,
   IEQUO2,
   NONE,
+  pronunciation1,
+  pronunciation2,
 }
 
 export class NoteCategory {
@@ -391,6 +393,23 @@ export const NOTE_CATEGORIES: NoteCategory[] = [
     visible: true,
     noteCategoryShortName: 'TRN',
   },
+
+  {
+    sortOrder: 0,
+    className: 'reference-label-pronunciation-1',
+    noteCategory: NoteCategorySort.pronunciation1,
+    noteCategoryName: 'pronunciation 1',
+    visible: true,
+    noteCategoryShortName: '',
+  },
+  {
+    sortOrder: 0,
+    className: 'reference-label-pronunciation-2',
+    noteCategory: NoteCategorySort.pronunciation2,
+    noteCategoryName: 'pronunciation 2',
+    visible: true,
+    noteCategoryShortName: '',
+  },
 ];
 // referenceLabelShortName: 'QUO-1',
 // referenceLabelShortName: 'QUO-2',
@@ -414,13 +433,6 @@ export function getNoteCategoryBynoteCategoryName(
 ): NoteCategory | undefined {
   return NOTE_CATEGORIES.find((refLabel): boolean => {
     return refLabel.noteCategoryName === noteCategoryName;
-  });
-}
-export function getNoteCategoryByReferenceLabelShortName(
-  referenceLabelShortName: string,
-): NoteCategory | undefined {
-  return NOTE_CATEGORIES.find((refLabel): boolean => {
-    return refLabel.noteCategoryShortName === referenceLabelShortName;
   });
 }
 

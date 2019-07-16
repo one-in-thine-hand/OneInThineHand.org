@@ -28,6 +28,8 @@ export const enum NoteCategory {
   IEQUO1,
   IEQUO,
   IEQUO2,
+  pronunciation1,
+  pronunciation2,
 }
 
 export enum NoteType {
@@ -75,15 +77,15 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   {
     noteType: NoteType.QUO,
     className: 'overlay-quo',
-    shortName: 'Quotation',
-    longName: 'Quotation',
+    shortName: 'Quo',
+    longName: 'Quotations',
     visible: true,
   },
   {
     noteType: NoteType.Phrasing,
     className: 'overlay-phr',
-    shortName: 'Phrase',
-    longName: 'Phrase',
+    shortName: 'Phrasing',
+    longName: 'Phrasing',
     visible: true,
   },
   {
@@ -96,8 +98,8 @@ export const NoteTypeConverts: NoteTypeConvert[] = [
   {
     noteType: NoteType.CR,
     className: 'overlay-cr',
-    shortName: 'Cross-Reference',
-    longName: 'Cross-Reference',
+    shortName: 'Cross Ref',
+    longName: 'Cross Ref',
     visible: true,
   },
   {
