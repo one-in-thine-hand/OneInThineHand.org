@@ -21,8 +21,8 @@ import {
   FakeVerseBreaks,
   FormatTag,
   FormatTagType,
+  VerseBreaks,
 } from '../../models/verse-notes';
-import { VerseBreaks } from '../../../../../shared/src/models/Verse';
 
 @Component({
   selector: 'app-navigation',
