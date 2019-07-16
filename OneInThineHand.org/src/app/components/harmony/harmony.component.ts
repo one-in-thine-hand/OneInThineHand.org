@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Verse, VerseNotes } from '../../../../../shared/src/shared';
 import { DatabaseService, DatabaseItem } from '../../services/database.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { MapShell, KJVVerseRef, MapShellColumn } from './map-shell';
@@ -12,6 +11,7 @@ import { SaveStateService } from '../../services/save-state.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
 
 import { OffsetService } from '../../services/offset.service';
+import { Verse, VerseNotes, ChapterVerses } from '../../models/verse-notes';
 
 @Component({
   selector: 'app-harmony',
@@ -40,30 +40,9 @@ export class HarmonyComponent implements OnInit {
     mapShellDatabaseItems: DatabaseItem[],
     verses: Verse[],
   ): Promise<void> {
-    const p = mapShellDatabaseItems
-      .filter((mapShellDatabaseItem): boolean => {
-        return (mapShellDatabaseItem as ChapterNotes).notes !== undefined;
-      })
-      .map(
-        async (chapterNotes: ChapterNotes): Promise<void> => {
-          // console.log(chapterNotes);
-          if (chapterNotes.notes) {
-            // await this.offsetService.expandNotes(chapterNotes.notes);
-            // chapterNotes.notes.map((verseNote): void => {
-            //   const verse = verses.find((verse): boolean => {
-            //     return (
-            //       verse._id !== undefined &&
-            //       verse._id.replace('verse', 'verse-notes') === verseNote._id
-            //     );
-            //   });
-            //   if (verse) {
-            //     verse.note = verseNote;
-            //   }
-            //   // console.log(verse);
-            // });
-          }
-        },
-      );
+    const p = mapShellDatabaseItems.filter((mapShellDatabaseItem): boolean => {
+      return (mapShellDatabaseItem as VerseNotes).verseNotes !== undefined;
+    });
     // console.log('oijasofaoijsdf');
     await Promise.all(p);
     await this.formatTagService.resetVerses(verses);

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SaveStateModel } from './SaveStateModel';
-import { ReferenceLabel } from '../../../../shared/src/models/notes/Note';
 import { sortBy } from 'lodash';
 import {
   NoteTypeConvert,
   NoteTypeConverts,
   ReferenceLabels,
 } from '../../../../shared/src/shared';
+import { NOTE_CATEGORIES } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,7 @@ export class SaveStateService {
       this.mergeNoteSettings(this.data.noteTypeSettings, NoteTypeConverts);
 
       if (this.data.noteCategorySettings === undefined) {
-        this.data.noteCategorySettings = ReferenceLabels;
+        this.data.noteCategorySettings = NOTE_CATEGORIES;
       }
 
       if (this.data.noteTypeSettings) {
@@ -45,8 +45,8 @@ export class SaveStateService {
             if (noteTypeSetting.visible === undefined) {
               noteTypeSetting.visible = true;
             }
-            const nTC = NoteTypeConverts.find((nTC): boolean => {
-              return nTC.className.includes(noteTypeSetting.className);
+            const nTC = NoteTypeConverts.find((n): boolean => {
+              return n.className.includes(noteTypeSetting.className);
             });
             if (!nTC) {
               return false;

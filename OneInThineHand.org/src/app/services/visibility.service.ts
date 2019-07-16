@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
-import { VerseNotes } from '../models/verse-notes';
+import { VerseNote } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +16,12 @@ export class VisibilityService {
       this.secondaryNotesVisibility.set(k, false);
     });
   }
-  public resetNoteVisibility(notes: VerseNotes[] | undefined): void {
+  public resetNoteVisibility(notes: VerseNote[] | undefined): void {
     if (notes) {
       this.resetHighlight();
       notes.map((note): void => {
-        if (note.verseNotes) {
-          note.verseNotes.map((sN): void => {
+        if (note.notes) {
+          note.notes.map((sN): void => {
             const noteTypeSetting = this.saveStateService.data.noteTypeSettings.find(
               (nC): boolean => {
                 return nC.noteType === sN.noteType;
@@ -73,13 +73,13 @@ export class VisibilityService {
               sN.visible = visibility.includes(true);
             }
 
-            if (sN.id) {
+            if (sN._id) {
               this.secondaryNotesHighlight.set(
-                sN.id,
+                sN._id,
                 sN.visible ? sN.visible : false,
               );
               this.secondaryNotesVisibility.set(
-                sN.id,
+                sN._id,
                 sN.visible ? sN.visible : false,
               );
             }
@@ -89,7 +89,7 @@ export class VisibilityService {
     }
   }
 
-  public showMissingOffsets(notes: VerseNotes[]): void {
+  public showMissingOffsets(notes: VerseNote[]): void {
     notes.map((note): void => {
       if (note.notes) {
         note.notes.map((sN): void => {

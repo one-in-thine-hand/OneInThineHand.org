@@ -1,5 +1,129 @@
-import { FormatGroup, FormatTag } from '../../../../shared/src/shared';
+export const enum FormatGroupType {
+  A = 0,
+  Text = 1,
+  Ruby = 2,
+  ARuby = 3,
+  RB = 4,
+  RT = 5,
+  SPAN = 6,
+  BR = 7,
+  PAGE_BREAK = 8,
+  Part = 9,
+  Segment = 10,
+  Line = 11,
+  Block = 12,
+  Note = 13,
+  Para = 14,
+  LineGap = 15,
+  ParaGap = 16,
+  BlockGap = 17,
+  Breaks,
+  Gaps,
+}
+export abstract class FormatGroup {
+  public classList: string[] | undefined;
+  public fMerges: FMerged[] | undefined;
+  public formatGroupType: FormatGroupType | undefined;
+  public offsets: string | undefined;
+  public uncompressedOffsets: number[] | undefined;
+}
 
+export class FormatGroupA extends FormatGroup {
+  public formatGroupType = FormatGroupType.A;
+  public href: string | undefined;
+}
+
+export class FormatGroupRuby extends FormatGroup {
+  public formatGroupRB: FormatGroupRB | undefined;
+  public formatGroupRT: FormatGroupRT | undefined;
+  public formatGroupType = FormatGroupType.Ruby;
+}
+export class FormatGroupRT extends FormatGroup {
+  public formatGroupType = FormatGroupType.RT;
+  public formatTags: FormatTag[] | undefined;
+}
+export class FormatGroupRB extends FormatGroup {
+  public formatGroupType = FormatGroupType.RB;
+  public formatTags: FormatTag[] | undefined;
+}
+export class FormatGroupRubyA extends FormatGroup {
+  public formatGroupRuby: FormatGroupRuby | undefined;
+  public formatGroupType: FormatGroupType = FormatGroupType.ARuby;
+}
+
+export class FormatGroupText extends FormatGroup {
+  public formatGroupType = FormatGroupType.Text;
+}
+export class FormatGroupBR extends FormatGroup {
+  public classList = undefined;
+  public formatGroupType = FormatGroupType.BR;
+  public offsets = undefined;
+}
+export class FormatGroupSegment extends FormatGroup {
+  public formatGroupType = FormatGroupType.Segment;
+  public kjvRef: string[] | undefined;
+}
+export class FormatGroupPart extends FormatGroup {
+  public formatGroupType = FormatGroupType.Part;
+  public kjvRef: string[] | undefined;
+}
+export class FormatGroupPara extends FormatGroup {
+  public formatGroupType = FormatGroupType.Para;
+}
+export class FormatGroupLine extends FormatGroup {
+  public formatGroupType = FormatGroupType.Line;
+}
+export class FormatGroupLineGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.LineGap;
+}
+export class FormatGroupParaGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.ParaGap;
+}
+export class FormatGroupBlock extends FormatGroup {
+  public formatGroupType = FormatGroupType.Block;
+}
+export class FormatGroupBlockGap extends FormatGroup {
+  public formatGroupType = FormatGroupType.BlockGap;
+}
+export class FormatGroupBreaks extends FormatGroup {
+  public formatGroupType = FormatGroupType.Breaks;
+}
+export class FormatGroupGaps extends FormatGroup {
+  public formatGroupType = FormatGroupType.Gaps;
+}
+export class FormatGroupPageBreak extends FormatGroup {
+  public classList = ['page-break'];
+  public formatGroupType = FormatGroupType.BR;
+  public offsets = undefined;
+}
+
+export class FormatTag {
+  public classList: string[] | undefined;
+  public displayAs: DisplayAs | undefined;
+  public formatType: FormatTagType | undefined;
+  public offsets: string | undefined;
+  public optional: Optional | undefined;
+  public refs: string[] | undefined;
+  public text: string | undefined;
+  public uncompressedOffsets: number[] | undefined;
+  public visible: boolean | undefined;
+}
+
+export class RefTag {
+  public highlight = false;
+  public offsets: string | undefined;
+  public refs: string[];
+  public secondaryNoteID: string;
+  public uncompressedOffsets: number[] | undefined;
+}
+
+export class FMerged {
+  public breaks: FormatTag[] | undefined;
+  public formatTags: FormatTag[] | undefined;
+  public offsets: number[] = [];
+  public refTags: RefTag[] | undefined;
+  public text = '';
+}
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
   ERR = 100000,
@@ -503,16 +627,19 @@ export class Note implements CouchDoc, Doc, Offsets {
   public _id: string;
   public _rev?: string;
   public classList?: string[];
+  public formatTag?: FormatTag;
+  public highlight?: boolean;
   public lang: LanguageCode;
   public noteMarker?: string;
   public notePhrase: string;
-  public noteProperities?: NoteProperities;
   public noteRefFormatTag?: NoteRefFormatTag;
   public noteRefs: NoteRef[];
   public noteType: number;
   public offsets?: string;
   public uncompressedOffsets?: number[];
   public verseMarker?: string;
+  // public noteProperities?: NoteProperities;
+  public visible?: boolean;
 
   public constructor(
     _id: string,
@@ -538,9 +665,11 @@ export class Note implements CouchDoc, Doc, Offsets {
 export class VerseNote implements CouchDoc {
   public _id: string;
   public _rev?: string;
+  public highlight?: boolean;
   public notes?: Note[];
   public notesProperties?: NoteFormat[];
   public verseNumber: string;
+  public visible?: boolean;
 
   public constructor(_id: string, verseNumber: string, notes: Note[]) {
     this._id = _id;
@@ -610,6 +739,7 @@ export class VerseNotes implements CouchDoc, Doc {
   public _rev?: string;
   public fileType: FileTypes;
   public lang: LanguageCode;
+  public save?: boolean;
   public verseNotes: VerseNote[];
   // public title: string;
   // public shortTitle: string;

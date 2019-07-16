@@ -1,11 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  Verse,
-  FormatGroup,
-  FormatTag,
-} from '../../../../../shared/src/shared';
+import { Verse, FormatTag } from '../../../../../shared/src/shared';
 import { FMerged } from '../../../../../shared/src/models/format_tags/FormatTag';
-import { isEqual, last, first } from 'lodash';
+import { isEqual, last } from 'lodash';
 import { FormatGroupPart } from '../../../../../shared/src/models/format_groups/FormatGroup';
 import { ChapterService } from '../../services/chapter.service';
 @Component({
@@ -75,24 +71,24 @@ export class FormatGroupPartComponent implements OnInit {
     // return this.fMerged;
   }
 
-  public getKJVPartVerse(): Verse[] | undefined {
-    if (
-      this.chapterService.kjvChapterVerse &&
-      this.chapterService.kjvChapterVerse.verses
-    ) {
-      const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
-        (v): boolean => {
-          return (
-            v._id !== undefined &&
-            this.formatGroup.kjvRef !== undefined &&
-            this.formatGroup.kjvRef.includes(v._id)
-          );
-        },
-      );
-      this.hasKJVVerse = kjvVerse !== undefined;
-      return kjvVerse;
-    }
-  }
+  // public getKJVPartVerse(): Verse[] | undefined {
+  //   if (
+  //     this.chapterService.kjvChapterVerse &&
+  //     this.chapterService.kjvChapterVerse.verses
+  //   ) {
+  //     const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
+  //       (v): boolean => {
+  //         return (
+  //           v._id !== undefined &&
+  //           this.formatGroup.kjvRef !== undefined &&
+  //           this.formatGroup.kjvRef.includes(v._id)
+  //         );
+  //       },
+  //     );
+  //     this.hasKJVVerse = kjvVerse !== undefined;
+  //     return kjvVerse;
+  //   }
+  // }
 
   public getOffSets(f: FMerged): string {
     // console.log(f);

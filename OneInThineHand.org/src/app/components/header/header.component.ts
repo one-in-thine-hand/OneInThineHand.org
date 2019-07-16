@@ -10,15 +10,14 @@ import { ElectronService } from '../../providers/electron.service';
 import { NoteProcessor } from '../../../../../notes/src/main';
 import { PreprocessorService } from '../../services/preprocessor.service';
 import { FormatTagService } from '../../services/format-tag.service';
-import { ReferenceLabel } from '../../../../../shared/src/models/notes/Note';
 import { sortBy } from 'lodash';
-import {
-  NoteCategory,
-  getReferenceLabelByClassName,
-  ReferenceLabels,
-} from '../../../../../shared/src/shared';
 import { DatabaseService } from '../../services/database.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import {
+  NoteCategory,
+  NOTE_CATEGORIES,
+  NoteCategorySort,
+} from '../../models/verse-notes';
 
 @Component({
   selector: 'app-header',
@@ -67,11 +66,11 @@ export class HeaderComponent implements OnInit {
     this.location.forward();
   }
 
-  public getNoteCategories(): ReferenceLabel[] {
+  public getNoteCategories(): NoteCategory[] {
     return sortBy(
-      this.saveStateService.data.ReferenceLabelSetting.filter(
+      this.saveStateService.data.noteCategorySettings.filter(
         (refLabelSetting): boolean => {
-          return refLabelSetting.noteCategory !== NoteCategory.ERR;
+          return refLabelSetting.noteCategory !== NoteCategorySort.ERR;
         },
       ),
       (refLabelSetting): number => {
@@ -103,10 +102,10 @@ export class HeaderComponent implements OnInit {
   ): Promise<void> {
     try {
       const noteCategories = noteCategoryClassNames.map(
-        (noteCategoryClassName): ReferenceLabel => {
+        (noteCategoryClassName): NoteCategory => {
           return this.findNoteCategorySetting(
             noteCategoryClassName,
-          ) as ReferenceLabel;
+          ) as NoteCategory;
         },
       );
       noteCategories[0].visible = !noteCategories[0].visible;
@@ -334,7 +333,7 @@ export class HeaderComponent implements OnInit {
   }
   private findNoteCategorySetting(
     noteCategoryClassName: string,
-  ): ReferenceLabel | undefined {
+  ): NoteCategory | undefined {
     return this.saveStateService.data.noteCategorySettings.find(
       (noteCategory): boolean => {
         return noteCategory.className === noteCategoryClassName;
@@ -343,14 +342,14 @@ export class HeaderComponent implements OnInit {
   }
   private findNoteCategorysSetting(
     noteCategoryClassNames: string[],
-  ): ReferenceLabel[] {
+  ): NoteCategory[] {
     return noteCategoryClassNames
-      .map((noteCategoryClassName): ReferenceLabel | undefined => {
+      .map((noteCategoryClassName): NoteCategory | undefined => {
         return this.findNoteCategorySetting(noteCategoryClassName);
       })
       .filter((refLabel): boolean => {
         return refLabel !== undefined;
-      }) as ReferenceLabel[];
+      }) as NoteCategory[];
   }
 
   private flipRefLabelVis(refLabelClassName: string, vis?: boolean): boolean {

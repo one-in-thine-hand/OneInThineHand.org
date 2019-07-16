@@ -1,15 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  FormatGroup,
-  FormatTag,
-  FormatGroupType,
-  parseOffsets,
-  DisplayAs,
-} from '../../../../shared/src/shared';
-import {
-  FMerged,
-  RefTag,
-} from '../../../../shared/src/models/format_tags/FormatTag';
 import { isEqual, first, last } from 'lodash';
 
 import { HistoryService } from './history.service';
@@ -21,7 +10,14 @@ import {
   VerseNote,
   Verse,
   VerseNotes,
+  FormatTag,
+  FMerged,
+  FormatGroup,
+  FormatGroupType,
+  DisplayAs,
+  RefTag,
 } from '../models/verse-notes';
+import { parseOffsets } from '../../../../shared/src/shared';
 @Injectable({
   providedIn: 'root',
 })
@@ -109,7 +105,7 @@ export class FormatTagService {
 
   public expandFakeVerseBreaks(verse: Verse): void {
     if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
-      verse.fakeVerseBreak.breaks.map(brk => {
+      verse.fakeVerseBreak.breaks.map((brk): void => {
         brk.uncompressedOffsets = parseOffsets(brk.offsets);
       });
     }

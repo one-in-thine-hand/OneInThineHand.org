@@ -88,7 +88,7 @@
     "rxjs": "6.5.2",
     "spectron": "5.0.0",
     "ts-node": "7.0.1",
-    "tslint": "5.11.0",
+    "tslint": "^5.11.0",
     "typescript": "3.4.5",
     "wait-on": "3.2.0",
     "webdriver-manager": "12.1.0",
@@ -99,6 +99,7 @@
   },
   "dependencies": {
     "@angular/pwa": "^0.800.3",
+    "acorn": "^6.0.5",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
     "@types/lodash": "^4.14.133",
     "axios": "^0.19.0",

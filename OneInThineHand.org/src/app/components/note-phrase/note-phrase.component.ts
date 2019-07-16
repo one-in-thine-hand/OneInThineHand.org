@@ -96,10 +96,6 @@ export class NotePhraseComponent implements OnInit {
           this.chapterService.chapterVerses,
           this.chapterService.chapterNotes,
         );
-        await this.formatTagService.resetFormatTags(
-          this.chapterService.kjvChapterVerse,
-          this.chapterService.kjvChapterNotes,
-        );
         if (this.chapterService.chapterNotes) {
           this.chapterService.chapterNotes.save = true;
         }

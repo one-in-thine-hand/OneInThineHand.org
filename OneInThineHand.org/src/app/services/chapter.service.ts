@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Chapter } from '../../../../chapter/src/Chapter';
-import { FormatGroup } from '../../../../shared/src/shared';
 import { flatten } from '@angular/compiler';
 
 import {
@@ -8,6 +7,7 @@ import {
   Verse,
   ChapterVerses,
   VerseNote,
+  FormatGroup,
 } from '../models/verse-notes';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class ChapterService {
   public chapterNotes: VerseNotes | undefined;
   public chapterVerses: ChapterVerses | undefined;
   public kjvChapterNotes: VerseNotes | undefined;
-  public notes: VerseNotes[] | undefined;
+  public notes: VerseNote[] | undefined;
   public verses: Verse[] | undefined;
 
   public constructor() {}

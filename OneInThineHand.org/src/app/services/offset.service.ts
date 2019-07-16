@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  parseOffsets,
-  FormatTag,
-  VerseNotes,
-  NoteRef,
-} from '../../../../shared/src/shared';
+import { parseOffsets } from '../../../../shared/src/shared';
 import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 import PQueue from 'p-queue';
+import { VerseNote, NoteRef, FormatTag, Note } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +11,7 @@ export class OffsetService {
   public expandNotesQueue = new PQueue({ concurrency: 1 });
   public constructor() {}
 
-  public async expandNotes(notes: VerseNotes[] | undefined): Promise<void> {
+  public async expandNotes(notes: VerseNote[] | undefined): Promise<void> {
     // console.log(notes);
     await this.expandNotesQueue.add(
       async (): Promise<void> => {
@@ -54,8 +50,8 @@ export class OffsetService {
 
                     formatTag.uncompressedOffsets =
                       secondaryNote.uncompressedOffsets;
-                    if (secondaryNote.id) {
-                      refTag.secondaryNoteID = secondaryNote.id;
+                    if (secondaryNote._id) {
+                      refTag.secondaryNoteID = secondaryNote._id;
                     }
 
                     if (
@@ -63,15 +59,15 @@ export class OffsetService {
                       (secondaryNote.uncompressedOffsets &&
                         !secondaryNote.uncompressedOffsets.includes(0))
                     ) {
-                      refTag.refs = this.getNoteRefs(secondaryNote.noteRefs);
-                      // secondaryNote.noteRefs
+                      refTag.refs = [secondaryNote._id];
+                      // secondaryNote
                       // .map((ref): string => {
                       // // return ref._id ? ref._id : '';
                       // })
                       // .filter((ref): boolean => {
                       // // return ref.trim() !== '';
                       // });
-                      formatTag.refs = this.getNoteRefs(secondaryNote.noteRefs);
+                      formatTag.refs = [secondaryNote._id];
                       // secondaryNote.noteRefs;
                       // .map((ref): string => {
                       // return ref._id ? ref._id : '';
@@ -84,7 +80,7 @@ export class OffsetService {
                       formatTag.refs = ['all'];
                     }
 
-                    secondaryNote.refTag = refTag;
+                    secondaryNote.noteRefFormatTag = refTag;
                     secondaryNote.formatTag = formatTag;
                   }
 
@@ -98,14 +94,5 @@ export class OffsetService {
         }
       },
     );
-  }
-  private getNoteRefs(noteRefs: NoteRef[]): string[] {
-    return noteRefs
-      .map((ref): string => {
-        return ref._id ? ref._id : '';
-      })
-      .filter((ref): boolean => {
-        return ref.trim() !== '';
-      });
   }
 }
