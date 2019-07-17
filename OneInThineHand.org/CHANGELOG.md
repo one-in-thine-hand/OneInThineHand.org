@@ -1,3 +1,11 @@
+## <small>5.0.82 (2019-07-17)</small>
+
+* added the new note categories ([74d228c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/74d228c))
+* bugs ([7dc2f37](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7dc2f37))
+* v5.0.81 ([d94bab2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d94bab2))
+
+
+
 ## <small>5.0.81 (2019-07-16)</small>
 
 * Converting over to upgrades notes ([92ab586](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/92ab586))
