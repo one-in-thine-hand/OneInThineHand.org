@@ -2,23 +2,32 @@ import { Injectable } from '@angular/core';
 import { SaveStateModel } from './SaveStateModel';
 import { sortBy } from 'lodash';
 
-import { NOTE_CATEGORIES } from '../models/verse-notes';
+import {
+  NOTE_CATEGORIES,
+  NoteTypes,
+  NoteTypeOverlay,
+} from '../models/verse-notes';
 import {
   NoteTypeConverts,
   NoteTypeConvert,
 } from '../../../../shared/src/models/notes/NoteType';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SaveStateService {
   public data: SaveStateModel = new SaveStateModel();
-  public constructor() {}
-  public getNoteOverlays(): NoteTypeConvert[] {
-    if (this.data && this.data.noteTypeSettings) {
-      return sortBy(this.data.noteTypeSettings, (ntSetting): number => {
-        return ntSetting.noteType;
-      });
+
+  public constructor(public databaseService: DatabaseService) {}
+  public getNoteOverlays(): NoteTypeOverlay[] {
+    console.log(this.data.noteTypes);
+
+    if (this.data && this.data.noteTypes) {
+      return this.data.noteTypes.noteTypes;
+      // return sortBy(this.data.noteTypeSettings, (ntSetting): number => {
+      // return ntSetting.noteType;
+      // });
     }
     return [];
   }
@@ -91,6 +100,21 @@ export class SaveStateService {
     //     }
     //   },
     // );
+    await this.loadNoteTypes();
+    await this.save();
+  }
+
+  public async loadNoteTypes(): Promise<void> {
+    try {
+      const noteTypes = (await this.databaseService.getDatabaseItem(
+        'eng-note-types',
+      )) as NoteTypes;
+      this.data.noteTypes = noteTypes;
+      console.log(noteTypes);
+    } catch (error) {
+      console.log(error);
+    }
+
     await this.save();
   }
   public async save(): Promise<void> {
@@ -113,5 +137,31 @@ export class SaveStateService {
     } else {
       noteSettings = noteSettingsMaster;
     }
+  }
+
+  private validateNoteCategories(settings: SaveStateModel): void {
+    settings.noteCategorySettings = settings.noteCategorySettings.filter(
+      (noteCategory): boolean => {
+        return (
+          NOTE_CATEGORIES.find((nC): boolean => {
+            return (
+              nC.className === noteCategory.className &&
+              nC.noteCategory === noteCategory.noteCategory
+            );
+          }) !== undefined
+        );
+      },
+    );
+    NOTE_CATEGORIES.map((noteCategory): void => {
+      const nC = settings.noteCategorySettings.find((n): boolean => {
+        return (
+          n.className === noteCategory.className &&
+          noteCategory.noteCategory === n.noteCategory
+        );
+      });
+      if (!nC) {
+        settings.noteCategorySettings.push(noteCategory);
+      }
+    });
   }
 }

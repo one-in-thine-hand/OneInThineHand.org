@@ -1204,3 +1204,44 @@ export class ChapterVerses {
   public _rev: string | undefined;
   public verses: Verse[] | undefined;
 }
+
+export class NoteTypeOverlay {
+  public name: string;
+  public shortName: string;
+  public className: string;
+  public visibility: boolean;
+  public sort: number;
+  public constructor(
+    name: string,
+    shortName: string,
+    className: string,
+    visibility: boolean,
+    sort: number,
+  ) {
+    this.name = name;
+    this.shortName = shortName;
+    this.className = className;
+    this.visibility = visibility;
+    this.sort = sort;
+  }
+}
+
+export class NoteTypes implements CouchDoc, Doc {
+  public _id: string;
+  public _rev?: string;
+  public lang: LanguageCode;
+  public noteTypes: NoteTypeOverlay[];
+  public constructor(
+    _id: string,
+    lang: LanguageCode,
+    noteTypes: NoteTypeOverlay[],
+  ) {
+    this._id = _id;
+    this.lang = lang;
+    this.noteTypes = noteTypes;
+  }
+
+  /**
+   * queryNoteTypeByClassName
+   */
+}

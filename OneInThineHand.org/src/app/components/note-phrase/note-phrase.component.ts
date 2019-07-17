@@ -1,15 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  Note,
-  NotePhrase,
-  VerseNotes,
-} from '../../../../../shared/src/models/notes/Note';
+
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveService } from '../../services/save.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { VerseNote, Note } from '../../models/verse-notes';
 
 @Component({
   selector: 'app-note-phrase',
@@ -18,7 +15,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class NotePhraseComponent implements OnInit {
   @Input() public note: Note;
-  @Input() public verseNotes: VerseNotes;
+  @Input() public verseNotes: VerseNote;
 
   public constructor(
     public chapterService: ChapterService,
@@ -44,10 +41,11 @@ export class NotePhraseComponent implements OnInit {
         await this.addOffsets(selection, secondaryNote);
       } catch (error) {}
 
-      if (secondaryNote.refTag) {
-        const oldHighlight = secondaryNote.refTag.highlight;
+      if (secondaryNote.noteRefFormatTag) {
+        console.log(secondaryNote);
+        const oldHighlight = secondaryNote.noteRefFormatTag.highlight;
         this.chapterService.resetNoteVis();
-        secondaryNote.refTag.highlight = !oldHighlight;
+        secondaryNote.noteRefFormatTag.highlight = !oldHighlight;
       }
     }
   }
@@ -102,8 +100,8 @@ export class NotePhraseComponent implements OnInit {
 
         this.saveService.save();
 
-        if (secondaryNote.refTag) {
-          secondaryNote.refTag.highlight = false;
+        if (secondaryNote.noteRefFormatTag) {
+          secondaryNote.noteRefFormatTag.highlight = false;
         }
       } else {
         throw new Error('No valid selection');

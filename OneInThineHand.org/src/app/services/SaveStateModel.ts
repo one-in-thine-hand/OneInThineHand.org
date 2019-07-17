@@ -3,7 +3,7 @@
 //   NoteTypeConvert,
 //   NoteTypeConverts,
 // } from '../../../../shared/src/shared';
-import { NOTE_CATEGORIES } from '../models/verse-notes';
+import { NOTE_CATEGORIES, NoteTypes } from '../models/verse-notes';
 import { NoteTypeConverts } from '../../../../shared/src/shared';
 
 export class RefLabelSetting {
@@ -26,6 +26,7 @@ export class SaveStateModel {
   public newNotesVisible = false;
   public noteCategorySettings = NOTE_CATEGORIES;
   public notesPaneToggle = true;
+  public noteTypes?: NoteTypes;
   public noteTypeSettings = NoteTypeConverts;
   public paragraphsVisible = false;
   public poetryVisible = false;

@@ -82,6 +82,9 @@ export class DatabaseService {
   public async getDatabaseItem(
     _id: string,
   ): Promise<{ _id: string; _rev: string } | undefined> {
+    if (!this.db) {
+      this.initReadingMode();
+    }
     if (this.db) {
       return await this.db.get(_id);
     }
