@@ -1,5 +1,16 @@
 ## <small>5.0.81 (2019-07-16)</small>
 
+* Converting over to upgrades notes ([92ab586](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/92ab586))
+* fixed file output ([a813a55](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a813a55))
+* Fixes ([a7faff5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a7faff5))
+* More upgrade work ([d85a817](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d85a817))
+* More upgrade work ([af400f9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/af400f9))
+* More upgrade work ([1e8303d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1e8303d))
+* Note processor works again ([9d12564](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9d12564))
+* Site is loading again ([5ecaf6f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5ecaf6f))
+* updated ref labels ([7992284](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7992284))
+* upgrade work ([f5be9a6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f5be9a6))
+* v5.0.81 ([b744043](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/b744043))
 
 
 

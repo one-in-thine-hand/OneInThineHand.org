@@ -1,6 +1,6 @@
 {
   "name": "one-in-thine-hand",
-  "version": "5.0.80",
+  "version": "5.0.81",
   "description": "One In Thine Hand",
   "homepage": "https://github.com/one-in-thine-hand/OneInThineHand.org",
   "author": {
@@ -99,9 +99,9 @@
   },
   "dependencies": {
     "@angular/pwa": "^0.800.3",
-    "acorn": "^6.0.5",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
     "@types/lodash": "^4.14.133",
+    "acorn": "^6.0.5",
     "axios": "^0.19.0",
     "file-saver": "^2.0.2",
     "he": "^1.2.0",
