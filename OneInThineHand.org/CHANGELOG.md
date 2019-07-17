@@ -1,5 +1,12 @@
+## <small>5.0.85 (2019-07-17)</small>
+
+* Note bug fixes ([6b52d15](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6b52d15))
+
+
+
 ## <small>5.0.84 (2019-07-17)</small>
 
+* v5.0.84 ([876c22e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/876c22e))
 
 
 
