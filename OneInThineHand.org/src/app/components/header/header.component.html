@@ -285,7 +285,7 @@
         </td>
         <td></td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td
           [ngClass]="{
             'table-primary': categoryIsActive('reference-label-geography')
@@ -295,7 +295,7 @@
           GEO
         </td>
         <td></td>
-      </tr>
+      </tr> -->
       <tr>
         <td
           [ngClass]="{
@@ -326,6 +326,42 @@
           (click)="noteCategoryBtnClick(['reference-label-bd'])"
         >
           BD
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-pronunciation-2')
+          }"
+          (click)="
+          saveStateService.data.pronunciationVisible = false;
+            noteCategoryBtnClick(['reference-label-pronunciation-2']);
+          "
+        >
+          Pronunciation
+        </td>
+        <td
+          [ngClass]="{
+            'table-primary': saveStateService.data.pronunciationVisible
+          }"
+          (click)="
+            saveStateService.data.pronunciationVisible = !saveStateService.data
+              .pronunciationVisible;
+            noteCategoryBtnClick(['reference-label-pronunciation-2'], true)
+          "
+        >
+          More
+        </td>
+      </tr>
+      <tr>
+        <td
+          [ngClass]="{
+            'table-primary': categoryIsActive('reference-label-geography')
+          }"
+          (click)="noteCategoryBtnClick(['reference-label-geography'])"
+        >
+          GEO
         </td>
         <td></td>
       </tr>

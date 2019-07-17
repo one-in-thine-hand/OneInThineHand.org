@@ -53,8 +53,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterVerses,
       this.chapterService.chapterNotes,
     );
-
-    await this.saveStateService.save();
+    await this.save();
   }
 
   public categoryIsActive(noteCategoryClassName: string): boolean {
@@ -103,12 +102,16 @@ export class HeaderComponent implements OnInit {
     if (this.chapterService.notes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
     }
+    await this.save();
+  }
 
+  public async save(): Promise<void> {
     await this.saveStateService.save();
   }
 
   public async noteCategoryBtnClick(
     noteCategoryClassNames: string[],
+    visibility?: boolean,
   ): Promise<void> {
     try {
       const noteCategories = noteCategoryClassNames.map(
@@ -118,7 +121,9 @@ export class HeaderComponent implements OnInit {
           ) as NoteCategory;
         },
       );
-      noteCategories[0].visible = !noteCategories[0].visible;
+      noteCategories[0].visible = visibility
+        ? visibility
+        : !noteCategories[0].visible;
       if (noteCategories.length > 1) {
         for (let x = 1; x < noteCategories.length; x++) {
           const noteCat = noteCategories[x];
@@ -136,8 +141,7 @@ export class HeaderComponent implements OnInit {
   public async notesPaneToggle(): Promise<void> {
     this.saveStateService.data.notesPaneToggle = !this.saveStateService.data
       .notesPaneToggle;
-
-    await this.saveStateService.save();
+    await this.save();
   }
   public async onSubmit(event: Event): Promise<void> {
     const fileInput = document.querySelector('#chapterFileOpener');
@@ -191,8 +195,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterVerses,
       this.chapterService.chapterNotes,
     );
-
-    await this.saveStateService.save();
+    await this.save();
   }
   public async poetryVisible(): Promise<void> {
     this.saveStateService.data.poetryVisible = !this.saveStateService.data
@@ -201,8 +204,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterVerses,
       this.chapterService.chapterNotes,
     );
-
-    await this.saveStateService.save();
+    await this.save();
   }
   public async quotationClick(): Promise<void> {
     const refLabelQuo = this.findNoteCategorySetting(

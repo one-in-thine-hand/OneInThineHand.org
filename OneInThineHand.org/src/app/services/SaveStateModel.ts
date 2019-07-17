@@ -40,6 +40,7 @@ export class SaveStateModel {
   public translatorNotesVisible = true;
   public underLineRefs = true;
   public version = 5;
+  public pronunciationVisible = false;
 }
 
 // export const refLabelSettingsTemplate = [

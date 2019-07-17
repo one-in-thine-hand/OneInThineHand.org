@@ -119,3 +119,12 @@ textarea {
 .note-0 {
   background-color: green;
 }
+.secondary-note.note-8 {
+  display: none;
+}
+
+:host-context(.show-pronunciation-notes) {
+  .note-8 {
+    display: block !important;
+  }
+}

@@ -21,7 +21,7 @@ export class SaveStateService {
 
   public constructor(public databaseService: DatabaseService) {}
   public getNoteOverlays(): NoteTypeOverlay[] {
-    console.log(this.data.noteTypes);
+    // ks(this.data.noteTypes);
 
     if (this.data && this.data.noteTypes) {
       return this.data.noteTypes.noteTypes;
@@ -72,7 +72,7 @@ export class SaveStateService {
       }
 
       this.mergeNoteSettings(this.data.noteCategorySettings, NOTE_CATEGORIES);
-      console.log(this.data.noteTypeSettings);
+      // console.log(this.data.noteTypeSettings);
 
       this.data.noteCategorySettings = this.data.noteCategorySettings.filter(
         (noteCategorySetting): boolean => {
@@ -109,8 +109,35 @@ export class SaveStateService {
       const noteTypes = (await this.databaseService.getDatabaseItem(
         'eng-note-types',
       )) as NoteTypes;
-      this.data.noteTypes = noteTypes;
-      console.log(noteTypes);
+
+      if (noteTypes && this.data.noteTypes) {
+        noteTypes.noteTypes.map((noteType): void => {
+          if (this.data.noteTypes) {
+            const nT = this.data.noteTypes.noteTypes.find((n): boolean => {
+              return n.className === noteType.className;
+            });
+            if (nT) {
+              nT.name = noteType.name;
+              nT.shortName = noteType.shortName;
+              nT.sort = noteType.sort;
+            } else {
+              this.data.noteTypes.noteTypes.push(noteType);
+            }
+          }
+        });
+        this.data.noteTypes.noteTypes = this.data.noteTypes.noteTypes.filter(
+          (noteType): boolean => {
+            return (
+              noteTypes.noteTypes.find((nT): boolean => {
+                return nT.className === noteType.className;
+              }) !== undefined
+            );
+          },
+        );
+      } else {
+        this.data.noteTypes = noteTypes;
+      }
+      // console.log(noteTypes);
     } catch (error) {
       console.log(error);
     }
@@ -130,7 +157,7 @@ export class SaveStateService {
           return nT.className === noteTypeConvert.className;
         });
         if (!nTC) {
-          console.log(noteTypeConvert);
+          // console.log(noteTypeConvert);
           noteSettings.push(noteTypeConvert);
         }
       });
