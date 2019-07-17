@@ -1,14 +1,6 @@
 import { Paragraph } from './Paragraph';
 const paragraphSelectors = [
-  '[data-content-type="chapter"][lang="jpn"] .body-block',
-  '[data-content-type="chapter"][lang="rus"] .body-block',
-  '[data-content-type="chapter"][lang="tha"] .body-block',
-  '[data-content-type="chapter"][lang="ang"] .body-block',
-  '[data-content-type="chapter"][lang="swe"] .body-block',
-  '[data-content-type="chapter"][lang="deu"] .body-block',
-  '[data-content-type="chapter"][lang="fra"] .body-block',
-  '[data-content-type="chapter"][lang="spa"] .body-block',
-  '[data-content-type="chapter"][lang="eng"] .body-block',
+  '[data-content-type="chapter"] .body-block',
   'html[data-uri*="/scriptures/gs"] body > header',
   'html[data-uri*="/scriptures/gs"] .body-block > p',
   '[data-content-type="chapter"] header ',

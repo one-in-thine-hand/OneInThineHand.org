@@ -39,6 +39,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public popStateActivated = false;
   public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
+  public currentLanguage = 'eng';
   public constructor(
     public titleService: Title,
     public chapterService: ChapterService,
@@ -108,6 +109,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
             if (!language) {
               language = 'eng';
             }
+            this.currentLanguage = language;
 
             await this.setHistory();
 
@@ -417,7 +419,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
-    this.visibilityService.resetNoteVisibility(chapterNotes.verseNotes);
+    this.visibilityService.resetNoteVisibility(
+      chapterNotes ? chapterNotes.verseNotes : [],
+    );
   }
 
   private async setHighlighting(
