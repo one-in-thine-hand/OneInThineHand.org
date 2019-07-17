@@ -29,9 +29,9 @@ export class NotePhraseComponent implements OnInit {
     public domSanitizer: DomSanitizer,
   ) {}
 
-  public getNotePhrase(notePhrase: NotePhrase | undefined): string | SafeHtml {
-    return notePhrase && notePhrase.text
-      ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase.text)
+  public getNotePhrase(notePhrase: string | undefined): string | SafeHtml {
+    return notePhrase && notePhrase
+      ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase)
       : 'Note Phrase Missing';
   }
   public ngOnInit(): void {}
@@ -95,10 +95,6 @@ export class NotePhraseComponent implements OnInit {
         await this.formatTagService.resetFormatTags(
           this.chapterService.chapterVerses,
           this.chapterService.chapterNotes,
-        );
-        await this.formatTagService.resetFormatTags(
-          this.chapterService.kjvChapterVerse,
-          this.chapterService.kjvChapterNotes,
         );
         if (this.chapterService.chapterNotes) {
           this.chapterService.chapterNotes.save = true;

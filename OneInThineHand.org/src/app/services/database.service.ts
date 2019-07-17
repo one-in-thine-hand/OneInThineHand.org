@@ -112,7 +112,7 @@ export class DatabaseService {
 
   public async updateDatabaseItem(item: {
     _id: string;
-    _rev: string | undefined;
+    _rev?: string;
   }): Promise<void> {
     if (this.db) {
       try {

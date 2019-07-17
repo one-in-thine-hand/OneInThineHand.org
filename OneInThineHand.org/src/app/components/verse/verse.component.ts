@@ -1,12 +1,9 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
-import {
-  Verse,
-  expandOffsets,
-  FormatGroup,
-  FormatGroupType,
-} from '../../../../../shared/src/shared';
+
 import { ChapterService } from '../../services/chapter.service';
 import { SaveStateService } from '../../services/save-state.service';
+import { Verse, FormatGroup, FormatGroupType } from '../../models/verse-notes';
+import { expandOffsets } from '../../../../../shared/src/shared';
 
 @Component({
   selector: 'app-verse',
@@ -129,9 +126,9 @@ export class VerseComponent implements OnInit {
   private getVerseNoteHasAll(): boolean {
     if (
       this.chapterService.chapterNotes &&
-      this.chapterService.chapterNotes.notes
+      this.chapterService.chapterNotes.verseNotes
     ) {
-      const verseNote = this.chapterService.chapterNotes.notes.find(
+      const verseNote = this.chapterService.chapterNotes.verseNotes.find(
         (vN): boolean => {
           return (
             this.verse._id !== undefined &&

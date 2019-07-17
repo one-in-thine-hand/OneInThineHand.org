@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateService } from './save-state.service';
-import { VerseNotes } from '../../../../shared/src/shared';
+import { VerseNote } from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class VisibilityService {
       this.secondaryNotesVisibility.set(k, false);
     });
   }
-  public resetNoteVisibility(notes: VerseNotes[] | undefined): void {
+  public resetNoteVisibility(notes: VerseNote[] | undefined): void {
     if (notes) {
       this.resetHighlight();
       notes.map((note): void => {
@@ -27,6 +27,7 @@ export class VisibilityService {
                 return nC.noteType === sN.noteType;
               },
             );
+            // console.log(noteTypeSetting);
 
             sN.visible = noteTypeSetting ? noteTypeSetting.visible : true;
 
@@ -64,22 +65,25 @@ export class VisibilityService {
                     return rL.noteCategory === noteRef.noteCategory;
                   },
                 );
+
                 noteRef.visible = nC ? nC.visible : false;
+
                 // if (noteRef.visible === true) {
                 //   console.log(this.saveStateService.data.noteCategorySettings);
                 // }
                 return noteRef.visible ? noteRef.visible : false;
               });
+
               sN.visible = visibility.includes(true);
             }
 
-            if (sN.id) {
+            if (sN._id) {
               this.secondaryNotesHighlight.set(
-                sN.id,
+                sN._id,
                 sN.visible ? sN.visible : false,
               );
               this.secondaryNotesVisibility.set(
-                sN.id,
+                sN._id,
                 sN.visible ? sN.visible : false,
               );
             }
@@ -89,7 +93,7 @@ export class VisibilityService {
     }
   }
 
-  public showMissingOffsets(notes: VerseNotes[]): void {
+  public showMissingOffsets(notes: VerseNote[]): void {
     notes.map((note): void => {
       if (note.notes) {
         note.notes.map((sN): void => {

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PageState } from './PageState';
 import { PageStateService } from './page-state.service';
-import { ChapterVerses } from '../../../../format-tags/src/main';
-import { ChapterNotes } from '../../../../notes/src/main';
+
 import { cloneDeep } from 'lodash';
 import { SaveStateModel } from './SaveStateModel';
+import { ChapterVerses, VerseNotes } from '../models/verse-notes';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,15 +14,10 @@ export class HistoryService {
 
   public constructor(private pageStatwService: PageStateService) {}
 
-  public init(): void {
-    this.backHistory = [];
-    this.forwardHistory = [];
-  }
-
   public addHistory(
     chapterVerses: ChapterVerses,
     saveStateData: SaveStateModel,
-    chapterNotes: ChapterNotes,
+    chapterNotes: VerseNotes,
   ): void {
     this.backHistory.push({
       chapterNotes: cloneDeep(chapterNotes),
@@ -31,52 +26,12 @@ export class HistoryService {
     });
   }
 
-  public undoHistory(
-    chapterNotes: ChapterNotes,
-    saveStateData: SaveStateModel,
-    chapterVerses: ChapterVerses,
-  ): void {
-    if (this.backHistory.length > 0) {
-      const s = this.backHistory.shift();
-      console.log(s);
-      if (s) {
-        this.forwardHistory.push({
-          chapterNotes: cloneDeep(chapterNotes),
-          saveStateData: saveStateData,
-          chapterVerses: cloneDeep(chapterVerses),
-        });
-        if (chapterNotes.notes) {
-          chapterNotes.notes.map((n): void => {
-            if (s.chapterNotes.notes) {
-              const o = s.chapterNotes.notes.find((l): boolean => {
-                return l._id === n._id;
-              });
-              if (o) {
-                n.notes = o.notes;
-              }
-            }
-          });
-        }
-        if (chapterVerses.verses) {
-          chapterVerses.verses.map((n): void => {
-            if (s.chapterVerses.verses) {
-              const o = s.chapterVerses.verses.find((l): boolean => {
-                return l._id === n._id;
-              });
-              if (o) {
-                n.formatGroups = o.formatGroups;
-              }
-            }
-          });
-        }
-
-        // chapterNotes.notes = s.chapterNotes.notes;
-        // chapterVerses.verses = s.chapterVerses.verses;
-      }
-    }
+  public init(): void {
+    this.backHistory = [];
+    this.forwardHistory = [];
   }
   public redoHistory(
-    chapterNotes: ChapterNotes,
+    chapterNotes: VerseNotes,
     chapterVerses: ChapterVerses,
     saveStateData: SaveStateModel,
   ): void {
@@ -89,10 +44,10 @@ export class HistoryService {
           saveStateData: saveStateData,
           chapterVerses: cloneDeep(chapterVerses),
         });
-        if (chapterNotes.notes) {
-          chapterNotes.notes.map((n): void => {
-            if (s.chapterNotes.notes) {
-              const o = s.chapterNotes.notes.find((l): boolean => {
+        if (chapterNotes.verseNotes) {
+          chapterNotes.verseNotes.map((n): void => {
+            if (s.chapterNotes.verseNotes) {
+              const o = s.chapterNotes.verseNotes.find((l): boolean => {
                 return l._id === n._id;
               });
               if (o) {
@@ -114,7 +69,52 @@ export class HistoryService {
           });
         }
 
-        // chapterNotes.notes = s.chapterNotes.notes;
+        // chapterNotes.verseNotes = s.chapterNotes.verseNotes;
+        // chapterVerses.verses = s.chapterVerses.verses;
+      }
+    }
+  }
+
+  public undoHistory(
+    chapterNotes: VerseNotes,
+    saveStateData: SaveStateModel,
+    chapterVerses: ChapterVerses,
+  ): void {
+    if (this.backHistory.length > 0) {
+      const s = this.backHistory.shift();
+      console.log(s);
+      if (s) {
+        this.forwardHistory.push({
+          chapterNotes: cloneDeep(chapterNotes),
+          saveStateData: saveStateData,
+          chapterVerses: cloneDeep(chapterVerses),
+        });
+        if (chapterNotes.verseNotes) {
+          chapterNotes.verseNotes.map((n): void => {
+            if (s.chapterNotes.verseNotes) {
+              const o = s.chapterNotes.verseNotes.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.notes = o.notes;
+              }
+            }
+          });
+        }
+        if (chapterVerses.verses) {
+          chapterVerses.verses.map((n): void => {
+            if (s.chapterVerses.verses) {
+              const o = s.chapterVerses.verses.find((l): boolean => {
+                return l._id === n._id;
+              });
+              if (o) {
+                n.formatGroups = o.formatGroups;
+              }
+            }
+          });
+        }
+
+        // chapterNotes.verseNotes = s.chapterNotes.verseNotes;
         // chapterVerses.verses = s.chapterVerses.verses;
       }
     }
@@ -122,8 +122,8 @@ export class HistoryService {
 }
 
 export class HistoryItem {
+  public chapterNotes: VerseNotes;
   public chapterVerses: ChapterVerses;
-  public chapterNotes: ChapterNotes;
   public saveStateData: SaveStateModel;
 }
 

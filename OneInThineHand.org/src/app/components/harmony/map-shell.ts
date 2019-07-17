@@ -1,4 +1,4 @@
-import { Verse } from '../../../../../shared/src/shared';
+import { Verse } from '../../models/verse-notes';
 
 export interface VerseRef {
   id: string;

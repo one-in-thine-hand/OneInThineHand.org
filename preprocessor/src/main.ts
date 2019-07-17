@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const FastGlob = require('fast-glob');
-import { normalize } from 'path';
-import { uniq } from 'lodash';
-import { FormatTags, ChapterVerses } from '../../format-tags/src/main';
+// const FastGlob = require('fast-glob');
+import FastGlob from 'fast-glob';
 import { readFile } from 'fs-extra';
 // import { basename } from 'path';
 import { JSDOM } from 'jsdom';
+import { uniq } from 'lodash';
+import { normalize } from 'path';
+import { Chapter } from '../../chapter/src/Chapter';
 import { ChapterProcessor } from '../../chapter/src/main';
-import { NoteProcessor, ChapterNotes } from '../../notes/src/main';
+import { ChapterVerses, FormatTags } from '../../format-tags/src/main';
+import { ChapterNotes, NoteProcessor } from '../../notes/src/main';
 import { Verse } from '../../shared/src/shared';
 import { arrayToFile } from './arrayToFile';
-import { Chapter } from '../../chapter/src/Chapter';
 
 export async function getFiles(folderGlob: string): Promise<string[]> {
   try {
@@ -39,12 +39,13 @@ export async function getNoteFiles(): Promise<string[]> {
 //   }
 //   return newArray;
 // }
+// tslint:disable-next-line: max-func-body-length
 async function processScriptureFiles(
   scriptureFileNames: string[],
   formaTags: FormatTags,
   chapterProcessor: ChapterProcessor,
 ): Promise<void> {
-  let allVerses: Verse[] = [];
+  const allVerses: Verse[] = [];
   const promises = scriptureFileNames.map(
     async (
       scriptureFileName,
@@ -56,10 +57,10 @@ async function processScriptureFiles(
         const fileTypeAttr = html
           ? html.getAttribute('data-content-type') === 'chapter'
           : undefined;
-        if (fileTypeAttr) {
+        if (fileTypeAttr !== undefined) {
           const verses = await formaTags.main(document);
           const chapter = await chapterProcessor.main(document);
-          if (chapter && verses) {
+          if (chapter !== undefined && verses !== undefined) {
             return [chapter, verses];
           } else {
             return undefined;
@@ -113,31 +114,37 @@ async function processScriptureFiles(
         console.log('iojasdfoiajsdfoij');
 
         console.log(error);
+
         return undefined;
       }
+
       return undefined;
     },
   );
 
-  const chaptersVases = (await Promise.all(promises)).filter(
-    (chapterV): boolean => {
-      return chapterV !== undefined;
-    },
-  ) as [Chapter, ChapterVerses][];
-  console.log(allVerses.length);
+  try {
+    const chaptersVases = (await Promise.all(promises)).filter(
+      (chapterV): boolean => {
+        return chapterV !== undefined;
+      },
+    ) as [Chapter, ChapterVerses][];
+    console.log(allVerses.length);
 
-  const cVerses = chaptersVases.map(
-    (v): ChapterVerses => {
-      return v[1];
-    },
-  );
-  const chapters = chaptersVases.map(
-    (v): Chapter => {
-      return v[0];
-    },
-  );
-  await arrayToFile(cVerses, 'chapterVerses');
-  await arrayToFile(chapters, 'chapters');
+    const cVerses = chaptersVases.map(
+      (v): ChapterVerses => {
+        return v[1];
+      },
+    );
+    await arrayToFile(cVerses, 'chapterVerses');
+    const chapters = chaptersVases.map(
+      (v): Chapter => {
+        return v[0];
+      },
+    );
+    await arrayToFile(chapters, 'chapters');
+  } catch (error) {
+    console.log(error);
+  }
 
   // try {
   //   await mkdirp(`../scripture_files/scriptures/verses/`);
@@ -164,24 +171,24 @@ async function processScriptureFiles(
 const notesMap: Map<string, ChapterNotes> = new Map();
 
 function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
-  if (newNotesMap) {
+  if (newNotesMap !== undefined) {
     newNotesMap.forEach(
       (value, key): void => {
         const notes = notesMap.get(key);
-        if (!notes) {
+        if (notes === undefined) {
           notesMap.set(key, value);
-        } else if (notes.notes) {
+        } else if (notes !== undefined && notes.notes !== undefined) {
           notes.notes.map(
             (note): void => {
               // console.log(note.notes);
 
-              if (value.notes) {
+              if (value.notes !== undefined) {
                 const newNote = value.notes.find(
                   (n): boolean => {
                     return n._id === note._id;
                   },
                 );
-                if (newNote && newNote.notes) {
+                if (newNote !== undefined && newNote.notes !== undefined) {
                   note.notes = note.notes
                     ? note.notes.concat(newNote.notes)
                     : newNote.notes;
@@ -219,17 +226,11 @@ function mergeNotes(newNotesMap: Map<string, ChapterNotes> | undefined): void {
 }
 
 async function main(): Promise<void> {
-  if (true) {
-    const formaTags = new FormatTags();
-    const scriptureFileNames = await getScriptureFiles();
-    const chapterProcessor = new ChapterProcessor();
+  const formaTags = new FormatTags();
+  const scriptureFileNames = await getScriptureFiles();
+  const chapterProcessor = new ChapterProcessor();
 
-    await processScriptureFiles(
-      scriptureFileNames,
-      formaTags,
-      chapterProcessor,
-    );
-  }
+  await processScriptureFiles(scriptureFileNames, formaTags, chapterProcessor);
 
   const noteProcessor = new NoteProcessor();
   const noteFileNames = await getNoteFiles();
@@ -240,7 +241,11 @@ async function main(): Promise<void> {
       const noteDocument = new JSDOM(noteFile).window.document;
       const newNotesMap = await noteProcessor.run(noteDocument);
 
-      mergeNotes(newNotesMap);
+      try {
+        mergeNotes(newNotesMap);
+      } catch (error) {
+        console.log('oiasjdfoiajdfoijadoifjaoisdfjoaisdjfoijasd');
+      }
       // if (newNotesMap) {
       //   newNotesMap.forEach(
       //     (value, key): void => {
@@ -252,7 +257,11 @@ async function main(): Promise<void> {
   );
   await Promise.all(promises);
   console.log('finished');
-  await arrayToFile(Array.from(notesMap.values()), 'notes');
+  try {
+    await arrayToFile(Array.from(notesMap.values()), 'notes');
+  } catch (error) {
+    console.log(error);
+  }
 
   // notesMap.forEach(
   //   async (value, key): Promise<void> => {

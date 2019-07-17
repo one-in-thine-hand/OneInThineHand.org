@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService } from '../../services/navigation.service';
-import { TempSettingsService } from '../../services/temp-settings.service';
-import { SaveStateService } from '../../services/save-state.service';
-import * as navigation from '../../../assets/manifests.json';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import PQueue from 'p-queue/dist';
+
+import { flattenNavigationItem } from '../../../../../shared/src/models/NavigationItem';
+
 import {
+  filterUndefined,
   NavigationItem,
+} from '../../../../../shared/src/shared';
+import * as navigation from '../../../assets/manifests.json';
+import { ChapterService } from '../../services/chapter.service';
+import { FormatTagService } from '../../services/format-tag.service';
+import { NavigationService } from '../../services/navigation.service';
+import { ParamService } from '../../services/param.service';
+import { SaveStateService } from '../../services/save-state.service';
+import { SaveService } from '../../services/save.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
+import {
   Verse,
+  FakeVerseBreaks,
   FormatTag,
   FormatTagType,
-  filterUndefined,
-} from '../../../../../shared/src/shared';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { ParamService } from '../../services/param.service';
-import { flattenNavigationItem } from '../../../../../shared/src/models/NavigationItem';
-import { ChapterService } from '../../services/chapter.service';
-import {
   VerseBreaks,
-  FakeVerseBreaks,
-} from '../../../../../shared/src/models/Verse';
-import { SaveService } from '../../services/save.service';
-import { OffsetService } from '../../services/offset.service';
-import { FormatTagService } from '../../services/format-tag.service';
-import { last } from 'lodash';
-import PQueue from 'p-queue/dist';
+} from '../../models/verse-notes';
 
 @Component({
   selector: 'app-navigation',

@@ -1,7 +1,7 @@
 <verse-notes *ngIf="verseNotes" [id]="verseNotes._id">
   <li class="note-short-title">
-    {{ verseNotes.noteShortTitle }}
-    <button class="add-note-btn" (click)="addNote(content)"></button>
+    Verse {{ verseNotes.verseNumber }} Notes
+    <!-- <button class="add-note-btn" (click)="addNote(content)"></button> -->
   </li>
   <ng-container *ngIf="verseNotes.notes">
     <app-n

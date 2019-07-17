@@ -65,10 +65,10 @@
   </div>
   <div id="notes" *ngIf="this.saveStateService.data.notesPaneToggle">
     <div class="notes-top"></div>
-    <ng-container *ngIf="chapterNotes && chapterNotes.notes">
+    <ng-container *ngIf="chapterNotes && chapterNotes.verseNotes">
       <app-note
         class="app-note"
-        *ngFor="let note of chapterNotes.notes"
+        *ngFor="let note of chapterNotes.verseNotes"
         [verseNotes]="note"
       ></app-note>
       <div

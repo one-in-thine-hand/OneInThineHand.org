@@ -9,34 +9,35 @@ import { HeaderService } from '../../services/header.service';
 import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParamService, ChapterParams } from '../../services/param.service';
-import { ChapterVerses } from '../../../../../format-tags/src/main';
-import { ChapterNotes } from '../../../../../notes/src/main';
+
 import { PageStateService } from '../../services/page-state.service';
-import { parseOffsets, Verse } from '../../../../../shared/src/shared';
+import { parseOffsets } from '../../../../../shared/src/shared';
 import { FormatTagService } from '../../services/format-tag.service';
 // import { HistoryServie } from '../../services/history.service';
 import { asyncScrollIntoView, asyncScrollTop } from '../../scroll-into-view';
 import { SaveService } from '../../services/save.service';
-import {
-  FormatGroupSegment,
-  FormatGroup,
-} from '../../../../../shared/src/models/format_groups/FormatGroup';
 import { Title } from '@angular/platform-browser';
+import {
+  ChapterVerses,
+  VerseNotes,
+  Verse,
+  FormatGroup,
+} from '../../models/verse-notes';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
   styleUrls: ['./chapter.component.scss'],
 })
 export class ChapterComponent implements OnInit, OnDestroy {
-  public chapter: Chapter | undefined;
-  public chapterNotes: ChapterNotes;
-  public chapterVerses: ChapterVerses | undefined;
-  public ctrlKeyInterval: NodeJS.Timer | undefined;
+  public chapter?: Chapter;
+  public chapterNotes: VerseNotes;
+  public chapterVerses?: ChapterVerses;
+  public ctrlKeyInterval?: NodeJS.Timer;
   public ctrlKeyPressed: boolean;
   public fadeInChapter = false;
   public fadeOutChapter = false;
   public popStateActivated = false;
-  public shiftKeyInterval: NodeJS.Timer | undefined;
+  public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
   public constructor(
     public titleService: Title,
@@ -78,104 +79,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
       return [];
     }
   }
-  public async getKJVRef(
-    chapterVerses: ChapterVerses | undefined,
-  ): Promise<void> {
-    try {
-      if (chapterVerses && chapterVerses.verses) {
-        const kjvRefs: string[] = [];
-        chapterVerses.verses.map((verse): void => {
-          if (verse.kjvRef) {
-            verse.kjvRef.map((k): void => {
-              kjvRefs.push(k);
-            });
-            verse.formatGroups.map((formatGroup): void => {
-              const fGroup: FormatGroupSegment = formatGroup as never;
-              if (fGroup.kjvRef) {
-                fGroup.kjvRef.map((k): void => {
-                  kjvRefs.push(k);
-                });
-              }
-            });
-          }
-        });
-        this.chapterService.kjvChapterVerse = new ChapterVerses();
-        this.chapterService.kjvChapterVerse.verses = [];
-        this.chapterService.kjvChapterNotes = new ChapterNotes();
-        this.chapterService.kjvChapterNotes.notes = [];
-        const promises = uniq(
-          kjvRefs.map((k): string => {
-            const kSplit = k.split('-');
-            return `${kSplit[0]}-${kSplit[1]}-${kSplit[2]}-chapter-verses`;
-          }),
-        ).map(
-          async (chapterID): Promise<void> => {
-            const verse = (await this.databaseService.getDatabaseItem(
-              chapterID,
-            )) as ChapterVerses;
-            const notes = (await this.databaseService.getDatabaseItem(
-              chapterID.replace('-chapter-verses', '-notes'),
-            )) as ChapterNotes;
-            if (
-              this.chapterService.kjvChapterVerse &&
-              this.chapterService.kjvChapterVerse.verses &&
-              verse.verses
-            ) {
-              this.chapterService.kjvChapterVerse.verses = this.chapterService.kjvChapterVerse.verses.concat(
-                verse.verses,
-              );
-            }
-            if (
-              this.chapterService.chapterNotes &&
-              this.chapterService.chapterNotes.notes &&
-              notes.notes
-            ) {
-              this.chapterService.chapterNotes.notes = this.chapterService.chapterNotes.notes.concat(
-                notes.notes,
-              );
-            }
-
-            await this.formatTagService.resetFormatTags(
-              this.chapterService.kjvChapterVerse,
-              this.chapterService.kjvChapterNotes,
-            );
-          },
-        );
-        await Promise.all(promises);
-        console.log(this.chapterService.kjvChapterVerse);
-        if (
-          this.chapterService.kjvChapterVerse.verses &&
-          this.chapterVerses &&
-          this.chapterVerses.verses
-        ) {
-          this.chapterVerses.verses.map((verse): void => {
-            if (verse.kjvRef) {
-              verse.kjvRef.map((k): void => {
-                if (
-                  this.chapterService.kjvChapterVerse &&
-                  this.chapterService.kjvChapterVerse.verses
-                ) {
-                  const v = this.chapterService.kjvChapterVerse.verses.find(
-                    (ver): boolean => {
-                      return ver._id === k;
-                    },
-                  );
-                  if (v) {
-                    if (!verse.kjvVerse) {
-                      verse.kjvVerse = [];
-                    }
-                    verse.kjvVerse.push(v);
-                  }
-                }
-              });
-            }
-          });
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   public getWhiteSpaceHeight(): string {
     return `${window.innerHeight - 34}px`;
@@ -214,7 +117,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 `eng/${chapterParams.book}/${chapterParams.chapter}`,
                 { replaceUrl: true },
               );
-              // this.router
             } else {
               if (
                 this.chapter &&
@@ -262,8 +164,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     }, 300);
                   }
                   this.popStateActivated = false;
-                  // if (this.pageStateService.currentPageState) {
-                  // }
                 } else {
                   setTimeout(async (): Promise<void> => {
                     await asyncScrollTop('.chapter-grid');
@@ -276,7 +176,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                       `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
                       `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
                     ]);
-                    // console.log(all);
+
                     console.log([
                       `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
                       `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
@@ -288,7 +188,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
 
                     this.chapter = all[0] as Chapter;
                     this.chapterVerses = all[1] as ChapterVerses;
-                    this.chapterNotes = all[2] as ChapterNotes;
+                    this.chapterNotes = all[2] as VerseNotes;
 
                     this.chapterService.chapterBreaks = all[3] as {
                       _id: string;
@@ -313,34 +213,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
                         if (b) {
                           verse.breakFormatGroups = b.breaks;
                         }
-                        // console.log(b);
                       });
                     }
-
-                    // const vIds = this.chapter.verseIDS.filter((v): boolean => {
-                    //   return !v.includes('--');
-                    // });
-                    // const ids = this.chapterService.generateIDS(vIds);
-                    // const breaks = (await this.databaseService.bulkGetByIDs(
-                    //   ids,
-                    // )) as FakeVerseBreaks[];
-                    // console.log(breaks);
-
-                    // breaks.map((b): void => {
-                    //   const v =
-                    //     this.chapterVerses && this.chapterVerses.verses
-                    //       ? this.chapterVerses.verses.find((v2): boolean => {
-                    //           return (
-                    //             v2._id !== undefined &&
-                    //             b._id === v2._id.replace('verse', 'breaks')
-                    //           );
-                    //         })
-                    //       : undefined;
-                    //   console.log(v);
-                    //   if (v) {
-                    //     v.fakeVerseBreak = b;
-                    //   }
-                    // });
 
                     try {
                       await this.setChapterVariables(
@@ -358,12 +232,10 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     } catch (error) {
                       console.log(error);
                     }
-                  } catch (error) {
-                    // console.log(error);
-                  }
+                  } catch (error) {}
                 }
               }
-              // this.historyService.init();
+
               if (this.chapter) {
                 this.titleService.setTitle(this.chapter.title);
               }
@@ -419,34 +291,16 @@ export class ChapterComponent implements OnInit, OnDestroy {
       if (this.ctrlKeyPressed) {
         switch (event.key.toLowerCase()) {
           case 'z': {
-            // if (this.chapterVerses && this.chapterNotes) {
-            //   this.historyService.undoHistory(
-            //     this.chapterNotes,
-            //     this.saveStateService.data,
-            //     this.chapterVerses,
-            //   );
-            // await
-            // }
-            // await this.formatTagService.resetFormatTags(this.chapterVerses);
             break;
           }
           case 'y': {
-            // console.log('y');
-            // if (this.chapterVerses && this.chapterNotes) {
-            //   this.historyService.redoHistory(
-            //     this.chapterNotes,
-            //     this.chapterVerses,
-            //     this.saveStateService.data,
-            //   );
-            // }
-
             break;
           }
           case 's': {
             if (this.shiftKeyPressed) {
               console.log('hggg');
               await this.saveService.save();
-              // await this.databaseService.updateDatabaseItem(this.chapterNotes);
+
               console.log('Finished');
             }
             break;
@@ -509,7 +363,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   }
 
   private async setChapterVariables(
-    chapterNotes: ChapterNotes,
+    chapterNotes: VerseNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
     newPage: boolean = true,
@@ -517,11 +371,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     if (!pageStateActive) {
       if (chapterNotes) {
-        await this.offsetService.expandNotes(chapterNotes.notes);
+        await this.offsetService.expandNotes(chapterNotes.verseNotes);
         if (chapterVerses && chapterVerses.verses) {
           this.chapterService.mergeVersesNotes(
             chapterVerses.verses,
-            chapterNotes.notes,
+            chapterNotes.verseNotes,
           );
         }
       }
@@ -545,12 +399,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
       ? chapterVerses.verses
       : undefined;
     if (this.chapterNotes) {
-      this.chapterService.notes = this.chapterNotes.notes;
+      this.chapterService.notes = this.chapterNotes.verseNotes;
     }
     this.chapterService.chapterVerses = this.chapterVerses;
     this.fadeOutChapter = false;
     this.fadeInChapter = true;
-    setTimeout(() => {
+    setTimeout((): void => {
       this.fadeInChapter = false;
     }, 500);
     try {
@@ -563,7 +417,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
-    this.visibilityService.resetNoteVisibility(chapterNotes.notes);
+    this.visibilityService.resetNoteVisibility(chapterNotes.verseNotes);
   }
 
   private async setHighlighting(

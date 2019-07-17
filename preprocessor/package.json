@@ -28,7 +28,8 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "start": " tsc && node --abort-on-uncaught-exception --max-old-space-size=16000 build/preprocessor/src/main.js",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "package": "tsc && pkg build/preprocessor/src/main.js --options max_old_space_size=8192 --target node12-win-x64 "
   },
   "author": "Jared Parkinson <jared@parkinson.im>",
   "license": "MIT",
@@ -40,8 +41,11 @@
     "he": "^1.2.0",
     "jsdom": "^15.1.1",
     "lodash": "^4.17.11",
-    "p-queue": "^6.0.2",
+    "p-queue": "^6.1.0",
     "ts-node": "^8.2.0",
-    "tslib": "~1.9.3"
+    "tslib": "~1.9.3",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-microsoft-contrib": "^6.2.0"
   }
 }

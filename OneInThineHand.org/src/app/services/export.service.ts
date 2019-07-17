@@ -3,18 +3,21 @@ import { sortBy } from 'lodash';
 import { DatabaseService } from './database.service';
 import { ChapterService } from './chapter.service';
 import {
-  CouchDoc,
-  Note,
-  getReferenceLabelByNoteCategory,
-  ReferenceLabel,
   getRanges,
   NoteTypeConverts,
   FormatGroup,
   FormatGroupType,
   CouchDocGet,
 } from '../../../../shared/src/shared';
-import { ChapterNotes } from '../../../../notes/src/main';
+
 import { saveAs } from 'file-saver';
+import {
+  VerseNotes,
+  Note,
+  getNoteCategoryByNoteCategory,
+  NoteCategory,
+  NoteCategorySort,
+} from '../models/verse-notes';
 @Injectable({
   providedIn: 'root',
 })
@@ -60,13 +63,13 @@ export class ExportService {
     }
     return chapterNotesString;
   }
-  public chapterNotesToString(cNotes: ChapterNotes): string {
+  public chapterNotesToString(cNotes: VerseNotes): string {
     let chapterNotesString = `<chapter id="${cNotes._id.replace(
       'notes',
       'chapter',
     )}">`;
-    if (cNotes.notes) {
-      chapterNotesString = `${chapterNotesString} ${cNotes.notes
+    if (cNotes.verseNotes) {
+      chapterNotesString = `${chapterNotesString} ${cNotes.verseNotes
         .map((verseNote): string => {
           return `<verse-notes id="${verseNote._id}">${this.notesToString(
             verseNote.notes,
@@ -113,8 +116,8 @@ export class ExportService {
             <body>
             ${bulkGetDocs.results
               .map(
-                (r): ChapterNotes => {
-                  return (r.docs[0] as any).ok as ChapterNotes;
+                (r): VerseNotes => {
+                  return (r.docs[0] as any).ok as VerseNotes;
                 },
               )
               .map((cNotes): string => {
@@ -271,7 +274,7 @@ export class ExportService {
           if (note.classList) {
             classList = classList.concat(note.classList);
           }
-          return `<note class="${classList.join(' ')}" id="${note.id}" ${
+          return `<note class="${classList.join(' ')}" id="${note._id}" ${
             note.offsets !== undefined
               ? `offsets=\"${
                   note.offsets === 'all' || note.offsets === '0'
@@ -280,23 +283,19 @@ export class ExportService {
                 }\"`
               : ''
           }>
-          <p class="note-phrase">${
-            note.notePhrase ? note.notePhrase.text : ''
-          }</p>
+          <p class="note-phrase">${note.notePhrase ? note.notePhrase : ''}</p>
           ${note.noteRefs
             .map((noteRef): string => {
-              let refLabel: ReferenceLabel | undefined;
+              let refLabel: NoteCategory | undefined;
               if (noteRef.noteCategory) {
-                refLabel = getReferenceLabelByNoteCategory(
-                  noteRef.noteCategory,
-                );
+                refLabel = getNoteCategoryByNoteCategory(noteRef.noteCategory);
               }
 
               return `<p class="note-reference"><span class="${
                 refLabel ? refLabel.className : ''
-              }${noteRef.none === true ? ' none' : ''}">${
-                refLabel ? refLabel.referenceLabelShortName : ''
-              } </span>${
+              }${
+                noteRef.noteCategory === NoteCategorySort.NONE ? ' none' : ''
+              }">${refLabel ? refLabel.noteCategoryName : ''} </span>${
                 noteRef.text ? noteRef.text.replace(/&/g, '&amp;') : ''
               }</p>`;
             })

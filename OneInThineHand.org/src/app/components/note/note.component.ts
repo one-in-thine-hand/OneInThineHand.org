@@ -1,22 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NotePhrase, getVisible } from '../../../../../shared/src/shared';
+import {
+  NotePhrase,
+  getVisible,
+  NoteType,
+} from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { getInputValue } from './getInputValue';
-import { VerseNotes, Note } from '../../../../../shared/src/models/notes/Note';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { sortBy } from 'lodash';
+import { VerseNote, Note } from '../../models/verse-notes';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-  @Input() public verseNotes: VerseNotes;
   public edit = false;
   public tempNote: Note | undefined;
+  @Input() public verseNotes: VerseNote;
   public constructor(
     public chapterService: ChapterService,
     public offsetService: OffsetService,
@@ -25,9 +30,31 @@ export class NoteComponent implements OnInit {
     public domSanitizer: DomSanitizer,
   ) {}
 
-  public ngOnInit(): void {}
+  public async addNote(content): Promise<void> {
+    try {
+      const result = await this.modalService.open(content, {
+        ariaLabelledBy: 'modal-basic-title',
+        backdropClass: 'add-notes-backdrop',
+        backdrop: false,
+      }).result;
+      console.log(result);
+
+      // .result.then(
+      //   result => {
+      //     this.closeResult = `Closed with: ${result}`;
+      //   },
+      //   reason => {
+      //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      //   },
+      // );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   public getSecondaryNotes(): Note[] {
+    // console.klog(this.verseNotes.notes);
+
     let secondaryNotes: Note[] = [];
     if (this.verseNotes && this.verseNotes.notes) {
       secondaryNotes = this.verseNotes.notes.filter(
@@ -43,45 +70,12 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    return sortBy(secondaryNotes, n => {
+    return sortBy(secondaryNotes, (n): NoteType | undefined => {
       return n.noteType;
     });
   }
 
-  public noteRefClick(): void {
-    // try {
-    //   if (
-    //     event.target !== null &&
-    //     (event.target as Element).nodeName.toLowerCase() === 'a'
-    //   ) {
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  }
-
-  private validateSelectedNodes(node: Node): Element | undefined {
-    if (
-      (node as HTMLElement).getAttribute !== undefined &&
-      (node as HTMLElement).getAttribute('offsets') !== null
-    ) {
-      return node as Element;
-    } else {
-      let parentElement: Element | undefined | null = node.parentElement;
-
-      while (
-        parentElement &&
-        parentElement.getAttribute !== null &&
-        parentElement.getAttribute('offsets') === null
-      ) {
-        parentElement = parentElement.parentElement;
-      }
-      if (parentElement) {
-        return parentElement;
-      }
-    }
-    return undefined;
-  }
+  public ngOnInit(): void {}
 
   public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();
@@ -135,18 +129,15 @@ export class NoteComponent implements OnInit {
               this.chapterService.chapterVerses,
               this.chapterService.chapterNotes,
             );
-            await this.formatTagService.resetFormatTags(
-              this.chapterService.kjvChapterVerse,
-              this.chapterService.kjvChapterNotes,
-            );
           }
         }
         // console.log(elements);
 
         // console.log(range);
       } catch (error) {
-        if (secondaryNote.refTag) {
-          secondaryNote.refTag.highlight = !secondaryNote.refTag.highlight;
+        if (secondaryNote.noteRefFormatTag) {
+          secondaryNote.noteRefFormatTag.highlight = !secondaryNote
+            .noteRefFormatTag.highlight;
         }
         console.log(error);
       }
@@ -155,36 +146,48 @@ export class NoteComponent implements OnInit {
     console.log(secondaryNote);
   }
 
-  public async addNote(content): Promise<void> {
-    try {
-      const result = await this.modalService.open(content, {
-        ariaLabelledBy: 'modal-basic-title',
-        backdropClass: 'add-notes-backdrop',
-        backdrop: false,
-      }).result;
-      console.log(result);
-
-      // .result.then(
-      //   result => {
-      //     this.closeResult = `Closed with: ${result}`;
-      //   },
-      //   reason => {
-      //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      //   },
-      // );
-    } catch (error) {
-      console.log(error);
-    }
+  public noteRefClick(): void {
+    // try {
+    //   if (
+    //     event.target !== null &&
+    //     (event.target as Element).nodeName.toLowerCase() === 'a'
+    //   ) {
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   public saveNote(modal): void {
-    this.tempNote = new Note();
-    this.tempNote.notePhrase = new NotePhrase();
-    this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
+    // this.tempNote = new Note();
+    // this.tempNote.notePhrase = new NotePhrase();
+    // this.tempNote.notePhrase.text = getInputValue('#noteTitleTemp');
+    // console.log(getInputValue('#noteReferenceTemp'));
+    // console.log(getInputValue('#noteReferenceLabelTemp'));
+    // modal.close('Save click');
+  }
 
-    console.log(getInputValue('#noteReferenceTemp'));
-    console.log(getInputValue('#noteReferenceLabelTemp'));
-    modal.close('Save click');
+  private validateSelectedNodes(node: Node): Element | undefined {
+    if (
+      (node as HTMLElement).getAttribute !== undefined &&
+      (node as HTMLElement).getAttribute('offsets') !== null
+    ) {
+      return node as Element;
+    } else {
+      let parentElement: Element | undefined | null = node.parentElement;
+
+      while (
+        parentElement &&
+        parentElement.getAttribute !== null &&
+        parentElement.getAttribute('offsets') === null
+      ) {
+        parentElement = parentElement.parentElement;
+      }
+      if (parentElement) {
+        return parentElement;
+      }
+    }
+    return undefined;
   }
 }
 

@@ -25,6 +25,10 @@ const routes: Routes = [
     path: ':book/:chapter',
     component: ChapterComponent,
   },
+  {
+    path: '**',
+    component: LandingPageComponent,
+  },
 ];
 
 @NgModule({

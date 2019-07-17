@@ -1,22 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { last } from 'lodash';
+
 import {
   FMerged,
   RefTag,
 } from '../../../../../shared/src/models/format_tags/FormatTag';
 import {
-  Optional,
-  formatTagTypeOptions,
   DisplayAs,
   FormatTagType,
+  formatTagTypeOptions,
+  Optional,
   Verse,
-  VerseNotes,
-} from '../../../../../shared/src/shared';
-import { MarkService } from '../../services/mark.service';
-import { last } from 'lodash';
-import { VisibilityService } from '../../services/visibility.service';
+  VerseNote,
+} from '../../models/verse-notes';
+import { asyncScrollIntoView } from '../../scroll-into-view';
 import { ChapterService } from '../../services/chapter.service';
 import { findByAttribute } from '../../services/history.service';
-import { asyncScrollIntoView } from '../../scroll-into-view';
+import { MarkService } from '../../services/mark.service';
+import { VisibilityService } from '../../services/visibility.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -69,7 +70,7 @@ export class FormatTagComponent implements OnInit {
             r.highlight = true;
 
             await asyncScrollIntoView(
-              `#${(this.verse.note as VerseNotes)._id as string}`,
+              `#${(this.verse.note as VerseNote)._id as string}`,
             );
             // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
           } else {
@@ -123,9 +124,9 @@ export class FormatTagComponent implements OnInit {
       this.fMerged.formatTags
         .filter((f): boolean => {
           return (
-            (f.displayAs === DisplayAs.CLASS &&
-              f.optional !== Optional.NEVER) ||
-            f.formatType === FormatTagType.verseNumber
+            (f.displayAs === (DisplayAs.CLASS as number) &&
+              f.optional !== (Optional.NEVER as number)) ||
+            f.formatType === (FormatTagType.verseNumber as number)
           );
         })
         .map((f): void => {
@@ -158,7 +159,8 @@ export class FormatTagComponent implements OnInit {
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       const richFormatTags = this.fMerged.formatTags.filter((f): boolean => {
         return (
-          f.displayAs === DisplayAs.RICHTEXT && f.optional !== Optional.NEVER
+          f.displayAs === (DisplayAs.RICHTEXT as number) &&
+          f.optional !== (Optional.NEVER as number)
         );
       });
       // .map(
