@@ -22,15 +22,16 @@ export class VisibilityService {
       notes.map((note): void => {
         if (note.notes) {
           note.notes.map((sN): void => {
-            const noteTypeSetting = this.saveStateService.data.noteTypeSettings.find(
-              (nC): boolean => {
-                return nC.noteType === sN.noteType;
-              },
-            );
-            // console.log(noteTypeSetting);
+            if (this.saveStateService.data.noteTypes) {
+              const noteTypeSetting = this.saveStateService.data.noteTypes.noteTypes.find(
+                (nC): boolean => {
+                  return nC.sort === sN.noteType;
+                },
+              );
+              // console.log(noteTypeSetting);
 
-            sN.visible = noteTypeSetting ? noteTypeSetting.visible : true;
-
+              sN.visible = noteTypeSetting ? noteTypeSetting.visibility : true;
+            }
             // switch (sN.noteType) {
             //   case NoteType.EXISTING: {
             //     sN.visible = this.saveStateService.data.existingNotesVisible;

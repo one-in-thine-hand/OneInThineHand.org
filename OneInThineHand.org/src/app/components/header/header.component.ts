@@ -17,6 +17,7 @@ import {
   NoteCategory,
   NOTE_CATEGORIES,
   NoteCategorySort,
+  NoteTypeOverlay,
 } from '../../models/verse-notes';
 
 @Component({
@@ -96,6 +97,15 @@ export class HeaderComponent implements OnInit {
   }
 
   public ngOnInit(): void {}
+
+  public async noteTypeClick(noteType: NoteTypeOverlay): Promise<void> {
+    noteType.visibility = !noteType.visibility;
+    if (this.chapterService.notes) {
+      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+    }
+
+    await this.saveStateService.save();
+  }
 
   public async noteCategoryBtnClick(
     noteCategoryClassNames: string[],

@@ -7,6 +7,7 @@ import { DatabaseService, DatabaseItem } from './database.service';
 import { VerseNotes, CouchDoc } from '../../../../shared/src/shared';
 import PQueue from 'p-queue';
 import { flatten } from '@angular/compiler';
+import { SaveStateService } from './save-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,10 @@ export class PreprocessorService {
   public count = 0;
   public fileCount = 0;
   // private chapterProcessor = new ChapterProcessor();
-  public constructor(private databaseService: DatabaseService) {}
+  public constructor(
+    private databaseService: DatabaseService,
+    public saveStateService: SaveStateService,
+  ) {}
   private noteProcessor = new NoteProcessor();
   private zipMimeTypes = [
     'application/zip',
@@ -79,6 +83,8 @@ export class PreprocessorService {
         );
       await Promise.all(p);
     }
+
+    await this.saveStateService.loadNoteTypes();
     // try {
     //   const zipFiles = target.files;
     //   console.log(zipFiles);
