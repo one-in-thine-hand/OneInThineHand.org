@@ -1,7 +1,16 @@
+## <small>5.0.87 (2019-07-18)</small>
+
+
+
+
 ## <small>5.0.86 (2019-07-18)</small>
 
 * bugs ([87cd4a6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/87cd4a6))
+* pro guise work ([f5213c2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f5213c2))
+* pronunciation ([4dd6436](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4dd6436))
+* pronunciation guide work ([96189eb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96189eb))
 * Sound now plays in pronunciation guide ([8c15582](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8c15582))
+* v5.0.86 ([20b0b7e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/20b0b7e))
 
 
 
