@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { parseOffsets } from '../../../../shared/src/shared';
-import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
+// import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 import PQueue from 'p-queue';
-import { VerseNote, NoteRef, FormatTag, Note } from '../models/verse-notes';
+import {
+  VerseNote,
+  NoteRef,
+  FormatTag,
+  Note,
+  RefTag,
+  NotePronunciation,
+} from '../models/verse-notes';
 
 @Injectable({
   providedIn: 'root',
@@ -71,13 +78,17 @@ export class OffsetService {
                       // secondaryNote.noteRefs;
                       // .map((ref): string => {
                       // return ref._id ? ref._id : '';
-                      // })
+                      // })s
                       // .filter((ref): boolean => {
                       // return ref.trim() !== '';
                       // });
                     } else {
                       refTag.offsets = 'all';
                       formatTag.refs = ['all'];
+                    }
+                    if ((secondaryNote as NotePronunciation).pronunciation) {
+                      refTag.pronunciation = true;
+                      refTag.pronunciationHref = (secondaryNote as NotePronunciation).href;
                     }
 
                     secondaryNote.noteRefFormatTag = refTag;

@@ -16,6 +16,7 @@ import {
   FormatGroupType,
   DisplayAs,
   RefTag,
+  FormatTagType,
 } from '../models/verse-notes';
 import { parseOffsets } from '../../../../shared/src/shared';
 @Injectable({
@@ -44,6 +45,7 @@ export class FormatTagService {
         fMerged.offsets = [o];
         fMerged.formatTags = this.getFormatTags(o, fTags);
         fMerged.refTags = this.getRefTags(o, note);
+        fMerged.pronunciation = this.hasPronunciation(fMerged, o);
         this.expandFakeVerseBreaks(verse);
         fMerged.breaks = this.getVerseBreaks(o, verse);
 
@@ -115,7 +117,12 @@ export class FormatTagService {
     //   lastMerged.formatTags === fMerged.formatTags &&
     //   lastMerged.refTags === fMerged.refTags
     // );
+    if (fMerged.pronunciation || lastMerged.pronunciation) {
+      return false;
+    }
     return (
+      !lastMerged.pronunciation &&
+      !fMerged.pronunciation &&
       isEqual(lastMerged.formatTags, fMerged.formatTags) &&
       isEqual(lastMerged.breaks, fMerged.breaks) &&
       isEqual(lastMerged.refTags, fMerged.refTags)
@@ -283,6 +290,21 @@ export class FormatTagService {
     item.uncompressedOffsets = item.offsets
       ? parseOffsets(item.offsets)
       : undefined;
+  }
+  private hasPronunciation(fMerged: FMerged, o: number): boolean | undefined {
+    if (fMerged.refTags) {
+      const p = fMerged.refTags.filter((f): boolean => {
+        return (
+          f.pronunciation === true &&
+          f.uncompressedOffsets !== undefined &&
+          f.uncompressedOffsets[0] === o
+        );
+      });
+      // console.log(p.length>0);
+
+      return p.length > 0 ? true : undefined;
+    }
+    return undefined;
   }
 
   private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
