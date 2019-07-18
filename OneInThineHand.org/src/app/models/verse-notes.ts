@@ -408,7 +408,7 @@ export const NOTE_CATEGORIES: NoteCategory[] = [
     noteCategory: NoteCategorySort.pronunciation2,
     noteCategoryName: 'pronunciation 2',
     visible: true,
-    noteCategoryShortName: '',
+    noteCategoryShortName: '🔊',
   },
 ];
 // referenceLabelShortName: 'QUO-1',
