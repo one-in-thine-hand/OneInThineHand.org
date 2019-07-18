@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { sortBy } from 'lodash';
 import { VerseNote, Note, NotePronunciation } from '../../models/verse-notes';
 import { HttpClient } from '@angular/common/http';
+import { ProGuideComponent } from '../pro-guide/pro-guide.component';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -160,10 +161,21 @@ export class NoteComponent implements OnInit {
     // }
   }
 
-  public pronunciationClick(event: Event, note: NotePronunciation): void {
+  public async pronunciationClick(
+    event: Event,
+    note: NotePronunciation,
+  ): Promise<void> {
     if ((event.target as HTMLElement).getAttribute('url')) {
       const url = (event.target as HTMLElement).getAttribute('url') as string;
-      alert(url);
+      // alert(url);
+      const result = await this.modalService.open(ProGuideComponent, {
+        ariaLabelledBy: 'modal-basic-title',
+        backdropClass: 'add-notes-backdrop',
+        backdrop: true,
+      });
+
+      result.componentInstance.id = 'figure13_p21';
+      // this.mod/ alService.open(ProGuideComponent);
     } else if (
       note.href &&
       (event.target as HTMLElement).classList.contains('note-category')

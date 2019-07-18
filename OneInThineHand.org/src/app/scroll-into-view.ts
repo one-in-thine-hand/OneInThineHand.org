@@ -1,7 +1,4 @@
-export function scrollIntoView(
-  selector: string,
-  options: Options | undefined,
-): boolean {
+export function scrollIntoView(selector: string, options?: Options): boolean {
   let doc: Document | undefined;
   const timeout =
     options !== undefined && options.timeout ? options.timeout : 0;
@@ -17,7 +14,9 @@ export function scrollIntoView(
     const element = doc.querySelector(selector);
     if (element) {
       setTimeout((): void => {
-        element.scrollIntoView();
+        element.scrollIntoView(
+          options ? options.scollIntoViewOptions : undefined,
+        );
       }, timeout);
     }
   } catch (error) {
@@ -36,6 +35,7 @@ export async function asyncScrollIntoView(
 class Options {
   public document?: Document | undefined;
   public timeout?: number | undefined;
+  public scollIntoViewOptions?: ScrollIntoViewOptions;
 }
 
 export async function asyncQuerySelector(

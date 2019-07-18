@@ -51,6 +51,7 @@ import { NComponent } from './components/n/n.component';
 import { HarmonyComponent } from './components/harmony/harmony.component';
 import { FormatGroupSegmentComponent } from './components/format-group-segment/format-group-segment.component';
 import { FormatGroupPartComponent } from './components/format-group-part/format-group-part.component';
+import { ProGuideComponent } from './components/pro-guide/pro-guide.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -90,6 +91,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     HarmonyComponent,
     FormatGroupSegmentComponent,
     FormatGroupPartComponent,
+    ProGuideComponent,
   ],
   imports: [
     NgbModule,
@@ -120,7 +122,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     PreprocessorService,
     PageStateService,
   ],
-
+  entryComponents: [ProGuideComponent],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
