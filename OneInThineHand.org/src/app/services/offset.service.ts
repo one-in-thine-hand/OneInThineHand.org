@@ -78,7 +78,7 @@ export class OffsetService {
                       // secondaryNote.noteRefs;
                       // .map((ref): string => {
                       // return ref._id ? ref._id : '';
-                      // })
+                      // })s
                       // .filter((ref): boolean => {
                       // return ref.trim() !== '';
                       // });
@@ -88,6 +88,7 @@ export class OffsetService {
                     }
                     if ((secondaryNote as NotePronunciation).pronunciation) {
                       refTag.pronunciation = true;
+                      refTag.pronunciationHref = (secondaryNote as NotePronunciation).href;
                     }
 
                     secondaryNote.noteRefFormatTag = refTag;

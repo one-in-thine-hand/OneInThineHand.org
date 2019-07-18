@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { last } from 'lodash';
 
-import {
-  // FMerged,
-  // RefTag,
-} from '../../../../../shared/src/models/format_tags/FormatTag';
+import // FMerged,
+// RefTag,
+'../../../../../shared/src/models/format_tags/FormatTag';
 import {
   DisplayAs,
   FormatTagType,
@@ -57,6 +56,14 @@ export class FormatTagComponent implements OnInit {
           if (tempRefList) {
             this.refList = tempRefList.map((refTag): string => {
               return refTag.secondaryNoteID;
+            });
+          }
+          if (this.fMerged.pronunciation) {
+            this.fMerged.refTags.map((ft): void => {
+              if (ft.pronunciationHref) {
+                const audio = new Audio(`assets/audio/${ft.pronunciationHref}`);
+                audio.play();
+              }
             });
           }
         }

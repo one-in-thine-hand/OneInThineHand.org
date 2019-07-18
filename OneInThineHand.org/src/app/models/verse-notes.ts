@@ -112,9 +112,10 @@ export class FormatTag {
 export class RefTag {
   public highlight = false;
   public offsets: string | undefined;
+  public pronunciation?: boolean;
+  public pronunciationHref?: string;
   public refs: string[];
   public secondaryNoteID: string;
-  public pronunciation?: boolean;
   public uncompressedOffsets: number[] | undefined;
 }
 
