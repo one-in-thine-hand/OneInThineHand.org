@@ -114,6 +114,7 @@ export class RefTag {
   public offsets: string | undefined;
   public refs: string[];
   public secondaryNoteID: string;
+  public pronunciation?: boolean;
   public uncompressedOffsets: number[] | undefined;
 }
 
@@ -121,6 +122,7 @@ export class FMerged {
   public breaks: FormatTag[] | undefined;
   public formatTags: FormatTag[] | undefined;
   public offsets: number[] = [];
+  public pronunciation?: boolean;
   public refTags: RefTag[] | undefined;
   public text = '';
 }
@@ -1206,11 +1208,11 @@ export class ChapterVerses {
 }
 
 export class NoteTypeOverlay {
+  public className: string;
   public name: string;
   public shortName: string;
-  public className: string;
-  public visibility: boolean;
   public sort: number;
+  public visibility: boolean;
   public constructor(
     name: string,
     shortName: string,
@@ -1247,8 +1249,8 @@ export class NoteTypes implements CouchDoc, Doc {
 }
 
 export class NotePronunciation extends Note {
-  public pronunciation = true;
   public href: string;
+  public pronunciation = true;
   public constructor(
     // tslint:disable-next-line:variable-name
     _id: string,

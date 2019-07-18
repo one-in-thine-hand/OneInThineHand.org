@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { last } from 'lodash';
 
 import {
-  FMerged,
-  RefTag,
+  // FMerged,
+  // RefTag,
 } from '../../../../../shared/src/models/format_tags/FormatTag';
 import {
   DisplayAs,
@@ -12,6 +12,8 @@ import {
   Optional,
   Verse,
   VerseNote,
+  FMerged,
+  RefTag,
 } from '../../models/verse-notes';
 import { asyncScrollIntoView } from '../../scroll-into-view';
 import { ChapterService } from '../../services/chapter.service';
@@ -89,6 +91,9 @@ export class FormatTagComponent implements OnInit {
     this.getVisibleRefTags();
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags();
+    if (this.fMerged.pronunciation) {
+      classList.push('pronunciation');
+    }
     if (this.fMerged.breaks) {
       this.fMerged.breaks.map((brk): void => {
         const fto = formatTagTypeOptions.find((f): boolean => {

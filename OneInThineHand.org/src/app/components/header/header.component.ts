@@ -97,18 +97,6 @@ export class HeaderComponent implements OnInit {
 
   public ngOnInit(): void {}
 
-  public async noteTypeClick(noteType: NoteTypeOverlay): Promise<void> {
-    noteType.visibility = !noteType.visibility;
-    if (this.chapterService.notes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-    }
-    await this.save();
-  }
-
-  public async save(): Promise<void> {
-    await this.saveStateService.save();
-  }
-
   public async noteCategoryBtnClick(
     noteCategoryClassNames: string[],
     visibility?: boolean,
@@ -141,6 +129,14 @@ export class HeaderComponent implements OnInit {
   public async notesPaneToggle(): Promise<void> {
     this.saveStateService.data.notesPaneToggle = !this.saveStateService.data
       .notesPaneToggle;
+    await this.save();
+  }
+
+  public async noteTypeClick(noteType: NoteTypeOverlay): Promise<void> {
+    noteType.visibility = !noteType.visibility;
+    if (this.chapterService.notes) {
+      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+    }
     await this.save();
   }
   public async onSubmit(event: Event): Promise<void> {
@@ -267,6 +263,10 @@ export class HeaderComponent implements OnInit {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
     }
     this.saveStateService.save();
+  }
+
+  public async save(): Promise<void> {
+    await this.saveStateService.save();
   }
   public async secondaryNotesVisible(): Promise<void> {
     this.saveStateService.data.secondaryNotesVisible = !this.saveStateService

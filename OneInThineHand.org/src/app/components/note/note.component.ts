@@ -21,8 +21,10 @@ import { ProGuideComponent } from '../pro-guide/pro-guide.component';
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
+  public audio: HTMLAudioElement;
   public edit = false;
   public tempNote: Note | undefined;
+  // public audio?: Audio;
   @Input() public verseNotes: VerseNote;
   public constructor(
     public chapterService: ChapterService,
@@ -182,8 +184,8 @@ export class NoteComponent implements OnInit {
     ) {
       console.log(note);
 
-      const audio = new Audio(`assets/audio/${note.href}`);
-      audio.play();
+      this.audio = new Audio(`assets/audio/${note.href}`);
+      this.audio.play();
     }
   }
 

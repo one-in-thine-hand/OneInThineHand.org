@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import MarkdownIt from 'markdown-it';
 import { uniq } from 'lodash';
-import { FormatTag, FormatTagType } from '../../../../shared/src/shared';
+import { FormatTag, FormatTagType } from '../models/verse-notes';
+// import { FormatTag, FormatTagType } from '../../../../shared/src/shared';
 @Injectable({
   providedIn: 'root',
 })
