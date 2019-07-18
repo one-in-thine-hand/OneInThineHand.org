@@ -4,11 +4,24 @@
     <!-- <button class="add-note-btn" (click)="addNote(content)"></button> -->
   </li>
   <ng-container *ngIf="verseNotes.notes">
-    <app-n
-      *ngFor="let note of getSecondaryNotes()"
-      [note]="note"
-      [verseNotes]="this.verseNotes"
-    ></app-n>
+    <ng-container *ngFor="let note of getSecondaryNotes()">
+      <app-n
+        *ngIf="!note.pronunciation && !note.geography"
+        [note]="note"
+        [verseNotes]="this.verseNotes"
+      ></app-n>
+      <app-n
+        *ngIf="note.geography"
+        [note]="note"
+        [verseNotes]="this.verseNotes"
+      ></app-n>
+      <app-n
+        *ngIf="note.pronunciation"
+        [note]="note"
+        [verseNotes]="this.verseNotes"
+        (click)="pronunciationClick($event, note)"
+      ></app-n
+    ></ng-container>
   </ng-container>
 </verse-notes>
 

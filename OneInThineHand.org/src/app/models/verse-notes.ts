@@ -1245,3 +1245,59 @@ export class NoteTypes implements CouchDoc, Doc {
    * queryNoteTypeByClassName
    */
 }
+
+export class NotePronunciation extends Note {
+  public pronunciation = true;
+  public href: string;
+  public constructor(
+    // tslint:disable-next-line:variable-name
+    _id: string,
+    href: string,
+    lang: LanguageCode,
+    noteType: number,
+    notePhrase: string,
+    noteRefs: NoteRef[],
+    offsets?: string,
+    verseMarker?: string,
+    noteMarker?: string,
+  ) {
+    super(
+      _id,
+      lang,
+      noteType,
+      notePhrase,
+      noteRefs,
+      offsets,
+      verseMarker,
+      noteMarker,
+    );
+    this.href = href;
+  }
+}
+
+export class NoteGeography extends Note {
+  public geography = true;
+
+  public constructor(
+    // tslint:disable-next-line:variable-name
+    _id: string,
+    lang: LanguageCode,
+    noteType: number,
+    notePhrase: string,
+    noteRefs: NoteRef[],
+    offsets?: string,
+    verseMarker?: string,
+    noteMarker?: string,
+  ) {
+    super(
+      _id,
+      lang,
+      noteType,
+      notePhrase,
+      noteRefs,
+      offsets,
+      verseMarker,
+      noteMarker,
+    );
+  }
+}

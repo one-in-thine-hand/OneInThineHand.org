@@ -12,7 +12,8 @@ import { getInputValue } from './getInputValue';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { sortBy } from 'lodash';
-import { VerseNote, Note } from '../../models/verse-notes';
+import { VerseNote, Note, NotePronunciation } from '../../models/verse-notes';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -28,6 +29,7 @@ export class NoteComponent implements OnInit {
     public formatTagService: FormatTagService,
     public modalService: NgbModal,
     public domSanitizer: DomSanitizer,
+    public httpClient: HttpClient,
   ) {}
 
   public async addNote(content): Promise<void> {
@@ -156,6 +158,21 @@ export class NoteComponent implements OnInit {
     // } catch (error) {
     //   console.log(error);
     // }
+  }
+
+  public pronunciationClick(event: Event, note: NotePronunciation): void {
+    if ((event.target as HTMLElement).getAttribute('url')) {
+      const url = (event.target as HTMLElement).getAttribute('url') as string;
+      alert(url);
+    } else if (
+      note.href &&
+      (event.target as HTMLElement).classList.contains('note-category')
+    ) {
+      console.log(note);
+
+      const audio = new Audio(`assets/audio/${note.href}`);
+      audio.play();
+    }
   }
 
   public saveNote(modal): void {
