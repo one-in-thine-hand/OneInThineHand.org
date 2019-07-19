@@ -102,8 +102,9 @@ export class FormatTagComponent implements OnInit {
       this.fMerged.pronunciationIcon &&
       !this.saveStateService.data.pronunciationVisible
     ) {
-      classList.push('pronunciation');
+      classList.push('pronunciation-icon');
     }
+    // else if(this.fMerged.pronunciation && this.saveStateService.data.pronunciationVisible){}
     if (this.fMerged.breaks) {
       this.fMerged.breaks.map((brk): void => {
         const fto = formatTagTypeOptions.find((f): boolean => {
@@ -212,7 +213,10 @@ export class FormatTagComponent implements OnInit {
   private getVisibleRefTags(includeAll?: boolean): RefTag[] | undefined {
     if (this.fMerged.refTags) {
       return this.fMerged.refTags.filter((refTag): boolean => {
-        if (refTag.pronunciation) {
+        if (
+          refTag.pronunciation &&
+          !this.saveStateService.data.pronunciationVisible
+        ) {
           return false;
         }
         if (
