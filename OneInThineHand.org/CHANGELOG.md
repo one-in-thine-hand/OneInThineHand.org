@@ -1,7 +1,13 @@
+## <small>5.0.92 (2019-07-19)</small>
+
+
+
+
 ## <small>5.0.91 (2019-07-19)</small>
 
 * bug fixes ([09ccccd](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/09ccccd))
 * Sorting bug fixes ([812ed4b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/812ed4b))
+* v5.0.91 ([1d3dd56](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d3dd56))
 
 
 
