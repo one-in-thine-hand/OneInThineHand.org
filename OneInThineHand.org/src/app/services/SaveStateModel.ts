@@ -14,6 +14,7 @@ export class RefLabelSetting {
 
 export class SaveStateModel {
   public blockVisible = false;
+  public debugMode = false;
   public editMode = false;
   public englishNotesVisible = false;
   public englishOverlayVisible = false;
@@ -31,6 +32,7 @@ export class SaveStateModel {
   public paragraphsVisible = false;
   public poetryVisible = false;
   public printNotesVisible: boolean | undefined;
+  public pronunciationVisible = false;
   // public ReferenceLabelSetting = ReferenceLabels;
   public refLabelSettings: RefLabelSetting[] = [];
   public secondaryNotesVisible = false;
@@ -40,7 +42,6 @@ export class SaveStateModel {
   public translatorNotesVisible = true;
   public underLineRefs = true;
   public version = 5;
-  public pronunciationVisible = false;
 }
 
 // export const refLabelSettingsTemplate = [
