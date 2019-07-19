@@ -126,7 +126,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
           console.log('jhhg');
 
           this.router.navigate(
-            [`/${chapterParams.book}/${chapterParams.chapter}`],
+            [`/${chapterParams.book}/${params['chapter']}`],
             {
               queryParamsHandling: 'merge',
               replaceUrl: true,
