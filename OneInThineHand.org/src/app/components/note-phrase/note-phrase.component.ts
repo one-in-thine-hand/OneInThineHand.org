@@ -42,7 +42,7 @@ export class NotePhraseComponent implements OnInit {
       } catch (error) {}
 
       if (secondaryNote.noteRefFormatTag) {
-        console.log(secondaryNote);
+        // console.log(secondaryNote);
         const oldHighlight = secondaryNote.noteRefFormatTag.highlight;
         this.chapterService.resetNoteVis();
         secondaryNote.noteRefFormatTag.highlight = !oldHighlight;

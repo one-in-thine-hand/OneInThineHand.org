@@ -15,6 +15,7 @@ import {
   NOTE_CATEGORIES,
   getVisible,
 } from '../../models/verse-notes';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-n',
@@ -32,6 +33,7 @@ export class NComponent implements OnInit {
     public formatTagService: FormatTagService,
     public tempSettingsService: TempSettingsService,
     public saveService: SaveService,
+    public saveStateService: SaveStateService,
     public router: Router,
   ) {}
 

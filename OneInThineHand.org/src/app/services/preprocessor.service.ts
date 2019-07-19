@@ -285,7 +285,7 @@ export class PreprocessorService {
                           }
                         });
                       }
-                      console.log(notes);
+                      // console.log(notes);
 
                       // await this.databaseService.updateDatabaseItem(notes);
                     } catch (error) {
@@ -313,7 +313,7 @@ export class PreprocessorService {
     const saveNote = notes.find((n): boolean => {
       return n._id === note._id;
     });
-    console.log(note.notes);
+    // console.log(note.notes);
 
     if (saveNote) {
       if (saveNote.notes && note.notes) {

@@ -335,8 +335,8 @@
             'table-primary': categoryIsActive('reference-label-pronunciation-2')
           }"
           (click)="
-          saveStateService.data.pronunciationVisible = false;
-            noteCategoryBtnClick(['reference-label-pronunciation-2']);
+            saveStateService.data.pronunciationVisible = false;
+            noteCategoryBtnClick(['reference-label-pronunciation-2'])
           "
         >
           Pronunciation
@@ -392,6 +392,18 @@
     </div>
   </div>
   <div class="modal-footer">
+    <button
+      class="btn "
+      [ngClass]="{
+        'btn-dark': saveStateService.data.debugMode,
+        'btn-light': !saveStateService.data.debugMode
+      }"
+      (click)="
+        saveStateService.data.debugMode = !saveStateService.data.debugMode
+      "
+    >
+      Debug Mode
+    </button>
     <button
       type="button"
       class="btn btn-outline-dark"

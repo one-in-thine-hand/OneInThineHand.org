@@ -116,6 +116,7 @@ export class RefTag {
   public pronunciationHref?: string;
   public refs: string[];
   public secondaryNoteID: string;
+  public noteType: number;
   public uncompressedOffsets: number[] | undefined;
 }
 
@@ -630,6 +631,7 @@ export class NoteRefFormatTag {
   public refs: string[];
   public secondaryNoteID: string;
   public uncompressedOffsets: number[] | undefined;
+  public noteType: number;
 }
 
 export class MergedFormatTags {

@@ -8,6 +8,10 @@
     [note]="note"
     [verseNotes]="this.getVerseNotes()"
   ></app-note-phrase>
+  <div *ngIf="saveStateService.data.debugMode">
+    <div>Offsets: {{ note.offsets }}</div>
+    <div>NoteType: {{ note.noteType }}</div>
+  </div>
   <!-- <li (click)="this.notePhraseClick(note)" class="note-phrase">
         {{ getNotePhrase(note.notePhrase) }}
       </li> -->

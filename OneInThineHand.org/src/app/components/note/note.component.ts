@@ -67,8 +67,8 @@ export class NoteComponent implements OnInit {
     // console.klog(this.verseNotes.notes);
 
     let secondaryNotes: Note[] = [];
-    console.log(this.verseNotes._id);
-    console.log(this.verseNotes);
+    // console.log(this.verseNotes._id);
+    // console.log(this.verseNotes);
 
     if (this.verseNotes && this.verseNotes.notes) {
       secondaryNotes = this.verseNotes.notes.filter(
@@ -84,7 +84,7 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    console.log(secondaryNotes);
+    // console.log(secondaryNotes);
     // return secondaryNotes;
 
     // return secondaryNotes;
@@ -165,7 +165,7 @@ export class NoteComponent implements OnInit {
       }
     } else {
     }
-    console.log(secondaryNote);
+    // console.log(secondaryNote);
   }
 
   public noteRefClick(): void {
@@ -223,7 +223,7 @@ export class NoteComponent implements OnInit {
       note.href &&
       (event.target as HTMLElement).classList.contains('note-category')
     ) {
-      console.log(note);
+      // console.log(note);
 
       this.audio = new Audio(`assets/audio/${note.href}`);
       this.audio.play();

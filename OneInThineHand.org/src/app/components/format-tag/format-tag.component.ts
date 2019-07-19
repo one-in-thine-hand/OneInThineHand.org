@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { last } from 'lodash';
+import { last, sortBy } from 'lodash';
 
 import '../../../../../shared/src/models/format_tags/FormatTag';
 import {
@@ -53,15 +53,30 @@ export class FormatTagComponent implements OnInit {
           const tempRefList = this.getVisibleRefTags(true);
 
           if (tempRefList) {
-            this.refList = tempRefList
-              .sort((ref): number => {
-                return ref.uncompressedOffsets
-                  ? ref.uncompressedOffsets[0]
-                  : 100;
-              })
+            this.refList = sortBy(tempRefList, (t): number => {
+              return t.noteType;
+            })
+              .reverse()
               .map((refTag): string => {
                 return refTag.secondaryNoteID;
               });
+            // console.log(
+            //   sortBy(tempRefList, (t): number => {
+            //     console.log(t.noteType);
+
+            //     return t.uncompressedOffsets !== undefined
+            //       ? t.uncompressedOffsets[0]
+            //       : 0;
+            //   }),
+            // );
+
+            // tempRefList
+            //   .sort((ref): string | undefined => {
+            //     return ref.offsets;
+            //   })
+            //   .map((refTag): string => {
+            //     return refTag.secondaryNoteID;
+            //   });
           }
           if (this.fMerged.pronunciation) {
             // this.fMerged.refTags.filter(f=>{return f.refs})

@@ -55,6 +55,7 @@ export class OffsetService {
                     refTag.uncompressedOffsets =
                       secondaryNote.uncompressedOffsets;
 
+                    refTag.noteType = secondaryNote.noteType;
                     formatTag.uncompressedOffsets =
                       secondaryNote.uncompressedOffsets;
                     if (secondaryNote._id) {
