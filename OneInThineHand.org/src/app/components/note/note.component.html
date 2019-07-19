@@ -13,6 +13,7 @@
       <app-n
         *ngIf="note.geography"
         [note]="note"
+        (click)="geoClick($event, note)"
         [verseNotes]="this.verseNotes"
       ></app-n>
       <app-n

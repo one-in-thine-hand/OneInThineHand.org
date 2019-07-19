@@ -52,6 +52,7 @@ import { HarmonyComponent } from './components/harmony/harmony.component';
 import { FormatGroupSegmentComponent } from './components/format-group-segment/format-group-segment.component';
 import { FormatGroupPartComponent } from './components/format-group-part/format-group-part.component';
 import { ProGuideComponent } from './components/pro-guide/pro-guide.component';
+import { GeoPopupComponent } from './components/geo-popup/geo-popup.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -92,6 +93,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     FormatGroupSegmentComponent,
     FormatGroupPartComponent,
     ProGuideComponent,
+    GeoPopupComponent,
   ],
   imports: [
     NgbModule,
@@ -122,7 +124,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     PreprocessorService,
     PageStateService,
   ],
-  entryComponents: [ProGuideComponent],
+  entryComponents: [ProGuideComponent, GeoPopupComponent],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
