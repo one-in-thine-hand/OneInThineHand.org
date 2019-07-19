@@ -1,5 +1,16 @@
+## <small>5.0.89 (2019-07-19)</small>
+
+* audio work ([882b046](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/882b046))
+* bug fixes ([bf9a2da](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bf9a2da))
+* bugs ([17b6bb1](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/17b6bb1))
+* fixed query param bugs ([724306b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/724306b))
+* geo popup added ([22ddc98](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/22ddc98))
+
+
+
 ## <small>5.0.88 (2019-07-18)</small>
 
+* v5.0.88 ([69e0695](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/69e0695))
 
 
 
