@@ -20,10 +20,7 @@
       class="left-chapter-nav-btn chapter-nav-btn"
       style=" user-select: none;"
     >
-      <a
-        href="{{ chapter.previousPage }}/?lang={{ this.currentLanguage }}"
-        *ngIf="chapter"
-      >
+      <a (click)="navButton(chapter.previousPage)" *ngIf="chapter">
         <i
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,10 +48,7 @@
       class="right-chapter-nav-btn chapter-nav-btn"
       style=" user-select: none;"
     >
-      <a
-        href="{{ chapter.nextPage }}/?lang={{ this.currentLanguage }}"
-        *ngIf="chapter"
-      >
+      <a (click)="navButton(chapter.nextPage)" *ngIf="chapter">
         <i>
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -656,6 +656,7 @@ export class Note implements CouchDoc, Doc, Offsets {
   public verseMarker?: string;
   // public noteProperities?: NoteProperities;
   public visible?: boolean;
+  notePhraseVis: boolean;
 
   public constructor(
     _id: string,

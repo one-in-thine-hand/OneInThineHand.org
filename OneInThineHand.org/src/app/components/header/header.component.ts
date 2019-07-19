@@ -135,6 +135,8 @@ export class HeaderComponent implements OnInit {
   public async noteTypeClick(noteType: NoteTypeOverlay): Promise<void> {
     noteType.visibility = !noteType.visibility;
     if (this.chapterService.notes) {
+      // console.log('oiasjdfioajsdfiojasdofaoisdvnioj');
+
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
     }
     await this.save();

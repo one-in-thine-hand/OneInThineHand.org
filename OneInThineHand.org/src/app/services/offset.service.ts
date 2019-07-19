@@ -94,8 +94,6 @@ export class OffsetService {
                     secondaryNote.noteRefFormatTag = refTag;
                     secondaryNote.formatTag = formatTag;
                   }
-
-                  // console.log(secondaryNote.offsets);
                 });
               }
             } catch (error) {

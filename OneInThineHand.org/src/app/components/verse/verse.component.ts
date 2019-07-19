@@ -141,9 +141,9 @@ export class VerseComponent implements OnInit {
           verseNote.notes &&
           verseNote.notes.filter((note): boolean => {
             return (
-              (note.visible &&
-                (note.offsets !== undefined && note.offsets.startsWith('0'))) ||
-              note.offsets === 'all'
+              note.visible === true &&
+              ((note.offsets !== undefined && note.offsets.startsWith('0')) ||
+                note.offsets === 'all')
             );
           }).length > 0
         ) {

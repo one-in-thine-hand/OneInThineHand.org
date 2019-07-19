@@ -6,6 +6,7 @@ import { NavigationItem } from '../../../../shared/src/shared';
   providedIn: 'root',
 })
 export class NavigationService {
+  public constructor(private router: Router) {}
   private bookNames = [
     ['Joseph Smith—History', 'js-h/1'],
     ['Genesis', 'Gen.', 'Gen', 'Gen', 'gen'],
@@ -52,7 +53,7 @@ export class NavigationService {
     ['Zechariah', 'Zech.', 'Zech', 'zech'],
     ['Malachi', 'Mal.', 'Mal', 'mal'],
     ['Matthew', 'matthew', 'Matt.', 'matthew', 'Matt', 'matt'],
-    ['Mark', 'Mark', 'mark'],
+    ['mark', 'Mark', 'Mark', 'mark'],
     ['Luke', 'Luke', 'luke'],
     ['John', 'John', 'john'],
     ['Acts', 'Acts', 'acts'],
@@ -157,47 +158,6 @@ export class NavigationService {
     ['TG', 'Topical Guide', 'tg'],
     ['GS', 'Guide to the Scriptures', 'tg'],
   ];
-  public constructor(private router: Router) {}
-
-  public async parseAddressBarUrl(addressBarInput: string): Promise<void> {
-    console.log(addressBarInput);
-    try {
-      const addressBarInputSplit = addressBarInput.split(' ');
-
-      // const outUrl = addressBarInput
-      //   .toLowerCase()
-      //   .replace(/\s/g, ' ')
-      //   .replace('&amp;', '&')
-      //   .replace(/:/g, '.');
-
-      // console.log(outUrl);
-
-      const bookNames = this.getBookName(addressBarInput);
-      const chapterName = last(addressBarInputSplit);
-      if (bookNames && chapterName) {
-        console.log(bookNames);
-        const bookName = last(bookNames);
-
-        this.router.navigateByUrl(`${bookName}/${chapterName}`);
-      } else {
-        throw new Error('');
-      }
-    } catch (error) {
-      throw new Error('No valid bookname found');
-    }
-  }
-
-  private getHighlightAndContext(addressBarInput: string): void {}
-
-  private getBookName(addressBarInput: string): string[] | undefined {
-    return this.bookNames.find((bN): boolean => {
-      return (
-        bN.find((b): boolean => {
-          return addressBarInput.toLowerCase().includes(b.toLowerCase());
-        }) !== undefined
-      );
-    });
-  }
 
   public findNav(
     id: string,
@@ -219,4 +179,45 @@ export class NavigationService {
     }
     return undefined;
   }
+
+  public async parseAddressBarUrl(addressBarInput: string): Promise<void> {
+    console.log(addressBarInput);
+    try {
+      const addressBarInputSplit = addressBarInput.split(' ');
+
+      // const outUrl = addressBarInput
+      //   .toLowerCase()
+      //   .replace(/\s/g, ' ')
+      //   .replace('&amp;', '&')
+      //   .replace(/:/g, '.');
+
+      // console.log(outUrl);
+
+      const bookNames = this.getBookName(addressBarInput);
+      const chapterName = last(addressBarInputSplit);
+      if (bookNames && chapterName) {
+        console.log(bookNames);
+        const bookName = last(bookNames);
+        console.log('hhhgg');
+
+        this.router.navigateByUrl(`${bookName}/${chapterName}`);
+      } else {
+        throw new Error('');
+      }
+    } catch (error) {
+      throw new Error('No valid bookname found');
+    }
+  }
+
+  private getBookName(addressBarInput: string): string[] | undefined {
+    return this.bookNames.find((bN): boolean => {
+      return (
+        bN.find((b): boolean => {
+          return addressBarInput.toLowerCase().includes(b.toLowerCase());
+        }) !== undefined
+      );
+    });
+  }
+
+  private getHighlightAndContext(addressBarInput: string): void {}
 }
