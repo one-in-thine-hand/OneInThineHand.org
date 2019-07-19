@@ -53,9 +53,15 @@ export class FormatTagComponent implements OnInit {
           const tempRefList = this.getVisibleRefTags(true);
 
           if (tempRefList) {
-            this.refList = tempRefList.map((refTag): string => {
-              return refTag.secondaryNoteID;
-            });
+            this.refList = tempRefList
+              .sort((ref): number => {
+                return ref.uncompressedOffsets
+                  ? ref.uncompressedOffsets[0]
+                  : 100;
+              })
+              .map((refTag): string => {
+                return refTag.secondaryNoteID;
+              });
           }
           if (this.fMerged.pronunciation) {
             // this.fMerged.refTags.filter(f=>{return f.refs})

@@ -67,6 +67,9 @@ export class NoteComponent implements OnInit {
     // console.klog(this.verseNotes.notes);
 
     let secondaryNotes: Note[] = [];
+    console.log(this.verseNotes._id);
+    console.log(this.verseNotes);
+
     if (this.verseNotes && this.verseNotes.notes) {
       secondaryNotes = this.verseNotes.notes.filter(
         (secondaryNote): boolean => {
@@ -81,7 +84,15 @@ export class NoteComponent implements OnInit {
         },
       );
     }
-    return sortBy(secondaryNotes, (n): NoteType | undefined => {
+    console.log(secondaryNotes);
+    // return secondaryNotes;
+
+    // return secondaryNotes;
+    const firstSort = sortBy(secondaryNotes, (n): string | undefined => {
+      return n.offsets;
+    });
+    // return firstSort;
+    return sortBy(firstSort, (n): NoteType | undefined => {
       return n.noteType;
     });
   }

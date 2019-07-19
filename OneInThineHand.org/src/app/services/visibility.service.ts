@@ -32,7 +32,7 @@ export class VisibilityService {
       notes.map((note): void => {
         if (note.notes) {
           // let lNote: Note | undefined;
-          note.notes.reverse().map((sN): void => {
+          note.notes.map((sN): void => {
             if (this.saveStateService.data.noteTypes) {
               const noteTypeSetting = this.saveStateService.data.noteTypes.noteTypes.find(
                 (nC): boolean => {
@@ -44,37 +44,6 @@ export class VisibilityService {
               sN.visible = noteTypeSetting ? noteTypeSetting.visibility : true;
             }
 
-            // switch (sN.noteType) {
-            //   case NoteType.EXISTING: {
-            //     sN.visible = this.saveStateService.data.existingNotesVisible;
-            //     break;
-            //   }
-            //   case NoteType.PRINT: {
-            //     sN.visible = this.saveStateService.data.printNotesVisible;
-            //     break;
-            //   }
-            //   case NoteType.TC: {
-            //     sN.visible = this.saveStateService.data.tcNotesVisible;
-            //     break;
-            //   }
-            //   case NoteType.TEST: {
-            //     sN.visible = this.saveStateService.data.testOverlayVisible;
-            //     break;
-            //   }
-            //   case NoteType.TRANSLATION: {
-            //     sN.visible = this.saveStateService.data.translationOverlayVisible;
-            //     break;
-            //   }
-            //   default: {
-            //     sN.visible = false;
-            //     break;
-            //   }
-            // }
-
-            // sN.notePhraseVis = true;
-
-            // console.log(sN.offsets);
-
             if (sN.visible) {
               const visibility = sN.noteRefs.map((noteRef): boolean => {
                 const nC = this.saveStateService.data.noteCategorySettings.find(
@@ -85,34 +54,11 @@ export class VisibilityService {
 
                 noteRef.visible = nC ? nC.visible : false;
 
-                // if (noteRef.visible === true) {
-                //   console.log(this.saveStateService.data.noteCategorySettings);
-                // }
                 return noteRef.visible ? noteRef.visible : false;
               });
 
               sN.visible = visibility.includes(true);
               sN.notePhraseVis = true;
-              // if (sN.visible) {
-              //   if (sN.notePhrase === 'whole verse') {
-              //     console.log(note._id);
-
-              //     console.log(
-              //       lNote !== undefined && sN.notePhrase === lNote.notePhrase,
-              //     );
-              //     console.log(lNote);
-              //     console.log(sN);
-              //   }
-              //   sN.notePhraseVis =
-              //     lNote !== undefined &&
-              //     sN.notePhrase === lNote.notePhrase &&
-              //     sN.offsets === lNote.offsets
-              //       ? false
-              //       : true;
-              //   lNote = sN;
-              //   // console.log(sN.notePhrase);
-              //   // console.log(sN.notePhraseVis);
-              // }
             }
 
             if (sN._id) {
