@@ -45,6 +45,7 @@ export class FormatTagService {
         fMerged.offsets = [o];
         fMerged.formatTags = this.getFormatTags(o, fTags);
         fMerged.refTags = this.getRefTags(o, note);
+        fMerged.pronunciationIcon = this.hasPronunciationIcon(fMerged, o);
         fMerged.pronunciation = this.hasPronunciation(fMerged, o);
         this.expandFakeVerseBreaks(verse);
         fMerged.breaks = this.getVerseBreaks(o, verse);
@@ -117,12 +118,13 @@ export class FormatTagService {
     //   lastMerged.formatTags === fMerged.formatTags &&
     //   lastMerged.refTags === fMerged.refTags
     // );
-    if (fMerged.pronunciation || lastMerged.pronunciation) {
+    if (fMerged.pronunciationIcon || lastMerged.pronunciationIcon) {
       return false;
     }
     return (
-      !lastMerged.pronunciation &&
-      !fMerged.pronunciation &&
+      !lastMerged.pronunciationIcon &&
+      !fMerged.pronunciationIcon &&
+      fMerged.pronunciation === lastMerged.pronunciation &&
       isEqual(lastMerged.formatTags, fMerged.formatTags) &&
       isEqual(lastMerged.breaks, fMerged.breaks) &&
       isEqual(lastMerged.refTags, fMerged.refTags)
@@ -292,6 +294,20 @@ export class FormatTagService {
       : undefined;
   }
   private hasPronunciation(fMerged: FMerged, o: number): boolean | undefined {
+    if (fMerged.refTags) {
+      const p = fMerged.refTags.filter((f): boolean => {
+        return f.pronunciation === true && f.uncompressedOffsets !== undefined;
+      });
+      // console.log(p.length>0);
+
+      return p.length > 0 ? true : undefined;
+    }
+    return undefined;
+  }
+  private hasPronunciationIcon(
+    fMerged: FMerged,
+    o: number,
+  ): boolean | undefined {
     if (fMerged.refTags) {
       const p = fMerged.refTags.filter((f): boolean => {
         return (

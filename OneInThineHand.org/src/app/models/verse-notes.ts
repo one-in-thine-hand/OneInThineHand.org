@@ -123,9 +123,10 @@ export class FMerged {
   public breaks: FormatTag[] | undefined;
   public formatTags: FormatTag[] | undefined;
   public offsets: number[] = [];
-  public pronunciation?: boolean;
+  public pronunciationIcon?: boolean;
   public refTags: RefTag[] | undefined;
   public text = '';
+  pronunciation: boolean | undefined;
 }
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {

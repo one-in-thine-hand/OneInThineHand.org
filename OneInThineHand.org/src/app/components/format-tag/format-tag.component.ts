@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { last } from 'lodash';
 
-import // FMerged,
-// RefTag,
-'../../../../../shared/src/models/format_tags/FormatTag';
+import '../../../../../shared/src/models/format_tags/FormatTag';
 import {
   DisplayAs,
   FormatTagType,
@@ -19,6 +17,7 @@ import { ChapterService } from '../../services/chapter.service';
 import { findByAttribute } from '../../services/history.service';
 import { MarkService } from '../../services/mark.service';
 import { VisibilityService } from '../../services/visibility.service';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -36,7 +35,7 @@ export class FormatTagComponent implements OnInit {
   public constructor(
     public markService: MarkService,
     public visibilityService: VisibilityService,
-
+    public saveStateService: SaveStateService,
     public chapterService: ChapterService,
   ) {}
 
@@ -59,6 +58,7 @@ export class FormatTagComponent implements OnInit {
             });
           }
           if (this.fMerged.pronunciation) {
+            // this.fMerged.refTags.filter(f=>{return f.refs})
             this.fMerged.refTags.map((ft): void => {
               if (ft.pronunciationHref) {
                 const audio = new Audio(`assets/audio/${ft.pronunciationHref}`);
@@ -98,7 +98,10 @@ export class FormatTagComponent implements OnInit {
     this.getVisibleRefTags();
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags();
-    if (this.fMerged.pronunciation) {
+    if (
+      this.fMerged.pronunciationIcon &&
+      !this.saveStateService.data.pronunciationVisible
+    ) {
       classList.push('pronunciation');
     }
     if (this.fMerged.breaks) {
@@ -209,6 +212,9 @@ export class FormatTagComponent implements OnInit {
   private getVisibleRefTags(includeAll?: boolean): RefTag[] | undefined {
     if (this.fMerged.refTags) {
       return this.fMerged.refTags.filter((refTag): boolean => {
+        if (refTag.pronunciation) {
+          return false;
+        }
         if (
           !includeAll &&
           ((refTag.offsets !== undefined && refTag.offsets.startsWith('0')) ||
