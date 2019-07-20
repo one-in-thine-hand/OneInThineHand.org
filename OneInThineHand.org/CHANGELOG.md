@@ -1,5 +1,19 @@
+## <small>5.0.93 (2019-07-20)</small>
+
+* Adding offset groups ([20db463](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/20db463))
+* bug fixes ([822ad64](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/822ad64))
+* bugs ([722a306](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/722a306))
+* Fixed note click bug ([c5bc377](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c5bc377))
+* Fixed note phrase ([c058cd5](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c058cd5))
+* offset groups displaying ([bb32ee0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bb32ee0))
+* offset groups displays ([c4096b3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c4096b3))
+* page state  bugs ([e752e83](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e752e83))
+
+
+
 ## <small>5.0.92 (2019-07-19)</small>
 
+* v5.0.92 ([cc4dfca](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/cc4dfca))
 
 
 
