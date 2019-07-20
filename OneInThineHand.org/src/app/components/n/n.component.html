@@ -18,7 +18,9 @@
   <ul class="note-refs" *ngIf="note.noteRefs">
     <ng-container *ngFor="let noteRef of note.noteRefs">
       <li [class]="getRefClass(noteRef)" *ngIf="noteRef.visible">
-        <span class="note-category">{{ convertNoteCategory(noteRef) }} </span>
+        <span class="note-category ref-{{ noteRef.noteCategory }}"
+          >{{ convertNoteCategory(noteRef) }}
+        </span>
         <span [innerHTML]="noteRef.safeHtml"></span>
       </li>
       <!-- <li>

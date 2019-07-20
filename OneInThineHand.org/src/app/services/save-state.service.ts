@@ -12,6 +12,7 @@ import {
   NoteTypeConvert,
 } from '../../../../shared/src/models/notes/NoteType';
 import { DatabaseService } from './database.service';
+import { NoteVisiblityBtn } from './NoteVisiblityBtn';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +85,7 @@ export class SaveStateService {
       this.data = new SaveStateModel();
     }
 
+    this.loadNoteCategoryBtns();
     // // cg.
     // console.log(refLabelSettingsTemplate);
 
@@ -102,6 +104,37 @@ export class SaveStateService {
     // );
     await this.loadNoteTypes();
     await this.save();
+  }
+  public loadNoteCategoryBtns(): void {
+    [
+      'alt',
+      'bd',
+      'cr',
+      'geo',
+      'geoMore',
+      'gr',
+      'gs',
+      'heb',
+      'hmy',
+      'hst',
+      'hstMore',
+      'ie',
+      'or',
+      'orMore',
+      'phr',
+      'phrMore',
+      'pronunciation',
+      'pronunciationMore',
+      'quo',
+      'quoMore',
+      'tg',
+      'trn',
+      'trnMore',
+    ].map((val): void => {
+      if (!this.data[val] || (this.data[val] && !this.data[val].vis)) {
+        this.data[val] = new NoteVisiblityBtn();
+      }
+    });
   }
 
   public async loadNoteTypes(): Promise<void> {
