@@ -4,7 +4,7 @@
   [ngClass]="{ highlight: highlight(note) }"
 >
   <app-note-phrase
-    *ngIf="note.notePhraseVis"
+    *ngIf="tempSettingsService.editMode"
     [note]="note"
     [verseNotes]="this.getVerseNotes()"
   ></app-note-phrase>

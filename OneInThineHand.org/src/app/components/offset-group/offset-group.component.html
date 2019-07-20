@@ -1,0 +1,31 @@
+<!-- id="{{ note._id }}" -->
+<ng-container *ngIf="offsetGroup.notes">
+  <note
+    class="secondary-note"
+    [ngClass]="{ highlight: highlight(offsetGroup.notes) }"
+  >
+    <app-note-phrase
+      [text]="offsetGroup.notePhrase"
+      [verseNotes]="this.verseNotes"
+    ></app-note-phrase>
+    <ng-container *ngFor="let note of offsetGroup.notes">
+      <app-n
+        *ngIf="!note.pronunciation && !note.geography"
+        [note]="note"
+        [verseNotes]="this.verseNotes"
+      ></app-n>
+      <app-n
+        *ngIf="note.geography"
+        [note]="note"
+        (click)="geoClick($event, note)"
+        [verseNotes]="this.verseNotes"
+      ></app-n>
+      <app-n
+        *ngIf="note.pronunciation"
+        [note]="note"
+        [verseNotes]="this.verseNotes"
+        (click)="pronunciationClick($event, note)"
+      ></app-n
+    ></ng-container>
+  </note>
+</ng-container>

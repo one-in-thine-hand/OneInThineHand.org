@@ -21,7 +21,10 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { ProGuideComponent } from '../pro-guide/pro-guide.component';
 import { GeoPopupComponent } from '../geo-popup/geo-popup.component';
-import { OffsetGroupsService } from '../../services/offset-groups.service';
+import {
+  OffsetGroupsService,
+  OffsetGroup,
+} from '../../services/offset-groups.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
 import { SaveStateService } from '../../services/save-state.service';
 @Component({
@@ -68,7 +71,6 @@ export class NoteComponent implements OnInit {
       console.log(error);
     }
   }
-
   public async geoClick(event: Event, note: NoteGeography): Promise<void> {
     if ((event.target as HTMLElement).getAttribute('url')) {
       const url = (event.target as HTMLElement).getAttribute('url') as string;
@@ -92,6 +94,13 @@ export class NoteComponent implements OnInit {
     // this.audio = new Audio(`assets/audio/${note.href}`);
     // this.audio.play();
     // }
+  }
+
+  public getOffsetGroups(): OffsetGroup[] {
+    if (this.verseNotes) {
+      return this.offsetGroupsService.getOffsetGroups(this.verseNotes);
+    }
+    return [];
   }
 
   public getSecondaryNotes(): Note[] {

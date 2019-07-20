@@ -53,6 +53,7 @@ import { FormatGroupSegmentComponent } from './components/format-group-segment/f
 import { FormatGroupPartComponent } from './components/format-group-part/format-group-part.component';
 import { ProGuideComponent } from './components/pro-guide/pro-guide.component';
 import { GeoPopupComponent } from './components/geo-popup/geo-popup.component';
+import { OffsetGroupComponent } from './components/offset-group/offset-group.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -94,6 +95,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     FormatGroupPartComponent,
     ProGuideComponent,
     GeoPopupComponent,
+    OffsetGroupComponent,
   ],
   imports: [
     NgbModule,

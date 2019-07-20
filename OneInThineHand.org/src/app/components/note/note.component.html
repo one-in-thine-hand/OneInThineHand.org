@@ -1,23 +1,26 @@
 <verse-notes *ngIf="verseNotes" [id]="verseNotes._id">
+  <li class="note-short-title">
+    Verse {{ verseNotes.verseNumber }} Notes
+    <!-- <button class="add-note-btn" (click)="addNote(content)"></button> -->
+  </li>
   <ng-container *ngIf="tempSettingsService.editMode; else elseTemplate">
-    <li class="note-short-title">
-      Verse {{ verseNotes.verseNumber }} Notes
-      <!-- <button class="add-note-btn" (click)="addNote(content)"></button> -->
-    </li>
     <ng-container *ngIf="verseNotes.notes">
       <ng-container *ngFor="let note of getSecondaryNotes()">
         <app-n
+          class="edit-mode"
           *ngIf="!note.pronunciation && !note.geography"
           [note]="note"
           [verseNotes]="this.verseNotes"
         ></app-n>
         <app-n
+          class="edit-mode"
           *ngIf="note.geography"
           [note]="note"
           (click)="geoClick($event, note)"
           [verseNotes]="this.verseNotes"
         ></app-n>
         <app-n
+          class="edit-mode"
           *ngIf="note.pronunciation"
           [note]="note"
           [verseNotes]="this.verseNotes"
@@ -26,7 +29,13 @@
       ></ng-container>
     </ng-container>
   </ng-container>
-  <ng-template #elseTemplate> </ng-template>
+  <ng-template #elseTemplate>
+    <app-offset-group
+      *ngFor="let offsetGroup of getOffsetGroups()"
+      [offsetGroup]="offsetGroup"
+      [verseNotes]="this.verseNotes"
+    ></app-offset-group>
+  </ng-template>
 </verse-notes>
 
 <ng-template #content let-modal

@@ -14,6 +14,7 @@ import { VerseNote, Note } from '../../models/verse-notes';
   styleUrls: ['./note-phrase.component.scss'],
 })
 export class NotePhraseComponent implements OnInit {
+  @Input() public text?: string;
   @Input() public note: Note;
   @Input() public verseNotes: VerseNote;
 
