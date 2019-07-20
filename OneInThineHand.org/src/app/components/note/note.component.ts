@@ -21,6 +21,9 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { ProGuideComponent } from '../pro-guide/pro-guide.component';
 import { GeoPopupComponent } from '../geo-popup/geo-popup.component';
+import { OffsetGroupsService } from '../../services/offset-groups.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
+import { SaveStateService } from '../../services/save-state.service';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -39,6 +42,9 @@ export class NoteComponent implements OnInit {
     public modalService: NgbModal,
     public domSanitizer: DomSanitizer,
     public httpClient: HttpClient,
+    public offsetGroupsService: OffsetGroupsService,
+    public tempSettingsService: TempSettingsService,
+    public saveStateService: SaveStateService,
   ) {}
 
   public async addNote(content): Promise<void> {
@@ -63,6 +69,31 @@ export class NoteComponent implements OnInit {
     }
   }
 
+  public async geoClick(event: Event, note: NoteGeography): Promise<void> {
+    if ((event.target as HTMLElement).getAttribute('url')) {
+      const url = (event.target as HTMLElement).getAttribute('url') as string;
+      // alert(url);
+      const result = await this.modalService.open(GeoPopupComponent, {
+        ariaLabelledBy: 'modal-basic-title',
+        backdropClass: 'add-notes-backdrop',
+        backdrop: true,
+      });
+
+      result.componentInstance.id = url;
+      // this.mod/ alService.open(ProGuideComponent);
+    }
+    //  else if (
+    // note.href &&
+    // (event.target as HTMLElement).classList.contains('note-category')
+    // )
+    // {
+    // console.log(note);
+    //
+    // this.audio = new Audio(`assets/audio/${note.href}`);
+    // this.audio.play();
+    // }
+  }
+
   public getSecondaryNotes(): Note[] {
     // console.klog(this.verseNotes.notes);
 
@@ -71,6 +102,7 @@ export class NoteComponent implements OnInit {
     // console.log(this.verseNotes);
 
     if (this.verseNotes && this.verseNotes.notes) {
+      this.offsetGroupsService.getOffsetGroups(this.verseNotes);
       secondaryNotes = this.verseNotes.notes.filter(
         (secondaryNote): boolean => {
           if (
@@ -177,31 +209,6 @@ export class NoteComponent implements OnInit {
     //   }
     // } catch (error) {
     //   console.log(error);
-    // }
-  }
-
-  public async geoClick(event: Event, note: NoteGeography): Promise<void> {
-    if ((event.target as HTMLElement).getAttribute('url')) {
-      const url = (event.target as HTMLElement).getAttribute('url') as string;
-      // alert(url);
-      const result = await this.modalService.open(GeoPopupComponent, {
-        ariaLabelledBy: 'modal-basic-title',
-        backdropClass: 'add-notes-backdrop',
-        backdrop: true,
-      });
-
-      result.componentInstance.id = url;
-      // this.mod/ alService.open(ProGuideComponent);
-    }
-    //  else if (
-    // note.href &&
-    // (event.target as HTMLElement).classList.contains('note-category')
-    // )
-    // {
-    // console.log(note);
-    //
-    // this.audio = new Audio(`assets/audio/${note.href}`);
-    // this.audio.play();
     // }
   }
   public async pronunciationClick(
