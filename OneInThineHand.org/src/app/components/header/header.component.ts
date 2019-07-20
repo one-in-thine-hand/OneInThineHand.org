@@ -19,6 +19,7 @@ import {
   NoteCategorySort,
   NoteTypeOverlay,
 } from '../../models/verse-notes';
+import { OffsetGroupsService } from '../../services/offset-groups.service';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,7 @@ export class HeaderComponent implements OnInit {
     public preprocessorService: PreprocessorService,
     public electronService: ElectronService,
     public formatTagService: FormatTagService,
+    public offsetGroupService: OffsetGroupsService,
     public databaseService: DatabaseService,
     public tempSettingsService: TempSettingsService,
   ) {}
@@ -121,8 +123,12 @@ export class HeaderComponent implements OnInit {
       }
     } catch (error) {}
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -136,10 +142,14 @@ export class HeaderComponent implements OnInit {
     noteType.visibility = !noteType.visibility;
     console.log(noteType);
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       // console.log('oiasjdfioajsdfiojasdofaoisdvnioj');
 
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.save();
   }
@@ -169,8 +179,12 @@ export class HeaderComponent implements OnInit {
       refLabelOR2.visible = false;
     }
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -183,8 +197,12 @@ export class HeaderComponent implements OnInit {
       refLabelOR2.visible = !refLabelOR2.visible;
     }
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -227,8 +245,12 @@ export class HeaderComponent implements OnInit {
       });
     }
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -246,8 +268,12 @@ export class HeaderComponent implements OnInit {
       this.flipRefLabelVis('reference-label-quotation-1', vis);
     }
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -263,8 +289,12 @@ export class HeaderComponent implements OnInit {
         ref as string
       ];
     }
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     this.saveStateService.save();
   }
@@ -315,8 +345,12 @@ export class HeaderComponent implements OnInit {
       orTR1.visible = refLabelTRN2.visible;
       orTR2.visible = refLabelTRN2.visible;
     }
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }
@@ -342,8 +376,12 @@ export class HeaderComponent implements OnInit {
       orTR2.visible = refLabelTRN2.visible;
     }
 
-    if (this.chapterService.notes) {
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
       this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
     }
     await this.saveStateService.save();
   }

@@ -6,6 +6,7 @@ import { DatabaseService } from './database.service';
 import { Router } from '@angular/router';
 import { PageState } from './PageState';
 import { ChapterVerses, VerseNotes } from '../models/verse-notes';
+import { OffsetGroup, VerseNoteOffsetGroup } from './offset-groups.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,7 @@ export class PageStateService {
     chapter: Chapter,
     chapterVerses: ChapterVerses,
     chapterNotes: VerseNotes,
+    // offsetGroups: VerseNoteOffsetGroup[],
   ): Promise<void> {
     // console.log('oiasdjfoiajsdf');
     // this.timer = undefined;
@@ -43,7 +45,7 @@ export class PageStateService {
     pageState.chapterNotes = chapterNotes;
     pageState.chapter = chapter;
     pageState.chapterVerses = chapterVerses;
-
+    // pageState.offsetGroups = offsetGroups;
     this.setScrollTop(pageState);
     // await this.databaseService.updateDatabaseItem(pageState);
     this.pageStateMap.set(pageState._id, pageState);

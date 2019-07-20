@@ -23,6 +23,6 @@ export class OffsetGroupComponent implements OnInit {
   }
 
   public ngOnInit() {
-    console.log(this.offsetGroup);
+    // console.log(this.offsetGroup);
   }
 }

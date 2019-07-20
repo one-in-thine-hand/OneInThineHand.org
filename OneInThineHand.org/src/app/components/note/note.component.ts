@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
   NotePhrase,
-  getVisible,
   NoteType,
+  getVisible,
 } from '../../../../../shared/src/shared';
 import { ChapterService } from '../../services/chapter.service';
 import { OffsetService } from '../../services/offset.service';
@@ -35,6 +35,7 @@ import { SaveStateService } from '../../services/save-state.service';
 export class NoteComponent implements OnInit {
   public audio: HTMLAudioElement;
   public edit = false;
+  @Input() public offsetGroups?: OffsetGroup[];
   public tempNote: Note | undefined;
   // public audio?: Audio;
   @Input() public verseNotes: VerseNote;
@@ -119,6 +120,8 @@ export class NoteComponent implements OnInit {
             secondaryNote.noteRefs &&
             secondaryNote.notePhrase
           ) {
+            // console.log(getVisible(secondaryNote.noteRefs).length);
+
             return getVisible(secondaryNote.noteRefs).length > 0;
           }
           return false;
@@ -138,7 +141,9 @@ export class NoteComponent implements OnInit {
     });
   }
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    console.log(this.offsetGroups);
+  }
 
   public async notePhraseClick(secondaryNote: Note): Promise<void> {
     const selection = window.getSelection();

@@ -9,6 +9,7 @@ import {
   VerseNote,
   FormatGroup,
 } from '../models/verse-notes';
+import { OffsetGroup, VerseNoteOffsetGroup } from './offset-groups.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class ChapterService {
   public chapterVerses: ChapterVerses | undefined;
   public kjvChapterNotes: VerseNotes | undefined;
   public notes: VerseNote[] | undefined;
+  public offsetGroups?: VerseNoteOffsetGroup[];
   public verses: Verse[] | undefined;
 
   public constructor() {}

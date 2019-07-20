@@ -31,7 +31,7 @@
   </ng-container>
   <ng-template #elseTemplate>
     <app-offset-group
-      *ngFor="let offsetGroup of getOffsetGroups()"
+      *ngFor="let offsetGroup of offsetGroups"
       [offsetGroup]="offsetGroup"
       [verseNotes]="this.verseNotes"
     ></app-offset-group>

@@ -24,6 +24,12 @@ import {
   FormatGroup,
 } from '../../models/verse-notes';
 import { combineLatest } from 'rxjs';
+import {
+  OffsetGroup,
+  OffsetGroupsService,
+  VerseNoteOffsetGroup,
+} from '../../services/offset-groups.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -35,14 +41,16 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public chapterVerses?: ChapterVerses;
   public ctrlKeyInterval?: NodeJS.Timer;
   public ctrlKeyPressed: boolean;
+  public currentLanguage = 'eng';
   public fadeInChapter = false;
   public fadeOutChapter = false;
+  public offsetGroups: VerseNoteOffsetGroup[];
   public popStateActivated = false;
   public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
-  public currentLanguage = 'eng';
   public constructor(
     public titleService: Title,
+    public tempSettingsService: TempSettingsService,
     public chapterService: ChapterService,
     public offsetService: OffsetService,
     public visibilityService: VisibilityService,
@@ -54,6 +62,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public paramService: ParamService,
     public pageStateService: PageStateService,
     public router: Router,
+    public offsetGroupService: OffsetGroupsService,
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
@@ -178,6 +187,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapterNotes,
                   this.chapterVerses,
                   this.chapter,
+                  // this.offsetGroups,
                   false,
                   true,
                 );
@@ -221,6 +231,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   this.chapter = all[0] as Chapter;
                   this.chapterVerses = all[1] as ChapterVerses;
                   this.chapterNotes = all[2] as VerseNotes;
+                  // this.offsetService.expandNotes(this.chapterNotes)
+                  // this.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+                  //   this.chapterNotes,
+                  // );
+                  console.log(this.offsetGroups);
 
                   this.chapterService.chapterBreaks = all[3] as {
                     _id: string;
@@ -253,6 +268,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                       this.chapterNotes,
                       this.chapterVerses,
                       this.chapter,
+                      // this.offsetGroups,
                     );
                     if (this.chapterVerses.verses) {
                       this.setHighlighting(
@@ -410,6 +426,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     chapterNotes: VerseNotes,
     chapterVerses: ChapterVerses,
     chapter: Chapter,
+    // offsetGroups: VerseNoteOffsetGroup[],
     newPage: boolean = true,
     pageStateActive: boolean = false,
   ): Promise<void> {
@@ -442,6 +459,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.chapterService.verses = chapterVerses
       ? chapterVerses.verses
       : undefined;
+
     if (this.chapterNotes) {
       this.chapterService.notes = this.chapterNotes.verseNotes;
     }
@@ -458,12 +476,20 @@ export class ChapterComponent implements OnInit, OnDestroy {
       console.log(error);
     }
     if (newPage) {
-      await this.pageStateService.newPage(chapter, chapterVerses, chapterNotes);
+      await this.pageStateService.newPage(
+        chapter,
+        chapterVerses,
+        chapterNotes,
+        // offsetGroups,
+      );
     }
     this.headerService.headerTitle = chapter.title;
     this.headerService.headerShortTitle = chapter.shortTitle;
     this.visibilityService.resetNoteVisibility(
       chapterNotes ? chapterNotes.verseNotes : [],
+    );
+    this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+      this.chapterService.chapterNotes,
     );
   }
 
@@ -518,11 +544,17 @@ export class ChapterComponent implements OnInit, OnDestroy {
 
   private async setHistory(): Promise<void> {
     try {
-      if (this.chapter && this.chapterVerses && this.chapterNotes) {
+      if (
+        this.chapter &&
+        this.chapterVerses &&
+        this.chapterNotes &&
+        this.offsetGroups
+      ) {
         this.pageStateService.newPage(
           this.chapter,
           this.chapterVerses,
           this.chapterNotes,
+          // this.offsetGroups,
         );
       }
     } catch (error) {

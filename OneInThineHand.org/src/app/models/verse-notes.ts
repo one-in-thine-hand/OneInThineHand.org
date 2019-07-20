@@ -111,12 +111,12 @@ export class FormatTag {
 
 export class RefTag {
   public highlight = false;
+  public noteType: number;
   public offsets: string | undefined;
   public pronunciation?: boolean;
   public pronunciationHref?: string;
   public refs: string[];
   public secondaryNoteID: string;
-  public noteType: number;
   public uncompressedOffsets: number[] | undefined;
 }
 
@@ -124,10 +124,10 @@ export class FMerged {
   public breaks: FormatTag[] | undefined;
   public formatTags: FormatTag[] | undefined;
   public offsets: number[] = [];
+  pronunciation: boolean | undefined;
   public pronunciationIcon?: boolean;
   public refTags: RefTag[] | undefined;
   public text = '';
-  pronunciation: boolean | undefined;
 }
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
@@ -627,11 +627,11 @@ export class NoteRef implements Visibility {
 
 export class NoteRefFormatTag {
   public highlight = false;
+  public noteType: number;
   public offsets: string | undefined;
   public refs: string[];
   public secondaryNoteID: string;
   public uncompressedOffsets: number[] | undefined;
-  public noteType: number;
 }
 
 export class MergedFormatTags {
@@ -650,6 +650,7 @@ export class Note implements CouchDoc, Doc, Offsets {
   public lang: LanguageCode;
   public noteMarker?: string;
   public notePhrase: string;
+  notePhraseVis: boolean;
   public noteRefFormatTag?: NoteRefFormatTag;
   public noteRefs: NoteRef[];
   public noteType: number;
@@ -658,7 +659,6 @@ export class Note implements CouchDoc, Doc, Offsets {
   public verseMarker?: string;
   // public noteProperities?: NoteProperities;
   public visible?: boolean;
-  notePhraseVis: boolean;
 
   public constructor(
     _id: string,

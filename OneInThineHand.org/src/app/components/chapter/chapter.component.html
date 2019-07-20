@@ -65,11 +65,27 @@
   </div>
   <div id="notes" *ngIf="this.saveStateService.data.notesPaneToggle">
     <div class="notes-top"></div>
-    <ng-container *ngIf="chapterNotes && chapterNotes.verseNotes">
+    <ng-container
+      *ngIf="
+        chapterNotes && chapterNotes.verseNotes && tempSettingsService.editMode
+      "
+    >
       <app-note
         class="app-note"
         *ngFor="let note of chapterNotes.verseNotes"
         [verseNotes]="note"
+      ></app-note>
+      <div
+        class="white-space"
+        [ngStyle]="{ height: getWhiteSpaceHeight() }"
+      ></div>
+    </ng-container>
+    <ng-container *ngIf="this.chapterService.offsetGroups">
+      <app-note
+        class="app-note"
+        *ngFor="let offsetGroup of this.chapterService.offsetGroups"
+        [offsetGroups]="offsetGroup.offsetGroups"
+        [verseNotes]="offsetGroup.verseNote"
       ></app-note>
       <div
         class="white-space"
