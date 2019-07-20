@@ -148,9 +148,10 @@ export class ChapterComponent implements OnInit, OnDestroy {
         } else {
           this.currentLanguage = language;
 
+          await this.setHistory();
+
           this.fadeOutChapter = true;
           this.fadeInChapter = false;
-          await this.setHistory();
 
           if (chapterParams.book.includes('jst_')) {
             console.log('naviv');
@@ -280,6 +281,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   } catch (error) {
                     console.log(error);
                   }
+                  await asyncScrollTop('#notes');
                 } catch (error) {}
               }
             }
@@ -547,8 +549,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
       if (
         this.chapter &&
         this.chapterVerses &&
-        this.chapterNotes &&
-        this.offsetGroups
+        this.chapterNotes
+        // this.offsetGroups
       ) {
         this.pageStateService.newPage(
           this.chapter,

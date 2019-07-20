@@ -142,7 +142,7 @@ export class NoteComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    console.log(this.offsetGroups);
+    // console.log(this.offsetGroups);
   }
 
   public async notePhraseClick(secondaryNote: Note): Promise<void> {
