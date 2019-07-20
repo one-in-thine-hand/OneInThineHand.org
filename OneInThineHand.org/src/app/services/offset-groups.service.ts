@@ -55,14 +55,16 @@ export class OffsetGroupsService {
           } else {
             offsetGroups.push({
               notePhrase: note.notePhrase,
-              offsets: note.offsets,
+              offsets: note.offsets ? note.offsets : '10000000000000',
               notes: [note],
             });
           }
         });
     }
 
-    return offsetGroups;
+    return sortBy(offsetGroups, (offsetGroup): number => {
+      return parseInt(offsetGroup.offsets.split('-')[0], 10);
+    });
   }
 }
 
@@ -70,7 +72,7 @@ export class OffsetGroup {
   public notePhrase: string;
 
   public notes: Note[];
-  public offsets?: string;
+  public offsets: string;
 }
 
 export class VerseNoteOffsetGroup {

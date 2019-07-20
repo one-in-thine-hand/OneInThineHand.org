@@ -42,83 +42,18 @@ export class FormatTagComponent implements OnInit {
   ) {}
 
   public async formatTagClick(event: Event): Promise<void> {
-    // const selection = window.getSelection();
-    // this.visibilityService.resetHighlight();
     if (this.checkNoTextIsSelected()) {
       this.chapterService.resetNoteVis();
 
       if (this.fMerged.refTags) {
-        if (this.refList === undefined) {
-          // this.refList = this.fMerged.refTags.map((refT): string => {
-          //   return refT.secondaryNoteID;
-          // });
-          const tempRefList = this.getVisibleRefTags(false, false);
-
-          if (tempRefList) {
-            this.refList = sortBy(tempRefList, (t): number => {
-              return t.noteType;
-            })
-              .reverse()
-              .map((refTag): string => {
-                return refTag.secondaryNoteID;
-              });
-            // console.log(
-            //   sortBy(tempRefList, (t): number => {
-            //     console.log(t.noteType);
-
-            //     return t.uncompressedOffsets !== undefined
-            //       ? t.uncompressedOffsets[0]
-            //       : 0;
-            //   }),
-            // );
-
-            // tempRefList
-            //   .sort((ref): string | undefined => {
-            //     return ref.offsets;
-            //   })
-            //   .map((refTag): string => {
-            //     return refTag.secondaryNoteID;
-            //   });
-          }
-          if (this.fMerged.pronunciation) {
-            // this.fMerged.refTags.filter(f=>{return f.refs})
-            this.fMerged.refTags.map((ft): void => {
-              if (ft.pronunciationHref) {
-                const audio = new Audio(`assets/audio/${ft.pronunciationHref}`);
-                audio.play();
-              }
-            });
-          }
-        }
-        if (this.refList) {
-          const id = this.refList.pop();
-          const r = findByAttribute(
-            'secondaryNoteID',
-            id,
-            this.fMerged.refTags,
-          );
-
-          if (r) {
-            r.highlight = true;
-
-            await asyncScrollIntoView(
-              `#${(this.verse.note as VerseNote)._id as string}`,
-            );
-            // await asyncScrollIntoView(`#${r.secondaryNoteID}`);
-          } else {
-            this.refList = undefined;
-          }
-        }
-        // this.fMerged.refTags[0].highlight = !this.fMerged.refTags[0].highlight;
+        this.setRefList();
+        this.playPronunciation();
+        await this.gotoNote();
       }
-      // if (selection) {
-      //   selection.addRange(selection.getRangeAt(0));
-      // }
     }
   }
 
   public getClassList(): string {
-    this.getVisibleRefTags();
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags(false, true);
     if (
@@ -127,14 +62,12 @@ export class FormatTagComponent implements OnInit {
     ) {
       classList.push('pronunciation-icon');
     }
-    // else if(this.fMerged.pronunciation && this.saveStateService.data.pronunciationVisible){}
     if (this.fMerged.breaks) {
       this.fMerged.breaks.map((brk): void => {
         const fto = formatTagTypeOptions.find((f): boolean => {
           return f.formatTagType === brk.formatType;
         });
         if (fto && fto.className) {
-          // console.log(fto.className);
           classList.push(fto.className);
         }
       });
@@ -153,11 +86,6 @@ export class FormatTagComponent implements OnInit {
       } else {
         this.refList = undefined;
       }
-      // this.fMerged.refTags.map(
-      //   (f): void => {
-      //     // if(f)
-      //   },
-      // );
     }
     if (this.fMerged.formatTags && this.fMerged.formatTags.length > 0) {
       this.fMerged.formatTags
@@ -202,17 +130,11 @@ export class FormatTagComponent implements OnInit {
           f.optional !== (Optional.NEVER as number)
         );
       });
-      // .map(
-      //   (f): void => {
-      //   },
-      // );
 
       return this.markService.getFormatTagRichText(
         this.fMerged.text,
         richFormatTags,
       );
-
-      // return text;
     }
     if (this.text !== text) {
       this.text = text;
@@ -264,11 +186,54 @@ export class FormatTagComponent implements OnInit {
         );
       });
       if (!this.tempSettingsService.editMode && !includeDup) {
-        return uniqBy(refs, (ref): string | undefined => {
-          return ref.offsets;
+        return uniqBy(refs, (ref): number => {
+          return ref.uncompressedOffsets
+            ? ref.uncompressedOffsets.length
+            : 10000;
         });
       }
       return refs;
+    }
+  }
+
+  private async gotoNote(): Promise<void> {
+    if (this.refList) {
+      const id = this.refList.pop();
+      const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
+      if (r) {
+        r.highlight = true;
+        await asyncScrollIntoView(
+          `#${(this.verse.note as VerseNote)._id as string}`,
+        );
+      } else {
+        this.refList = undefined;
+      }
+    }
+  }
+
+  private playPronunciation(): void {
+    if (this.fMerged.pronunciation && this.fMerged.refTags) {
+      this.fMerged.refTags.map((ft): void => {
+        if (ft.pronunciationHref) {
+          const audio = new Audio(`assets/audio/${ft.pronunciationHref}`);
+          audio.play();
+        }
+      });
+    }
+  }
+
+  private setRefList(): void {
+    if (this.refList === undefined) {
+      const tempRefList = this.getVisibleRefTags(false, false);
+      if (tempRefList) {
+        this.refList = sortBy(tempRefList, (t): number => {
+          return t.noteType;
+        })
+          .reverse()
+          .map((refTag): string => {
+            return refTag.secondaryNoteID;
+          });
+      }
     }
   }
 }

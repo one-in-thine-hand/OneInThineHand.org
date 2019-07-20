@@ -8,9 +8,10 @@
       "type": "edge",
       "request": "launch",
       "name": "Launch Edge",
-      "version": "dev",
+      "version": "canary",
       "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}",
+
       "skipFiles": [
         "${workspaceFolder}/node_modules/**/*.js",
         "<node_internals>/**/*.js"
