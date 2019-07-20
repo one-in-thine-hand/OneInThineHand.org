@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { last, sortBy } from 'lodash';
+import { last, sortBy, uniqBy } from 'lodash';
 
 import '../../../../../shared/src/models/format_tags/FormatTag';
 import {
@@ -18,6 +18,7 @@ import { findByAttribute } from '../../services/history.service';
 import { MarkService } from '../../services/mark.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { SaveStateService } from '../../services/save-state.service';
+import { TempSettingsService } from '../../services/temp-settings.service';
 
 @Component({
   selector: 'app-format-tag',
@@ -37,6 +38,7 @@ export class FormatTagComponent implements OnInit {
     public visibilityService: VisibilityService,
     public saveStateService: SaveStateService,
     public chapterService: ChapterService,
+    public tempSettingsService: TempSettingsService,
   ) {}
 
   public async formatTagClick(event: Event): Promise<void> {
@@ -50,7 +52,7 @@ export class FormatTagComponent implements OnInit {
           // this.refList = this.fMerged.refTags.map((refT): string => {
           //   return refT.secondaryNoteID;
           // });
-          const tempRefList = this.getVisibleRefTags(true);
+          const tempRefList = this.getVisibleRefTags(false, false);
 
           if (tempRefList) {
             this.refList = sortBy(tempRefList, (t): number => {
@@ -118,7 +120,7 @@ export class FormatTagComponent implements OnInit {
   public getClassList(): string {
     this.getVisibleRefTags();
     const classList: string[] = [];
-    const visibleRefTags = this.getVisibleRefTags();
+    const visibleRefTags = this.getVisibleRefTags(false, true);
     if (
       this.fMerged.pronunciationIcon &&
       !this.saveStateService.data.pronunciationVisible
@@ -231,9 +233,12 @@ export class FormatTagComponent implements OnInit {
       return false;
     }
   }
-  private getVisibleRefTags(includeAll?: boolean): RefTag[] | undefined {
+  private getVisibleRefTags(
+    includeAll?: boolean,
+    includeDup?: boolean,
+  ): RefTag[] | undefined {
     if (this.fMerged.refTags) {
-      return this.fMerged.refTags.filter((refTag): boolean => {
+      const refs = this.fMerged.refTags.filter((refTag): boolean => {
         if (
           refTag.pronunciation &&
           !this.saveStateService.data.pronunciationVisible
@@ -258,6 +263,12 @@ export class FormatTagComponent implements OnInit {
           ) === true
         );
       });
+      if (!this.tempSettingsService.editMode && !includeDup) {
+        return uniqBy(refs, (ref): string | undefined => {
+          return ref.offsets;
+        });
+      }
+      return refs;
     }
   }
 }
