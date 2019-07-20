@@ -16,7 +16,8 @@ export class OffsetGroupComponent implements OnInit {
     return (
       notes.filter((note): boolean => {
         return (
-          note.noteRefFormatTag !== undefined && note.noteRefFormatTag.highlight
+          note.noteRefFormatTag !== undefined &&
+          note.noteRefFormatTag.highlight === true
         );
       }).length > 0
     );

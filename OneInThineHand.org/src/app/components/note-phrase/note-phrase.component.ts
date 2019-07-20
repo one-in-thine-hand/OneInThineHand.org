@@ -5,7 +5,11 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveService } from '../../services/save.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml,
+  ɵKeyEventsPlugin,
+} from '@angular/platform-browser';
 import { VerseNote, Note } from '../../models/verse-notes';
 
 @Component({
@@ -16,7 +20,9 @@ import { VerseNote, Note } from '../../models/verse-notes';
 export class NotePhraseComponent implements OnInit {
   @Input() public text?: string;
   @Input() public note: Note;
+  @Input() public notes: Note[];
   @Input() public verseNotes: VerseNote;
+  public selected = false;
 
   public constructor(
     public chapterService: ChapterService,
@@ -33,22 +39,36 @@ export class NotePhraseComponent implements OnInit {
       : 'Note Phrase Missing';
   }
   public ngOnInit(): void {}
-  public async notePhraseClick(secondaryNote: Note): Promise<void> {
+  public async notePhraseClick(notes: Note[]): Promise<void> {
     const selection = window.getSelection();
+    // console.log(notes);
 
     this.scrollVerseIntoView();
-    if (selection) {
-      try {
-        await this.addOffsets(selection, secondaryNote);
-      } catch (error) {}
+    if (selection && selection.rangeCount > 0) {
+      console.log(selection);
 
-      if (secondaryNote.noteRefFormatTag) {
-        // console.log(secondaryNote);
-        const oldHighlight = secondaryNote.noteRefFormatTag.highlight;
-        this.chapterService.resetNoteVis();
-        secondaryNote.noteRefFormatTag.highlight = !oldHighlight;
-      }
+      notes.map(
+        async (note): Promise<void> => {
+          try {
+            await this.addOffsets(selection, note);
+          } catch (error) {}
+        },
+      );
     }
+    // console.log(notes);
+
+    const n = notes[0];
+    if (n.noteRefFormatTag) {
+      // console.log(note);
+      const oldHighlight = n.noteRefFormatTag.highlight;
+      console.log(n.noteRefFormatTag);
+
+      this.chapterService.resetNoteVis();
+      console.log(oldHighlight);
+      n.noteRefFormatTag.highlight = !oldHighlight;
+    }
+    // this.notes.map((note): void => {
+    // });
   }
 
   private async addOffsets(
