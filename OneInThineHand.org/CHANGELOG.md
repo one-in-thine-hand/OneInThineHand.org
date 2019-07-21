@@ -1,3 +1,9 @@
+## <small>5.0.97 (2019-07-21)</small>
+
+* note settings bugs fixes ([410222f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/410222f))
+
+
+
 ## <small>5.0.96 (2019-07-21)</small>
 
 * breaks work ([3e24e73](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3e24e73))
@@ -8,6 +14,7 @@
 * testing observables ([2a4e237](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2a4e237))
 * Updated note category list ([3213240](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3213240))
 * v5.0.94 ([f400cc9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f400cc9))
+* v5.0.96 ([636702a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/636702a))
 
 
 
