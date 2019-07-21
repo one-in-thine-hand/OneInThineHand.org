@@ -59,7 +59,8 @@ export class FormatTagComponent implements OnInit {
     const visibleRefTags = this.getVisibleRefTags(false, false);
     if (
       this.fMerged.pronunciationIcon &&
-      !this.saveStateService.data.pronunciationVisible
+      this.saveStateService.data.pronunciation.vis &&
+      !this.saveStateService.data.pronunciationMore.vis
     ) {
       classList.push('pronunciation-icon');
     }

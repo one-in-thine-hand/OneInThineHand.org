@@ -54,6 +54,7 @@ export class NoteCategorySettingsComponent implements OnInit {
 
     await this.resetNotes();
   }
+
   public async geoMoreClick(): Promise<void> {
     this.moreClick('geo');
 
@@ -137,12 +138,15 @@ export class NoteCategorySettingsComponent implements OnInit {
   }
   public async pronunciationClick(): Promise<void> {
     await this.baseClick('pronunciation');
+    this.saveStateService.data.pronunciationVisible = false;
 
     await this.resetNotes();
   }
   public async pronunciationMoreClick(): Promise<void> {
-    this.moreClick('pronunciation');
+    await this.moreClick('pronunciation');
 
+    this.saveStateService.data.pronunciationVisible = !this.saveStateService
+      .data.pronunciationVisible;
     await this.resetNotes();
   }
   public async quoClick(): Promise<void> {
@@ -400,12 +404,15 @@ export class NoteCategorySettingsComponent implements OnInit {
   private setPronunciationNotesVisibility(): void {
     this.setNoteCategoriesVisibility(
       ['reference-label-pronunciation-2'],
-      this.saveStateService.data.pronunciation.vis,
+      this.saveStateService.data.pronunciationMore.vis,
     );
-    this.saveStateService.data.pronunciationVisible = this.saveStateService.data.pronunciationMore.vis;
-  }
+    // this.saveStateService.data.pronunciationMore =
+    //   this.saveStateService.data.pronunciation.vis &&
+    //   !this.saveStateService.data.pronunciationMore.vis;
 
-  private setQuotationVisibility() {
+    console.log(this.saveStateService.data.pronunciationVisible);
+  }
+  private setQuotationVisibility(): void {
     this.setNoteCategoriesVisibility(
       ['reference-label-quotation'],
       this.saveStateService.data.quo.vis,
