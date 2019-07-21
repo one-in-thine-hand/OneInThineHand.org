@@ -56,7 +56,7 @@ export class NoteCategorySettingsComponent implements OnInit {
   }
 
   public async geoMoreClick(): Promise<void> {
-    this.moreClick('geo');
+    await this.moreClick('geo');
 
     await this.resetNotes();
   }
@@ -99,7 +99,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async hstMoreClick(): Promise<void> {
-    this.moreClick('hst');
+    await this.moreClick('hst');
 
     await this.resetNotes();
   }
@@ -122,7 +122,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async orMoreClick(): Promise<void> {
-    this.moreClick('or');
+    await this.moreClick('or');
 
     await this.resetNotes();
   }
@@ -132,7 +132,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async phrMoreClick(): Promise<void> {
-    this.moreClick('phr');
+    await this.moreClick('phr');
 
     await this.resetNotes();
   }
@@ -155,7 +155,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async quoMoreClick(): Promise<void> {
-    this.moreClick('quo');
+    await this.moreClick('quo');
 
     await this.resetNotes();
   }
@@ -171,7 +171,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async trnMoreClick(): Promise<void> {
-    this.moreClick('trn');
+    await this.moreClick('trn');
 
     await this.resetNotes();
   }

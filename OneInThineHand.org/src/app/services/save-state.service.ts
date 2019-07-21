@@ -6,6 +6,8 @@ import {
   NOTE_CATEGORIES,
   NoteTypes,
   NoteTypeOverlay,
+  NoteCategorySort,
+  NoteCategory,
 } from '../models/verse-notes';
 import {
   NoteTypeConverts,
@@ -72,7 +74,7 @@ export class SaveStateService {
         this.data.noteTypeSettings = NoteTypeConverts;
       }
 
-      this.mergeNoteSettings(this.data.noteCategorySettings, NOTE_CATEGORIES);
+      this.mergeNoteCategories(this.data.noteCategorySettings, NOTE_CATEGORIES);
       // console.log(this.data.noteTypeSettings);
 
       this.data.noteCategorySettings = this.data.noteCategorySettings.filter(
@@ -195,6 +197,31 @@ export class SaveStateService {
         if (!nTC) {
           // console.log(noteTypeConvert);
           noteSettings.push(noteTypeConvert);
+        } else {
+          // nTC.
+        }
+      });
+    } else {
+      noteSettings = noteSettingsMaster;
+    }
+  }
+  private mergeNoteCategories(
+    noteSettings: NoteCategory[],
+    noteSettingsMaster: NoteCategory[],
+  ): void {
+    if (noteSettings) {
+      noteSettingsMaster.map((noteTypeConvert): void => {
+        const nTC = noteSettings.find((nT): boolean => {
+          return nT.className === noteTypeConvert.className;
+        });
+        if (!nTC) {
+          // console.log(noteTypeConvert);
+          noteSettings.push(noteTypeConvert);
+        } else {
+          nTC.noteCategory = noteTypeConvert.noteCategory;
+          nTC.noteCategoryName = noteTypeConvert.noteCategoryName;
+          nTC.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
+          nTC.sortOrder = noteTypeConvert.sortOrder;
         }
       });
     } else {
