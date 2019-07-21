@@ -1,3 +1,12 @@
+## <small>5.0.94 (2019-07-21)</small>
+
+* All notes fixed ([a7bd847](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a7bd847))
+* Bug fixes ([c7ad7b2](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c7ad7b2))
+* New category settings ([93ce98e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/93ce98e))
+* Partial note category settings ([c2c1ae8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c2c1ae8))
+
+
+
 ## <small>5.0.93 (2019-07-20)</small>
 
 * Adding offset groups ([20db463](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/20db463))
@@ -8,6 +17,7 @@
 * offset groups displaying ([bb32ee0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bb32ee0))
 * offset groups displays ([c4096b3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c4096b3))
 * page state  bugs ([e752e83](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/e752e83))
+* v5.0.93 ([f8037b8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f8037b8))
 
 
 
