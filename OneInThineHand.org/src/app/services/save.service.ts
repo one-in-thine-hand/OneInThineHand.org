@@ -82,6 +82,7 @@ export class SaveService {
       this.chaterService.chapterBreaks.verseBreaks
     ) {
       vBreaks = cloneDeep(this.chaterService.chapterBreaks);
+      console.log(vBreaks);
     } else {
       vBreaks = this.generateBreaks();
     }
@@ -110,7 +111,7 @@ export class SaveService {
               _id: string;
               breaks: FormatGroup[];
             } = {
-              _id: verse._id ? verse._id.replace('verse', 'verse-breaks') : '',
+              _id: verse._id ? verse._id.replace('verse', 'breaks') : '',
               breaks: [],
             };
             if (verse.fakeVerseBreak) {
@@ -247,7 +248,7 @@ export class SaveService {
         breaks: FormatGroup[];
       } => {
         return {
-          _id: verse._id ? verse._id.replace('verse', 'verse-breaks') : '',
+          _id: verse._id ? verse._id.replace('verse', 'breaks') : '',
           breaks: [],
         };
       });

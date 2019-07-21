@@ -48,7 +48,9 @@ export class FormatTagComponent implements OnInit {
       if (this.fMerged.refTags) {
         this.setRefList();
 
-        this.playPronunciation();
+        if (this.saveStateService.data.pronunciation.vis) {
+          this.playPronunciation();
+        }
         await this.gotoNote();
       }
     }
