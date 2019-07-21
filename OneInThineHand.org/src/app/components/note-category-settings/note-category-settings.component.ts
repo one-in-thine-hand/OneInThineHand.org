@@ -23,50 +23,41 @@ export class NoteCategorySettingsComponent implements OnInit {
     public visibilityService: VisibilityService,
   ) {}
 
-  public altClick(): void {
-    this.flipVisibility('alt');
+  public async altClick(): Promise<void> {
+    await this.flipVisibility('alt');
     this.setNoteCategoriesVisibility(
       ['reference-label-alt'],
       this.saveStateService.data.alt.vis,
     );
-    this.resetNotes();
+    await this.resetNotes();
   }
-  public baseClick(baseName: string): void {
-    this.flipVisibility(baseName);
-    this.flipVisibility(`${baseName}More`, false);
+  public async baseClick(baseName: string): Promise<void> {
+    await this.flipVisibility(baseName);
+    await this.flipVisibility(`${baseName}More`, false);
   }
-  public bdClick(): void {
-    this.flipVisibility('bd');
+  public async bdClick(): Promise<void> {
+    await this.flipVisibility('bd');
     this.setNoteCategoriesVisibility(
       ['reference-label-bd'],
       this.saveStateService.data.bd.vis,
     );
-    this.resetNotes();
+    await this.resetNotes();
   }
 
-  public crClick(): void {
-    this.flipVisibility('cr');
-    if (this.saveStateService.data.cr) {
-    } else {
-    }
-    this.resetNotes();
+  public async crClick(): Promise<void> {
+    await this.flipVisibility('cr');
+
+    await this.resetNotes();
   }
-  public geoClick(): void {
-    this.baseClick('geo');
-    // this.flipVisibility('geo');
-    // this.flipVisibility('geoMore', false);
-    if (this.saveStateService.data.geo) {
-    } else {
-    }
-    this.resetNotes();
+  public async geoClick(): Promise<void> {
+    await this.baseClick('geo');
+
+    await this.resetNotes();
   }
-  public geoMoreClick(): void {
-    this.flipVisibility('geo', true);
-    this.flipVisibility('geoMore');
-    if (this.saveStateService.data.geoMore) {
-    } else {
-    }
-    this.resetNotes();
+  public async geoMoreClick(): Promise<void> {
+    this.moreClick('geo');
+
+    await this.resetNotes();
   }
   public getNoteType(typeName: string): NoteTypeOverlay | undefined {
     return this.saveStateService.data.noteTypes
@@ -75,146 +66,110 @@ export class NoteCategorySettingsComponent implements OnInit {
         })
       : undefined;
   }
-  public grClick(): void {
-    this.flipVisibility('gr');
-    this.setNoteCategoriesVisibility(
-      ['reference-label-greek'],
-      this.saveStateService.data.gr.vis,
-    );
-    this.resetNotes();
+  public async grClick(): Promise<void> {
+    await this.flipVisibility('gr');
+
+    await this.resetNotes();
   }
-  public gsClick(): void {
-    this.flipVisibility('gs');
+  public async gsClick(): Promise<void> {
+    await this.flipVisibility('gs');
     this.setNoteCategoriesVisibility(
       ['reference-label-gs'],
       this.saveStateService.data.gs.vis,
     );
-    this.resetNotes();
+    await this.resetNotes();
   }
-  public hebClick(): void {
-    this.flipVisibility('heb');
-    this.setNoteCategoriesVisibility(
-      ['reference-label-heb'],
-      this.saveStateService.data.heb.vis,
-    );
-    this.resetNotes();
+  public async hebClick(): Promise<void> {
+    await this.flipVisibility('heb');
+
+    await this.resetNotes();
   }
-  public hmyClick(): void {
-    this.flipVisibility('hmy');
+  public async hmyClick(): Promise<void> {
+    await this.flipVisibility('hmy');
     this.setNoteCategoriesVisibility(
       ['reference-label-harmony'],
       this.saveStateService.data.hmy.vis,
     );
-    this.resetNotes();
+    await this.resetNotes();
   }
-  public hstClick(): void {
-    this.baseClick('hst');
-    if (this.saveStateService.data.hst) {
-    } else {
-    }
-    this.resetNotes();
+  public async hstClick(): Promise<void> {
+    await this.baseClick('hst');
+
+    await this.resetNotes();
   }
-  public hstMoreClick(): void {
+  public async hstMoreClick(): Promise<void> {
     this.moreClick('hst');
-    if (this.saveStateService.data.hstMore) {
-    } else {
-    }
-    this.resetNotes();
+
+    await this.resetNotes();
   }
 
-  public ieClick(): void {
-    this.flipVisibility('ie');
-    if (this.saveStateService.data.ie) {
-    } else {
-    }
-    this.resetNotes();
+  public async ieClick(): Promise<void> {
+    await this.flipVisibility('ie');
+
+    await this.resetNotes();
   }
-  public moreClick(baseName: string): void {
-    this.flipVisibility(baseName, true);
-    this.flipVisibility(`${baseName}More`);
+  public async moreClick(baseName: string): Promise<void> {
+    await this.flipVisibility(baseName, true);
+    await this.flipVisibility(`${baseName}More`);
   }
 
   public ngOnInit(): void {}
 
-  public orClick(): void {
-    this.baseClick('or');
-    if (this.saveStateService.data.or) {
-    } else {
-    }
-    this.resetNotes();
+  public async orClick(): Promise<void> {
+    await this.baseClick('or');
+
+    await this.resetNotes();
   }
-  public orMoreClick(): void {
+  public async orMoreClick(): Promise<void> {
     this.moreClick('or');
-    if (this.saveStateService.data.orMore) {
-    } else {
-    }
-    this.resetNotes();
+
+    await this.resetNotes();
   }
-  public phrClick(): void {
-    this.baseClick('phr');
-    if (this.saveStateService.data.phr) {
-    } else {
-    }
-    this.resetNotes();
+  public async phrClick(): Promise<void> {
+    await this.baseClick('phr');
+
+    await this.resetNotes();
   }
-  public phrMoreClick(): void {
+  public async phrMoreClick(): Promise<void> {
     this.moreClick('phr');
-    if (this.saveStateService.data.phrMore) {
-    } else {
-    }
-    this.resetNotes();
+
+    await this.resetNotes();
   }
-  public pronunciationClick(): void {
-    this.baseClick('pronunciation');
-    if (this.saveStateService.data.pronunciation) {
-    } else {
-    }
-    this.resetNotes();
+  public async pronunciationClick(): Promise<void> {
+    await this.baseClick('pronunciation');
+
+    await this.resetNotes();
   }
-  public pronunciationMoreClick(): void {
+  public async pronunciationMoreClick(): Promise<void> {
     this.moreClick('pronunciation');
 
-    if (this.saveStateService.data.pronunciation) {
-    } else {
-    }
-    this.resetNotes();
+    await this.resetNotes();
   }
-  public quoClick(): void {
-    this.baseClick('quo');
-    if (this.saveStateService.data.quo) {
-    } else {
-    }
-    this.resetNotes();
+  public async quoClick(): Promise<void> {
+    await this.baseClick('quo');
+
+    await this.resetNotes();
   }
-  public quoMoreClick(): void {
+  public async quoMoreClick(): Promise<void> {
     this.moreClick('quo');
-    if (this.saveStateService.data.quoMore) {
-    } else {
-    }
-    this.resetNotes();
+
+    await this.resetNotes();
   }
-  public tgClick(): void {
-    this.flipVisibility('tg');
-    this.setNoteCategoriesVisibility(
-      ['reference-label-tg'],
-      this.saveStateService.data.tg.vis,
-    );
-    this.resetNotes();
+  public async tgClick(): Promise<void> {
+    await this.flipVisibility('tg');
+
+    await this.resetNotes();
   }
 
-  public trnClick(): void {
-    this.baseClick('trn');
-    if (this.saveStateService.data.trn) {
-    } else {
-    }
-    this.resetNotes();
+  public async trnClick(): Promise<void> {
+    await this.baseClick('trn');
+
+    await this.resetNotes();
   }
-  public trnMoreClick(): void {
+  public async trnMoreClick(): Promise<void> {
     this.moreClick('trn');
-    if (this.saveStateService.data.trnMore) {
-    } else {
-    }
-    this.resetNotes();
+
+    await this.resetNotes();
   }
 
   private findNoteCategory(
@@ -226,7 +181,10 @@ export class NoteCategorySettingsComponent implements OnInit {
       },
     );
   }
-  private flipVisibility(noteVisibilityBtn: string, vis?: boolean): void {
+  private async flipVisibility(
+    noteVisibilityBtn: string,
+    vis?: boolean,
+  ): Promise<void> {
     const noteVisButton = this.saveStateService.data[
       noteVisibilityBtn
     ] as NoteVisiblityBtn;
@@ -237,87 +195,54 @@ export class NoteCategorySettingsComponent implements OnInit {
   }
 
   private resetNoteCategoryVisibility(): void {
-    this.setNoteCategoriesVisibility(
-      ['reference-label-harmony'],
-      this.saveStateService.data.hmy.vis,
-    );
+    this.setHarmonyNotesVisiblity();
     this.setQuotationVisibility();
 
     this.setPhrasingNotesVisibility();
 
-    this.setNoteCategoriesVisibility(
-      ['reference-label-translation'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-translation-1'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-translation-2'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-or-translation-1'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-or-translation-2'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-or'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-alt'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-ie-quotation'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-ie-quotation-1'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-ie-quotation-2'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-ie'],
-      this.saveStateService.data.quo.vis,
-    );
+    this.setTranslationVisibility();
+
+    this.setIENoteVisibility();
     this.setCrossRefVisibility();
+    this.setHistoryNotesVisibility();
+    this.setGeographyNotesVisibility();
+    this.setPronunciationNotesVisibility();
     this.setNoteCategoriesVisibility(
-      ['reference-label-history'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-geography'],
-      this.saveStateService.data.quo.vis,
-    );
-    this.setNoteCategoriesVisibility(
-      ['reference-label-pronunciation-2'],
-      this.saveStateService.data.quo.vis,
+      ['reference-label-heb'],
+      this.saveStateService.data.heb.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-tg'],
-      this.saveStateService.data.quo.vis,
+      this.saveStateService.data.tg.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-greek'],
+      this.saveStateService.data.gr.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-gs'],
-      this.saveStateService.data.quo.vis,
+      this.saveStateService.data.gs.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-bd'],
-      this.saveStateService.data.quo.vis,
+      this.saveStateService.data.bd.vis,
     );
     this.setNoteCategoriesVisibility(
-      ['reference-label-error'],
-      this.saveStateService.data.quo.vis,
+      ['reference-label-alt'],
+      this.saveStateService.data.alt.vis,
     );
+  }
+
+  private async resetNotes(): Promise<void> {
+    this.resetNoteCategoryVisibility();
+    await this.saveStateService.save();
+    if (this.chapterService.notes && this.chapterService.chapterNotes) {
+      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+      this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
+        this.chapterService.chapterNotes,
+      );
+    }
   }
 
   private setCrossRefVisibility(): void {
@@ -334,15 +259,68 @@ export class NoteCategorySettingsComponent implements OnInit {
     );
   }
 
-  private resetNotes(): void {
-    this.resetNoteCategoryVisibility();
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+  private setGeographyNotesVisibility(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-geography'],
+      this.saveStateService.data.geo.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-geography-1'],
+      this.saveStateService.data.geo.vis &&
+        !this.saveStateService.data.geoMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-geography-2'],
+      this.saveStateService.data.geo.vis &&
+        this.saveStateService.data.geoMore.vis,
+    );
+  }
 
-      this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-    }
+  private setHarmonyNotesVisiblity(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-harmony'],
+      this.saveStateService.data.hmy.vis,
+    );
+  }
+
+  private setHistoryNotesVisibility(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-history'],
+      this.saveStateService.data.hst.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-history-1'],
+      this.saveStateService.data.hst.vis &&
+        !this.saveStateService.data.hstMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-history-2'],
+      this.saveStateService.data.hst.vis &&
+        this.saveStateService.data.hstMore.vis,
+    );
+  }
+
+  private setIENoteVisibility(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-ie'],
+      this.saveStateService.data.ie.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-ie-quotation'],
+      this.saveStateService.data.ie.vis && this.saveStateService.data.quo.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-ie-quotation-1'],
+      this.saveStateService.data.ie.vis &&
+        this.saveStateService.data.quo.vis &&
+        !this.saveStateService.data.quoMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-ie-quotation-2'],
+      this.saveStateService.data.ie.vis &&
+        this.saveStateService.data.quo.vis &&
+        this.saveStateService.data.quoMore.vis,
+    );
   }
 
   private setNoteCategoriesVisibility(
@@ -357,7 +335,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     });
   }
 
-  private setPhrasingNotesVisibility() {
+  private setPhrasingNotesVisibility(): void {
     const noteTypeSetting = this.getNoteType('overlay-quo');
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing'],
@@ -419,6 +397,14 @@ export class NoteCategorySettingsComponent implements OnInit {
     );
   }
 
+  private setPronunciationNotesVisibility(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-pronunciation-2'],
+      this.saveStateService.data.pronunciation.vis,
+    );
+    this.saveStateService.data.pronunciationVisible = this.saveStateService.data.pronunciationMore.vis;
+  }
+
   private setQuotationVisibility() {
     this.setNoteCategoriesVisibility(
       ['reference-label-quotation'],
@@ -442,6 +428,39 @@ export class NoteCategorySettingsComponent implements OnInit {
       ['reference-label-quotation-2-none'],
       this.saveStateService.data.quo.vis &&
         !this.saveStateService.data.quoMore.vis,
+    );
+  }
+
+  private setTranslationVisibility(): void {
+    this.setNoteCategoriesVisibility(
+      ['reference-label-translation'],
+      this.saveStateService.data.trn.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-translation-1'],
+      this.saveStateService.data.trn.vis &&
+        !this.saveStateService.data.trnMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-translation-2'],
+      this.saveStateService.data.trn.vis &&
+        this.saveStateService.data.trnMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-or'],
+      this.saveStateService.data.or.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-or-translation-1'],
+      this.saveStateService.data.or.vis &&
+        this.saveStateService.data.trn.vis &&
+        this.saveStateService.data.trnMore.vis,
+    );
+    this.setNoteCategoriesVisibility(
+      ['reference-label-or-translation-2'],
+      this.saveStateService.data.or.vis &&
+        this.saveStateService.data.trn.vis &&
+        !this.saveStateService.data.trnMore.vis,
     );
   }
 }

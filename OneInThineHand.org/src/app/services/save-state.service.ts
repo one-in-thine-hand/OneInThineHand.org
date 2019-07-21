@@ -131,7 +131,10 @@ export class SaveStateService {
       'trn',
       'trnMore',
     ].map((val): void => {
-      if (!this.data[val] || (this.data[val] && !this.data[val].vis)) {
+      if (
+        !this.data[val] ||
+        (this.data[val] && this.data[val].vis === undefined)
+      ) {
         this.data[val] = new NoteVisiblityBtn();
       }
     });
