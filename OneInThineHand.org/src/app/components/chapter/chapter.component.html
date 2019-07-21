@@ -80,10 +80,10 @@
         [ngStyle]="{ height: getWhiteSpaceHeight() }"
       ></div>
     </ng-container>
-    <ng-container *ngIf="this.chapterService.offsetGroups">
+    <ng-container *ngIf="this.chapterService.offsetGroupsOb">
       <app-note
         class="app-note"
-        *ngFor="let offsetGroup of this.chapterService.offsetGroups"
+        *ngFor="let offsetGroup of this.chapterService.offsetGroupsOb | async"
         [offsetGroups]="offsetGroup.offsetGroups"
         [verseNotes]="offsetGroup.verseNote"
       ></app-note>

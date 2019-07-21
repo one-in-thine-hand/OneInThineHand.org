@@ -54,8 +54,9 @@ export class NoteCategorySettingsComponent implements OnInit {
 
     await this.resetNotes();
   }
+
   public async geoMoreClick(): Promise<void> {
-    this.moreClick('geo');
+    await this.moreClick('geo');
 
     await this.resetNotes();
   }
@@ -98,7 +99,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async hstMoreClick(): Promise<void> {
-    this.moreClick('hst');
+    await this.moreClick('hst');
 
     await this.resetNotes();
   }
@@ -121,7 +122,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async orMoreClick(): Promise<void> {
-    this.moreClick('or');
+    await this.moreClick('or');
 
     await this.resetNotes();
   }
@@ -131,18 +132,21 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async phrMoreClick(): Promise<void> {
-    this.moreClick('phr');
+    await this.moreClick('phr');
 
     await this.resetNotes();
   }
   public async pronunciationClick(): Promise<void> {
     await this.baseClick('pronunciation');
+    this.saveStateService.data.pronunciationVisible = false;
 
     await this.resetNotes();
   }
   public async pronunciationMoreClick(): Promise<void> {
-    this.moreClick('pronunciation');
+    await this.moreClick('pronunciation');
 
+    this.saveStateService.data.pronunciationVisible = !this.saveStateService
+      .data.pronunciationVisible;
     await this.resetNotes();
   }
   public async quoClick(): Promise<void> {
@@ -151,7 +155,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async quoMoreClick(): Promise<void> {
-    this.moreClick('quo');
+    await this.moreClick('quo');
 
     await this.resetNotes();
   }
@@ -167,7 +171,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.resetNotes();
   }
   public async trnMoreClick(): Promise<void> {
-    this.moreClick('trn');
+    await this.moreClick('trn');
 
     await this.resetNotes();
   }
@@ -242,6 +246,7 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
   }
 
@@ -400,12 +405,15 @@ export class NoteCategorySettingsComponent implements OnInit {
   private setPronunciationNotesVisibility(): void {
     this.setNoteCategoriesVisibility(
       ['reference-label-pronunciation-2'],
-      this.saveStateService.data.pronunciation.vis,
+      this.saveStateService.data.pronunciationMore.vis,
     );
-    this.saveStateService.data.pronunciationVisible = this.saveStateService.data.pronunciationMore.vis;
-  }
+    // this.saveStateService.data.pronunciationMore =
+    //   this.saveStateService.data.pronunciation.vis &&
+    //   !this.saveStateService.data.pronunciationMore.vis;
 
-  private setQuotationVisibility() {
+    console.log(this.saveStateService.data.pronunciationVisible);
+  }
+  private setQuotationVisibility(): void {
     this.setNoteCategoriesVisibility(
       ['reference-label-quotation'],
       this.saveStateService.data.quo.vis,

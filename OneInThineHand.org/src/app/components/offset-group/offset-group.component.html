@@ -11,13 +11,14 @@
     ></app-note-phrase>
     <ng-container *ngFor="let note of offsetGroup.notes">
       <app-n
-        *ngIf="!note.pronunciation && !note.geography"
+        *ngIf="!note.pronunciation && note.noteType !== 10"
         [note]="note"
         [verseNotes]="this.verseNotes"
       ></app-n>
       <app-n
-        *ngIf="note.geography"
+        *ngIf="note.noteType === 10"
         [note]="note"
+        class="geo"
         (click)="geoClick($event, note)"
         [verseNotes]="this.verseNotes"
       ></app-n>

@@ -493,6 +493,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
       this.chapterService.chapterNotes,
     );
+    this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups)
   }
 
   private async setHighlighting(

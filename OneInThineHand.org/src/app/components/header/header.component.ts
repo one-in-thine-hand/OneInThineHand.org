@@ -129,6 +129,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -150,6 +151,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.save();
   }
@@ -185,6 +187,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -203,6 +206,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -251,6 +255,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -274,6 +279,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -295,6 +301,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     this.saveStateService.save();
   }
@@ -351,6 +358,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }
@@ -382,6 +390,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
     await this.saveStateService.save();
   }

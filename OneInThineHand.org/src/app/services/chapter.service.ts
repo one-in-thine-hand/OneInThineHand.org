@@ -10,6 +10,7 @@ import {
   FormatGroup,
 } from '../models/verse-notes';
 import { OffsetGroup, VerseNoteOffsetGroup } from './offset-groups.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class ChapterService {
   public kjvChapterNotes: VerseNotes | undefined;
   public notes: VerseNote[] | undefined;
   public offsetGroups?: VerseNoteOffsetGroup[];
+  public offsetGroupsOb = new Subject<VerseNoteOffsetGroup[]>();
   public verses: Verse[] | undefined;
 
   public constructor() {}
