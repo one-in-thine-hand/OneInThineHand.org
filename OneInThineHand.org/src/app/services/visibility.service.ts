@@ -33,6 +33,7 @@ export class VisibilityService {
         if (note.notes) {
           // let lNote: Note | undefined;
           note.notes.map((sN): void => {
+            // sN.visible = true;
             if (this.saveStateService.data.noteTypes) {
               const noteTypeSetting = this.saveStateService.data.noteTypes.noteTypes.find(
                 (nC): boolean => {
@@ -51,6 +52,11 @@ export class VisibilityService {
                     return rL.noteCategory === noteRef.noteCategory;
                   },
                 );
+                if (nC && nC.visible) {
+                  console.log(this.saveStateService.data.phr);
+
+                  console.log(nC);
+                }
 
                 noteRef.visible = nC ? nC.visible : false;
 

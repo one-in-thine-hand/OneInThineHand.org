@@ -9,6 +9,7 @@ import { OffsetGroupsService } from '../../services/offset-groups.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { ChapterService } from '../../services/chapter.service';
 import { NoteVisiblityBtn } from '../../services/NoteVisiblityBtn';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-note-category-settings',
@@ -30,6 +31,7 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.saveStateService.data.alt.vis,
     );
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async baseClick(baseName: string): Promise<void> {
     await this.flipVisibility(baseName);
@@ -42,23 +44,27 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.saveStateService.data.bd.vis,
     );
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
 
   public async crClick(): Promise<void> {
     await this.flipVisibility('cr');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async geoClick(): Promise<void> {
     await this.baseClick('geo');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
 
   public async geoMoreClick(): Promise<void> {
     await this.moreClick('geo');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public getNoteType(typeName: string): NoteTypeOverlay | undefined {
     return this.saveStateService.data.noteTypes
@@ -71,6 +77,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     await this.flipVisibility('gr');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async gsClick(): Promise<void> {
     await this.flipVisibility('gs');
@@ -79,11 +86,13 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.saveStateService.data.gs.vis,
     );
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async hebClick(): Promise<void> {
     await this.flipVisibility('heb');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async hmyClick(): Promise<void> {
     await this.flipVisibility('hmy');
@@ -92,55 +101,72 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.saveStateService.data.hmy.vis,
     );
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async hstClick(): Promise<void> {
     await this.baseClick('hst');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async hstMoreClick(): Promise<void> {
     await this.moreClick('hst');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
 
   public async ieClick(): Promise<void> {
     await this.flipVisibility('ie');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async moreClick(baseName: string): Promise<void> {
     await this.flipVisibility(baseName, true);
     await this.flipVisibility(`${baseName}More`);
   }
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.saveStateService.resetNoteSettingsObservable.subscribe(
+      async (): Promise<void> => {
+        console.log('oijasdofijasdf');
+        await this.resetNotes();
+        // this.saveStateService.resetNoteSettingsObservable.next();
+      },
+    );
+  }
 
   public async orClick(): Promise<void> {
     await this.baseClick('or');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async orMoreClick(): Promise<void> {
     await this.moreClick('or');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async phrClick(): Promise<void> {
     await this.baseClick('phr');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async phrMoreClick(): Promise<void> {
     await this.moreClick('phr');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async pronunciationClick(): Promise<void> {
     await this.baseClick('pronunciation');
     this.saveStateService.data.pronunciationVisible = false;
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async pronunciationMoreClick(): Promise<void> {
     await this.moreClick('pronunciation');
@@ -148,32 +174,38 @@ export class NoteCategorySettingsComponent implements OnInit {
     this.saveStateService.data.pronunciationVisible = !this.saveStateService
       .data.pronunciationVisible;
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async quoClick(): Promise<void> {
     await this.baseClick('quo');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async quoMoreClick(): Promise<void> {
     await this.moreClick('quo');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async tgClick(): Promise<void> {
     await this.flipVisibility('tg');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
 
   public async trnClick(): Promise<void> {
     await this.baseClick('trn');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
   public async trnMoreClick(): Promise<void> {
     await this.moreClick('trn');
 
     await this.resetNotes();
+    // this.saveStateService.resetNoteSettingsObservable.next();
   }
 
   private findNoteCategory(
@@ -193,9 +225,6 @@ export class NoteCategorySettingsComponent implements OnInit {
       noteVisibilityBtn
     ] as NoteVisiblityBtn;
     noteVisButton.vis = vis !== undefined ? vis : !noteVisButton.vis;
-
-    console.log(noteVisButton.vis);
-    console.log(vis);
   }
 
   private resetNoteCategoryVisibility(): void {
@@ -341,7 +370,10 @@ export class NoteCategorySettingsComponent implements OnInit {
   }
 
   private setPhrasingNotesVisibility(): void {
-    const noteTypeSetting = this.getNoteType('overlay-quo');
+    const quoSetting = this.getNoteType('overlay-quo');
+    // const phrSetting = this.getNoteType('overlay-phr');
+    // console.log(phrSetting);
+
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing'],
       this.saveStateService.data.phr.vis,
@@ -358,44 +390,56 @@ export class NoteCategorySettingsComponent implements OnInit {
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility
-        : false && this.saveStateService.data.phr.vis,
+      (quoSetting ? quoSetting.visibility : false) &&
+        this.saveStateService.data.phr.vis === true,
     );
+    if (quoSetting) {
+      console.log(
+        quoSetting.visibility === true &&
+          this.saveStateService.data.phr.vis === true,
+      );
+    }
+
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-1-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility
+      quoSetting
+        ? quoSetting.visibility
         : false &&
             this.saveStateService.data.phr.vis &&
             !this.saveStateService.data.phrMore.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-2-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility
+      quoSetting
+        ? quoSetting.visibility
         : false &&
             this.saveStateService.data.phr.vis &&
             this.saveStateService.data.phrMore.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-not-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility !== true
-        : true && this.saveStateService.data.phr.vis,
+      quoSetting !== undefined &&
+        quoSetting.visibility !== true &&
+        this.saveStateService.data.phr.vis,
     );
+    console.log(
+      quoSetting &&
+        quoSetting.visibility !== true &&
+        this.saveStateService.data.phr.vis,
+    );
+
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-1-not-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility !== true
+      quoSetting
+        ? quoSetting.visibility !== true
         : true &&
             this.saveStateService.data.phr.vis &&
             !this.saveStateService.data.phrMore.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-2-not-quotation'],
-      noteTypeSetting
-        ? noteTypeSetting.visibility !== true
+      quoSetting
+        ? quoSetting.visibility !== true
         : true &&
             this.saveStateService.data.phr.vis &&
             this.saveStateService.data.phrMore.vis,
@@ -411,7 +455,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     //   this.saveStateService.data.pronunciation.vis &&
     //   !this.saveStateService.data.pronunciationMore.vis;
 
-    console.log(this.saveStateService.data.pronunciationVisible);
+    // console.log(this.saveStateService.data.pronunciationVisible);
   }
   private setQuotationVisibility(): void {
     this.setNoteCategoriesVisibility(

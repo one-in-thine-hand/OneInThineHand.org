@@ -15,12 +15,14 @@ import {
 } from '../../../../shared/src/models/notes/NoteType';
 import { DatabaseService } from './database.service';
 import { NoteVisiblityBtn } from './NoteVisiblityBtn';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SaveStateService {
   public data: SaveStateModel = new SaveStateModel();
+  public resetNoteSettingsObservable = new Subject();
 
   public constructor(public databaseService: DatabaseService) {}
   public getNoteOverlays(): NoteTypeOverlay[] {

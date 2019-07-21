@@ -123,15 +123,8 @@ export class HeaderComponent implements OnInit {
       }
     } catch (error) {}
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
   public async notesPaneToggle(): Promise<void> {
     this.saveStateService.data.notesPaneToggle = !this.saveStateService.data
@@ -143,16 +136,17 @@ export class HeaderComponent implements OnInit {
     noteType.visibility = !noteType.visibility;
     console.log(noteType);
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      // console.log('oiasjdfioajsdfiojasdofaoisdvnioj');
+    await await this.resetNotes();
+    // if (this.chapterService.notes && this.chapterService.chapterNotes) {
+    //   // console.log('oiasjdfioajsdfiojasdofaoisdvnioj');
 
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+    //   this.visibilityService.resetNoteVisibility(this.chapterService.notes);
 
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
+    //   this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+    //     this.chapterService.chapterNotes,
+    //   );
+    //   this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
+    // }
     await this.save();
   }
   public async onSubmit(event: Event): Promise<void> {
@@ -181,15 +175,8 @@ export class HeaderComponent implements OnInit {
       refLabelOR2.visible = false;
     }
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
 
   public async orMoreClick(): Promise<void> {
@@ -200,15 +187,8 @@ export class HeaderComponent implements OnInit {
       refLabelOR2.visible = !refLabelOR2.visible;
     }
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
   public async paragraphsVisible(): Promise<void> {
     this.saveStateService.data.paragraphsVisible = !this.saveStateService.data
@@ -249,15 +229,8 @@ export class HeaderComponent implements OnInit {
       });
     }
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
   public async quotationMoreClick(): Promise<void> {
     const refLabelQuo = this.findNoteCategorySetting(
@@ -273,18 +246,13 @@ export class HeaderComponent implements OnInit {
       this.flipRefLabelVis('reference-label-quotation-1', vis);
     }
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
 
-  public refLabelClick(ref: { visible: boolean } | string): void {
+  public async refLabelClick(
+    ref: { visible: boolean } | string,
+  ): Promise<void> {
     const asdf = this.electronService.isElectron();
 
     if ((ref as { visible: boolean }).visible !== undefined) {
@@ -295,15 +263,8 @@ export class HeaderComponent implements OnInit {
         ref as string
       ];
     }
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    this.saveStateService.save();
+    await this.resetNotes();
+    // this.saveStateService.save();
   }
 
   public async save(): Promise<void> {
@@ -352,15 +313,8 @@ export class HeaderComponent implements OnInit {
       orTR1.visible = refLabelTRN2.visible;
       orTR2.visible = refLabelTRN2.visible;
     }
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
+    // await this.saveStateService.save();
   }
 
   public async trnMoreClick(): Promise<void> {
@@ -384,15 +338,7 @@ export class HeaderComponent implements OnInit {
       orTR2.visible = refLabelTRN2.visible;
     }
 
-    if (this.chapterService.notes && this.chapterService.chapterNotes) {
-      this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-      this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
-        this.chapterService.chapterNotes,
-      );
-      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
-    }
-    await this.saveStateService.save();
+    await this.resetNotes();
   }
   private findNoteCategorySetting(
     noteCategoryClassName: string,
@@ -423,5 +369,17 @@ export class HeaderComponent implements OnInit {
       return refLabel.visible;
     }
     return false;
+  }
+
+  private async resetNotes(): Promise<void> {
+    this.saveStateService.resetNoteSettingsObservable.next();
+    // if (this.chapterService.notes && this.chapterService.chapterNotes) {
+    //   this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+    //   this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
+    //     this.chapterService.chapterNotes,
+    //   );
+    //   this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
+    // }
+    // await this.saveStateService.save();
   }
 }
