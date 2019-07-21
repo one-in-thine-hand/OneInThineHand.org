@@ -132,7 +132,7 @@ export class FMerged {
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
   ERR = 100000,
-  QUO,
+  QUO =1,
   PHR,
   TRN,
   ALT,
