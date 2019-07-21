@@ -1,3 +1,10 @@
+## <small>5.0.95 (2019-07-21)</small>
+
+* breaks work ([3e24e73](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/3e24e73))
+* bugs ([777d171](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/777d171))
+
+
+
 ## <small>5.0.94 (2019-07-21)</small>
 
 * Added alert to harmony ([1d4c484](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d4c484))
@@ -357,6 +364,7 @@
 * v5.0.91 ([1d3dd56](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1d3dd56))
 * v5.0.92 ([cc4dfca](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/cc4dfca))
 * v5.0.93 ([f8037b8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f8037b8))
+* v5.0.94 ([f400cc9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f400cc9))
 * v6.0.2 ([7140ca3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7140ca3))
 * Verse breaks editor may work again ([717579d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/717579d))
 * Verse breaks now save ([1ffddca](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1ffddca))
