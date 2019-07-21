@@ -246,6 +246,7 @@ export class NoteCategorySettingsComponent implements OnInit {
       this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
         this.chapterService.chapterNotes,
       );
+      this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     }
   }
 
