@@ -71,7 +71,15 @@ div.main {
         overflow-y: scroll;
         padding-top: 5px;
       }
-      @include oithContentGrid($smallScreen, 50% 50%, 100vw);
+      @media #{$smallScreen} {
+        grid-template-rows: 50% 0;
+        #notes {
+          bottom: 0px;
+          position: fixed;
+          height: 50%;
+        }
+      }
+      // @include oithContentGrid($smallScreen, 50% 50%, 100vw);
 
       @include oithContentGrid($largeScreen, 100%, auto 300px);
       // @include oithContentGrid($mediumScreen, 100%, auto);

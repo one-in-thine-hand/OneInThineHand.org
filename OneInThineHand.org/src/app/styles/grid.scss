@@ -32,7 +32,15 @@ $chapterGridMargins: 32px;
   overflow: hidden;
   grid-template-rows: 48px auto;
 
-  @include rootGrid($phoneMediaQuery, 100vw);
+  @media #{$phoneMediaQuery} {
+    grid-template-rows: 100% 0;
+    #notes {
+      bottom: 0px;
+      position: fixed;
+      height: 50%;
+    }
+  }
+  // @include rootGrid($phoneMediaQuery, 100vw);
   // @include rootGrid($mediumScreen, 100vw);
   @include rootGrid($largeScreen, 200px auto);
   @include rootGrid($extraLargeScreen, 250px auto);

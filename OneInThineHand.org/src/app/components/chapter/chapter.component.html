@@ -41,7 +41,10 @@
         [chapter]="chapter"
         [verses]="this.chapterVerses.verses"
       ></app-body-block>
-      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
+      <div
+        class="white-space"
+        [ngStyle]="{ height: getWhiteSpaceHeight() }"
+      ></div>
     </div>
     <div
       class="right-chapter-nav-btn chapter-nav-btn"
@@ -74,7 +77,10 @@
         *ngFor="let note of chapterNotes.verseNotes"
         [verseNotes]="note"
       ></app-note>
-      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
+      <div
+        class="white-space"
+        [ngStyle]="{ height: getWhiteSpaceHeight() }"
+      ></div>
     </ng-container>
     <ng-container *ngIf="this.chapterService.offsetGroupsOb">
       <app-note
@@ -83,7 +89,10 @@
         [offsetGroups]="offsetGroup.offsetGroups"
         [verseNotes]="offsetGroup.verseNote"
       ></app-note>
-      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
+      <div
+        class="white-space"
+        [ngStyle]="{ height: getWhiteSpaceHeight() }"
+      ></div>
     </ng-container>
     <div class="notes-bottom"></div>
   </div>
