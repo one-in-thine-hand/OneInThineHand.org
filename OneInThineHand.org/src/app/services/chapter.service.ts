@@ -27,6 +27,7 @@ export class ChapterService {
   };
   public chapterNotes: VerseNotes | undefined;
   public chapterVerses: ChapterVerses | undefined;
+  public dontScrollNotes = false;
   public kjvChapterNotes: VerseNotes | undefined;
   public notes: VerseNote[] | undefined;
   public offsetGroups?: VerseNoteOffsetGroup[];

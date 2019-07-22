@@ -130,6 +130,7 @@ export class NotePhraseComponent implements OnInit {
   private scrollVerseIntoView(): void {
     try {
       const notesGrid = document.querySelector('#notes');
+      const scrollTop = notesGrid ? notesGrid.scrollTop : 0;
       if (this.verseNotes._id && notesGrid) {
         console.log(
           platform.os &&
@@ -147,8 +148,14 @@ export class NotePhraseComponent implements OnInit {
             platform.os.family &&
             platform.os.family.toLowerCase() === 'ios')
         ) {
-          console.log(verseElement);
+          this.chapterService.dontScrollNotes = true;
+          console.log(scrollTop);
           verseElement.scrollIntoView({});
+          // setTimeout((): void => {
+          //   if (notesGrid) {
+          //     notesGrid.scrollTop = scrollTop;
+          //   }
+          // }, 150);
         } else if (verseElement) {
           verseElement.scrollIntoView({ block: 'center' });
         }

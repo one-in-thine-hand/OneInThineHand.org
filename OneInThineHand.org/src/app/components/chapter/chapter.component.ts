@@ -402,20 +402,26 @@ export class ChapterComponent implements OnInit, OnDestroy {
   }
 
   public async onScroll(): Promise<void> {
-    const verseElements = Array.from(document.querySelectorAll('verse'));
-    for (let x = 0; x < verseElements.length; x++) {
-      const verseElement = verseElements[x];
-      if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
-        if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
-          if (x === 0) {
-            await asyncScrollIntoView('.notes-top');
-          } else if (x === verseElements.length - 1) {
-            await asyncScrollIntoView('.notes-bottom');
+    if (!this.chapterService.dontScrollNotes) {
+      const verseElements = Array.from(document.querySelectorAll('verse'));
+      for (let x = 0; x < verseElements.length; x++) {
+        const verseElement = verseElements[x];
+        if (verseElement.getBoundingClientRect().bottom - 102 > 0) {
+          if (!(await asyncScrollIntoView(`#${verseElement.id}-notes`))) {
+            if (x === 0) {
+              await asyncScrollIntoView('.notes-top');
+            } else if (x === verseElements.length - 1) {
+              await asyncScrollIntoView('.notes-bottom');
+            }
           }
-        }
 
-        break;
+          break;
+        }
       }
+    } else {
+      setTimeout((): void => {
+        this.chapterService.dontScrollNotes = false;
+      }, 200);
     }
   }
   public previousChapter(): void {
