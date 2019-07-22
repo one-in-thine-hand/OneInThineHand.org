@@ -1,5 +1,12 @@
+## <small>5.0.117 (2019-07-22)</small>
+
+* bug fixes ([a688209](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a688209))
+
+
+
 ## <small>5.0.116 (2019-07-22)</small>
 
+* v5.0.116 ([11bf0d3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/11bf0d3))
 
 
 
