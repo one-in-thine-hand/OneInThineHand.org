@@ -19,6 +19,7 @@ import { MarkService } from '../../services/mark.service';
 import { VisibilityService } from '../../services/visibility.service';
 import { SaveStateService } from '../../services/save-state.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-format-tag',
@@ -28,6 +29,7 @@ import { TempSettingsService } from '../../services/temp-settings.service';
 export class FormatTagComponent implements OnInit {
   public classList: string[] = [];
   @Input() public fMerged: FMerged;
+  public formatTagClickObserve = new Observable<Event>();
   public offsets = '';
   public refList: string[] | undefined;
   public text = '';
@@ -42,17 +44,22 @@ export class FormatTagComponent implements OnInit {
   ) {}
 
   public async formatTagClick(event: Event): Promise<void> {
-    if (this.checkNoTextIsSelected()) {
-      this.chapterService.resetNoteVis();
+    // alert('clicked');
+    // const test = this.checkNoTextIsSelected();
+    // alert(test);
+    // console.log(test);
 
-      if (this.fMerged.refTags) {
-        this.setRefList();
+    this.chapterService.resetNoteVis();
 
-        if (this.saveStateService.data.pronunciation.vis) {
-          this.playPronunciation();
-        }
-        await this.gotoNote();
+    if (this.fMerged.refTags) {
+      this.setRefList();
+
+      if (this.saveStateService.data.pronunciation.vis) {
+        this.playPronunciation();
       }
+      await this.gotoNote();
+    }
+    if (this.checkNoTextIsSelected()) {
     }
   }
 
@@ -147,7 +154,17 @@ export class FormatTagComponent implements OnInit {
     return this.text;
   }
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.formatTagClickObserve.subscribe(
+      async (event): Promise<void> => {
+        try {
+          await this.formatTagClick(event);
+        } catch (error) {
+          alert(error);
+        }
+      },
+    );
+  }
 
   private checkNoTextIsSelected(): boolean {
     try {
