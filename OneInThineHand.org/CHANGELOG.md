@@ -1,6 +1,12 @@
+## <small>5.0.98 (2019-07-22)</small>
+
+
+
+
 ## <small>5.0.97 (2019-07-21)</small>
 
 * note settings bugs fixes ([410222f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/410222f))
+* v5.0.97 ([bf9b31d](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/bf9b31d))
 
 
 
