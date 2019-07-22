@@ -1,5 +1,12 @@
 import { sortBy, uniq } from 'lodash';
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Chapter } from '../../../../../chapter/src/Chapter';
 import { ChapterService } from '../../services/chapter.service';
 import { VisibilityService } from '../../services/visibility.service';
@@ -38,6 +45,9 @@ import { debounce, debounceTime } from 'rxjs/operators';
 })
 export class ChapterComponent implements OnInit, OnDestroy {
   public chapter?: Chapter;
+
+  @ViewChild('chapterGrid', { static: true })
+  public chapterGrid!: ElementRef;
   public chapterNotes: VerseNotes;
   public chapterVerses?: ChapterVerses;
   public ctrlKeyInterval?: NodeJS.Timer;
@@ -121,9 +131,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
   }
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
+    console.log(this.chapterGrid);
+
     this.databaseService.initReadingMode();
-    this.scrollObservable.pipe(debounceTime(100)).subscribe(
+    this.scrollObservable.pipe(debounceTime(500)).subscribe(
       async (): Promise<void> => {
+        console.log(this.chapterGrid);
         await this.onScroll();
       },
     );

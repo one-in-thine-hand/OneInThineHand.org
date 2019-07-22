@@ -6,6 +6,7 @@
     fadeOut: fadeOutChapter
   }"
 >
+  <!-- (touchend)="scrollObservable.next()" -->
   <div
     (scroll)="scrollObservable.next()"
     class="chapter-grid"
@@ -14,6 +15,7 @@
       'block-mode': this.saveStateService.data.blockVisible,
       'poetry-mode': this.saveStateService.data.poetryVisible
     }"
+    #chapterGrid
   >
     <div style=" user-select: none;"></div>
     <div
@@ -39,10 +41,7 @@
         [chapter]="chapter"
         [verses]="this.chapterVerses.verses"
       ></app-body-block>
-      <div
-        class="white-space"
-        [ngStyle]="{ height: getWhiteSpaceHeight() }"
-      ></div>
+      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
     </div>
     <div
       class="right-chapter-nav-btn chapter-nav-btn"
@@ -75,10 +74,7 @@
         *ngFor="let note of chapterNotes.verseNotes"
         [verseNotes]="note"
       ></app-note>
-      <div
-        class="white-space"
-        [ngStyle]="{ height: getWhiteSpaceHeight() }"
-      ></div>
+      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
     </ng-container>
     <ng-container *ngIf="this.chapterService.offsetGroupsOb">
       <app-note
@@ -87,10 +83,7 @@
         [offsetGroups]="offsetGroup.offsetGroups"
         [verseNotes]="offsetGroup.verseNote"
       ></app-note>
-      <div
-        class="white-space"
-        [ngStyle]="{ height: getWhiteSpaceHeight() }"
-      ></div>
+      <div class="white-space" [ngStyle]="{ height: '1000px' }"></div>
     </ng-container>
     <div class="notes-bottom"></div>
   </div>
