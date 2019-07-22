@@ -1,6 +1,13 @@
+## <small>5.0.109 (2019-07-22)</small>
+
+* bug fixes ([c3f0f3e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/c3f0f3e))
+
+
+
 ## <small>5.0.108 (2019-07-22)</small>
 
 * fixed not pane bug ([0b5409f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0b5409f))
+* v5.0.108 ([d75eb98](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d75eb98))
 
 
 
