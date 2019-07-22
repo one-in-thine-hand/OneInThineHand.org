@@ -1,7 +1,13 @@
+## <small>5.0.106 (2019-07-22)</small>
+
+
+
+
 ## <small>5.0.105 (2019-07-22)</small>
 
 * mobile fix attempt ([8167e9f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8167e9f))
 * trying to get ios to work ([47d4180](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/47d4180))
+* v5.0.105 ([9897b7a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9897b7a))
 
 
 
