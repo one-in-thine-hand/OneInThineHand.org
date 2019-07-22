@@ -134,7 +134,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     console.log(this.chapterGrid);
 
     this.databaseService.initReadingMode();
-    this.scrollObservable.pipe(debounceTime(500)).subscribe(
+    this.scrollObservable.pipe(debounceTime(100)).subscribe(
       async (): Promise<void> => {
         console.log(this.chapterGrid);
         await this.onScroll();
@@ -515,7 +515,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
     );
     this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
   }
-
   private async setHighlighting(
     chapterParams: ChapterParams,
     verses: Verse[],
