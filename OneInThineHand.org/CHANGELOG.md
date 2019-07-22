@@ -1,6 +1,13 @@
+## <small>5.0.118 (2019-07-22)</small>
+
+* bug fixes ([db144b9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/db144b9))
+
+
+
 ## <small>5.0.117 (2019-07-22)</small>
 
 * bug fixes ([a688209](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/a688209))
+* v5.0.117 ([db40e8b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/db40e8b))
 
 
 
