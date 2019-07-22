@@ -5,11 +5,8 @@ import { OffsetService } from '../../services/offset.service';
 import { FormatTagService } from '../../services/format-tag.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveService } from '../../services/save.service';
-import {
-  DomSanitizer,
-  SafeHtml,
-  ɵKeyEventsPlugin,
-} from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import platform from 'platform';
 import { VerseNote, Note } from '../../models/verse-notes';
 
 @Component({
@@ -18,11 +15,11 @@ import { VerseNote, Note } from '../../models/verse-notes';
   styleUrls: ['./note-phrase.component.scss'],
 })
 export class NotePhraseComponent implements OnInit {
-  @Input() public text?: string;
   @Input() public note: Note;
   @Input() public notes: Note[];
-  @Input() public verseNotes: VerseNote;
   public selected = false;
+  @Input() public text?: string;
+  @Input() public verseNotes: VerseNote;
 
   public constructor(
     public chapterService: ChapterService,
@@ -132,12 +129,27 @@ export class NotePhraseComponent implements OnInit {
 
   private scrollVerseIntoView(): void {
     try {
-      if (this.verseNotes._id) {
+      const notesGrid = document.querySelector('#notes');
+      if (this.verseNotes._id && notesGrid) {
+        console.log(
+          platform.os &&
+            platform.os.family &&
+            platform.os.family.toLowerCase() === 'ios',
+        );
+
         const verseElement = document.querySelector(
           `#${(this.verseNotes._id as string).replace('-notes', '')}`,
         );
 
-        if (verseElement) {
+        if (
+          verseElement &&
+          (platform.os &&
+            platform.os.family &&
+            platform.os.family.toLowerCase() === 'ios')
+        ) {
+          console.log(verseElement);
+          verseElement.scrollIntoView({});
+        } else if (verseElement) {
           verseElement.scrollIntoView({ block: 'center' });
         }
         // scrollIntoView(
