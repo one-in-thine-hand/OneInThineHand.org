@@ -3,10 +3,11 @@ import FastGlob from 'fast-glob';
 import { readFile, writeFile, mkdirp } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 
-import { FormatGroup, FormatGroupType } from '../../shared/src/shared';
+// import { FormatGroup, FormatGroupType } from '../../shared/src/shared';
 import { normalize } from 'path';
-import { FormatGroupBreaks } from '../../shared/src/models/format_groups/FormatGroup';
+import { FormatGroupBreaks, FormatGroup } from '../../shared/src/models/format_groups/FormatGroup';
 import { VerseBreaks } from '../../shared/src/models/Verse';
+import { FormatGroupType } from '../../shared/src/enums/enums';
 // const pQueue = new PQueue({ concurrency: 10 });
 
 // function nodeNameToFornatTag(nodeName: string): FormatTagType {

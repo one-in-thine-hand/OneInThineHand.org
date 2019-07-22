@@ -23,13 +23,14 @@ import {
   Verse,
   FormatGroup,
 } from '../../models/verse-notes';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import {
   OffsetGroup,
   OffsetGroupsService,
   VerseNoteOffsetGroup,
 } from '../../services/offset-groups.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
+import { debounce, debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -46,6 +47,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public fadeOutChapter = false;
   public offsetGroups: VerseNoteOffsetGroup[];
   public popStateActivated = false;
+  public scrollObservable = new Subject();
   public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
   public constructor(
@@ -120,6 +122,11 @@ export class ChapterComponent implements OnInit, OnDestroy {
   // public notes: Note[] | undefined;
   public async ngOnInit(): Promise<void> {
     this.databaseService.initReadingMode();
+    this.scrollObservable.pipe(debounceTime(100)).subscribe(
+      async (): Promise<void> => {
+        await this.onScroll();
+      },
+    );
     combineLatest(
       this.activatedRouter.params,
       this.activatedRouter.queryParams,
@@ -493,7 +500,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.chapterService.offsetGroups = this.offsetGroupService.buildOffsetGroups(
       this.chapterService.chapterNotes,
     );
-    this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups)
+    this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
   }
 
   private async setHighlighting(

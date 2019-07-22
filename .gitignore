@@ -66,3 +66,6 @@ alpha.tar.gz
 chapter/manifests.json
 preprocessor/main.exe
 preprocessor/main_working.exe
+shared/src/interfaces/CouchDoc.js
+shared/src/models/format_tags/FormatTag.js
+breaks/

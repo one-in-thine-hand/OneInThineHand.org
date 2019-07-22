@@ -7,8 +7,8 @@
   }"
 >
   <div
+    (scroll)="scrollObservable.next()"
     class="chapter-grid"
-    (scroll)="onScroll()"
     [ngClass]="{
       'paragraph-mode': this.saveStateService.data.paragraphsVisible,
       'block-mode': this.saveStateService.data.blockVisible,
