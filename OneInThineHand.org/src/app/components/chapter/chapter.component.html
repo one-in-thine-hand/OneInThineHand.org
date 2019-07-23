@@ -15,6 +15,8 @@
       'block-mode': this.saveStateService.data.blockVisible,
       'poetry-mode': this.saveStateService.data.poetryVisible
     }"
+    (swipeleft)="navButton(chapter.previousPage)"
+    (swiperight)="navButton(chapter.nextPage)"
     #chapterGrid
   >
     <div style=" user-select: none;"></div>

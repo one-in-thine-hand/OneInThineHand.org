@@ -1,6 +1,6 @@
 import { enableProdMode, ApplicationRef } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
+import 'hammerjs';
 import { AppModule } from './app/app.module';
 import { AppConfig } from './environments/environment';
 import { enableDebugTools } from '@angular/platform-browser';

@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import '../polyfills';
-import { BrowserModule } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HAMMER_GESTURE_CONFIG,
+} from '@angular/platform-browser';
 import {
   NgModule,
   APP_INITIALIZER,
@@ -10,7 +13,7 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-
+import { HammerConfig } from './HammerConfig';
 import { AppRoutingModule } from './app-routing.module';
 
 // NG Translate
@@ -123,6 +126,10 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
       useFactory: load,
       deps: [SaveStateService],
       multi: true,
+    },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: HammerConfig,
     },
     SaveStateService,
     PreprocessorService,
