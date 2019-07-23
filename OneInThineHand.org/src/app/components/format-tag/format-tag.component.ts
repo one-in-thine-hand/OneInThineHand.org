@@ -69,7 +69,21 @@ export class FormatTagComponent implements OnInit {
   public getClassList(): string {
     const classList: string[] = [];
     const visibleRefTags = this.getVisibleRefTags(false, false);
+    const pronunciationOverlay = this.saveStateService.data.noteTypes
+      ? this.saveStateService.data.noteTypes.noteTypes.find(
+          (noteType): boolean => {
+            // console.log(noteType);
+
+            return noteType.className === 'overlay-pronunciation';
+          },
+        )
+      : undefined;
+    // console.log(this.saveStateService.data.noteTypeSettings);
+    // console.log(this.saveStateService.data.noteTypes);
+
     if (
+      pronunciationOverlay &&
+      pronunciationOverlay.visibility &&
       this.fMerged.pronunciationIcon &&
       this.saveStateService.data.pronunciation.vis &&
       !this.saveStateService.data.pronunciationMore.vis

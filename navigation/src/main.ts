@@ -4,12 +4,11 @@ import { normalize } from 'path';
 import { readFile, writeFile } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 import { getNavigationItem } from './getNavigationItem';
+import cuid from 'cuid';
 import {
   NavigationItem,
   flattenNavigationItems,
-} from '../../shared/src/shared';
-import cuid from 'cuid';
-
+} from '../../shared/src/models/NavigationItem';
 export function filterTextNodes(childNode: Node): Node[] {
   return Array.from(childNode.childNodes).filter(
     (childNode): boolean => {
@@ -83,7 +82,7 @@ export function getChildNavigation(manifestElement: Element): NavigationItem[] {
 async function main(): Promise<void> {
   const fileNames = await FastGlob(normalize(`./manifests/**/**`));
   console.log(fileNames);
-  
+
   // console.log(fileNames);
   const navItems = fileNames.map(
     async (fileName: string): Promise<NavigationItem | undefined> => {
@@ -128,12 +127,10 @@ async function main(): Promise<void> {
     },
   );
   const nI = await Promise.all(navItems);
+  const nav2 = { navigation: flattenNavigationItems(nI as NavigationItem[]) };
   const navigation = { navigation: nI };
   await writeFile(normalize('./manifests.json'), JSON.stringify(navigation));
-  await writeFile(
-    normalize('./manifests2.json'),
-    JSON.stringify(flattenNavigationItems(nI as NavigationItem[])),
-  );
+  await writeFile(normalize('./manifests2.json'), JSON.stringify(nav2));
 }
 
 // const argv = yargs

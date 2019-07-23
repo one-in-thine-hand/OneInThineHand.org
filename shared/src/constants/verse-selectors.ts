@@ -9,6 +9,7 @@ export const verseSelectors: string[] = [
   'nav > ul > li > *',
   '.body-block > div > *',
   '.body-block .verse',
+  '.body-block .closing'
 ];
 
 export const formatTagTypeOptions: FormatTagTypeOptions[] = [

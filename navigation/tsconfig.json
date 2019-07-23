@@ -12,6 +12,7 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "outDir": "build",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
