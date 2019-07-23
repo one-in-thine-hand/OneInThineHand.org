@@ -43,12 +43,12 @@ export async function parseChapter(
 
   chapter._id = id;
 
-  if (chapter._id.startsWith('jst-')) {
-    chapter._id = chapter._id.replace('jst-', 'jst_');
-    if (!chapter._id.startsWith(language)) {
-      chapter._id = `${language}-${chapter._id}`;
-    }
-  }
+  // if (chapter._id.startsWith('jst-')) {
+  //   chapter._id = chapter._id.replace('jst-', 'jst_');
+  //   if (!chapter._id.startsWith(language)) {
+  //     chapter._id = `${language}-${chapter._id}`;
+  //   }
+  // }
 
   chapter.verseIDS = Array.from(
     document.querySelectorAll(verseSelectors.toString()),
@@ -76,8 +76,7 @@ export async function parseChapter(
         `#/${id
           .replace(`${language}-`, '')
           .replace('-chapter', '')
-          .replace('-', '/')
-          .replace('_', '-')}`
+          .replace('-', '/')}`
       );
     },
   );
