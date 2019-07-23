@@ -4,12 +4,19 @@
     border-left: 2.5px solid #f68d2e;
   }
 }
+:host-context(.edit-mode) {
+  :host-context(.verse-notes) {
+  }
+  > * {
+    margin-left: 20px;
+  }
+}
 :host-context(verse-notes) {
   .note-short-title {
     display: block;
   }
   > * {
-    margin-left: 20px;
+    // margin-left: 20px;
     display: inline-block;
     margin-right: 10px;
   }

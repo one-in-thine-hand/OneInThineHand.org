@@ -103,10 +103,20 @@ export class NotePhraseComponent implements OnInit {
         if (secondaryNote.offsets === undefined) {
           secondaryNote.offsets = '';
         }
+        console.log(offsets1);
+        console.log(offsets2);
         secondaryNote.offsets = `${`${parseInt(offsets1[0], 10) +
           range.startOffset}-${parseInt(offsets2[0], 10) +
           range.endOffset -
           1}`},${secondaryNote.offsets}`;
+
+        if (secondaryNote.offsets.endsWith(',')) {
+          secondaryNote.offsets = secondaryNote.offsets.slice(
+            0,
+            secondaryNote.offsets.length - 1,
+          );
+        }
+
         await this.offsetService.expandNotes(this.chapterService.notes);
         await this.formatTagService.resetFormatTags(
           this.chapterService.chapterVerses,
