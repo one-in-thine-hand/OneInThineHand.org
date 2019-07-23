@@ -142,22 +142,23 @@ export class NotePhraseComponent implements OnInit {
           `#${(this.verseNotes._id as string).replace('-notes', '')}`,
         );
 
+        console.log(platform.name);
+
         if (
-          verseElement &&
-          (platform.os &&
-            platform.os.family &&
-            platform.os.family.toLowerCase() === 'ios')
+          verseElement
+          // (platform.os &&
+          //   platform.os.family &&
+          //   (platform.os.family.toLowerCase() === 'ios' ||
+          //     platform.os.family.toLowerCase() === 'android'))
         ) {
           this.chapterService.dontScrollNotes = true;
           console.log(scrollTop);
-          verseElement.scrollIntoView({});
+          verseElement.scrollIntoView({ block: 'center' });
           // setTimeout((): void => {
           //   if (notesGrid) {
           //     notesGrid.scrollTop = scrollTop;
           //   }
           // }, 150);
-        } else if (verseElement) {
-          verseElement.scrollIntoView({ block: 'center' });
         }
         // scrollIntoView(
         //   `#${(this.verseNotes._id as string).replace('-notes', '')}`,

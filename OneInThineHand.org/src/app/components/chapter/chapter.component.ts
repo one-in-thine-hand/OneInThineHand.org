@@ -421,7 +421,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     } else {
       setTimeout((): void => {
         this.chapterService.dontScrollNotes = false;
-      }, 200);
+      }, 300);
     }
   }
   public previousChapter(): void {

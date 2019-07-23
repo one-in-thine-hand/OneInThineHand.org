@@ -27,7 +27,7 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "package": "tsc && pkg build/src/main.js --options max_old_space_size=8192 --target node12-win-x64 "
+    "package": "tsc && pkg build/breaks/src/main.js --options max_old_space_size=8192 --target node12-win-x64 "
   },
   "author": "Jared Parkinson <jared@parkinson.im>",
   "license": "Apache-2.0",

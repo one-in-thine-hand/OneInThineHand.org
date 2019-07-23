@@ -1,13 +1,5 @@
-/**
- * This starter project recommended using Microsoft TSLint rules.
- * Please see https://github.com/Microsoft/tslint-microsoft-contrib for more details.
- */
-
 {
-  "extends": [
-    "tslint-microsoft-contrib",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-microsoft-contrib", "tslint-config-prettier"],
   "rules": {
     "mocha-no-side-effect-code": false,
     "missing-jsdoc": false,

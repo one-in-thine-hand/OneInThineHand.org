@@ -1,13 +1,16 @@
 // import PQueue from 'p-queue';
-import FastGlob from 'fast-glob';
+import * as FastGlob from 'fast-glob';
 import { readFile, writeFile, mkdirp } from 'fs-extra';
 import { JSDOM } from 'jsdom';
 
 // import { FormatGroup, FormatGroupType } from '../../shared/src/shared';
 import { normalize } from 'path';
-import { FormatGroupBreaks, FormatGroup } from '../../shared/src/models/format_groups/FormatGroup';
-import { VerseBreaks } from '../../shared/src/models/Verse';
-import { FormatGroupType } from '../../shared/src/enums/enums';
+import {
+  FormatGroupBreaks,
+  FormatGroup,
+  FormatGroupType,
+  VerseBreaks,
+} from '../../OneInThineHand.org/src/app/models/verse-notes';
 // const pQueue = new PQueue({ concurrency: 10 });
 
 // function nodeNameToFornatTag(nodeName: string): FormatTagType {
@@ -241,7 +244,10 @@ function sliceArray<T>(array: T[], chunkSizes: number): T[][] {
   return newArray;
 }
 async function main(): Promise<void> {
+  console.log('asdfiopjkasdoifjaoisdf j');
   const fileNames = await FastGlob('../scripture_files/breaks/**/**');
+  console.log(fileNames);
+
   // console.log(fileNames);
   const proccessedFormatGroups = await processFiles(fileNames);
 
