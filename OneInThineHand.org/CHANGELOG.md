@@ -1,9 +1,15 @@
+## <small>5.0.124 (2019-07-23)</small>
+
+
+
+
 ## <small>5.0.123 (2019-07-23)</small>
 
 * Added support for swipe gestures ([d1827db](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d1827db))
 * Audio bug fix ([47f6998](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/47f6998))
 * Bug fixes ([53c815c](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/53c815c))
 * bug fixes to support break processor ([431deab](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/431deab))
+* v5.0.123 ([103d674](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/103d674))
 
 
 
