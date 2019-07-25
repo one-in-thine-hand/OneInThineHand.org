@@ -1,8 +1,15 @@
+## <small>5.0.127 (2019-07-25)</small>
+
+* bug fixes ([693988a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/693988a))
+
+
+
 ## <small>5.0.126 (2019-07-25)</small>
 
 * bug fixes ([7ed367f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7ed367f))
 * Bug fixes ([7c3d35a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7c3d35a))
 * Bugs ([45f0d2a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/45f0d2a))
+* v5.0.126 ([5f31ede](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/5f31ede))
 
 
 
