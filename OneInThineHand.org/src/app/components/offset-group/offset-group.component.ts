@@ -83,6 +83,8 @@ export class OffsetGroupComponent implements OnInit {
     ) {
       // console.log(note);
 
+      console.log(note.href);
+
       this.audio = new Audio(`assets/audio/${note.href}`);
       this.audio.play();
     }

@@ -15,12 +15,10 @@
       'block-mode': this.saveStateService.data.blockVisible,
       'poetry-mode': this.saveStateService.data.poetryVisible
     }"
-    (swipeleft)="
+    (swiperight)="
       navButton(chapter && chapter.previousPage ? chapter.previousPage : '')
     "
-    (swiperight)="
-      navButton(chapter && chapter.nextPage ? chapter.nextPage : '')
-    "
+    (swipeleft)="navButton(chapter && chapter.nextPage ? chapter.nextPage : '')"
     #chapterGrid
   >
     <div style=" user-select: none;"></div>

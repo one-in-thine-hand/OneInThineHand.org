@@ -187,6 +187,33 @@ export class SaveStateService {
   public async save(): Promise<void> {
     localStorage.setItem('oithSettings', JSON.stringify(this.data));
   }
+  private mergeNoteCategories(
+    noteSettings: NoteCategory[],
+    noteSettingsMaster: NoteCategory[],
+  ): void {
+    if (noteSettings) {
+      noteSettingsMaster.map((noteTypeConvert): void => {
+        const nTC = noteSettings.find((nT): boolean => {
+          return nT.className === noteTypeConvert.className;
+        });
+
+        if (!nTC) {
+          // console.log(noteTypeConvert);
+          noteSettings.push(noteTypeConvert);
+        } else {
+          console.log(nTC);
+          console.log(noteTypeConvert);
+
+          nTC.noteCategory = noteTypeConvert.noteCategory;
+          nTC.noteCategoryName = noteTypeConvert.noteCategoryName;
+          nTC.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
+          nTC.sortOrder = noteTypeConvert.sortOrder;
+        }
+      });
+    } else {
+      noteSettings = noteSettingsMaster;
+    }
+  }
   private mergeNoteSettings<T extends { className: string }>(
     noteSettings: T[],
     noteSettingsMaster: T[],
@@ -201,29 +228,6 @@ export class SaveStateService {
           noteSettings.push(noteTypeConvert);
         } else {
           // nTC.
-        }
-      });
-    } else {
-      noteSettings = noteSettingsMaster;
-    }
-  }
-  private mergeNoteCategories(
-    noteSettings: NoteCategory[],
-    noteSettingsMaster: NoteCategory[],
-  ): void {
-    if (noteSettings) {
-      noteSettingsMaster.map((noteTypeConvert): void => {
-        const nTC = noteSettings.find((nT): boolean => {
-          return nT.className === noteTypeConvert.className;
-        });
-        if (!nTC) {
-          // console.log(noteTypeConvert);
-          noteSettings.push(noteTypeConvert);
-        } else {
-          nTC.noteCategory = noteTypeConvert.noteCategory;
-          nTC.noteCategoryName = noteTypeConvert.noteCategoryName;
-          nTC.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
-          nTC.sortOrder = noteTypeConvert.sortOrder;
         }
       });
     } else {

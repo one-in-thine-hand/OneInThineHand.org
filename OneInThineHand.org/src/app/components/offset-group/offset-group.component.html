@@ -16,7 +16,7 @@
         [verseNotes]="this.verseNotes"
       ></app-n>
       <app-n
-        *ngIf="note.noteType === 10"
+        *ngIf="note.geography"
         [note]="note"
         class="geo"
         (click)="geoClick($event, note)"

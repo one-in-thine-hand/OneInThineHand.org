@@ -239,6 +239,7 @@ export class FormatTagComponent implements OnInit {
       const id = this.refList.pop();
       const r = findByAttribute('secondaryNoteID', id, this.fMerged.refTags);
       if (r) {
+        this.saveStateService.data.notesPaneToggle = true;
         r.highlight = true;
         await asyncScrollIntoView(
           `#${(this.verse.note as VerseNote)._id as string}`,

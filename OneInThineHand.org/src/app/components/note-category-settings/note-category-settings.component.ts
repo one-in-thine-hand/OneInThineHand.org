@@ -506,13 +506,13 @@ export class NoteCategorySettingsComponent implements OnInit {
       ['reference-label-or-translation-1'],
       this.saveStateService.data.or.vis &&
         this.saveStateService.data.trn.vis &&
-        this.saveStateService.data.trnMore.vis,
+        !this.saveStateService.data.trnMore.vis,
     );
     this.setNoteCategoriesVisibility(
       ['reference-label-or-translation-2'],
       this.saveStateService.data.or.vis &&
         this.saveStateService.data.trn.vis &&
-        !this.saveStateService.data.trnMore.vis,
+        this.saveStateService.data.trnMore.vis,
     );
   }
 }
