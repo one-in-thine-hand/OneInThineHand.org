@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveStateModel } from './SaveStateModel';
-import { sortBy } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 
 import {
   NOTE_CATEGORIES,
@@ -77,7 +77,6 @@ export class SaveStateService {
       }
 
       this.mergeNoteCategories(this.data.noteCategorySettings, NOTE_CATEGORIES);
-      // console.log(this.data.noteTypeSettings);
 
       this.data.noteCategorySettings = this.data.noteCategorySettings.filter(
         (noteCategorySetting): boolean => {
@@ -91,7 +90,6 @@ export class SaveStateService {
 
     this.loadNoteCategoryBtns();
     // // cg.
-    // console.log(refLabelSettingsTemplate);
 
     // (refLabelSettingsTemplate as ReferenceLabel[]).map(
     //   (c): void => {
@@ -177,10 +175,7 @@ export class SaveStateService {
       } else {
         this.data.noteTypes = noteTypes;
       }
-      // console.log(noteTypes);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
 
     await this.save();
   }
@@ -193,22 +188,23 @@ export class SaveStateService {
   ): void {
     if (noteSettings) {
       noteSettingsMaster.map((noteTypeConvert): void => {
-        const nTC = noteSettings.find((nT): boolean => {
+        const nTC = noteSettings.filter((nT): boolean => {
           return nT.className === noteTypeConvert.className;
         });
 
         if (!nTC) {
-          // console.log(noteTypeConvert);
           noteSettings.push(noteTypeConvert);
         } else {
-          console.log(nTC);
-          console.log(noteTypeConvert);
-
-          nTC.noteCategory = noteTypeConvert.noteCategory;
-          nTC.noteCategoryName = noteTypeConvert.noteCategoryName;
-          nTC.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
-          nTC.sortOrder = noteTypeConvert.sortOrder;
+          nTC.map((n): void => {
+            n.noteCategory = noteTypeConvert.noteCategory;
+            n.noteCategoryName = noteTypeConvert.noteCategoryName;
+            n.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
+            n.sortOrder = noteTypeConvert.sortOrder;
+          });
         }
+      });
+      noteSettings = uniqBy(noteSettings, (noteSetting): string => {
+        return noteSetting.className;
       });
     } else {
       noteSettings = noteSettingsMaster;
@@ -224,7 +220,6 @@ export class SaveStateService {
           return nT.className === noteTypeConvert.className;
         });
         if (!nTC) {
-          // console.log(noteTypeConvert);
           noteSettings.push(noteTypeConvert);
         } else {
           // nTC.

@@ -37,7 +37,6 @@ export class HistoryService {
   ): void {
     if (this.backHistory.length > 0) {
       const s = this.forwardHistory.shift();
-      console.log(s);
       if (s) {
         this.backHistory.push({
           chapterNotes: cloneDeep(chapterNotes),
@@ -82,7 +81,6 @@ export class HistoryService {
   ): void {
     if (this.backHistory.length > 0) {
       const s = this.backHistory.shift();
-      console.log(s);
       if (s) {
         this.forwardHistory.push({
           chapterNotes: cloneDeep(chapterNotes),

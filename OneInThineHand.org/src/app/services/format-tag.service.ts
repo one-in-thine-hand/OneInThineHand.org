@@ -54,8 +54,6 @@ export class FormatTagService {
           lastMerged = fMerged;
         } else {
           if (this.fmergeEqual(lastMerged, fMerged)) {
-            // console.log('jjj');
-
             lastMerged.offsets.push(o);
           } else {
             fMergeds.push(lastMerged);
@@ -233,8 +231,6 @@ export class FormatTagService {
       this.saveStateService.data.blockVisible ||
       this.saveStateService.data.paragraphsVisible
     ) {
-      console.log('jhhhh');
-
       try {
         verses.map((verse): void => {
           this.buildOffsets(
@@ -254,9 +250,7 @@ export class FormatTagService {
             verse.note,
           );
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     } else {
       verses.map((verse): void => {
         this.buildOffsets(verse.formatGroups);
@@ -278,9 +272,7 @@ export class FormatTagService {
         if (f !== undefined && l !== undefined) {
           fM.text = verse.text ? verse.text.slice(f, l + 1) : '';
         } else {
-          console.log(`${f} ${l}`);
         }
-        // console.log(verse.text ? verse.text.slice(f, l) : '');
       });
     }
   }
@@ -298,7 +290,6 @@ export class FormatTagService {
       const p = fMerged.refTags.filter((f): boolean => {
         return f.pronunciation === true && f.uncompressedOffsets !== undefined;
       });
-      // console.log(p.length>0);
 
       return p.length > 0 ? true : undefined;
     }
@@ -316,7 +307,6 @@ export class FormatTagService {
           f.uncompressedOffsets[0] === o
         );
       });
-      // console.log(p.length>0);
 
       return p.length > 0 ? true : undefined;
     }

@@ -122,15 +122,9 @@ export class DatabaseService {
         const dbItem = await this.db.get(item._id, {});
 
         item._rev = dbItem._rev;
-        // console.log(dbItem);
-      } catch (error) {
-        console.log(error);
-      }
-      // console.log(item);
+      } catch (error) {}
 
       await this.db.put(item);
-
-      // console.log(this.db);
     }
   }
   public async updateDatabaseItems(
@@ -150,12 +144,7 @@ export class DatabaseService {
           item._rev = r ? r.value.rev : '';
         });
         await this.db.bulkDocs(items);
-      } catch (error) {
-        console.log(error);
-      }
-      // console.log(item);
-
-      // console.log(this.db);
+      } catch (error) {}
     }
   }
 }

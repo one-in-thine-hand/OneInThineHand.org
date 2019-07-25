@@ -393,12 +393,6 @@ export class NoteCategorySettingsComponent implements OnInit {
       (quoSetting ? quoSetting.visibility : false) &&
         this.saveStateService.data.phr.vis === true,
     );
-    if (quoSetting) {
-      console.log(
-        quoSetting.visibility === true &&
-          this.saveStateService.data.phr.vis === true,
-      );
-    }
 
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-1-quotation'],
@@ -419,11 +413,6 @@ export class NoteCategorySettingsComponent implements OnInit {
     this.setNoteCategoriesVisibility(
       ['reference-label-phrasing-not-quotation'],
       quoSetting !== undefined &&
-        quoSetting.visibility !== true &&
-        this.saveStateService.data.phr.vis,
-    );
-    console.log(
-      quoSetting &&
         quoSetting.visibility !== true &&
         this.saveStateService.data.phr.vis,
     );

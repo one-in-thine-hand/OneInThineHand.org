@@ -86,8 +86,6 @@ export class HeaderDropdownComponent implements OnInit {
     await this.saveStateService.save();
   }
   public async prepareForHarmony(): Promise<void> {
-    console.log('aoisdjfoiasjdfoiajsdf');
-
     try {
       const docs = await this.databaseService.allDocs();
 
@@ -119,12 +117,9 @@ export class HeaderDropdownComponent implements OnInit {
         await Promise.all(promises);
 
         this.preparingHarmony = false;
-        console.log('Finished');
         alert('Finished');
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   public async save(): Promise<void> {
@@ -132,7 +127,6 @@ export class HeaderDropdownComponent implements OnInit {
       await this.databaseService.updateDatabaseItem(
         this.chapterService.chapterNotes,
       );
-      console.log('Finished');
     }
   }
 
@@ -140,8 +134,6 @@ export class HeaderDropdownComponent implements OnInit {
     this.showOrphanNotes = false;
   }
   public async showOrphanRefs(): Promise<void> {
-    console.log('hgg');
-
     if (this.chapterService.notes) {
       this.visibilityService.showMissingOffsets(this.chapterService.notes);
     }

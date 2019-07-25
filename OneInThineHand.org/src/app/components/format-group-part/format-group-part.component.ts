@@ -20,79 +20,10 @@ export class FormatGroupPartComponent implements OnInit {
    * getFormatTags
    */
   public getFormatTags(): FMerged[] {
-    // if()
-    // console.log(this.formatTags);
-    // console.log('formatTags');
-
     return this.formatGroup.fMerges ? this.formatGroup.fMerges : [];
-    // const mergedFormatTags: FMerged[] = [];
-    // let lastMerged: FMerged | undefined;
-    // this.formatGroup.uncompressedOffsets
-    //   ? this.formatGroup.uncompressedOffsets.pop() &&
-    //     this.formatGroup.uncompressedOffsets.map(
-    //       (offset): FMerged => {
-    //         const fMerged = new FMerged();
-    //         this.getMergedTags(fMerged, offset);
-    //         this.getRefTags(fMerged, offset);
-
-    //         lastMerged = this.checkIfDuplicateMerge(
-    //           lastMerged,
-    //           fMerged,
-    //           offset,
-    //           mergedFormatTags,
-    //         );
-
-    //         return fMerged;
-    //       },
-    //     )
-    //   : [];
-
-    // if (lastMerged !== undefined) {
-    //   mergedFormatTags.push(lastMerged);
-    // }
-    // mergedFormatTags.map(
-    //   (u): void => {
-    //     if (u.offsets && this.verse.text) {
-    //       const f = first(u.offsets);
-    //       const l = last(u.offsets);
-
-    //       u.text = this.verse.text.slice(f, (l as number) + 1);
-    //     }
-    //   },
-    // );
-    // // console.log(mergedFormatTags);
-
-    // // console.log(f);
-
-    // if (this.fMerged !== mergedFormatTags) {
-    //   this.fMerged = mergedFormatTags;
-    //   // console.log('true');
-    // }
-    // return this.fMerged;
   }
 
-  // public getKJVPartVerse(): Verse[] | undefined {
-  //   if (
-  //     this.chapterService.kjvChapterVerse &&
-  //     this.chapterService.kjvChapterVerse.verses
-  //   ) {
-  //     const kjvVerse = this.chapterService.kjvChapterVerse.verses.filter(
-  //       (v): boolean => {
-  //         return (
-  //           v._id !== undefined &&
-  //           this.formatGroup.kjvRef !== undefined &&
-  //           this.formatGroup.kjvRef.includes(v._id)
-  //         );
-  //       },
-  //     );
-  //     this.hasKJVVerse = kjvVerse !== undefined;
-  //     return kjvVerse;
-  //   }
-  // }
-
   public getOffSets(f: FMerged): string {
-    // console.log(f);
-
     if (f.offsets) {
       return `${f.offsets[0]}-${last(f.offsets)}`;
     }

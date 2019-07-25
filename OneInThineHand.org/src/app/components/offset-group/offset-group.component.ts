@@ -21,11 +21,8 @@ export class OffsetGroupComponent implements OnInit {
   @Input() public verseNotes: VerseNote;
   public constructor(public modalService: NgbModal) {}
   public async geoClick(event: Event, note: NoteGeography): Promise<void> {
-    console.log('jhhh');
-
     if ((event.target as HTMLElement).getAttribute('url')) {
       const url = (event.target as HTMLElement).getAttribute('url') as string;
-      console.log(url);
       // alert(url);
       const result = await this.modalService.open(GeoPopupComponent, {
         ariaLabelledBy: 'modal-basic-title',
@@ -41,7 +38,6 @@ export class OffsetGroupComponent implements OnInit {
     // (event.target as HTMLElement).classList.contains('note-category')
     // )
     // {
-    // console.log(note);
     //
     // this.audio = new Audio(`assets/audio/${note.href}`);
     // this.audio.play();
@@ -59,9 +55,7 @@ export class OffsetGroupComponent implements OnInit {
     );
   }
 
-  public ngOnInit() {
-    // console.log(this.offsetGroup);
-  }
+  public ngOnInit() {}
   public async pronunciationClick(
     event: Event,
     note: NotePronunciation,
@@ -81,10 +75,6 @@ export class OffsetGroupComponent implements OnInit {
       note.href &&
       (event.target as HTMLElement).classList.contains('note-category')
     ) {
-      // console.log(note);
-
-      console.log(note.href);
-
       this.audio = new Audio(`assets/audio/${note.href}`);
       this.audio.play();
     }
