@@ -468,7 +468,7 @@ export class NoteCategorySettingsComponent implements OnInit {
     this.setNoteCategoriesVisibility(
       ['reference-label-quotation-2-none'],
       this.saveStateService.data.quo.vis &&
-        !this.saveStateService.data.quoMore.vis,
+        this.saveStateService.data.quoMore.vis,
     );
   }
 
