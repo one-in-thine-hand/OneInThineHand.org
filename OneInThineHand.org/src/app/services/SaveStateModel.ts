@@ -3,7 +3,7 @@
 //   NoteTypeConvert,
 //   NoteTypeConverts,
 // } from '../../../../shared/src/shared';
-import { NOTE_CATEGORIES, NoteTypes } from '../models/verse-notes';
+import { NoteTypes, NoteCategories } from '../models/verse-notes';
 import { NoteTypeConverts } from '../../../../shared/src/shared';
 import { NoteVisiblityBtn } from './NoteVisiblityBtn';
 
@@ -38,7 +38,8 @@ export class SaveStateModel {
   public navigationMobilePaneToggle = false;
   public navigationPaneToggle = true;
   public newNotesVisible = false;
-  public noteCategorySettings = NOTE_CATEGORIES;
+  // public noteCategorySettings = NOTE_CATEGORIES;
+  public noteCategories: NoteCategories;
   public notesPaneToggle = true;
   public noteTypes?: NoteTypes;
   public noteTypeSettings = NoteTypeConverts;

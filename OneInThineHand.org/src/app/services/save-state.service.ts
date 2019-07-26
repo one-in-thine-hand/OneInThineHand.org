@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
-import { SaveStateModel } from './SaveStateModel';
-import { sortBy, uniqBy } from 'lodash';
+import { Subject } from 'rxjs';
 
+import { NoteTypeConverts } from '../../../../shared/src/models/notes/NoteType';
 import {
-  NOTE_CATEGORIES,
-  NoteTypes,
   NoteTypeOverlay,
-  NoteCategorySort,
-  NoteCategory,
+  NoteTypes,
+  NoteCategories,
 } from '../models/verse-notes';
-import {
-  NoteTypeConverts,
-  NoteTypeConvert,
-} from '../../../../shared/src/models/notes/NoteType';
 import { DatabaseService } from './database.service';
 import { NoteVisiblityBtn } from './NoteVisiblityBtn';
-import { Subject } from 'rxjs';
+import { SaveStateModel } from './SaveStateModel';
+import { findByAttribute } from '../../../../shared/src/functions/filterUndefined';
 
 @Injectable({
   providedIn: 'root',
@@ -49,10 +44,6 @@ export class SaveStateService {
 
       this.mergeNoteSettings(this.data.noteTypeSettings, NoteTypeConverts);
 
-      if (this.data.noteCategorySettings === undefined) {
-        this.data.noteCategorySettings = NOTE_CATEGORIES;
-      }
-
       if (this.data.noteTypeSettings) {
         this.data.noteTypeSettings = this.data.noteTypeSettings.filter(
           (noteTypeSetting): boolean => {
@@ -76,79 +67,46 @@ export class SaveStateService {
         this.data.noteTypeSettings = NoteTypeConverts;
       }
 
-      this.mergeNoteCategories(this.data.noteCategorySettings, NOTE_CATEGORIES);
-
-      this.data.noteCategorySettings = this.data.noteCategorySettings.filter(
-        (noteCategorySetting): boolean => {
-          return noteCategorySetting.className.startsWith('reference-label');
-        },
-      );
       // this.data.ReferenceLabelSetting,
     } else {
       this.data = new SaveStateModel();
     }
-
-    this.loadNoteCategoryBtns();
-    // // cg.
-
-    // (refLabelSettingsTemplate as ReferenceLabel[]).map(
-    //   (c): void => {
-    //     if (
-    //       !this.data.refLabelSettings.find(
-    //         (r): boolean => {
-    //           return r.refLabelName === c.refLabelName;
-    //         },
-    //       )
-    //     ) {
-    //       this.data.refLabelSettings.push(c);
-    //     }
-    //   },
-    // );
-    await this.loadNoteTypes();
+    await this.loadNoteSettings();
     await this.save();
   }
-  public loadNoteCategoryBtns(): void {
-    [
-      'alt',
-      'bd',
-      'cr',
-      'geo',
-      'geoMore',
-      'gr',
-      'gs',
-      'heb',
-      'hmy',
-      'hst',
-      'hstMore',
-      'ie',
-      'or',
-      'orMore',
-      'phr',
-      'phrMore',
-      'pronunciation',
-      'pronunciationMore',
-      'quo',
-      'quoMore',
-      'tg',
-      'trn',
-      'trnMore',
-    ].map((val): void => {
-      if (
-        !this.data[val] ||
-        (this.data[val] && this.data[val].vis === undefined)
-      ) {
-        this.data[val] = new NoteVisiblityBtn();
-      }
-    });
+
+  public async loadNoteSettings(forceReset?: boolean): Promise<void> {
+    await this.loadNoteCategoryBtns(forceReset);
+
+    await this.loadNotCategories(forceReset);
+    await this.loadNoteTypes(forceReset);
+    this.resetNoteCategorySettings();
+  }
+  public async loadNoteCategoryBtns(forceReset?: boolean): Promise<void> {
+    try {
+      const noteCategories = (await this.databaseService.getDatabaseItem(
+        'eng-note-categories',
+      )) as NoteCategories;
+
+      noteCategories.visibilitySettings.map((visSetting): void => {
+        visSetting.map((vS): void => {
+          if (vS.setting.trim() !== '') {
+            if (forceReset || this.data[vS.setting] === undefined) {
+              this.data[vS.setting] = true;
+            }
+          }
+        });
+      });
+    } catch (error) {}
   }
 
-  public async loadNoteTypes(): Promise<void> {
+  public async loadNoteTypes(forceReset?: boolean): Promise<void> {
     try {
       const noteTypes = (await this.databaseService.getDatabaseItem(
         'eng-note-types',
       )) as NoteTypes;
 
-      if (noteTypes && this.data.noteTypes) {
+      if (!forceReset && noteTypes && this.data.noteTypes) {
         noteTypes.noteTypes.map((noteType): void => {
           if (this.data.noteTypes) {
             const nT = this.data.noteTypes.noteTypes.find((n): boolean => {
@@ -179,36 +137,40 @@ export class SaveStateService {
 
     await this.save();
   }
+  public async loadNotCategories(forceReset?: boolean): Promise<void> {
+    try {
+      const noteCategories = (await this.databaseService.getDatabaseItem(
+        'eng-note-categories',
+      )) as NoteCategories;
+
+      if (!forceReset && noteCategories && this.data.noteCategories) {
+        noteCategories.noteCategories.map((noteCategory): void => {
+          if (this.data.noteTypes) {
+            const nT = this.data.noteCategories.noteCategories.find(
+              (n): boolean => {
+                return n.className === noteCategory.className;
+              },
+            );
+            if (nT) {
+              nT.name = noteCategory.name;
+              nT.label = noteCategory.label;
+              nT.noteCategory = noteCategory.noteCategory;
+              nT.on = noteCategory.on;
+              nT.off = noteCategory.off;
+            } else {
+              this.data.noteCategories.noteCategories.push(noteCategory);
+            }
+          }
+        });
+      } else {
+        this.data.noteCategories = noteCategories;
+      }
+    } catch (error) {}
+
+    await this.save();
+  }
   public async save(): Promise<void> {
     localStorage.setItem('oithSettings', JSON.stringify(this.data));
-  }
-  private mergeNoteCategories(
-    noteSettings: NoteCategory[],
-    noteSettingsMaster: NoteCategory[],
-  ): void {
-    if (noteSettings) {
-      noteSettingsMaster.map((noteTypeConvert): void => {
-        const nTC = noteSettings.filter((nT): boolean => {
-          return nT.className === noteTypeConvert.className;
-        });
-
-        if (!nTC) {
-          noteSettings.push(noteTypeConvert);
-        } else {
-          nTC.map((n): void => {
-            n.noteCategory = noteTypeConvert.noteCategory;
-            n.noteCategoryName = noteTypeConvert.noteCategoryName;
-            n.noteCategoryShortName = noteTypeConvert.noteCategoryShortName;
-            n.sortOrder = noteTypeConvert.sortOrder;
-          });
-        }
-      });
-      noteSettings = uniqBy(noteSettings, (noteSetting): string => {
-        return noteSetting.className;
-      });
-    } else {
-      noteSettings = noteSettingsMaster;
-    }
   }
   private mergeNoteSettings<T extends { className: string }>(
     noteSettings: T[],
@@ -229,30 +191,38 @@ export class SaveStateService {
       noteSettings = noteSettingsMaster;
     }
   }
+  public resetNoteCategorySettings(): void {
+    if (this.data.noteCategories) {
+      this.data.noteCategories.noteCategories.map((noteCategory): void => {
+        const noteCategoryOn =
+          noteCategory.on.filter((on): boolean => {
+            return this.getNoteVisiblitySetting(on);
+          }).length > 0;
 
-  private validateNoteCategories(settings: SaveStateModel): void {
-    settings.noteCategorySettings = settings.noteCategorySettings.filter(
-      (noteCategory): boolean => {
-        return (
-          NOTE_CATEGORIES.find((nC): boolean => {
-            return (
-              nC.className === noteCategory.className &&
-              nC.noteCategory === noteCategory.noteCategory
-            );
-          }) !== undefined
-        );
-      },
-    );
-    NOTE_CATEGORIES.map((noteCategory): void => {
-      const nC = settings.noteCategorySettings.find((n): boolean => {
-        return (
-          n.className === noteCategory.className &&
-          noteCategory.noteCategory === n.noteCategory
-        );
+        const noteCategoryOff =
+          noteCategory.off === undefined
+            ? true
+            : noteCategory.off.filter((off): boolean => {
+                return this.getNoteVisiblitySetting(off);
+              }).length === 0;
+
+        noteCategory.visible = noteCategoryOff && noteCategoryOn;
       });
-      if (!nC) {
-        settings.noteCategorySettings.push(noteCategory);
+    }
+  }
+  private getNoteVisiblitySetting(on: string): boolean {
+    if (!on.includes('overlay')) {
+      return this.data[on] === true;
+    } else {
+      if (this.data.noteTypes) {
+        const noteType = findByAttribute(
+          this.data.noteTypes.noteTypes,
+          'className',
+          on,
+        );
+        return noteType !== undefined && noteType.visibility === true;
       }
-    });
+      return false;
+    }
   }
 }

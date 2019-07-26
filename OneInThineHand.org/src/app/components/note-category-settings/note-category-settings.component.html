@@ -1,227 +1,31 @@
-<table class="table">
-  <tr>
+<table class="table" *ngIf="saveStateService.data.noteCategories">
+  <tr
+    *ngFor="
+      let visibilitySetting of saveStateService.data.noteCategories
+        .visibilitySettings
+    "
+  >
     <td
+      *ngIf="visibilitySetting[0].name.trim() !== ''"
       [ngClass]="{
-        'table-primary': this.saveStateService.data.hmy.vis
+        'table-primary': this.saveStateService.data[
+          visibilitySetting[0].setting
+        ]
       }"
-      (click)="hmyClick()"
+      (click)="setNoteCategorySettings(visibilitySetting[0])"
     >
-      HMY
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.quo.vis
-      }"
-      (click)="quoClick()"
-    >
-      QUO
+      {{ visibilitySetting[0].name }}
     </td>
     <td
+      *ngIf="visibilitySetting[1].name.trim() !== ''"
       [ngClass]="{
-        'table-primary': this.saveStateService.data.quoMore.vis
+        'table-primary': this.saveStateService.data[
+          visibilitySetting[1].setting
+        ]
       }"
-      (click)="quoMoreClick()"
+      (click)="setNoteCategorySettings(visibilitySetting[1])"
     >
-      More
+      {{ visibilitySetting[1].name }}
     </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.phr.vis
-      }"
-      (click)="phrClick()"
-    >
-      PHR
-    </td>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.phrMore.vis
-      }"
-      (click)="phrMoreClick()"
-    >
-      More
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.trn.vis
-      }"
-      (click)="trnClick()"
-    >
-      TRN
-    </td>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.trnMore.vis
-      }"
-      (click)="trnMoreClick()"
-    >
-      More
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.or.vis
-      }"
-      (click)="orClick()"
-    >
-      OR
-    </td>
-    <!-- <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.orMore.vis
-      }"
-      (click)="orMoreClick()"
-    >
-      More
-    </td> -->
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.alt.vis
-      }"
-      (click)="altClick()"
-    >
-      ALT
-    </td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.ie.vis
-      }"
-      (click)="ieClick()"
-    >
-      IE
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.cr.vis
-      }"
-      (click)="crClick()"
-    >
-      CR
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.hst.vis
-      }"
-      (click)="hstClick()"
-    >
-      HST
-    </td>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.hstMore.vis
-      }"
-      (click)="hstMoreClick()"
-    >
-      More
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.geo.vis
-      }"
-      (click)="geoClick()"
-    >
-      GEO
-    </td>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.geoMore.vis
-      }"
-      (click)="geoMoreClick()"
-    >
-      More
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.pronunciation.vis
-      }"
-      (click)="pronunciationClick()"
-    >
-      🔊
-    </td>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.pronunciationMore.vis
-      }"
-      (click)="pronunciationMoreClick()"
-    >
-      More
-    </td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.heb.vis
-      }"
-      (click)="hebClick()"
-    >
-      HEB
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.gr.vis
-      }"
-      (click)="grClick()"
-    >
-      GR
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.tg.vis
-      }"
-      (click)="tgClick()"
-    >
-      TG
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.gs.vis
-      }"
-      (click)="gsClick()"
-    >
-      GS
-    </td>
-    <td></td>
-  </tr>
-  <tr>
-    <td
-      [ngClass]="{
-        'table-primary': this.saveStateService.data.bd.vis
-      }"
-      (click)="bdClick()"
-    >
-      BD
-    </td>
-    <td></td>
   </tr>
 </table>

@@ -84,7 +84,7 @@ export class PreprocessorService {
       await Promise.all(p);
     }
 
-    await this.saveStateService.loadNoteTypes();
+    await this.saveStateService.loadNoteSettings(true);
     // try {
     //   const zipFiles = target.files;
     //   console.log(zipFiles);

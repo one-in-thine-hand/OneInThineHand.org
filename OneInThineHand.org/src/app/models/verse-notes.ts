@@ -132,7 +132,7 @@ export class FMerged {
 export const enum NoteCategoryOverlay {} // tslint:disable:completed-docs
 export const enum NoteCategorySort {
   ERR = 100000,
-  QUO =1,
+  QUO = 1,
   PHR,
   TRN,
   ALT,
@@ -179,395 +179,6 @@ export const enum NoteCategorySort {
   QUO2NONE,
   ORTRN1,
   ORTRN2,
-}
-
-export class NoteCategory {
-  public className: string;
-  public noteCategory: NoteCategorySort;
-  public noteCategoryName: string;
-  public noteCategoryShortName: string;
-  public sortOrder: number;
-  public visible: boolean | undefined;
-}
-export const NOTE_CATEGORIES: NoteCategory[] = [
-  {
-    className: 'reference-label-alt',
-    noteCategory: NoteCategorySort.ALT,
-    sortOrder: 0,
-    noteCategoryName: 'ALT',
-    visible: true,
-    noteCategoryShortName: 'ALT',
-  },
-  {
-    className: 'reference-label-bd',
-    noteCategory: NoteCategorySort.BD,
-    sortOrder: 0,
-    noteCategoryName: 'BD',
-    visible: true,
-    noteCategoryShortName: 'BD',
-  },
-  {
-    className: 'reference-label-gs',
-    noteCategory: NoteCategorySort.GS,
-    sortOrder: 0,
-    noteCategoryName: 'GS',
-    visible: true,
-    noteCategoryShortName: 'GS',
-  },
-  {
-    className: 'reference-label-harmony',
-    noteCategory: NoteCategorySort.HMY,
-    sortOrder: 0,
-    noteCategoryName: 'HMY',
-    visible: true,
-    noteCategoryShortName: 'HMY',
-  },
-  {
-    className: 'reference-label-heb',
-    noteCategory: NoteCategorySort.HEB,
-    sortOrder: 0,
-    noteCategoryName: 'HEB',
-    visible: true,
-    noteCategoryShortName: 'HEB',
-  },
-  {
-    className: 'reference-label-tg',
-    noteCategory: NoteCategorySort.TG,
-    sortOrder: 0,
-    noteCategoryName: 'TG',
-    visible: true,
-    noteCategoryShortName: 'TG',
-  },
-  {
-    className: 'reference-label-greek',
-    noteCategory: NoteCategorySort.GR,
-    sortOrder: 0,
-    noteCategoryName: 'GR',
-    visible: true,
-    noteCategoryShortName: 'GR',
-  },
-  {
-    className: 'reference-label-gs',
-    noteCategory: NoteCategorySort.GS,
-    sortOrder: 0,
-    noteCategoryName: 'GS',
-    visible: true,
-    noteCategoryShortName: 'GS',
-  },
-  {
-    className: 'reference-label-bd',
-    noteCategory: NoteCategorySort.BD,
-    sortOrder: 0,
-    noteCategoryName: 'BD',
-    visible: true,
-    noteCategoryShortName: 'BD',
-  },
-  {
-    className: 'reference-label-alt',
-    noteCategory: NoteCategorySort.ALT,
-    sortOrder: 0,
-    noteCategoryName: 'ALT',
-    visible: true,
-    noteCategoryShortName: 'ALT',
-  },
-  {
-    className: 'reference-label-cross-ref',
-    noteCategory: NoteCategorySort.CR,
-    sortOrder: 0,
-    noteCategoryName: 'CR',
-    visible: true,
-    noteCategoryShortName: 'CR',
-  },
-  {
-    className: 'reference-label-cross-not-jst-ref',
-    noteCategory: NoteCategorySort.CRNOTJST,
-    sortOrder: 0,
-    noteCategoryName: 'CR',
-    visible: true,
-    noteCategoryShortName: 'CR',
-  },
-  {
-    className: 'reference-label-geography',
-    noteCategory: NoteCategorySort.GEO,
-    sortOrder: 0,
-    noteCategoryName: 'GEO',
-    visible: true,
-    noteCategoryShortName: 'GEO',
-  },
-  {
-    className: 'reference-label-geography-1',
-    noteCategory: NoteCategorySort.GEO1,
-    sortOrder: 0,
-    noteCategoryName: 'GEO',
-    visible: true,
-    noteCategoryShortName: 'GEO',
-  },
-  {
-    className: 'reference-label-geography-2',
-    noteCategory: NoteCategorySort.GEO2,
-    sortOrder: 0,
-    noteCategoryName: 'GEO',
-    visible: true,
-    noteCategoryShortName: 'GEO',
-  },
-  {
-    className: 'reference-label-harmony',
-    noteCategory: NoteCategorySort.HMY,
-    sortOrder: 0,
-    noteCategoryName: 'HMY',
-    visible: true,
-    noteCategoryShortName: 'HMY',
-  },
-  {
-    className: 'reference-label-history',
-    noteCategory: NoteCategorySort.HST,
-    sortOrder: 0,
-    noteCategoryName: 'HST',
-    visible: true,
-    noteCategoryShortName: 'HST',
-  },
-  {
-    className: 'reference-label-history-1',
-    noteCategory: NoteCategorySort.HST1,
-    sortOrder: 0,
-    noteCategoryName: 'HST',
-    visible: true,
-    noteCategoryShortName: 'HST',
-  },
-  {
-    className: 'reference-label-history-2',
-    noteCategory: NoteCategorySort.HST2,
-    sortOrder: 0,
-    noteCategoryName: 'HST',
-    visible: true,
-    noteCategoryShortName: 'HST',
-  },
-  {
-    className: 'reference-label-ie',
-    noteCategory: NoteCategorySort.IE,
-    sortOrder: 0,
-    noteCategoryName: 'IE',
-    visible: true,
-    noteCategoryShortName: 'IE',
-  },
-  {
-    className: 'reference-label-ie-quotation',
-    noteCategory: NoteCategorySort.IEQUO,
-    sortOrder: 0,
-    noteCategoryName: 'IE',
-    visible: true,
-    noteCategoryShortName: 'IE',
-  },
-  {
-    className: 'reference-label-ie-quotation-1',
-    noteCategory: NoteCategorySort.IEQUO1,
-    sortOrder: 0,
-    noteCategoryName: 'IE',
-    visible: true,
-    noteCategoryShortName: 'IE',
-  },
-  {
-    className: 'reference-label-ie-quotation-2',
-    noteCategory: NoteCategorySort.IEQUO2,
-    sortOrder: 0,
-    noteCategoryName: 'IE',
-    visible: true,
-    noteCategoryShortName: 'IE',
-  },
-  {
-    className: 'reference-label-phrasing',
-    noteCategory: NoteCategorySort.PHR,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-1',
-    noteCategory: NoteCategorySort.PHR1,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-2',
-    noteCategory: NoteCategorySort.PHR2,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-quotation',
-    noteCategory: NoteCategorySort.PHRQUO,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-1-quotation',
-    noteCategory: NoteCategorySort.PHRQUO1,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-2-quotation',
-    noteCategory: NoteCategorySort.PHRQUO2,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-not-quotation',
-    noteCategory: NoteCategorySort.PHRNOTQUO,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-1-not-quotation',
-    noteCategory: NoteCategorySort.PHRNOTQUO1,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-phrasing-2-not-quotation',
-    noteCategory: NoteCategorySort.PHRNOTQUO2,
-    sortOrder: 0,
-    noteCategoryName: 'PHR',
-    visible: true,
-    noteCategoryShortName: 'PHR',
-  },
-  {
-    className: 'reference-label-pronunciation-2',
-    noteCategory: NoteCategorySort.pronunciation2,
-    sortOrder: 0,
-    noteCategoryName: 'Pronunciation 2',
-    visible: true,
-    noteCategoryShortName: '🔊',
-  },
-  {
-    className: 'reference-label-quotation',
-    noteCategory: NoteCategorySort.QUO,
-    sortOrder: 0,
-    noteCategoryName: 'QUO',
-    visible: true,
-    noteCategoryShortName: 'QUO',
-  },
-  {
-    className: 'reference-label-quotation-1',
-    noteCategory: NoteCategorySort.QUO1,
-    sortOrder: 0,
-    noteCategoryName: 'QUO',
-    visible: true,
-    noteCategoryShortName: 'QUO',
-  },
-  {
-    className: 'reference-label-quotation-2',
-    noteCategory: NoteCategorySort.QUO2,
-    sortOrder: 0,
-    noteCategoryName: 'QUO',
-    visible: true,
-    noteCategoryShortName: 'QUO',
-  },
-  {
-    className: 'reference-label-quotation-none',
-    noteCategory: NoteCategorySort.QUONONE,
-    sortOrder: 0,
-    noteCategoryName: 'QUO-NONE',
-    visible: true,
-    noteCategoryShortName: '',
-  },
-  {
-    className: 'reference-label-quotation-2-none',
-    noteCategory: NoteCategorySort.QUO2NONE,
-    sortOrder: 0,
-    noteCategoryName: 'QUO-2-NONE',
-    visible: true,
-    noteCategoryShortName: '',
-  },
-  {
-    className: 'reference-label-translation',
-    noteCategory: NoteCategorySort.TRN,
-    sortOrder: 0,
-    noteCategoryName: 'TRN',
-    visible: true,
-    noteCategoryShortName: 'TRN',
-  },
-  {
-    className: 'reference-label-translation-1',
-    noteCategory: NoteCategorySort.TRN1,
-    sortOrder: 0,
-    noteCategoryName: 'TRN',
-    visible: true,
-    noteCategoryShortName: 'TRN',
-  },
-  {
-    className: 'reference-label-translation-2',
-    noteCategory: NoteCategorySort.TRN2,
-    sortOrder: 0,
-    noteCategoryName: 'TRN',
-    visible: true,
-    noteCategoryShortName: 'TRN',
-  },
-  {
-    className: 'reference-label-or',
-    noteCategory: NoteCategorySort.OR,
-    sortOrder: 0,
-    noteCategoryName: 'OR',
-    visible: true,
-    noteCategoryShortName: 'OR',
-  },
-  {
-    className: 'reference-label-or-translation-1',
-    noteCategory: NoteCategorySort.ORTRN1,
-    sortOrder: 0,
-    noteCategoryName: 'OR',
-    visible: true,
-    noteCategoryShortName: 'OR',
-  },
-  {
-    className: 'reference-label-or-translation-2',
-    noteCategory: NoteCategorySort.ORTRN2,
-    sortOrder: 0,
-    noteCategoryName: 'OR-TRN-2',
-    visible: true,
-    noteCategoryShortName: 'OR',
-  },
-];
-// referenceLabelShortName: 'QUO-1',
-// referenceLabelSho
-// referenceLabelShortName: 'QUO-1',
-// referenceLabelShortName: 'QUO-2',
-
-export function getNoteCategoryByClassName(
-  className: string,
-): NoteCategory | undefined {
-  return NOTE_CATEGORIES.find((refLabel): boolean => {
-    return refLabel.className === className;
-  });
-}
-export function getNoteCategoryByNoteCategory(
-  noteCategory: NoteCategorySort,
-): NoteCategory | undefined {
-  return NOTE_CATEGORIES.find((refLabel): boolean => {
-    return refLabel.noteCategory === noteCategory;
-  });
-}
-export function getNoteCategoryBynoteCategoryName(
-  noteCategoryName: string,
-): NoteCategory | undefined {
-  return NOTE_CATEGORIES.find((refLabel): boolean => {
-    return refLabel.noteCategoryName === noteCategoryName;
-  });
 }
 
 export const enum LanguageCode {
@@ -779,7 +390,7 @@ export class Note implements CouchDoc, Doc, Offsets {
   public lang: LanguageCode;
   public noteMarker?: string;
   public notePhrase: string;
-  notePhraseVis: boolean;
+  public notePhraseVis: boolean;
   public noteRefFormatTag?: NoteRefFormatTag;
   public noteRefs: NoteRef[];
   public noteType: number;
@@ -1435,5 +1046,55 @@ export class NoteGeography extends Note {
       verseMarker,
       noteMarker,
     );
+  }
+}
+
+export class NoteCategorySetting {
+  public name: string;
+  public setting: string;
+}
+export class NoteCategories implements CouchDoc, Doc {
+  public _id: string;
+  public lang: LanguageCode;
+  public noteCategories: NoteCategory[];
+  public visibilitySettings: NoteCategorySetting[][];
+  public _rev?: string | undefined;
+
+  public constructor(
+    _id: string,
+    lang: LanguageCode,
+    noteCategories: NoteCategory[],
+    visibilitySettings: NoteCategorySetting[][],
+  ) {
+    this._id = _id;
+    this.lang = lang;
+    this.noteCategories = noteCategories;
+    this.visibilitySettings = visibilitySettings;
+  }
+}
+export class NoteCategory {
+  public visible?: boolean;
+  public noteCategory: number;
+  public className: string;
+  public name: string;
+  public label: string;
+  public on: string[];
+  public off?: string[];
+  public constructor(
+    noteCategory: number,
+    className: string,
+    name: string,
+    label: string,
+    on: string[],
+    off?: string[],
+    visible?: boolean,
+  ) {
+    this.visible = visible;
+    this.noteCategory = noteCategory;
+    this.className = className;
+    this.name = name;
+    this.label = label;
+    this.on = on;
+    this.off = off;
   }
 }

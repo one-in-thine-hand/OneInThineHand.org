@@ -14,16 +14,18 @@ import { saveAs } from 'file-saver';
 import {
   VerseNotes,
   Note,
-  getNoteCategoryByNoteCategory,
   NoteCategory,
   NoteCategorySort,
 } from '../models/verse-notes';
+import { findByAttribute } from '../../../../shared/src/functions/filterUndefined';
+import { SaveStateService } from './save-state.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ExportService {
   public constructor(
     public chapterService: ChapterService,
+    private saveStateService: SaveStateService,
     public databaseService: DatabaseService,
   ) {}
   public breaksToString(breaks: FormatGroup[]): string {
@@ -288,14 +290,18 @@ export class ExportService {
             .map((noteRef): string => {
               let refLabel: NoteCategory | undefined;
               if (noteRef.noteCategory) {
-                refLabel = getNoteCategoryByNoteCategory(noteRef.noteCategory);
+                refLabel = findByAttribute(
+                  this.saveStateService.data.noteCategories.noteCategories,
+                  'noteCategory',
+                  noteRef.noteCategory,
+                );
               }
 
               return `<p class="note-reference"><span class="${
                 refLabel ? refLabel.className : ''
               }${
                 noteRef.noteCategory === NoteCategorySort.NONE ? ' none' : ''
-              }">${refLabel ? refLabel.noteCategoryName : ''} </span>${
+              }">${refLabel ? refLabel.label : ''} </span>${
                 noteRef.text ? noteRef.text.replace(/&/g, '&amp;') : ''
               }</p>`;
             })

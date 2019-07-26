@@ -1,10 +1,14 @@
-import { Component, HostListener } from '@angular/core';
-import { ElectronService } from './providers/electron.service';
-import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../environments/environment';
-import { SaveStateService } from './services/save-state.service';
-import { SwUpdate } from '@angular/service-worker';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
+import { TranslateService } from '@ngx-translate/core';
+
+import { AppConfig } from '../environments/environment';
+import { ElectronService } from './providers/electron.service';
+import { SaveStateService } from './services/save-state.service';
+import { VisibilityService } from './services/visibility.service';
+import { ChapterService } from './services/chapter.service';
+import { OffsetGroupsService } from './services/offset-groups.service';
 
 // import { SwUpdate } from '@angular/service-worker';
 
@@ -13,13 +17,35 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  public ngOnInit(): void {
+    this.saveStateService.resetNoteSettingsObservable.subscribe(
+      async (): Promise<void> => {
+        this.saveStateService.resetNoteCategorySettings();
+
+        await this.saveStateService.save();
+        if (this.chapterService.notes && this.chapterService.chapterNotes) {
+          this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+          this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
+            this.chapterService.chapterNotes,
+          );
+          this.chapterService.offsetGroupsOb.next(
+            this.chapterService.offsetGroups,
+          );
+        }
+      },
+    );
+  }
   public constructor(
     public electronService: ElectronService,
     private translate: TranslateService,
     public saveStateService: SaveStateService,
     private swUpdate: SwUpdate,
     public act: Router,
+    public chapterService: ChapterService,
+    public offsetGroupsService: OffsetGroupsService,
+    public visibilityService: VisibilityService,
   ) {
     translate.setDefaultLang('en');
     this.swUpdate.available.subscribe((evt): void => {

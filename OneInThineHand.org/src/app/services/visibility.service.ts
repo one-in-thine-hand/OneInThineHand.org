@@ -40,22 +40,18 @@ export class VisibilityService {
                   return nC.sort === sN.noteType;
                 },
               );
-              // console.log(noteTypeSetting);
 
               sN.visible = noteTypeSetting ? noteTypeSetting.visibility : true;
             }
 
-            if (sN.visible) {
+            if (sN.visible && this.saveStateService.data.noteCategories) {
               const visibility = sN.noteRefs.map((noteRef): boolean => {
-                const nC = this.saveStateService.data.noteCategorySettings.find(
+                const nC = this.saveStateService.data.noteCategories.noteCategories.find(
                   (rL): boolean => {
                     return rL.noteCategory === noteRef.noteCategory;
                   },
                 );
                 if (nC && nC.visible) {
-                  console.log(this.saveStateService.data.phr);
-
-                  console.log(nC);
                 }
 
                 noteRef.visible = nC ? nC.visible : false;
@@ -87,8 +83,6 @@ export class VisibilityService {
     notes.map((note): void => {
       if (note.notes) {
         note.notes.map((sN): void => {
-          console.log(sN.offsets);
-
           if (sN.offsets === undefined || sN.offsets.trim() === '') {
             sN.visible = true;
             if (sN.noteRefs) {

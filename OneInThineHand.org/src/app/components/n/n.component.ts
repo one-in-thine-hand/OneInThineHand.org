@@ -17,14 +17,13 @@ import { debounceTime } from 'rxjs/operators';
 import {
   Note,
   NoteRef,
-  getNoteCategoryByNoteCategory,
   NoteCategorySort,
-  NOTE_CATEGORIES,
   getVisible,
+  NoteCategory,
 } from '../../models/verse-notes';
 import { SaveStateService } from '../../services/save-state.service';
 import { Observable, Subject } from 'rxjs';
-
+import { findByAttribute } from '../../../../../shared/src/functions/filterUndefined';
 @Component({
   selector: 'app-n',
   templateUrl: './n.component.html',
@@ -57,11 +56,17 @@ export class NComponent implements OnInit, OnDestroy {
     ) {
       return '';
     }
-    const nc = NOTE_CATEGORIES.find((rl): boolean => {
-      return rl.noteCategory === noteRef.noteCategory;
-    });
+    try {
+      const nc = findByAttribute(
+        this.saveStateService.data.noteCategories.noteCategories,
+        'noteCategory',
+        noteRef.noteCategory,
+      );
 
-    return nc ? nc.noteCategoryShortName : 'extERR';
+      return nc ? nc.label : 'extERR';
+    } catch (error) {
+      return 'extERR';
+    }
   }
 
   public getNotePhrase(notePhrase: string | undefined): string {
@@ -75,8 +80,16 @@ export class NComponent implements OnInit, OnDestroy {
     return noteRef.safeHtml;
   }
   public getRefClass(noteRef: NoteRef): string {
-    if (noteRef && noteRef.noteCategory) {
-      const nC = getNoteCategoryByNoteCategory(noteRef.noteCategory);
+    if (
+      noteRef &&
+      noteRef.noteCategory &&
+      this.saveStateService.data.noteCategories.noteCategories
+    ) {
+      const nC = findByAttribute(
+        this.saveStateService.data.noteCategories.noteCategories,
+        'noteCategory',
+        noteRef.noteCategory,
+      );
       return nC ? nC.className : '';
     }
     return '';

@@ -13,12 +13,7 @@ import { FormatTagService } from '../../services/format-tag.service';
 import { sortBy } from 'lodash';
 import { DatabaseService } from '../../services/database.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
-import {
-  NoteCategory,
-  NOTE_CATEGORIES,
-  NoteCategorySort,
-  NoteTypeOverlay,
-} from '../../models/verse-notes';
+import { NoteCategory, NoteTypeOverlay } from '../../models/verse-notes';
 import { OffsetGroupsService } from '../../services/offset-groups.service';
 
 @Component({
@@ -58,34 +53,14 @@ export class HeaderComponent implements OnInit {
     await this.save();
   }
 
-  public categoryIsActive(noteCategoryClassName: string): boolean {
-    const noteCategory = this.findNoteCategorySetting(noteCategoryClassName);
-    if (!noteCategory) {
-    }
-    return noteCategory && noteCategory.visible ? noteCategory.visible : false;
-  }
   public async forwardClick(): Promise<void> {
     this.location.forward();
   }
 
-  public getNoteCategories(): NoteCategory[] {
-    return sortBy(
-      this.saveStateService.data.noteCategorySettings.filter(
-        (refLabelSetting): boolean => {
-          return refLabelSetting.noteCategory !== NoteCategorySort.ERR;
-        },
-      ),
-      (refLabelSetting): number => {
-        return refLabelSetting.noteCategory;
-      },
-    );
-  }
   public async loadChapterFile(event: Event): Promise<void> {
     this.uploading = true;
     await this.preprocessorService.loadChapterFiles(event);
     this.uploading = false;
-
-    return;
   }
 
   public async loadNoteFile(event: Event): Promise<void> {
@@ -99,44 +74,11 @@ export class HeaderComponent implements OnInit {
 
   public ngOnInit(): void {}
 
-  public async noteCategoryBtnClick(
-    noteCategoryClassNames: string[],
-    visibility?: boolean,
-  ): Promise<void> {
-    try {
-      const noteCategories = noteCategoryClassNames.map(
-        (noteCategoryClassName): NoteCategory => {
-          return this.findNoteCategorySetting(
-            noteCategoryClassName,
-          ) as NoteCategory;
-        },
-      );
-      noteCategories[0].visible = visibility
-        ? visibility
-        : !noteCategories[0].visible;
-      if (noteCategories.length > 1) {
-        for (let x = 1; x < noteCategories.length; x++) {
-          const noteCat = noteCategories[x];
-
-          noteCat.visible = noteCategories[0].visible;
-        }
-      }
-    } catch (error) {}
-
-    await this.resetNotes();
-    // await this.saveStateService.save();
-  }
-  public async notesPaneToggle(): Promise<void> {
-    this.saveStateService.data.notesPaneToggle = !this.saveStateService.data
-      .notesPaneToggle;
-    await this.save();
-  }
-
   public async noteTypeClick(noteType: NoteTypeOverlay): Promise<void> {
     noteType.visibility = !noteType.visibility;
     console.log(noteType);
 
-    await await this.resetNotes();
+    this.saveStateService.resetNoteSettingsObservable.next();
     // if (this.chapterService.notes && this.chapterService.chapterNotes) {
     //   // console.log('oiasjdfioajsdfiojasdofaoisdvnioj');
 
@@ -147,7 +89,7 @@ export class HeaderComponent implements OnInit {
     //   );
     //   this.chapterService.offsetGroupsOb.next(this.chapterService.offsetGroups);
     // }
-    await this.save();
+    // await this.save();
   }
   public async onSubmit(event: Event): Promise<void> {
     const fileInput = document.querySelector('#chapterFileOpener');
@@ -162,33 +104,6 @@ export class HeaderComponent implements OnInit {
     await this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
     }).result;
-  }
-  public async orClick(): Promise<void> {
-    const refLabelOR = this.findNoteCategorySetting('reference-label-or');
-    const refLabelOR1 = this.findNoteCategorySetting('reference-label-or-1');
-    const refLabelOR2 = this.findNoteCategorySetting('reference-label-or-2');
-
-    if (refLabelOR && refLabelOR1 && refLabelOR2) {
-      refLabelOR.visible = !refLabelOR.visible;
-
-      refLabelOR1.visible = refLabelOR.visible;
-      refLabelOR2.visible = false;
-    }
-
-    await this.resetNotes();
-    // await this.saveStateService.save();
-  }
-
-  public async orMoreClick(): Promise<void> {
-    const refLabelOR = this.findNoteCategorySetting('reference-label-or');
-    const refLabelOR2 = this.findNoteCategorySetting('reference-label-or-2');
-
-    if (refLabelOR && refLabelOR.visible && refLabelOR2) {
-      refLabelOR2.visible = !refLabelOR2.visible;
-    }
-
-    await this.resetNotes();
-    // await this.saveStateService.save();
   }
   public async paragraphsVisible(): Promise<void> {
     this.saveStateService.data.paragraphsVisible = !this.saveStateService.data
@@ -208,48 +123,6 @@ export class HeaderComponent implements OnInit {
     );
     await this.save();
   }
-  public async quotationClick(): Promise<void> {
-    const refLabelQuo = this.findNoteCategorySetting(
-      'reference-label-quotation',
-    );
-    const refLabels = this.findNoteCategorysSetting([
-      'reference-label-quotation-1',
-      'reference-label-quotation-2',
-      'reference-label-ie-quotation-1',
-      'reference-label-ie-quotation-2',
-    ]);
-    if (refLabelQuo) {
-      refLabelQuo.visible = !refLabelQuo.visible;
-      refLabels.map((refLabel): void => {
-        if (refLabel.className.includes('-2')) {
-          refLabel.visible = false;
-        } else {
-          refLabel.visible = refLabelQuo ? refLabelQuo.visible : false;
-        }
-      });
-    }
-
-    await this.resetNotes();
-    // await this.saveStateService.save();
-  }
-  public async quotationMoreClick(): Promise<void> {
-    const refLabelQuo = this.findNoteCategorySetting(
-      'reference-label-quotation',
-    );
-    if (refLabelQuo) {
-      refLabelQuo.visible = true;
-      const vis = this.flipRefLabelVis('reference-label-quotation-2');
-      console.log(vis);
-
-      this.flipRefLabelVis('reference-label-ie-quotation-2', !vis);
-      this.flipRefLabelVis('reference-label-ie-quotation-1', !vis);
-      this.flipRefLabelVis('reference-label-quotation-1', vis);
-    }
-
-    await this.resetNotes();
-    // await this.saveStateService.save();
-  }
-
   public async refLabelClick(
     ref: { visible: boolean } | string,
   ): Promise<void> {
@@ -269,106 +142,6 @@ export class HeaderComponent implements OnInit {
 
   public async save(): Promise<void> {
     await this.saveStateService.save();
-  }
-  public async secondaryNotesVisible(): Promise<void> {
-    this.saveStateService.data.secondaryNotesVisible = !this.saveStateService
-      .data.secondaryNotesVisible;
-    await this.saveStateService.save();
-  }
-  public async showOrphanRefs(): Promise<void> {}
-
-  public async trnClick(): Promise<void> {
-    const refLabelTRN = this.findNoteCategorySetting(
-      'reference-label-translation',
-    );
-    const refLabelTRN1 = this.findNoteCategorySetting(
-      'reference-label-translation-1',
-    );
-    const refLabelHEB = this.findNoteCategorySetting('reference-label-hebrew');
-    const refLabelGreek = this.findNoteCategorySetting('reference-label-greek');
-    const refLabelTRN2 = this.findNoteCategorySetting(
-      'reference-label-translation-2',
-    );
-    const orTR1 = this.findNoteCategorySetting(
-      'reference-label-or-translation-1',
-    );
-    const orTR2 = this.findNoteCategorySetting(
-      'reference-label-or-translation-2',
-    );
-
-    if (
-      refLabelTRN &&
-      refLabelTRN1 &&
-      refLabelTRN2 &&
-      refLabelGreek &&
-      refLabelHEB &&
-      orTR1 &&
-      orTR2
-    ) {
-      refLabelTRN.visible = !refLabelTRN.visible;
-      refLabelTRN2.visible = false;
-      refLabelTRN1.visible = refLabelTRN.visible;
-      refLabelGreek.visible = refLabelTRN1.visible;
-      refLabelHEB.visible = refLabelTRN1.visible;
-      orTR1.visible = refLabelTRN2.visible;
-      orTR2.visible = refLabelTRN2.visible;
-    }
-    await this.resetNotes();
-    // await this.saveStateService.save();
-  }
-
-  public async trnMoreClick(): Promise<void> {
-    const refLabelTRN = this.findNoteCategorySetting(
-      'reference-label-translation',
-    );
-    const refLabelTRN2 = this.findNoteCategorySetting(
-      'reference-label-translation-2',
-    );
-
-    const orTR1 = this.findNoteCategorySetting(
-      'reference-label-or-translation-1',
-    );
-    const orTR2 = this.findNoteCategorySetting(
-      'reference-label-or-translation-2',
-    );
-    if (refLabelTRN && refLabelTRN2 && orTR1 && orTR2) {
-      refLabelTRN.visible = true;
-      refLabelTRN2.visible = !refLabelTRN2.visible;
-      orTR1.visible = refLabelTRN2.visible;
-      orTR2.visible = refLabelTRN2.visible;
-    }
-
-    await this.resetNotes();
-  }
-  private findNoteCategorySetting(
-    noteCategoryClassName: string,
-  ): NoteCategory | undefined {
-    return this.saveStateService.data.noteCategorySettings.find(
-      (noteCategory): boolean => {
-        return noteCategory.className === noteCategoryClassName;
-      },
-    );
-  }
-  private findNoteCategorysSetting(
-    noteCategoryClassNames: string[],
-  ): NoteCategory[] {
-    return noteCategoryClassNames
-      .map((noteCategoryClassName): NoteCategory | undefined => {
-        return this.findNoteCategorySetting(noteCategoryClassName);
-      })
-      .filter((refLabel): boolean => {
-        return refLabel !== undefined;
-      }) as NoteCategory[];
-  }
-
-  private flipRefLabelVis(refLabelClassName: string, vis?: boolean): boolean {
-    const refLabel = this.findNoteCategorySetting(refLabelClassName);
-
-    if (refLabel) {
-      refLabel.visible = vis ? !vis : !refLabel.visible;
-      return refLabel.visible;
-    }
-    return false;
   }
 
   private async resetNotes(): Promise<void> {
