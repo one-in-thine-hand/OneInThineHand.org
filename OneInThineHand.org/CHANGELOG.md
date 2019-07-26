@@ -1,6 +1,14 @@
+## <small>5.0.129 (2019-07-26)</small>
+
+* bug fixes ([247f3ef](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/247f3ef))
+* Support for new note category file ([f0664b4](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f0664b4))
+
+
+
 ## <small>5.0.128 (2019-07-25)</small>
 
 * Code cleanup ([68f7d21](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/68f7d21))
+* v5.0.128 ([2473f72](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2473f72))
 
 
 
