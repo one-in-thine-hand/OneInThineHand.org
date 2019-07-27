@@ -23,6 +23,9 @@
         </span>
         <span [innerHTML]="noteRef.safeHtml"></span>
       </li>
+      <ng-container *ngIf="saveStateService.data.debugMode">{{
+        getRefClass(noteRef)
+      }}</ng-container>
       <!-- <li>
         <textarea *ngIf="edit" name="note-ref" id="">{{
           noteRef.text

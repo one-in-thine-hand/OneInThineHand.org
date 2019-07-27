@@ -87,6 +87,8 @@ export class SaveStateService {
       const noteCategories = (await this.databaseService.getDatabaseItem(
         'eng-note-categories',
       )) as NoteCategories;
+      console.log(noteCategories);
+
 
       noteCategories.visibilitySettings.map((visSetting): void => {
         visSetting.map((vS): void => {
@@ -194,17 +196,19 @@ export class SaveStateService {
   public resetNoteCategorySettings(): void {
     if (this.data.noteCategories) {
       this.data.noteCategories.noteCategories.map((noteCategory): void => {
+        console.log(noteCategory);
+
         const noteCategoryOn =
           noteCategory.on.filter((on): boolean => {
             return this.getNoteVisiblitySetting(on);
-          }).length > 0;
+          }).length === noteCategory.on.length;
 
         const noteCategoryOff =
           noteCategory.off === undefined
             ? true
             : noteCategory.off.filter((off): boolean => {
-                return this.getNoteVisiblitySetting(off);
-              }).length === 0;
+                return this.getNoteVisiblitySetting(off) === false;
+              }).length === noteCategory.off.length;
 
         noteCategory.visible = noteCategoryOff && noteCategoryOn;
       });

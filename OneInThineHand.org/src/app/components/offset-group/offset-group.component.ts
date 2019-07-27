@@ -9,6 +9,7 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeoPopupComponent } from '../geo-popup/geo-popup.component';
 import { ProGuideComponent } from '../pro-guide/pro-guide.component';
+import { SaveStateService } from '../../services/save-state.service';
 
 @Component({
   selector: 'app-offset-group',
@@ -19,7 +20,10 @@ export class OffsetGroupComponent implements OnInit {
   public audio: HTMLAudioElement;
   @Input() public offsetGroup: OffsetGroup;
   @Input() public verseNotes: VerseNote;
-  public constructor(public modalService: NgbModal) {}
+  public constructor(
+    public modalService: NgbModal,
+    public saveStateService: SaveStateService,
+  ) {}
   public async geoClick(event: Event, note: NoteGeography): Promise<void> {
     if ((event.target as HTMLElement).getAttribute('url')) {
       const url = (event.target as HTMLElement).getAttribute('url') as string;
