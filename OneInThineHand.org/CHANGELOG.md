@@ -1,6 +1,16 @@
+## <small>5.0.131 (2019-07-29)</small>
+
+* Bug fixes ([17f323e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/17f323e))
+* cleanup ([4246a37](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4246a37))
+* Refactoring ([8690da9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8690da9))
+* Working on note pane ([247b773](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/247b773))
+
+
+
 ## <small>5.0.130 (2019-07-27)</small>
 
 * bug fixes ([7ec6e9b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/7ec6e9b))
+* v5.0.130 ([6dfe387](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/6dfe387))
 
 
 
