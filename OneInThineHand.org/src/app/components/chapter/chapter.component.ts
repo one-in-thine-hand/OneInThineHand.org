@@ -79,8 +79,13 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
+  public turnUserSelectOff(): void {
+    setTimeout((): void => {
+      this.userSelectOff = false;
+    }, 200);
+  }
   public verseNotesResizerDrag(): void {
-    this.dragBuffer.pipe(bufferCount(10)).subscribe((events): void => {
+    this.dragBuffer.pipe(bufferCount(40)).subscribe((events): void => {
       this.userSelectOff = true;
       const event = events[events.length - 1];
       let screenY: number | undefined;
@@ -100,11 +105,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
 
       if (screenY) {
         // this.dragging = true;
-        this.saveStateService.data.notePaneHeight = `${(window.screen.height -
+        this.saveStateService.data.notePaneHeight = `${window.screen.height -
           96 -
-          screenY) /
-          10}%`;
-        this.tempSettingsService.notePaneHeight = this.saveStateService.data.notePaneHeight;
+          screenY}px`;
+        this.tempSettingsService.notePaneHeight = `${window.screen.height -
+          96 -
+          screenY}px`;
 
         // this.saveStateService.data.notePaneHeight = `${window.screen.width -
         //   screenX}px`;
