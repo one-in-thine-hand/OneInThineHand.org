@@ -1,16 +1,12 @@
 <ng-container *ngIf="text; else elseTemplate">
   <note-phrase
     (click)="this.notePhraseClick(notes)"
-    [innerHTML]="this.domSanitizer.bypassSecurityTrustHtml(text ? text : '')"
+    [innerHTML]="safeHtml"
   ></note-phrase>
 </ng-container>
 <ng-template #elseTemplate>
   <note-phrase
     (click)="this.notePhraseClick([note])"
-    [innerHTML]="
-      this.domSanitizer.bypassSecurityTrustHtml(
-        note.notePhrase ? note.notePhrase : ''
-      )
-    "
+    [innerHTML]="safeHtml"
   ></note-phrase>
 </ng-template>

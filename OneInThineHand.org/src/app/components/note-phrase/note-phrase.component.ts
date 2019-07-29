@@ -20,6 +20,7 @@ export class NotePhraseComponent implements OnInit {
   public selected = false;
   @Input() public text?: string;
   @Input() public verseNotes: VerseNote;
+  public safeHtml: SafeHtml = '';
 
   public constructor(
     public chapterService: ChapterService,
@@ -35,7 +36,11 @@ export class NotePhraseComponent implements OnInit {
       ? this.domSanitizer.bypassSecurityTrustHtml(notePhrase)
       : 'Note Phrase Missing';
   }
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
+      this.text ? this.text : this.note.notePhrase,
+    );
+  }
   public async notePhraseClick(notes: Note[]): Promise<void> {
     const selection = window.getSelection();
     // console.log(notes);
