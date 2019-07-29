@@ -124,6 +124,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
     language: string,
   ): Verse[] {
     if (context) {
+      console.log(context);
+
       const filteredVerses = context.map((c): Verse | undefined => {
         return verses.find((verse): boolean => {
           return (
@@ -132,6 +134,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
           );
         });
       });
+      console.log(filteredVerses);
 
       return filteredVerses.filter((v): boolean => {
         return v !== undefined;
@@ -528,6 +531,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
+    console.log(highlightOffSets);
+    console.log(contextOffsets);
+    if (highlightOffSets && highlightOffSets.length > 2) {
+      highlightOffSets.pop();
+    }
+    if (contextOffsets && contextOffsets.length > 2) {
+      contextOffsets.pop();
+    }
 
     verses.forEach((verse): void => {
       verse.highlight = false;
