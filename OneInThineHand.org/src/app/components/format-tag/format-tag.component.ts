@@ -204,10 +204,7 @@ export class FormatTagComponent implements OnInit {
   ): RefTag[] | undefined {
     if (this.fMerged.refTags) {
       const refs = this.fMerged.refTags.filter((refTag): boolean => {
-        if (
-          refTag.pronunciation &&
-          !this.saveStateService.data.pronunciationVisible
-        ) {
+        if (refTag.pronunciation && !this.saveStateService.data.pronunciation) {
           return false;
         }
         if (
