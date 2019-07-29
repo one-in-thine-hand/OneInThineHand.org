@@ -1,8 +1,15 @@
+## <small>5.0.132 (2019-07-29)</small>
+
+* speaker fix ([d2e8695](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d2e8695))
+
+
+
 ## <small>5.0.131 (2019-07-29)</small>
 
 * Bug fixes ([17f323e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/17f323e))
 * cleanup ([4246a37](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4246a37))
 * Refactoring ([8690da9](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8690da9))
+* v5.0.131 ([1c9f301](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1c9f301))
 * Working on note pane ([247b773](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/247b773))
 
 
