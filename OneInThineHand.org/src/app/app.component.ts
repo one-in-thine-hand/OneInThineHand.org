@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
           this.chapterService.offsetGroupsOb.next(
             this.chapterService.offsetGroups,
           );
+          this.chapterService.formatTagObserve.next();
         }
       },
     );

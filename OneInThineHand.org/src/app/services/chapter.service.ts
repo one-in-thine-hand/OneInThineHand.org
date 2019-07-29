@@ -33,6 +33,7 @@ export class ChapterService {
   public offsetGroups?: VerseNoteOffsetGroup[];
   public offsetGroupsOb = new Subject<VerseNoteOffsetGroup[]>();
   public verses: Verse[] | undefined;
+  public formatTagObserve = new Subject();
 
   public constructor() {}
 

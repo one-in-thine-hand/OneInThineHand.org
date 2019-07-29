@@ -28,6 +28,7 @@ import { Observable } from 'rxjs';
 })
 export class FormatTagComponent implements OnInit {
   public classList: string[] = [];
+  public className = '';
   @Input() public fMerged: FMerged;
   public formatTagClickObserve = new Observable<Event>();
   public offsets = '';
@@ -64,6 +65,8 @@ export class FormatTagComponent implements OnInit {
     }
     if (this.checkNoTextIsSelected()) {
     }
+    this.chapterService.formatTagObserve.next();
+
   }
 
   public getClassList(): string {
@@ -172,6 +175,9 @@ export class FormatTagComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.chapterService.formatTagObserve.pipe().subscribe((): void => {
+      this.className = this.getClassList();
+    });
     this.formatTagClickObserve.subscribe(
       async (event): Promise<void> => {
         try {

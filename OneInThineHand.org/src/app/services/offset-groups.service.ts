@@ -32,7 +32,6 @@ export class OffsetGroupsService {
         return note.noteType;
       })
         .filter((note): boolean => {
-
           if (note.visible && note.noteRefs && note.notePhrase) {
             return getVisible(note.noteRefs).length > 0;
           }
@@ -60,6 +59,9 @@ export class OffsetGroupsService {
     }
 
     return sortBy(offsetGroups, (offsetGroup): number => {
+      if (offsetGroup.offsets === 'all') {
+        return -1;
+      }
       return parseInt(offsetGroup.offsets.split('-')[0], 10);
     });
   }

@@ -1,6 +1,6 @@
 <f
   (click)="formatTagClick($event)"
-  [class]="getClassList()"
+  [class]="className"
   [innerHTML]="getText().replace('\n', '')"
   [attr.verse-id]="this.verse._id"
   [attr.offsets]="this.getOffSets()"
