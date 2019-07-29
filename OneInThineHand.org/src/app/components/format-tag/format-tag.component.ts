@@ -56,8 +56,8 @@ export class FormatTagComponent implements OnInit {
       this.setRefList();
 
       if (
-        this.saveStateService.data.pronunciation.vis &&
-        !this.saveStateService.data.pronunciationMore.vis
+        this.saveStateService.data['pronunciation'] &&
+        !this.saveStateService.data['pronunciation_more']
       ) {
         this.playPronunciation();
       }
@@ -66,7 +66,6 @@ export class FormatTagComponent implements OnInit {
     if (this.checkNoTextIsSelected()) {
     }
     this.chapterService.formatTagObserve.next();
-
   }
 
   public getClassList(): string {
@@ -88,8 +87,8 @@ export class FormatTagComponent implements OnInit {
       pronunciationOverlay &&
       pronunciationOverlay.visibility &&
       this.fMerged.pronunciationIcon &&
-      this.saveStateService.data.pronunciation.vis &&
-      !this.saveStateService.data.pronunciationMore.vis
+      this.saveStateService.data['pronunciation'] &&
+      !this.saveStateService.data['pronunciation_more']
     ) {
       classList.push('pronunciation-icon');
     }

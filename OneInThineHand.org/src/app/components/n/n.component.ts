@@ -34,6 +34,7 @@ export class NComponent implements OnInit, OnDestroy {
   @Input() public note: Note;
   public testObservable = new Subject<[string, Note]>();
   @Input() public verseNotes: VerseNotes;
+  public safeHtml: SafeHtml = 'Error';
 
   public constructor(
     public domSanitizer: DomSanitizer,
@@ -109,8 +110,12 @@ export class NComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
-
+    // this.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(this.note.notere)
+    // this.note.noteRefs.map((noteRef): void => {
+    //   noteRef.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
+    //     noteRef.text ? noteRef.text : '',
+    //   );
+    // });
     this.testObservable.pipe(debounceTime(300)).subscribe(
       async (tesr): Promise<void> => {
         this.note.offsets = tesr[0];
@@ -137,6 +142,8 @@ export class NComponent implements OnInit, OnDestroy {
           noteRef.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
             noteRef.text,
           );
+          console.log(noteRef.text);
+
         }
       });
     }
