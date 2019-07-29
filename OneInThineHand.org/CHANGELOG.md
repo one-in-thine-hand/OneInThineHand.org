@@ -1,6 +1,15 @@
+## <small>5.0.133 (2019-07-29)</small>
+
+* Bug fixes ([1580f58](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1580f58))
+* Highlight context bug fix ([9d66576](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9d66576))
+* Pronunciation fix ([f0d52d3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f0d52d3))
+
+
+
 ## <small>5.0.132 (2019-07-29)</small>
 
 * speaker fix ([d2e8695](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d2e8695))
+* v5.0.132 ([4545370](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4545370))
 
 
 
