@@ -95,7 +95,7 @@ export class NavigationService {
       'WofM',
       'w-of-m',
     ],
-    ['Mosiah', 'mosiah', 'Mosiah'],
+    ['Mosiah', 'mosiah', 'Mosiah', 'mos', 'mosiah'],
     ['Alma', 'Alma', 'alma'],
     ['Helaman', 'Hel.', 'Hel', 'hel'],
     ['3 Nephi', '3 Ne.', '3 Ne', '3 Ne', '3-ne', '3-ne'],

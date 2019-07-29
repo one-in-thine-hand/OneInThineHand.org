@@ -16,7 +16,7 @@ export class LandingPageComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.headerService.headerTitle = 'One In Thine Hand';
+    this.headerService.headerTitle = 'One in Thine Hand';
     this.headerService.headerShortTitle = 'On In Thine Hand';
     // this.chapterService.chapterNotes = undefined;
   }
