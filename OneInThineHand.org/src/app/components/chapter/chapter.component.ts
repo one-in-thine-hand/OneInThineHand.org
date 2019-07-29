@@ -37,7 +37,7 @@ import {
   VerseNoteOffsetGroup,
 } from '../../services/offset-groups.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
-import { debounce, debounceTime } from 'rxjs/operators';
+import { debounce, debounceTime, bufferCount } from 'rxjs/operators';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -45,7 +45,7 @@ import { debounce, debounceTime } from 'rxjs/operators';
 })
 export class ChapterComponent implements OnInit, OnDestroy {
   public chapter?: Chapter;
-
+  public dragBuffer = new Subject<DragEvent & TouchEvent>();
   @ViewChild('chapterGrid', { static: true })
   public chapterGrid!: ElementRef;
   public chapterNotes: VerseNotes;
@@ -53,6 +53,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public ctrlKeyInterval?: NodeJS.Timer;
   public ctrlKeyPressed: boolean;
   public currentLanguage = 'eng';
+  public userSelectOff = false;
   public fadeInChapter = false;
   public fadeOutChapter = false;
   public offsetGroups: VerseNoteOffsetGroup[];
@@ -78,6 +79,44 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
+  public verseNotesResizerDrag(): void {
+    this.dragBuffer.pipe(bufferCount(10)).subscribe((events): void => {
+      this.userSelectOff = true;
+      const event = events[events.length - 1];
+      let screenY: number | undefined;
+
+      if (event.type === 'touchmove') {
+        // touches.screenY;
+        const touches = event.touches.item(0);
+
+        if (touches) {
+          screenY = touches.screenY;
+        }
+      } else {
+        screenY = event.screenY;
+      }
+
+      // console.log(screenY);
+
+      if (screenY) {
+        // this.dragging = true;
+        this.saveStateService.data.notePaneHeight = `${(window.screen.height -
+          96 -
+          screenY) /
+          10}%`;
+        this.tempSettingsService.notePaneHeight = this.saveStateService.data.notePaneHeight;
+
+        // this.saveStateService.data.notePaneHeight = `${window.screen.width -
+        //   screenX}px`;
+        // this.translateText = `translate(${this.dragTransform})`;
+      } else {
+        // this.dragging = false;
+        // this.translateText = 'none';
+        // this.settingsService.settingsData.notePaneWidth = this.dragTransform;
+      }
+    });
+  }
+
   public getHighlightVerses(
     chapterParams: ChapterParams,
     context: number[] | undefined,
@@ -93,7 +132,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
           );
         });
       });
-      // console.log(filteredVerses);
 
       return filteredVerses.filter((v): boolean => {
         return v !== undefined;
@@ -108,7 +146,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
   }
 
   public gotoChapter(href: string | undefined): void {
-    console.log(href);
     if (href) {
       this.router.navigateByUrl(href.replace('#/', ''));
       this.popStateActivated = true;
@@ -130,13 +167,17 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.chapterService.chapterNotes = undefined;
   }
   // public notes: Note[] | undefined;
+  public verseNoteDrop(): void {
+    this.userSelectOff = false;
+  }
   public async ngOnInit(): Promise<void> {
-    console.log(this.chapterGrid);
+    this.verseNotesResizerDrag();
 
     this.databaseService.initReadingMode();
     this.scrollObservable.pipe(debounceTime(100)).subscribe(
       async (): Promise<void> => {
-        console.log(this.chapterGrid);
+        console.log('hit');
+
         await this.onScroll();
       },
     );
@@ -145,15 +186,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
       this.activatedRouter.queryParams,
     ).subscribe(
       async (results): Promise<void> => {
-        console.log(results);
         const params = results[0];
         const queryParam = results[1];
 
         const chapterParams = this.paramService.parseChapterParams(params);
         const language = queryParam['lang'] as string | undefined;
         if (!language) {
-          console.log('jhhg');
-
           this.router.navigate(
             [`/${chapterParams.book}/${params['chapter']}`],
             {
@@ -174,7 +212,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
           this.fadeInChapter = false;
 
           if (chapterParams.book.includes('jst_')) {
-            console.log('naviv');
             this.router.navigateByUrl(
               `eng/${chapterParams.book}/${chapterParams.chapter}`,
               { replaceUrl: true },
@@ -198,8 +235,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
               );
 
               if (this.popStateActivated && pageState) {
-                console.log('Page State Activated');
-
                 this.chapter = pageState.chapter;
                 this.chapterVerses = pageState.chapterVerses;
 
@@ -216,12 +251,9 @@ export class ChapterComponent implements OnInit, OnDestroy {
                 const notesGrid = document.querySelector('#notes');
 
                 if (chapterGrid) {
-                  console.log(pageState.chapterGridScrollTop);
-
                   chapterGrid.scrollTop = pageState.chapterGridScrollTop;
                 }
                 if (notesGrid) {
-                  console.log(pageState.notesScrollTop);
                   setTimeout((): void => {
                     notesGrid.scrollTop = pageState.notesScrollTop;
                   }, 300);
@@ -240,15 +272,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                     `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
                   ]);
 
-                  console.log([
-                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter`,
-                    `${language}-${chapterParams.book}-${chapterParams.chapter}-chapter-verses`,
-                    `${language}-${chapterParams.book}-${chapterParams.chapter}-notes`,
-                    `${language}-${chapterParams.book}-${chapterParams.chapter}-breaks`,
-                  ]);
-
-                  console.log(all);
-
                   this.chapter = all[0] as Chapter;
                   this.chapterVerses = all[1] as ChapterVerses;
                   this.chapterNotes = all[2] as VerseNotes;
@@ -256,7 +279,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
                   // this.offsetGroups = this.offsetGroupService.buildOffsetGroups(
                   //   this.chapterNotes,
                   // );
-                  console.log(this.offsetGroups);
 
                   this.chapterService.chapterBreaks = all[3] as {
                     _id: string;
@@ -298,9 +320,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
                         language,
                       );
                     }
-                  } catch (error) {
-                    console.log(error);
-                  }
+                  } catch (error) {}
                   await asyncScrollTop('#notes');
                 } catch (error) {}
               }
@@ -314,7 +334,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
             this.fadeInChapter = true;
             setTimeout((): void => {
               this.fadeInChapter = false;
-              console.log('jhhhgg');
             }, 500);
           }
         }
@@ -332,10 +351,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   @HostListener('window:keyup', ['$event'])
   public async onKeyUp(event: KeyboardEvent): Promise<void> {
     if (event instanceof KeyboardEvent) {
-      // console.log(event);
       if (event.ctrlKey || event.key.toLowerCase() === 'control') {
-        console.log('asdfiojasdoifj');
-
         this.ctrlKeyPressed = true;
         if (this.ctrlKeyInterval !== undefined) {
           clearInterval(this.ctrlKeyInterval);
@@ -365,10 +381,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
         //   this.shiftKeyPressed = false;
         // }, 1000);
       }
-      // console.log(event);
-
-      // console.log(this.ctrlKeyPressed);
-      // console.log(this.shiftKeyPressed);
 
       if (this.ctrlKeyPressed) {
         switch (event.key.toLowerCase()) {
@@ -380,10 +392,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
           }
           case 's': {
             if (this.shiftKeyPressed) {
-              console.log('hggg');
               await this.saveService.save();
-
-              console.log('Finished');
             }
             break;
           }
@@ -396,9 +405,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public onPopState(event: PopStateEvent): void {
     this.popStateActivated = event.state !== null;
     this.pageStateService.timer = undefined;
-
-    console.log(`Activate History ${this.popStateActivated}`);
-    console.log(event);
   }
 
   public async onScroll(): Promise<void> {
@@ -434,9 +440,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     attrName: string,
     language: string,
   ): void {
-    // console.log(highlightOffSets);
     this.getHighlightVerses(chapterParams, highlightOffSets, item, language);
-    // console.log(asdf);
 
     this.getHighlightVerses(
       chapterParams,
@@ -444,8 +448,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
       item,
       language,
     ).map((v): void => {
-      // console.log(v);
-
       v[attrName] = true;
     });
   }
@@ -496,13 +498,10 @@ export class ChapterComponent implements OnInit, OnDestroy {
     this.fadeInChapter = true;
     setTimeout((): void => {
       this.fadeInChapter = false;
-      console.log('jhhhgg');
     }, 500);
     try {
       // await this.getKJVRef(this.chapterVerses);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     if (newPage) {
       await this.pageStateService.newPage(
         chapter,
@@ -585,8 +584,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
           // this.offsetGroups,
         );
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 }

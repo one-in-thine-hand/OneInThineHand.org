@@ -11,7 +11,7 @@
     ></app-note-phrase>
     <ng-container *ngFor="let note of offsetGroup.notes">
       <app-n
-        *ngIf="!note.pronunciation && note.noteType !== 10 && !note.geography"
+        *ngIf="!note.pronunciation && !note.geography"
         [note]="note"
         [verseNotes]="this.verseNotes"
       ></app-n>

@@ -13,7 +13,8 @@
     [ngClass]="{
       'paragraph-mode': this.saveStateService.data.paragraphsVisible,
       'block-mode': this.saveStateService.data.blockVisible,
-      'poetry-mode': this.saveStateService.data.poetryVisible
+      'poetry-mode': this.saveStateService.data.poetryVisible,
+      'no-select': userSelectOff
     }"
     (swiperight)="
       navButton(chapter && chapter.previousPage ? chapter.previousPage : '')
@@ -53,6 +54,7 @@
     <div
       class="right-chapter-nav-btn chapter-nav-btn"
       style=" user-select: none;"
+      [ngStyle]="{ top:  saveStateService.data.notePaneHeight }"
     >
       <a (click)="navButton(chapter.nextPage)" *ngIf="chapter">
         <i>
@@ -69,7 +71,19 @@
     </div>
     <div style=" user-select: none;"></div>
   </div>
-  <div id="notes" *ngIf="this.saveStateService.data.notesPaneToggle">
+  <!-- (click)="userSelectOff = true" -->
+  <verse-notes-resizer
+    (touchmove)="dragBuffer.next($event)"
+    (dragend)="this.verseNoteDrop()"
+    (drag)="dragBuffer.next($event)"
+    [ngStyle]="{ bottom: tempSettingsService.notePaneHeight }"
+  ></verse-notes-resizer>
+  <div
+    id="notes"
+    [ngClass]="{ 'no-select': userSelectOff }"
+    *ngIf="this.saveStateService.data.notesPaneToggle"
+    [ngStyle]="{ height: tempSettingsService.notePaneHeight }"
+  >
     <div class="notes-top"></div>
     <ng-container
       *ngIf="

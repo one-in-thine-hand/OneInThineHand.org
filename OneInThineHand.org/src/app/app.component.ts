@@ -9,6 +9,8 @@ import { SaveStateService } from './services/save-state.service';
 import { VisibilityService } from './services/visibility.service';
 import { ChapterService } from './services/chapter.service';
 import { OffsetGroupsService } from './services/offset-groups.service';
+import { Subject } from 'rxjs';
+import { TempSettingsService } from './services/temp-settings.service';
 
 // import { SwUpdate } from '@angular/service-worker';
 
@@ -18,6 +20,7 @@ import { OffsetGroupsService } from './services/offset-groups.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  public windowResizeObserve = new Subject();
   public ngOnInit(): void {
     this.saveStateService.resetNoteSettingsObservable.subscribe(
       async (): Promise<void> => {
@@ -46,8 +49,11 @@ export class AppComponent implements OnInit {
     public chapterService: ChapterService,
     public offsetGroupsService: OffsetGroupsService,
     public visibilityService: VisibilityService,
+    public tempSettingsService: TempSettingsService,
   ) {
     translate.setDefaultLang('en');
+    this.windowResize();
+    this.windowResizeObserve.next();
     this.swUpdate.available.subscribe((evt): void => {
       if (!document.querySelector('.update-button')) {
         // matCSS.toast({
@@ -69,5 +75,24 @@ export class AppComponent implements OnInit {
   }
 
   @HostListener('window:resize')
-  public windowResize(): void {}
+  public windowResizeEvent(): void {
+    this.windowResizeObserve.next();
+  }
+
+  public windowResize(): void {
+    this.windowResizeObserve.pipe().subscribe((): void => {
+      console.log('resized');
+      console.log(document.body.clientWidth);
+
+      if (document.body.clientWidth >= 768) {
+        this.tempSettingsService.notePaneHeight = '100%';
+        console.log(this.tempSettingsService.notePaneResizerVisible);
+        this.tempSettingsService.notePaneResizerVisible = false;
+
+      } else {
+        this.tempSettingsService.notePaneHeight = this.saveStateService.data.notePaneHeight;
+        this.tempSettingsService.notePaneResizerVisible = true;
+      }
+    });
+  }
 }

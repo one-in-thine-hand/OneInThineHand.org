@@ -51,8 +51,6 @@ export class VisibilityService {
                     return rL.noteCategory === noteRef.noteCategory;
                   },
                 );
-                if (nC && nC.visible) {
-                }
 
                 noteRef.visible = nC ? nC.visible : false;
 

@@ -71,6 +71,12 @@ export class SaveStateService {
     } else {
       this.data = new SaveStateModel();
     }
+
+    if (!this.data.notePaneHeight) {
+      const height = (window.screen.height - 96) / 20;
+      this.data.notePaneHeight = `${height}%`;
+      this.data.bodyBlockHeight = `${100 - height}%`;
+    }
     await this.loadNoteSettings();
     await this.save();
   }
@@ -87,8 +93,6 @@ export class SaveStateService {
       const noteCategories = (await this.databaseService.getDatabaseItem(
         'eng-note-categories',
       )) as NoteCategories;
-      console.log(noteCategories);
-
 
       noteCategories.visibilitySettings.map((visSetting): void => {
         visSetting.map((vS): void => {
@@ -196,7 +200,6 @@ export class SaveStateService {
   public resetNoteCategorySettings(): void {
     if (this.data.noteCategories) {
       this.data.noteCategories.noteCategories.map((noteCategory): void => {
-        console.log(noteCategory);
 
         const noteCategoryOn =
           noteCategory.on.filter((on): boolean => {

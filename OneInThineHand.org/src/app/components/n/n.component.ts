@@ -109,7 +109,7 @@ export class NComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    // console.log('oiajsdfoiajsdfoiajsdfo');
+
 
     this.testObservable.pipe(debounceTime(300)).subscribe(
       async (tesr): Promise<void> => {

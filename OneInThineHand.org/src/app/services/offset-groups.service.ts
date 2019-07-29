@@ -20,7 +20,6 @@ export class OffsetGroupsService {
           };
         },
       );
-      console.log(verseNoteOffsetGroups);
       return verseNoteOffsetGroups;
     }
     return [];
@@ -33,8 +32,6 @@ export class OffsetGroupsService {
         return note.noteType;
       })
         .filter((note): boolean => {
-          // console.log(note);
-          // console.log(note);
 
           if (note.visible && note.noteRefs && note.notePhrase) {
             return getVisible(note.noteRefs).length > 0;

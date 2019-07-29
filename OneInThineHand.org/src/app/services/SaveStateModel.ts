@@ -68,4 +68,6 @@ export class SaveStateModel {
   public trnMore = new NoteVisiblityBtn();
   public underLineRefs = true;
   public version = 5;
+  public notePaneHeight: string;
+  public bodyBlockHeight: string;
 }
