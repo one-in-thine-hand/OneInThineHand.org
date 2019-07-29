@@ -1,8 +1,15 @@
+## <small>5.0.134 (2019-07-29)</small>
+
+* note pane fixes ([4b4ef3e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4b4ef3e))
+
+
+
 ## <small>5.0.133 (2019-07-29)</small>
 
 * Bug fixes ([1580f58](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1580f58))
 * Highlight context bug fix ([9d66576](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/9d66576))
 * Pronunciation fix ([f0d52d3](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/f0d52d3))
+* v5.0.133 ([1e56147](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1e56147))
 
 
 
