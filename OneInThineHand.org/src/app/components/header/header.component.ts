@@ -51,6 +51,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterNotes,
     );
     await this.save();
+    this.chapterService.formatTagObserve.next();
   }
 
   public async forwardClick(): Promise<void> {
@@ -99,6 +100,7 @@ export class HeaderComponent implements OnInit {
     this.uploading = false;
     if (fileInput) {
     }
+    this.chapterService.formatTagObserve.next();
   }
   public async open(content): Promise<void> {
     await this.modalService.open(content, {
@@ -112,7 +114,9 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterVerses,
       this.chapterService.chapterNotes,
     );
+
     await this.save();
+    this.chapterService.formatTagObserve.next();
   }
   public async poetryVisible(): Promise<void> {
     this.saveStateService.data.poetryVisible = !this.saveStateService.data
@@ -122,6 +126,7 @@ export class HeaderComponent implements OnInit {
       this.chapterService.chapterNotes,
     );
     await this.save();
+    this.chapterService.formatTagObserve.next();
   }
   public async refLabelClick(
     ref: { visible: boolean } | string,

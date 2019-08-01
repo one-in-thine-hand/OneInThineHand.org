@@ -21,26 +21,6 @@ import { TempSettingsService } from './services/temp-settings.service';
 })
 export class AppComponent implements OnInit {
   public windowResizeObserve = new Subject();
-  public ngOnInit(): void {
-    this.saveStateService.resetNoteSettingsObservable.subscribe(
-      async (): Promise<void> => {
-        this.saveStateService.resetNoteCategorySettings();
-
-        await this.saveStateService.save();
-        if (this.chapterService.notes && this.chapterService.chapterNotes) {
-          this.visibilityService.resetNoteVisibility(this.chapterService.notes);
-
-          this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
-            this.chapterService.chapterNotes,
-          );
-          this.chapterService.offsetGroupsOb.next(
-            this.chapterService.offsetGroups,
-          );
-          this.chapterService.formatTagObserve.next();
-        }
-      },
-    );
-  }
   public constructor(
     public electronService: ElectronService,
     private translate: TranslateService,
@@ -74,10 +54,25 @@ export class AppComponent implements OnInit {
       console.log('Mode web');
     }
   }
+  public ngOnInit(): void {
+    this.saveStateService.resetNoteSettingsObservable.subscribe(
+      async (): Promise<void> => {
+        this.saveStateService.resetNoteCategorySettings();
 
-  @HostListener('window:resize')
-  public windowResizeEvent(): void {
-    this.windowResizeObserve.next();
+        await this.saveStateService.save();
+        if (this.chapterService.notes && this.chapterService.chapterNotes) {
+          this.visibilityService.resetNoteVisibility(this.chapterService.notes);
+
+          this.chapterService.offsetGroups = this.offsetGroupsService.buildOffsetGroups(
+            this.chapterService.chapterNotes,
+          );
+          this.chapterService.offsetGroupsOb.next(
+            this.chapterService.offsetGroups,
+          );
+          this.chapterService.formatTagObserve.next();
+        }
+      },
+    );
   }
 
   public windowResize(): void {
@@ -89,11 +84,15 @@ export class AppComponent implements OnInit {
         this.tempSettingsService.notePaneHeight = '100%';
         console.log(this.tempSettingsService.notePaneResizerVisible);
         this.tempSettingsService.notePaneResizerVisible = false;
-
       } else {
         this.tempSettingsService.notePaneHeight = this.saveStateService.data.notePaneHeight;
         this.tempSettingsService.notePaneResizerVisible = true;
       }
     });
+  }
+
+  @HostListener('window:resize')
+  public windowResizeEvent(): void {
+    this.windowResizeObserve.next();
   }
 }
