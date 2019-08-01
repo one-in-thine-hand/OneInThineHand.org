@@ -1,6 +1,13 @@
+## <small>5.0.135 (2019-08-01)</small>
+
+* bug fixes ([96d82e6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96d82e6))
+
+
+
 ## <small>5.0.134 (2019-07-29)</small>
 
 * note pane fixes ([4b4ef3e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/4b4ef3e))
+* v5.0.134 ([0554dc8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0554dc8))
 
 
 
