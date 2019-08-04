@@ -1,6 +1,13 @@
+## <small>5.0.136 (2019-08-04)</small>
+
+* Note pane resizing improvements ([04b73bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/04b73bb))
+
+
+
 ## <small>5.0.135 (2019-08-01)</small>
 
 * bug fixes ([96d82e6](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/96d82e6))
+* v5.0.135 ([af29d2b](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/af29d2b))
 
 
 
