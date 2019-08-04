@@ -75,6 +75,7 @@
   <verse-notes-resizer
     (touchmove)="dragBuffer.next($event)"
     (dragend)="this.verseNoteDrop()"
+    draggable="true"
     (drag)="dragBuffer.next($event)"
     [ngStyle]="{ bottom: tempSettingsService.notePaneHeight }"
   ></verse-notes-resizer>
