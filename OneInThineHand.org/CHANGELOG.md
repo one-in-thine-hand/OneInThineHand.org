@@ -1,6 +1,14 @@
+## <small>5.0.137 (2019-08-05)</small>
+
+* Fixed error where format tags weren't highlighting ([2a9764f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2a9764f))
+* refactoring ([8a09440](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8a09440))
+
+
+
 ## <small>5.0.136 (2019-08-04)</small>
 
 * Note pane resizing improvements ([04b73bb](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/04b73bb))
+* v5.0.136 ([2b32ef0](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2b32ef0))
 
 
 
