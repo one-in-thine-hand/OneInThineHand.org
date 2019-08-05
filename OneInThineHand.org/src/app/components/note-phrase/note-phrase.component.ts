@@ -17,10 +17,10 @@ import { VerseNote, Note } from '../../models/verse-notes';
 export class NotePhraseComponent implements OnInit {
   @Input() public note: Note;
   @Input() public notes: Note[];
+  public safeHtml: SafeHtml = '';
   public selected = false;
   @Input() public text?: string;
   @Input() public verseNotes: VerseNote;
-  public safeHtml: SafeHtml = '';
 
   public constructor(
     public chapterService: ChapterService,
@@ -68,6 +68,7 @@ export class NotePhraseComponent implements OnInit {
       this.chapterService.resetNoteVis();
       console.log(oldHighlight);
       n.noteRefFormatTag.highlight = !oldHighlight;
+      this.chapterService.formatTagObserve.next();
     }
     // this.notes.map((note): void => {
     // });
