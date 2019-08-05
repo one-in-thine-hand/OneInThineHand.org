@@ -181,7 +181,6 @@ export class NavigationService {
   }
 
   public async parseAddressBarUrl(addressBarInput: string): Promise<void> {
-    console.log(addressBarInput);
     try {
       const addressBarInputSplit = addressBarInput.split(' ');
 
@@ -191,14 +190,10 @@ export class NavigationService {
       //   .replace('&amp;', '&')
       //   .replace(/:/g, '.');
 
-      // console.log(outUrl);
-
       const bookNames = this.getBookName(addressBarInput);
       const chapterName = last(addressBarInputSplit);
       if (bookNames && chapterName) {
-        console.log(bookNames);
         const bookName = last(bookNames);
-        console.log('hhhgg');
 
         this.router.navigateByUrl(`${bookName}/${chapterName}`);
       } else {

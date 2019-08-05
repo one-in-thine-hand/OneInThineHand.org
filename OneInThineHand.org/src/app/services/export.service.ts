@@ -133,8 +133,6 @@ export class ExportService {
             type: 'text/html;charset=utf=8',
           });
           saveAs(blob, `${bookName}-breaks.html`);
-          // console.log(blob);
-          // console.log(exportText);
         }
       }
     }
@@ -197,8 +195,6 @@ export class ExportService {
             type: 'text/html;charset=utf=8',
           });
           saveAs(blob, `${bookName}.html`);
-          // console.log(blob);
-          // console.log(exportText);
         }
       }
     }
@@ -251,10 +247,7 @@ export class ExportService {
                 })
                 .join(',');
             }
-            // console.log(note.offsets);
 
-            // console.log(getRanges(note.uncompressedOffsets));
-            // console.log(
             //   sortBy(
             //     note.uncompressedOffsets,
             //     (u): number => {

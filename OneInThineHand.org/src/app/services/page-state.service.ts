@@ -31,7 +31,6 @@ export class PageStateService {
     chapterNotes: VerseNotes,
     // offsetGroups: VerseNoteOffsetGroup[],
   ): Promise<void> {
-    // console.log('oiasdjfoiajsdf');
     // this.timer = undefined;
     if (this.timer) {
       clearInterval(this.timer);
@@ -54,16 +53,11 @@ export class PageStateService {
 
   public async pageStateExists(chapterID: string): Promise<boolean> {
     try {
-      // console.log(chapterID.replace('chapter', 'page-state'));
-
       // const pageState = await this.databaseService.getDatabaseItem(
       //   chapterID.replace('chapter', 'page-state'),
       // );
 
       const pageState = this.pageStateMap.get(`${chapterID}-page-state`);
-      console.log(`${chapterID}-page-state`);
-
-      // console.log(chapterID.replace('chapter', 'page-state'));
 
       // this.currentPageState = pageState as PageState;
       if (
@@ -80,7 +74,6 @@ export class PageStateService {
       }
       return pageState !== undefined;
     } catch (error) {
-      console.log(error);
       // this.currentPageState = undefined;
       return false;
     }
@@ -101,7 +94,6 @@ export class PageStateService {
 
   public updateHistory(): void {
     // if (this.currentPageState) {
-    //   console.log(this.currentPageState._id);
     //   this.setScrollTop();
     //   // this.pageStateMap.set(this.currentPageState._id, this.currentPageState);
     // }
@@ -114,7 +106,6 @@ export class PageStateService {
     // this.timer = setInterval(async (): Promise<void> => {
     //   if (this.currentPageState) {
     //     this.setScrollTop();
-    //     // console.log(this.currentPageState);
     //     // await this.databaseService.updateDatabaseItem(this.currentPageState);
     //   }
     // }, 2000);

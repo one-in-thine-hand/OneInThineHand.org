@@ -53,12 +53,10 @@ export class SaveService {
                   )
                 : temp.verseNotes;
               await this.databaseService.updateDatabaseItem(temp);
-              console.log('Finished');
             }
           } else {
             if (this.interval) {
               clearInterval(this.interval);
-              console.log('closed');
             }
           }
         },
@@ -82,12 +80,9 @@ export class SaveService {
       this.chaterService.chapterBreaks.verseBreaks
     ) {
       vBreaks = cloneDeep(this.chaterService.chapterBreaks);
-      console.log(vBreaks);
     } else {
       vBreaks = this.generateBreaks();
     }
-
-    console.log('Save Fake Verses');
 
     if (
       this.chaterService.chapterVerses &&
@@ -208,8 +203,6 @@ export class SaveService {
             }
 
             default: {
-              console.log('Error Error');
-
               break;
             }
           }

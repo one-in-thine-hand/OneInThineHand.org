@@ -45,7 +45,6 @@ import { debounce, debounceTime, bufferCount } from 'rxjs/operators';
 })
 export class ChapterComponent implements OnInit, OnDestroy {
   public chapter?: Chapter;
-  public dragBuffer = new Subject<DragEvent & TouchEvent>();
   @ViewChild('chapterGrid', { static: true })
   public chapterGrid!: ElementRef;
   public chapterNotes: VerseNotes;
@@ -53,7 +52,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public ctrlKeyInterval?: NodeJS.Timer;
   public ctrlKeyPressed: boolean;
   public currentLanguage = 'eng';
-  public userSelectOff = false;
+  public dragBuffer = new Subject<DragEvent & TouchEvent>();
   public fadeInChapter = false;
   public fadeOutChapter = false;
   public offsetGroups: VerseNoteOffsetGroup[];
@@ -61,6 +60,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public scrollObservable = new Subject();
   public shiftKeyInterval?: NodeJS.Timer;
   public shiftKeyPressed: boolean;
+  public userSelectOff = false;
   public constructor(
     public titleService: Title,
     public tempSettingsService: TempSettingsService,
@@ -79,50 +79,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
     public formatTagService: FormatTagService, // public historyService: HistoryService,
   ) {}
 
-  public turnUserSelectOff(): void {
-    setTimeout((): void => {
-      this.userSelectOff = false;
-    }, 200);
-  }
-  public verseNotesResizerDrag(): void {
-    this.dragBuffer.pipe(bufferCount(40)).subscribe((events): void => {
-      this.userSelectOff = true;
-      const event = events[events.length - 1];
-      let screenY: number | undefined;
-
-      if (event.type === 'touchmove') {
-        // touches.screenY;
-        const touches = event.touches.item(0);
-
-        if (touches) {
-          screenY = touches.screenY;
-        }
-      } else {
-        screenY = event.screenY;
-      }
-
-      // console.log(screenY);
-
-      if (screenY) {
-        // this.dragging = true;
-        this.saveStateService.data.notePaneHeight = `${window.screen.height -
-          96 -
-          screenY}px`;
-        this.tempSettingsService.notePaneHeight = `${window.screen.height -
-          96 -
-          screenY}px`;
-
-        // this.saveStateService.data.notePaneHeight = `${window.screen.width -
-        //   screenX}px`;
-        // this.translateText = `translate(${this.dragTransform})`;
-      } else {
-        // this.dragging = false;
-        // this.translateText = 'none';
-        // this.settingsService.settingsData.notePaneWidth = this.dragTransform;
-      }
-    });
-  }
-
   public getHighlightVerses(
     chapterParams: ChapterParams,
     context: number[] | undefined,
@@ -130,8 +86,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
     language: string,
   ): Verse[] {
     if (context) {
-      console.log(context);
-
       const filteredVerses = context.map((c): Verse | undefined => {
         return verses.find((verse): boolean => {
           return (
@@ -140,7 +94,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
           );
         });
       });
-      console.log(filteredVerses);
 
       return filteredVerses.filter((v): boolean => {
         return v !== undefined;
@@ -175,18 +128,12 @@ export class ChapterComponent implements OnInit, OnDestroy {
     await this.setHistory();
     this.chapterService.chapterNotes = undefined;
   }
-  // public notes: Note[] | undefined;
-  public verseNoteDrop(): void {
-    this.userSelectOff = false;
-  }
   public async ngOnInit(): Promise<void> {
     this.verseNotesResizerDrag();
 
     this.databaseService.initReadingMode();
     this.scrollObservable.pipe(debounceTime(100)).subscribe(
       async (): Promise<void> => {
-        console.log('hit');
-
         await this.onScroll();
       },
     );
@@ -442,6 +389,52 @@ export class ChapterComponent implements OnInit, OnDestroy {
   public previousChapter(): void {
     this.popStateActivated = true;
   }
+
+  public turnUserSelectOff(): void {
+    setTimeout((): void => {
+      this.userSelectOff = false;
+    }, 200);
+  }
+  // public notes: Note[] | undefined;
+  public verseNoteDrop(): void {
+    this.userSelectOff = false;
+  }
+  public verseNotesResizerDrag(): void {
+    this.dragBuffer.pipe(bufferCount(40)).subscribe((events): void => {
+      this.userSelectOff = true;
+      const event = events[events.length - 1];
+      let screenY: number | undefined;
+
+      if (event.type === 'touchmove') {
+        // touches.screenY;
+        const touches = event.touches.item(0);
+
+        if (touches) {
+          screenY = touches.screenY;
+        }
+      } else {
+        screenY = event.screenY;
+      }
+
+      if (screenY) {
+        // this.dragging = true;
+        this.saveStateService.data.notePaneHeight = `${window.screen.height -
+          96 -
+          screenY}px`;
+        this.tempSettingsService.notePaneHeight = `${window.screen.height -
+          96 -
+          screenY}px`;
+
+        // this.saveStateService.data.notePaneHeight = `${window.screen.width -
+        //   screenX}px`;
+        // this.translateText = `translate(${this.dragTransform})`;
+      } else {
+        // this.dragging = false;
+        // this.translateText = 'none';
+        // this.settingsService.settingsData.notePaneWidth = this.dragTransform;
+      }
+    });
+  }
   private highlightVerses(
     chapterParams: ChapterParams,
     highlightOffSets: number[] | undefined,
@@ -537,8 +530,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     const highlightOffSets = parseOffsets(chapterParams.highlight);
     const contextOffsets = parseOffsets(chapterParams.context);
-    console.log(highlightOffSets);
-    console.log(contextOffsets);
     if (highlightOffSets && highlightOffSets.length > 2) {
       highlightOffSets.pop();
     }
