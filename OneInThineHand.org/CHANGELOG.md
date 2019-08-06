@@ -1,7 +1,15 @@
+## <small>5.0.138 (2019-08-06)</small>
+
+* bugs ([ba6388a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ba6388a))
+* fixed offset bug ([d49cd5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d49cd5e))
+
+
+
 ## <small>5.0.137 (2019-08-05)</small>
 
 * Fixed error where format tags weren't highlighting ([2a9764f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/2a9764f))
 * refactoring ([8a09440](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/8a09440))
+* v5.0.137 ([1998d66](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1998d66))
 
 
 
