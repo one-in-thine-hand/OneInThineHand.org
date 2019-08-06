@@ -10,6 +10,7 @@ import { VisibilityService } from './services/visibility.service';
 import { ChapterService } from './services/chapter.service';
 import { OffsetGroupsService } from './services/offset-groups.service';
 import { Subject } from 'rxjs';
+import platform from 'platform';
 import { TempSettingsService } from './services/temp-settings.service';
 
 // import { SwUpdate } from '@angular/service-worker';
@@ -21,6 +22,7 @@ import { TempSettingsService } from './services/temp-settings.service';
 })
 export class AppComponent implements OnInit {
   public windowResizeObserve = new Subject();
+  public iSIOS = false;
   public constructor(
     public electronService: ElectronService,
     private translate: TranslateService,
@@ -35,6 +37,8 @@ export class AppComponent implements OnInit {
     translate.setDefaultLang('en');
     this.windowResize();
     this.windowResizeObserve.next();
+    console.log(platform.os);
+
     this.swUpdate.available.subscribe((evt): void => {
       if (!document.querySelector('.update-button')) {
         // matCSS.toast({
@@ -55,6 +59,11 @@ export class AppComponent implements OnInit {
     }
   }
   public ngOnInit(): void {
+    this.iSIOS =
+      platform.os !== undefined &&
+      platform.os.family !== undefined &&
+      platform.os.family.toLowerCase() === 'ios';
+    console.log(this.iSIOS);
     this.saveStateService.resetNoteSettingsObservable.subscribe(
       async (): Promise<void> => {
         this.saveStateService.resetNoteCategorySettings();

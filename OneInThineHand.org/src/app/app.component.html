@@ -1,6 +1,12 @@
 <div
   class="main"
-  [ngClass]="{ 'edit-mode': this.saveStateService.data.editMode , 'show-pronunciation-notes': this.saveStateService.data['pronunciation_more'] }"
+  [ngClass]="{
+    'edit-mode': this.saveStateService.data.editMode,
+    'show-pronunciation-notes': this.saveStateService.data[
+      'pronunciation_more'
+    ],
+    'is-ios': this.iSIOS
+  }"
 >
   <app-title-header></app-title-header>
   <app-header></app-header>

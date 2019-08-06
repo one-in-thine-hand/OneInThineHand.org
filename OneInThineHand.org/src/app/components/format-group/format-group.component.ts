@@ -12,14 +12,11 @@ import { isEqual, last, first } from 'lodash';
   styleUrls: ['./format-group.component.scss'],
 })
 export class FormatGroupComponent implements OnInit {
-  @Input() public verse: Verse;
+  public fMerged: FMerged[] = [];
   @Input() public formatGroup: FormatGroup;
   @Input() public formatTags: FormatTag[];
-
-  public fMerged: FMerged[] = [];
+  @Input() public verse: Verse;
   public constructor() {}
-
-  public ngOnInit(): void {}
 
   /**
    * getFormatTags
@@ -75,6 +72,17 @@ export class FormatGroupComponent implements OnInit {
     // }
     // return this.fMerged;
   }
+
+  public getOffSets(f: FMerged): string {
+    // console.log(f);
+
+    if (f.offsets) {
+      return `${f.offsets[0]}-${last(f.offsets)}`;
+    }
+    return '0,0';
+  }
+
+  public ngOnInit(): void {}
 
   private checkIfDuplicateMerge(
     lastMerged: FMerged | undefined,
@@ -141,14 +149,5 @@ export class FormatGroupComponent implements OnInit {
     //     },
     //   );
     // }
-  }
-
-  public getOffSets(f: FMerged): string {
-    // console.log(f);
-
-    if (f.offsets) {
-      return `${f.offsets[0]}-${last(f.offsets)}`;
-    }
-    return '0,0';
   }
 }

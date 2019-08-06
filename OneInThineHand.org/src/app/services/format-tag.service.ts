@@ -38,7 +38,7 @@ export class FormatTagService {
   ): void {
     grp.uncompressedOffsets = parseOffsets2(grp.offsets);
     if (grp.uncompressedOffsets) {
-      grp.uncompressedOffsets.pop();
+      // grp.uncompressedOffsets.pop();
       const fMergeds: FMerged[] = [];
       let lastMerged: FMerged | undefined;
       grp.uncompressedOffsets.map((o): void => {

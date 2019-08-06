@@ -1,0 +1,63 @@
+.is-ios {
+  // background-color: black !important;
+  @media screen and (min-width: 764px) {
+    .main {
+      top: 0;
+      position: fixed;
+    }
+    chapter-parent {
+      position: fix;
+      height: calc(100vh - 96px);
+    }
+    .chapter-grid {
+      width: calc(100vw - 250px);
+      height: calc(100vh - 96px);
+    }
+    #notes {
+      right: 0px;
+      width: 250px;
+      height: calc(100vh - 96px);
+      position: fixed;
+    }
+
+    @media screen and (min-width: 992px) {
+      .chapter-grid {
+        width: calc(100vw - 350px - 200px) !important;
+      }
+      #notes {
+        width: 350x;
+      }
+    }
+  }
+  // @media screen and (min-width: 764px) {
+  //   .oith-content-parent {
+  //     top: 96px;
+  //     position: absoluate;
+  //     left: 0;
+  //   }
+  //   .chapter-grid {
+  //     position: absolute;
+  //     width: calc(100vw - 250px) !important;
+  //     height: 100%;
+  //   }
+  //   #notes {
+  //     position: fixed;
+  //     right: 0;
+  //     width: 250px;
+  //     height: 100%;
+  //   }
+  // }
+  // @media screen and (min-width: 992px) {
+  //   .chapter-grid {
+  //     position: absolute;
+  //     width: calc(100vw - 250px - 200px) !important;
+  //     height: 100%;
+  //   }
+  //   #notes {
+  //     position: absolute;
+  //     right: 0;
+  //     width: 250px;
+  //     height: 100%;
+  //   }
+  // }
+}

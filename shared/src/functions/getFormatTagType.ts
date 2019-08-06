@@ -140,12 +140,6 @@ export async function getLanguage(document: Document): Promise<string> {
 }
 
 export function parseOffsets2(offsets?: string) {
-  if (offsets === '1-19,14-19') {
-    const s = offsets.split('-');
-
-    console.log(range(1, 19 + 1));
-  }
-
   if (offsets === 'all') {
     const uncompressedOffsets = [0];
     return uncompressedOffsets;
