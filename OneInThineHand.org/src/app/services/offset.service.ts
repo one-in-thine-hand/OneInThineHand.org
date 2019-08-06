@@ -10,6 +10,7 @@ import {
   RefTag,
   NotePronunciation,
 } from '../models/verse-notes';
+import { parseOffsets2 } from '../../../../shared/src/functions/getFormatTagType';
 
 @Injectable({
   providedIn: 'root',
@@ -37,11 +38,11 @@ export class OffsetService {
                   } else if (!secondaryNote.offsets) {
                     secondaryNote.uncompressedOffsets = undefined;
                   } else {
-                    secondaryNote.uncompressedOffsets = parseOffsets(
+                    secondaryNote.uncompressedOffsets = parseOffsets2(
                       secondaryNote.offsets,
                     );
                     if (secondaryNote.uncompressedOffsets) {
-                      secondaryNote.uncompressedOffsets.pop();
+                      // secondaryNote.uncompressedOffsets.pop();
                     }
                   }
                   if (

@@ -1,6 +1,6 @@
 import { formatTagTypeOptions } from '../constants/verse-selectors';
 import { FormatTagType, FormatTagTypeOptions } from '../enums/enums';
-import { range, sortBy, uniq } from 'lodash';
+import { range, sortBy, uniq, flatten } from 'lodash';
 // import { bookNames } from '../models/BookName';
 export function getFormatTagType(
   formatType: FormatTagType,
@@ -55,7 +55,7 @@ export function getRanges(array: number[]): [number, number][] {
       rend = sortedArray[i + 1]; // increment the index if the numbers sequential
       i++;
     }
-    ranges.push(rstart === rend ? [rstart, rstart] : [rstart, rend]);
+    ranges.push(rstart === rend ? [rstart, rstart] : [rstart, rend + 1]);
   }
   return ranges.filter(
     (range): boolean => {
@@ -139,6 +139,42 @@ export async function getLanguage(document: Document): Promise<string> {
   return getElementAttribute(document, 'html', 'lang', new RegExp(/.+/g));
 }
 
+export function parseOffsets2(offsets?: string) {
+  if (offsets === '1-19,14-19') {
+    const s = offsets.split('-');
+
+    console.log(range(1, 19 + 1));
+  }
+
+  if (offsets === 'all') {
+    const uncompressedOffsets = [0];
+    return uncompressedOffsets;
+  }
+  if (offsets) {
+    const uncompressedOffsets = flatten(
+      offsets
+        .split(',')
+        .filter(o => o.trim() !== '')
+        .map(sOffsets => {
+          const splitOffsets = sOffsets.split('-');
+          if (splitOffsets.length === 0) {
+            return [parseInt(splitOffsets[0], 10)];
+          } else {
+            // console.log(
+            // range(parseInt(splitOffsets[0]), parseInt(splitOffsets[1]) + 1),
+            // );
+
+            return range(
+              parseInt(splitOffsets[0]),
+              parseInt(splitOffsets[1]) + 1,
+            );
+          }
+        }),
+    );
+    return uncompressedOffsets;
+  }
+  return undefined;
+}
 export function parseOffsets(offets: string | undefined): number[] | undefined {
   if (!offets || offets === '') {
     return undefined;
@@ -149,7 +185,7 @@ export function parseOffsets(offets: string | undefined): number[] | undefined {
       if (r.indexOf('-') !== -1) {
         const split2 = r.split('-');
         const f = parseInt(split2[0]);
-        const l = parseInt(split2[1]) + 1;
+        const l = parseInt(split2[1]);
         offsetSplit = offsetSplit.concat(range(f, l + 1));
       } else {
         offsetSplit.push(parseInt(r));

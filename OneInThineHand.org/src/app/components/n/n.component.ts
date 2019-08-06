@@ -127,7 +127,7 @@ export class NComponent implements OnInit, OnDestroy {
         );
 
         if (this.note.uncompressedOffsets) {
-          this.note.offsets = getRanges(this.note.uncompressedOffsets)
+          this.note.offsets = getRanges(this.note.uncompressedOffsets.sort())
             .map((offsets): string => {
               return offsets.join('-');
             })
@@ -142,8 +142,7 @@ export class NComponent implements OnInit, OnDestroy {
           noteRef.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(
             noteRef.text,
           );
-          console.log(noteRef.text);
-
+          // console.log(noteRef.text);
         }
       });
     }

@@ -19,6 +19,7 @@ import {
   FormatTagType,
 } from '../models/verse-notes';
 import { parseOffsets } from '../../../../shared/src/shared';
+import { parseOffsets2 } from '../../../../shared/src/functions/getFormatTagType';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,7 +36,7 @@ export class FormatTagService {
     note: VerseNote | undefined,
     verse: Verse,
   ): void {
-    grp.uncompressedOffsets = parseOffsets(grp.offsets);
+    grp.uncompressedOffsets = parseOffsets2(grp.offsets);
     if (grp.uncompressedOffsets) {
       grp.uncompressedOffsets.pop();
       const fMergeds: FMerged[] = [];
@@ -107,7 +108,7 @@ export class FormatTagService {
   public expandFakeVerseBreaks(verse: Verse): void {
     if (verse.fakeVerseBreak && verse.fakeVerseBreak.breaks) {
       verse.fakeVerseBreak.breaks.map((brk): void => {
-        brk.uncompressedOffsets = parseOffsets(brk.offsets);
+        brk.uncompressedOffsets = parseOffsets2(brk.offsets);
       });
     }
   }
@@ -282,7 +283,7 @@ export class FormatTagService {
     uncompressedOffsets: number[] | undefined;
   }): void {
     item.uncompressedOffsets = item.offsets
-      ? parseOffsets(item.offsets)
+      ? parseOffsets2(item.offsets)
       : undefined;
   }
   private hasPronunciation(fMerged: FMerged, o: number): boolean | undefined {

@@ -38,6 +38,7 @@ import {
 } from '../../services/offset-groups.service';
 import { TempSettingsService } from '../../services/temp-settings.service';
 import { debounce, debounceTime, bufferCount } from 'rxjs/operators';
+import { parseOffsets2 } from '../../../../../shared/src/functions/getFormatTagType';
 @Component({
   selector: 'app-chapter',
   templateUrl: './chapter.component.html',
@@ -528,8 +529,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
     verses: Verse[],
     language: string,
   ): Promise<void> {
-    const highlightOffSets = parseOffsets(chapterParams.highlight);
-    const contextOffsets = parseOffsets(chapterParams.context);
+    const highlightOffSets = parseOffsets2(chapterParams.highlight);
+    const contextOffsets = parseOffsets2(chapterParams.context);
     if (highlightOffSets && highlightOffSets.length > 2) {
       highlightOffSets.pop();
     }
