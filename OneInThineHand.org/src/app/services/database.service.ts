@@ -8,7 +8,7 @@ import { isEqual } from 'lodash';
 export class DatabaseService {
   public constructor() {}
   // public PouchDB = require('pouchdb');
-  private db: PouchDB.Database<{}> | undefined;
+  private db: PouchDB.Database<{}>;
   /**
    * allDocs
    */
@@ -19,6 +19,12 @@ export class DatabaseService {
     if (this.db) {
       return await this.db.allDocs();
     }
+  }
+  public getDb(): PouchDB.Database<{}> {
+    if (!this.db) {
+      this.initReadingMode();
+    }
+    return this.db;
   }
 
   public async bulkDocs(items: DatabaseItem[]): Promise<void> {

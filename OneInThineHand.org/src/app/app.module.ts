@@ -58,6 +58,7 @@ import { ProGuideComponent } from './components/pro-guide/pro-guide.component';
 import { GeoPopupComponent } from './components/geo-popup/geo-popup.component';
 import { OffsetGroupComponent } from './components/offset-group/offset-group.component';
 import { NoteCategorySettingsComponent } from './components/note-category-settings/note-category-settings.component';
+import { ShellComponent } from './components/shell/shell.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -101,6 +102,7 @@ export function load(saveStateService: SaveStateService): () => Promise<void> {
     GeoPopupComponent,
     OffsetGroupComponent,
     NoteCategorySettingsComponent,
+    ShellComponent,
   ],
   imports: [
     NgbModule,
