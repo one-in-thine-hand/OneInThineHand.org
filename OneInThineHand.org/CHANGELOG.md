@@ -1,5 +1,12 @@
+## <small>5.0.141 (2019-08-06)</small>
+
+* Added ios specific styling ([1dd5130](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1dd5130))
+
+
+
 ## <small>5.0.140 (2019-08-06)</small>
 
+* v5.0.140 ([1f8934f](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1f8934f))
 
 
 
