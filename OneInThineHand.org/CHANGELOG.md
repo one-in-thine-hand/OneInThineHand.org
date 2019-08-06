@@ -1,5 +1,11 @@
+## <small>5.0.140 (2019-08-06)</small>
+
+
+
+
 ## <small>5.0.139 (2019-08-06)</small>
 
+* v5.0.139 ([0aa0b35](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/0aa0b35))
 
 
 
