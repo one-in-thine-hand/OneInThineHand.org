@@ -1,7 +1,13 @@
+## <small>5.0.139 (2019-08-06)</small>
+
+
+
+
 ## <small>5.0.138 (2019-08-06)</small>
 
 * bugs ([ba6388a](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/ba6388a))
 * fixed offset bug ([d49cd5e](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/d49cd5e))
+* v5.0.138 ([958e240](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/958e240))
 
 
 
