@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
     console.log(platform.os);
 
     this.swUpdate.available.subscribe((evt): void => {
+      alert('Refresh to update OneInThineHand');
       if (!document.querySelector('.update-button')) {
         // matCSS.toast({
         //   html:
