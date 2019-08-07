@@ -1,5 +1,12 @@
+## <small>5.0.144 (2019-08-07)</small>
+
+* fixed highlighting bug ([073cb60](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/073cb60))
+
+
+
 ## <small>5.0.143 (2019-08-07)</small>
 
+* v5.0.143 ([1a17fb8](https://github.com/one-in-thine-hand/OneInThineHand.org/commit/1a17fb8))
 
 
 
