@@ -12,6 +12,8 @@
     .chapter-grid {
       width: calc(100vw - 250px);
       height: calc(100vh - 96px);
+      left: 0px;
+      position: absolute;
     }
     #notes {
       right: 0px;
@@ -19,14 +21,16 @@
       height: calc(100vh - 96px);
       position: fixed;
     }
+  }
 
-    @media screen and (min-width: 992px) {
-      .chapter-grid {
-        width: calc(100vw - 350px - 200px) !important;
-      }
-      #notes {
-        width: 350x;
-      }
+  @media screen and (min-width: 992px) {
+    .chapter-grid {
+      width: calc(100vw - 250px - 200px) !important;
+      position: absolute;
+      left: 200px;
+    }
+    #notes {
+      width: 350x;
     }
   }
   // @media screen and (min-width: 764px) {

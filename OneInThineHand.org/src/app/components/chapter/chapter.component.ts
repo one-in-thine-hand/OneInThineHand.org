@@ -529,8 +529,8 @@ export class ChapterComponent implements OnInit, OnDestroy {
     verses: Verse[],
     language: string,
   ): Promise<void> {
-    const highlightOffSets = parseOffsets2(chapterParams.highlight);
-    const contextOffsets = parseOffsets2(chapterParams.context);
+    const highlightOffSets = parseOffsets(chapterParams.highlight);
+    const contextOffsets = parseOffsets(chapterParams.context);
     if (highlightOffSets && highlightOffSets.length > 2) {
       highlightOffSets.pop();
     }
