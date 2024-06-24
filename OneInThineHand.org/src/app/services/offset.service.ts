@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Note, parseOffsets, FormatTag } from '../../../../shared/src/shared';
+import {
+  parseOffsets,
+  FormatTag,
+  VerseNotes,
+  sortNotes,
+  getRanges,
+  NoteRef,
+} from '../../../../shared/src/shared';
 import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
+import PQueue from 'p-queue';
 
 @Injectable({
   providedIn: 'root',
@@ -8,19 +16,30 @@ import { RefTag } from '../../../../shared/src/models/format_tags/FormatTag';
 export class OffsetService {
   public constructor() {}
 
-  public expandNotes(notes: Note[] | undefined): void {
-    // console.log(notes);
+  public expandNotesQueue = new PQueue({ concurrency: 1 });
 
-    if (notes) {
-      notes.map(
-        (note): void => {
-          if (note.secondaryNotes) {
-            note.secondaryNotes.map(
-              (secondaryNote): void => {
+  public async expandNotes(notes: VerseNotes[] | undefined): Promise<void> {
+    // console.log(notes);
+    await this.expandNotesQueue.add(
+      async (): Promise<void> => {
+        if (notes) {
+          // await sortNotes(notes);
+          notes.map((note): void => {
+            if (note.notes) {
+              note.notes.map((secondaryNote): void => {
                 secondaryNote.uncompressedOffsets = parseOffsets(
                   secondaryNote.offsets,
                 );
 
+                if (secondaryNote.uncompressedOffsets) {
+                  secondaryNote.offsets = getRanges(
+                    secondaryNote.uncompressedOffsets,
+                  )
+                    .map((offsets): string => {
+                      return offsets.join('-');
+                    })
+                    .join(',');
+                }
                 if (
                   (secondaryNote.uncompressedOffsets ||
                     secondaryNote.offsets === 'all') &&
@@ -37,29 +56,27 @@ export class OffsetService {
                     refTag.secondaryNoteID = secondaryNote.id;
                   }
 
-                  if (secondaryNote.offsets === 'all') {
-                    refTag.refs = secondaryNote.noteRefs
-                      .map(
-                        (ref): string => {
-                          return ref._id ? ref._id : '';
-                        },
-                      )
-                      .filter(
-                        (ref): boolean => {
-                          return ref.trim() !== '';
-                        },
-                      );
-                    formatTag.refs = secondaryNote.noteRefs
-                      .map(
-                        (ref): string => {
-                          return ref._id ? ref._id : '';
-                        },
-                      )
-                      .filter(
-                        (ref): boolean => {
-                          return ref.trim() !== '';
-                        },
-                      );
+                  if (
+                    secondaryNote.offsets !== 'all' &&
+                    (secondaryNote.uncompressedOffsets &&
+                      !secondaryNote.uncompressedOffsets.includes(0))
+                  ) {
+                    refTag.refs = this.getNoteRefs(secondaryNote.noteRefs);
+                    // secondaryNote.noteRefs
+                    // .map((ref): string => {
+                    // // return ref._id ? ref._id : '';
+                    // })
+                    // .filter((ref): boolean => {
+                    // // return ref.trim() !== '';
+                    // });
+                    formatTag.refs = this.getNoteRefs(secondaryNote.noteRefs);
+                    // secondaryNote.noteRefs;
+                    // .map((ref): string => {
+                    // return ref._id ? ref._id : '';
+                    // })
+                    // .filter((ref): boolean => {
+                    // return ref.trim() !== '';
+                    // });
                   } else {
                     refTag.offsets = 'all';
                     formatTag.refs = ['all'];
@@ -70,11 +87,20 @@ export class OffsetService {
                 }
 
                 // console.log(secondaryNote.offsets);
-              },
-            );
-          }
-        },
-      );
-    }
+              });
+            }
+          });
+        }
+      },
+    );
+  }
+  private getNoteRefs(noteRefs: NoteRef[]): string[] {
+    return noteRefs
+      .map((ref): string => {
+        return ref._id ? ref._id : '';
+      })
+      .filter((ref): boolean => {
+        return ref.trim() !== '';
+      });
   }
 }

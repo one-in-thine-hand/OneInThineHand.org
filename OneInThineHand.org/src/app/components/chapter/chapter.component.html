@@ -5,17 +5,18 @@
 >
   <div style=" user-select: none;"></div>
   <div class="left-chapter-nav-btn chapter-nav-btn" style=" user-select: none;">
-    <i
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-      >
-        <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
-        <path fill="none" d="M0 0h24v24H0z" />
-      </svg>
-    </i>
+    <a [href]="chapter.previousPage" *ngIf="chapter">
+      <i
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+        >
+          <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </svg> </i
+    ></a>
   </div>
   <div id="bodyBlock">
     <app-body-block
@@ -32,17 +33,18 @@
     class="right-chapter-nav-btn chapter-nav-btn"
     style=" user-select: none;"
   >
-    <i>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-      >
-        <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z" />
-        <path fill="none" d="M0 0h24v24H0z" />
-      </svg>
-    </i>
+    <a [href]="chapter.nextPage" *ngIf="chapter">
+      <i>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+        >
+          <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z" />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </svg> </i
+    ></a>
   </div>
   <div style=" user-select: none;"></div>
 </div>
@@ -52,7 +54,7 @@
     <app-note
       class="app-note"
       *ngFor="let note of chapterNotes.notes"
-      [note]="note"
+      [verseNotes]="note"
     ></app-note>
     <div
       class="white-space"

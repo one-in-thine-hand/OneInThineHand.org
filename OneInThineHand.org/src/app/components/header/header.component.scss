@@ -2,6 +2,7 @@
 
 .oith-header {
   display: grid;
+  background-color: #e8efef;
   // grid-template-columns: 48px 48px 48px 48px 48px;
   // grid-template-columns: 48px 48px 48px 48px 48px;
 
@@ -69,4 +70,8 @@
     white-space: nowrap;
     text-align: center;
   }
+}
+
+table {
+  text-align: center;
 }

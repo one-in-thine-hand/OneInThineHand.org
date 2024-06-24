@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
+import { Omit } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +9,11 @@ export class ParamService {
   public constructor() {}
 
   public parseChapterParams(params: Params): ChapterParams {
-    const book = params['book'] as string;
+    let book = params['book'] as string;
     const chapter = (params['chapter'] as string).split('.');
+    if (book === 'w-of-m') {
+      book = 'w_of_m';
+    }
     return {
       book: book.replace('-', '_'),
       chapter: chapter[0],
@@ -25,3 +29,5 @@ export class ChapterParams {
   public highlight: string | undefined;
   public context: string | undefined;
 }
+
+// type Test = Omit<ChapterParams, 'book'>;

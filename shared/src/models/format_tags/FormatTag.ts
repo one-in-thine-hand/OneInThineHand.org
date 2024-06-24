@@ -18,7 +18,7 @@ export class RefTag {
   public uncompressedOffsets: number[] | undefined;
   public offsets: string | undefined;
   public highlight = false;
-  public secondaryNoteID: string ;
+  public secondaryNoteID: string;
 }
 
 export class FMerged {
@@ -26,6 +26,7 @@ export class FMerged {
   public text: string = '';
   public offsets: number[] = [];
   public refTags: RefTag[] | undefined;
+  public breaks: FormatTag[] | undefined;
 }
 
 // export class FormatTagHighlight extends FormatTag {

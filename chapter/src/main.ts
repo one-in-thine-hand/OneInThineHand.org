@@ -1,11 +1,11 @@
 import { parseLanguage } from './parseLanguage';
-import { parseID } from './parseID';
-
+import { navigation } from '../manifests2.json';
 import { Chapter } from './Chapter';
 import { parseParagraphs } from './parseParagraphs';
 import { parseElementAttribute } from './parseElementAttribute';
 import * as he from 'he';
-import { bookNames } from '../../shared/src/shared';
+import { getChapterID } from '../../shared/src/functions/getFormatTagType';
+import { verseSelectors } from '../../shared/src/shared';
 export async function parseNoteIDS(document: Document): Promise<string[]> {
   return Array.from(document.querySelectorAll('footer note')).map(
     (note): string => {
@@ -31,7 +31,7 @@ export async function parseChapter(
   const chapter = new Chapter();
   const language = await parseLanguage(document);
 
-  const id = await parseID(document, language);
+  const id = await getChapterID(document, language);
 
   const paragraphs = await parseParagraphs(document);
   const dataAid = await parseElementAttribute(document, 'html', 'data-aid');
@@ -41,15 +41,56 @@ export async function parseChapter(
   const title = await extractInnerHTML(document, 'title');
   // console.log(id);
 
-  chapter._id = `${id}-chapter`;
-  const book = bookNames.find(
-    (bookName): boolean => {
-      return chapter._id.startsWith(bookName.chapterStartsWith);
+  chapter._id = id;
+
+  chapter.verseIDS = Array.from(
+    document.querySelectorAll(verseSelectors.toString()),
+  ).map(
+    (v): string => {
+      return `${chapter._id.replace('chapter', '')}${
+        v.id.startsWith('p') ? v.id.replace('p', '') : v.id
+      }-verse`;
     },
   );
-  if (book) {
-    chapter._id = chapter._id.replace(book.chapterStartsWith, book.startsWith);
+  // console.log(ver);
+
+  // console.log(
+  //   `#/${id
+  //     .replace(`${language}-`, '')
+  //     .replace('-chapter', '')
+  //     .replace('-', '/')
+  //     .replace('_', '-')}`,
+  // );
+
+  const value = navigation.find(
+    (n): boolean => {
+      return (
+        n.href ===
+        `#/${id
+          .replace(`${language}-`, '')
+          .replace('-chapter', '')
+          .replace('-', '/')
+          .replace('_', '-')}`
+      );
+    },
+  );
+
+  if (value) {
+    const index = navigation.indexOf(value);
+    if (index !== undefined) {
+      if (index === 0) {
+        chapter.previousPage = navigation[navigation.length - 1].href;
+      } else {
+        chapter.previousPage = navigation[index - 1].href;
+      }
+      if (index === navigation.length - 1) {
+        chapter.nextPage = navigation[0].href;
+      } else {
+        chapter.nextPage = navigation[index + 1].href;
+      }
+    }
   }
+
   chapter.language = language;
   chapter.paragraphs = paragraphs;
   chapter.dataAid = dataAid;

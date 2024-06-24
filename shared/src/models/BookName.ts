@@ -37,7 +37,7 @@ export const bookNames: BookName[] = [
     {
       fullName: '1 Chronicles',
       startsWith: '1_chr-',
-      chapterStartsWith: '1_chr-',
+      chapterStartsWith: '1-chr-',
     },
     {
       fullName: '2 Chronicles',
@@ -82,12 +82,12 @@ export const bookNames: BookName[] = [
     {
       fullName: '1 Corinthians',
       startsWith: '1_cor-',
-      chapterStartsWith: '1_cor-',
+      chapterStartsWith: '1-cor-',
     },
     {
       fullName: '2 Corinthians',
       startsWith: '2_cor-',
-      chapterStartsWith: '2_cor-',
+      chapterStartsWith: '2-cor-',
     },
     { fullName: 'Galatians', startsWith: 'gal-', chapterStartsWith: 'gal-' },
     { fullName: 'Ephesians', startsWith: 'eph-', chapterStartsWith: 'eph-' },
@@ -100,12 +100,12 @@ export const bookNames: BookName[] = [
     {
       fullName: '1 Thessalonians',
       startsWith: '1_thes-',
-      chapterStartsWith: '1_thes-',
+      chapterStartsWith: '1-thes-',
     },
     {
       fullName: '2 Thessalonians',
       startsWith: '2_thes-',
-      chapterStartsWith: '2_thes-',
+      chapterStartsWith: '2-thes-',
     },
     { fullName: '1 Timothy', startsWith: '1_tim-', chapterStartsWith: '1-tim-' },
     { fullName: '2 Timothy', startsWith: '2_tim-', chapterStartsWith: '2-tim-' },

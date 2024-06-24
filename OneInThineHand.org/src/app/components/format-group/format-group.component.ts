@@ -100,19 +100,17 @@ export class FormatGroupComponent implements OnInit {
   private getMergedTags(fMerged: FMerged, offset: number): void {
     fMerged.offsets = [offset];
 
-    fMerged.formatTags = this.formatTags.filter(
-      (f): boolean => {
-        return (
-          f.uncompressedOffsets !== undefined &&
-          f.uncompressedOffsets.includes(offset)
-        );
-      },
-    );
+    fMerged.formatTags = this.formatTags.filter((f): boolean => {
+      return (
+        f.uncompressedOffsets !== undefined &&
+        f.uncompressedOffsets.includes(offset)
+      );
+    });
   }
 
   private getRefTags(fMerged: FMerged, offset: number): void {
-    // if (this.verse.note && this.verse.note.secondaryNotes) {
-    //   this.verse.note.secondaryNotes.map(
+    // if (this.verse.note && this.verse.note.notes) {
+    //   this.verse.note.notes.map(
     //     (secondaryNote): void => {
     //       if (secondaryNote.visible && secondaryNote.refTag) {
     //         if (
@@ -128,7 +126,7 @@ export class FormatGroupComponent implements OnInit {
     //       }
     //     },
     //   );
-    //   this.verse.note.secondaryNotes.map(
+    //   this.verse.note.notes.map(
     //     (secondaryNote): void => {
     //       if (secondaryNote.formatTag) {
     //         if (secondaryNote.formatTag.offsets === 'all') {

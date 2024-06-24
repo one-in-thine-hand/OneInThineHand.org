@@ -55,7 +55,7 @@ export class HistoryService {
                   },
                 );
                 if (o) {
-                  n.secondaryNotes = o.secondaryNotes;
+                  n.notes = o.notes;
                 }
               }
             },
@@ -107,7 +107,7 @@ export class HistoryService {
                   },
                 );
                 if (o) {
-                  n.secondaryNotes = o.secondaryNotes;
+                  n.notes = o.notes;
                 }
               }
             },

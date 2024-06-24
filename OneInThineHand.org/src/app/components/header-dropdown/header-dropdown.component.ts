@@ -5,7 +5,12 @@ import { TextSelectService } from '../../services/text-select.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { VisibilityService } from '../../services/visibility.service';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseService, DatabaseItem } from '../../services/database.service';
+import { ExportService } from '../../services/export.service';
+import { ChapterVerses } from '../../../../../format-tags/src/main';
+import { Verse } from '../../../../../shared/src/shared';
+import PQueue from 'p-queue/dist';
+import { flatten } from 'lodash';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -14,35 +19,82 @@ import { DatabaseService } from '../../services/database.service';
 })
 export class HeaderDropdownComponent implements OnInit {
   public showOrphanNotes: boolean = false;
+  preparingHarmony: boolean;
   public constructor(
     public saveState: SaveStateService,
     public chapterService: ChapterService,
+    public databaseService: DatabaseService,
     public textSelectionService: TextSelectService,
     public modalService: NgbModal,
     public visibilityService: VisibilityService,
-    public databaseService: DatabaseService,
+    public exportService: ExportService,
+
     private location: Location,
   ) {}
 
+  public pQueueVerses = new PQueue({ concurrency: 1 });
+
   public ngOnInit(): void {}
+  public async prepareForHarmony(): Promise<void> {
+    console.log('aoisdjfoiasjdfoiajsdf');
+
+    try {
+      const docs = await this.databaseService.allDocs();
+
+      if (docs) {
+        const verses = docs.rows
+          .filter((doc): boolean => {
+            return doc.id.includes('verses');
+          })
+          .map(
+            async (row): Promise<Verse[]> => {
+              return ((await this.databaseService.getDatabaseItem(
+                row.id,
+              )) as ChapterVerses).verses as Verse[];
+            },
+          );
+        const promises = this.sliceArray(
+          flatten(await Promise.all(verses)),
+          1000,
+        ).map(
+          async (slice): Promise<void> => {
+            await this.pQueueVerses.add(
+              async (): Promise<void> => {
+                await this.databaseService.bulkDocs(slice as DatabaseItem[]);
+              },
+            );
+          },
+        );
+        this.preparingHarmony = true;
+        await Promise.all(promises);
+
+        this.preparingHarmony = false;
+        console.log('Finished');
+        alert('Finished');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private sliceArray<T>(array: T[], chunkSizes: number): T[][] {
+    const newArray: T[][] = [];
+    let x = 0;
+    while (x < array.length) {
+      newArray.push(array.slice(x, x + chunkSizes));
+      x = x + chunkSizes;
+    }
+    return newArray;
+  }
 
   public async showNotes(): Promise<void> {
     this.showOrphanNotes = false;
-    // this.refService.resetChapterVisbility();
   }
   public async showOrphanRefs(): Promise<void> {
     console.log('hgg');
 
     if (this.chapterService.notes)
       this.visibilityService.showMissingOffsets(this.chapterService.notes);
-    // const fRefs = await this.refService.getWRefList();
-    // if (fRefs) {
-    //   this.showOrphanNotes = true;
-    //   await this.refService.setListOfNotesVisibility(fRefs, false);
-    //   // fRefs.map((fRefs): void => {});
-    //   console.log(Array.from(this.refService.noteVis.values()));
-    // }
-    // +console.log(fRefs);
   }
 
   public async save(): Promise<void> {
@@ -50,12 +102,20 @@ export class HeaderDropdownComponent implements OnInit {
       await this.databaseService.updateDatabaseItem(
         this.chapterService.chapterNotes,
       );
+      console.log('Finished');
     }
   }
   /**
    * edit
    */
-  public edit() {
+  public edit(): void {
     this.saveState.data.editMode = !this.saveState.data.editMode;
+  }
+
+  /**
+   * exportBook
+   */
+  public async exportBook(): Promise<void> {
+    await this.exportService.exportBook();
   }
 }

@@ -3,5 +3,7 @@ export const formatGroupSelectors: string = [
   'ruby',
   'a',
   '.page-break',
+  'segment',
+  'part'
 ].toString();
 export default formatGroupSelectors;

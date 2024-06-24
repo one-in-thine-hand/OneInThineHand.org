@@ -1,4 +1,14 @@
-<div class="navigation-parent">
+<div
+  class="navigation-parent"
+  [ngClass]="{
+    'navigation-hide': !this.saveStateService.data.navigationPaneToggle,
+    'navigation-mobile-hide': !this.tempSettingsService
+      .navigationMobilePaneToggle,
+    'navigation-mobile-show': this.tempSettingsService
+      .navigationMobilePaneToggle
+  }"
+  [ngStyle]="{ 'grid-template-rows': getNavGrid() }"
+>
   <div>
     <input
       class="form-control"
@@ -9,4 +19,72 @@
       (keyup)="addressBarKeyUp($event)"
     />
   </div>
+  <ul *ngIf="tempSettingsService.editMode">
+    <li style="font-weight: 700">Breaks</li>
+    <li style="user-select: none" (click)="addPara()">Para</li>
+    <li style="user-select: none" (click)="addParaGap()">Para Gap</li>
+    <li style="user-select: none" (click)="addLine()">Line</li>
+    <li style="user-select: none" (click)="addLineGap()">Line Gap</li>
+    <!-- <li style="user-select: none" (click)="addPoetry()">Poetry</li> -->
+    <li style="user-select: none" (click)="addBlock()">Block</li>
+    <li style="user-select: none" (click)="addBlockGap()">Block Gap</li>
+    <li style="user-select: none" (click)="addPlain()">Plain</li>
+    <li style="user-select: none" (click)="refreshBreaks()">Refresh Breaks</li>
+    <li style="user-select: none; font-weight: 700">
+      Delete Breaks
+    </li>
+    <li
+      *ngFor="let verseNumber of getVerseNumbers()"
+      (click)="resetVerseBreaks(verseNumber.verse)"
+    >
+      Delete Verse {{ verseNumber.verseNumber }} Breaks
+    </li>
+  </ul>
+  <ul *ngIf="!tempSettingsService.editMode" class="navigation">
+    <li (click)="goHome()"><span>Scriptures</span></li>
+    <ng-container *ngIf="currentNavItems">
+      <ng-container *ngFor="let navItem of currentNavItems">
+        <li
+          *ngIf="navItem.href"
+          [ngClass]="{
+            active: navItem.active,
+            's-c': isSingleChapter(navItem)
+          }"
+          class="chapter-link"
+        >
+          <a [href]="navItem.href"> {{ navItem.title }}</a>
+        </li>
+        <li *ngIf="!navItem.href" class="book-link">
+          <span (click)="navigationParentClick(navItem)">
+            {{ navItem.title }}</span
+          >
+        </li>
+      </ng-container>
+    </ng-container>
+  </ul>
+  <!-- <li class="with-symbol">
+    <span class="symbol">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+      >
+        <path fill="none" d="M0 0h24v24H0V0z" />
+        <path
+          d="M19.44 12.99l-.01.02c.04-.33.08-.67.08-1.01 0-.34-.03-.66-.07-.99l.01.02 2.44-1.92-2.43-4.22-2.87 1.16.01.01c-.52-.4-1.09-.74-1.71-1h.01L14.44 2H9.57l-.44 3.07h.01c-.62.26-1.19.6-1.71 1l.01-.01-2.88-1.17-2.44 4.22 2.44 1.92.01-.02c-.04.33-.07.65-.07.99 0 .34.03.68.08 1.01l-.01-.02-2.1 1.65-.33.26 2.43 4.2 2.88-1.15-.02-.04c.53.41 1.1.75 1.73 1.01h-.03L9.58 22h4.85s.03-.18.06-.42l.38-2.65h-.01c.62-.26 1.2-.6 1.73-1.01l-.02.04 2.88 1.15 2.43-4.2s-.14-.12-.33-.26l-2.11-1.66zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"
+        /></svg
+    ></span>
+    <span>Settings</span>
+  </li> -->
 </div>
+<div
+  class="backdrop"
+  (click)="this.tempSettingsService.navigationMobilePaneToggle = false"
+  [ngClass]="{
+    'navigation-mobile-hide': !this.tempSettingsService
+      .navigationMobilePaneToggle,
+    'navigation-mobile-show': this.tempSettingsService
+      .navigationMobilePaneToggle
+  }"
+></div>

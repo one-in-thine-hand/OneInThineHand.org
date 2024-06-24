@@ -18,4 +18,5 @@ export class Chapter {
   public nextPage: string | null;
   public previousPage: string | null;
   public noteRefs: NoteRef[] = [];
+  public verseIDS: string[];
 }

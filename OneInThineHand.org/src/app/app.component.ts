@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { SaveStateService } from './services/save-state.service';
+import { SwUpdate } from '@angular/service-worker';
+import { Router } from '@angular/router';
+
+// import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +18,19 @@ export class AppComponent {
     public electronService: ElectronService,
     private translate: TranslateService,
     public saveStateService: SaveStateService,
+    private swUpdate: SwUpdate,
+    public act: Router,
   ) {
     translate.setDefaultLang('en');
+    this.swUpdate.available.subscribe((evt): void => {
+      if (!document.querySelector('.update-button')) {
+        // matCSS.toast({
+        //   html:
+        //     '<span class="update-button" onclick="location.reload()">Click here to update</span>',
+        //   displayLength: 1000000,
+        // });
+      }
+    });
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron()) {
@@ -26,4 +41,7 @@ export class AppComponent {
       console.log('Mode web');
     }
   }
+
+  @HostListener('window:resize')
+  public windowResize(): void {}
 }

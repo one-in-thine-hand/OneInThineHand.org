@@ -5,6 +5,7 @@ import {
   FormatGroup,
   FormatGroupType,
 } from '../../../../../shared/src/shared';
+import { ChapterService } from '../../services/chapter.service';
 
 @Component({
   selector: 'app-verse',
@@ -13,7 +14,8 @@ import {
 })
 export class VerseComponent implements OnInit {
   @Input() public verse: Verse;
-  public constructor() {}
+  public kjvRefVerse: Verse | undefined;
+  public constructor(public chapterService: ChapterService) {}
 
   public ngOnInit(): void {}
 
@@ -21,23 +23,35 @@ export class VerseComponent implements OnInit {
   // public onPopState(event: PopStateEvent): void {
   //   // console.log(event);
   // }
-
+  public getID(): string {
+    // if (this.verse === undefined || this.verse._id === undefined) {
+    //   console.log(this.verse);
+    // }
+    return this.verse !== undefined && this.verse._id !== undefined
+      ? this.verse._id
+      : '';
+  }
   public getFormatGroups(): FormatGroup[] {
     // console.log(this.verse);
 
-    if (this.verse.formatGroups && this.verse.formatTags && this.verse.text) {
+    if (
+      this.verse &&
+      this.verse.formatGroups &&
+      this.verse.formatTags &&
+      this.verse.text
+    ) {
       expandOffsets(this.verse.formatGroups);
       expandOffsets(this.verse.formatTags);
 
       // console.log(this.verse);
-      return this.verse.formatGroups.filter(
-        (formatGroup): boolean => {
-          return (
-            formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
-            formatGroup.formatGroupType !== FormatGroupType.BR
-          );
-        },
-      ); // this.verse.formatTags.map((f): void => {});
+      return this.verse.formatGroups.filter((formatGroup): boolean => {
+        return (
+          formatGroup.formatGroupType !== FormatGroupType.PAGE_BREAK &&
+          formatGroup.formatGroupType !== FormatGroupType.BR
+        );
+      }); // this.verse.formatTags.map((f): void => {});
+    } else {
+      // console.log(this.verse);
     }
     return [];
   }
@@ -45,10 +59,10 @@ export class VerseComponent implements OnInit {
   public getClassList(): string {
     const classList: string[] = [];
 
-    if (this.verse.context) {
+    if (this.verse && this.verse.context) {
       classList.push('context');
     }
-    if (this.verse.highlight) {
+    if (this.verse && this.verse.highlight) {
       classList.push('highlight');
     }
 
@@ -56,6 +70,8 @@ export class VerseComponent implements OnInit {
   }
 
   public getOffSets(): string {
-    return `0-${this.verse.text ? this.verse.text.length - 1 : 0}`;
+    return `0-${
+      this.verse && this.verse.text ? this.verse.text.length - 1 : 0
+    }`;
   }
 }

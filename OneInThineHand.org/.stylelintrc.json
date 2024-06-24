@@ -3,7 +3,17 @@
   "rules": {
     "selector-type-no-unknown": [
       true,
-      { "ignoreTypes": ["note", "footer", "w", "app-verse", "verse"] }
+      {
+        "ignoreTypes": [
+          "note",
+          "footer",
+          "w",
+          "app-verse",
+          "verse",
+          "verse-notes",
+          "router-outlet"
+        ]
+      }
     ]
   }
 }
