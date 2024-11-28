@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/lodash": "^4.14.133",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "tslib": "~1.9.3"
   }
 }
