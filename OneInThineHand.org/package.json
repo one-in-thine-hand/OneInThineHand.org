@@ -101,7 +101,7 @@
     "jszip": "^3.2.1",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
-    "marked": "^0.6.2",
+    "marked": "^4.0.10",
     "normalizecss": "^3.0.0",
     "on-change": "^1.4.0",
     "p-queue": "^6.0.2",
